@@ -8,18 +8,23 @@ import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
 import { Button } from '~/components/ui/Button/Button';
 import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 import { t } from '~/services';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { removeChild } from '~/store/children/slice';
 // import { clearParents } from '~/store/parents/slice';
 
-export default function ParentRemove() {
+export default function ChildRemove() {
   useI18nHeaderTitle('users.delete');
   const dispatch = useDispatch();
   const router = useRouter();
+  const route = useRoute<RouteProp<Record<string, { id: string }>, string>>();
+  const id = route.params?.id;
 
   const handleRemove = () => {
     // dispatch(clearParents());
     if (router.canGoBack()) {
       router.back();
     }
+    dispatch(removeChild({ id }));
   };
 
   return (

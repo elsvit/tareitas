@@ -2,16 +2,16 @@ import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import bgImgSrc from '~/assets/img/bg.png';
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
 import { Text } from '~/components/ui';
 import { ChildListItem, ParentListItem } from '~/components/users/UserListItem';
 import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
-import { selectAllParents } from '~/store/parents/selectors';
-import { selectAllChildren } from '~/store/children/selectors';
-import { ERole } from '~/store/settings/enums';
 import { t } from '~/services';
+import { selectAllChildren } from '~/store/children/selectors';
+import { selectAllParents } from '~/store/parents/selectors';
+import { ERole } from '~/store/settings/enums';
 import { Colors } from '~/styles';
-import bgImgSrc from '~/assets/img/bg.png';
 
 export default function Users() {
   useI18nHeaderTitle('users.title');
@@ -50,7 +50,7 @@ export default function Users() {
           ) : (
             children.map(c => (
               <View style={styles.item} key={c.id}>
-                <ChildListItem id={c.id} role={ERole.child} />
+                <ChildListItem id={c.id} />
               </View>
             ))
           )}
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     marginBottom: 8,
-    color: Colors.green600,
+    color: Colors.blue500,
   },
   sectionSpacing: {
     marginTop: 16,

@@ -75,20 +75,23 @@ export default function RootStack() {
     headerBackButtonDisplayMode: 'minimal',
   };
 
-  const initialRouteName = 'users/WelcomeSteps';
+  // const initialRouteName = 'users/WelcomeSteps';
   // parentIds.length === 0 ? 'users/WelcomeSteps' : 'users/Users';
 
-  console.log(
-    'TEST_79',
-    parentIds.length,
-    'initialRouteName',
-    initialRouteName,
-  );
+  // console.log(
+  //   'TEST_79',
+  //   parentIds.length,
+  //   'initialRouteName',
+  //   initialRouteName,
+  // );
 
   return (
     <PaperProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack key={`stack-${lang}`} initialRouteName={initialRouteName}>
+        <Stack
+          key={`stack-${lang}`}
+          // initialRouteName={initialRouteName}
+        >
           <Stack.Screen
             name="users/WelcomeSteps"
             options={minimalHeaderBackOptions}

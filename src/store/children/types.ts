@@ -11,6 +11,6 @@ export type AddChildrenPayload = {
 export type UpdateChildrenPayload = AddChildrenPayload;
 
 export type RemoveChildrenPayload = {
-  entity: string;
+  id: string;
   onSuccess?: () => void;
 };

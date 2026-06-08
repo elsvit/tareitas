@@ -92,7 +92,7 @@ export const Welcome2: React.FC = () => {
       })}
 
       {getGradientCard({
-        title: t('welcome.daily_routines'),
+        title: t('welcome.daily_habits'),
         color: Colors.brightGreen500,
         textColor: Colors.brightGreen900,
         texts: [

@@ -59,7 +59,7 @@ export const Welcome3: React.FC = () => {
       })}
 
       {getCard({
-        title: `2. ${t('welcome.create_tasks_and_routines')}`,
+        title: `2. ${t('welcome.create_tasks_and_habits')}`,
         color: Colors.brightGreen500,
         description: t('welcome.createTasksAndRoutinesDescription'),
       })}

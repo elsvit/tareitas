@@ -7,7 +7,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import DeleteIcon from '~/assets/svg/common/delete.svg';
 import EditIcon from '~/assets/svg/common/edit.svg';
 import { Text } from '~/components/ui';
+import { CHILDREN_AVATARS } from '~/components/users/UserForm/ChildForm';
 import { PARENT_AVATARS } from '~/components/users/UserForm/ParentForm';
+
+const USER_AVATARS = { ...PARENT_AVATARS, ...CHILDREN_AVATARS };
+import { t } from '~/services';
+import { EFamilyRole } from '~/store/settings/enums';
 import { lightenColor } from '~/utils/color';
 
 type Props = {
@@ -15,6 +20,7 @@ type Props = {
   name: string;
   familyRole?: string;
   color?: string;
+  hasButtons?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
   onPress?: () => void;
@@ -25,6 +31,7 @@ export const UserListItem: React.FC<Props> = ({
   name,
   familyRole,
   color,
+  hasButtons,
   onEdit,
   onDelete,
   onPress,
@@ -38,6 +45,23 @@ export const UserListItem: React.FC<Props> = ({
 
     return [lightenColor(color, 0.2), lightenColor(color, 0.8)] as const;
   }, [color]);
+
+  const renderContent = React.useCallback(() => {
+    return (
+      <RowContent
+        avatar={avatar}
+        isRemote={isRemote}
+        name={name}
+        familyRole={familyRole}
+        textColor={color}
+        hasButtons={hasButtons}
+        onEdit={onEdit}
+        onDelete={onDelete}
+      />
+    );
+  }, [avatar, isRemote, name, familyRole]);
+
+  if (!renderContent) return null;
 
   return (
     <View style={[styles.container, color && { borderColor: color }]}>
@@ -63,26 +87,10 @@ export const UserListItem: React.FC<Props> = ({
                 borderless: false,
               }}
             >
-              <RowContent
-                avatar={avatar}
-                isRemote={isRemote}
-                name={name}
-                familyRole={familyRole}
-                textColor={color}
-                onEdit={onEdit}
-                onDelete={onDelete}
-              />
+              {renderContent()}
             </Pressable>
           ) : (
-            <RowContent
-              avatar={avatar}
-              isRemote={isRemote}
-              name={name}
-              familyRole={familyRole}
-              textColor={color}
-              onEdit={onEdit}
-              onDelete={onDelete}
-            />
+            renderContent()
           )}
         </LinearGradient>
       ) : (
@@ -100,24 +108,10 @@ export const UserListItem: React.FC<Props> = ({
                 borderless: false,
               }}
             >
-              <RowContent
-                avatar={avatar}
-                isRemote={isRemote}
-                name={name}
-                familyRole={familyRole}
-                onEdit={onEdit}
-                onDelete={onDelete}
-              />
+              {renderContent()}
             </Pressable>
           ) : (
-            <RowContent
-              avatar={avatar}
-              isRemote={isRemote}
-              name={name}
-              familyRole={familyRole}
-              onEdit={onEdit}
-              onDelete={onDelete}
-            />
+            renderContent()
           )}
         </View>
       )}
@@ -133,6 +127,7 @@ type RowProps = {
   name: string;
   familyRole?: string;
   textColor?: string;
+  hasButtons?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
 };
@@ -143,18 +138,62 @@ const RowContent: React.FC<RowProps> = ({
   name,
   familyRole,
   textColor,
+  hasButtons,
   onEdit,
   onDelete,
 }) => {
+
+  const familyRoleText = React.useMemo(() => {
+    switch (familyRole) {
+      case EFamilyRole.mother:
+        return t('users.familyRole.mother');
+      case EFamilyRole.father:
+        return t('users.familyRole.father');
+      case EFamilyRole.grandmother:
+        return t('users.familyRole.grandmother');
+      case EFamilyRole.grandfather:
+        return t('users.familyRole.grandfather');
+      case EFamilyRole.sister:
+        return t('users.familyRole.sister');
+      case EFamilyRole.brother:
+        return t('users.familyRole.brother');
+      case EFamilyRole.nanny:
+        return t('users.familyRole.nanny');
+      case EFamilyRole.aunt:
+        return t('users.familyRole.aunt');
+      case EFamilyRole.uncle:
+        return t('users.familyRole.uncle');
+      case EFamilyRole.reviewer:
+        return t('users.familyRole.reviewer');
+      case EFamilyRole.reviewee:
+        return t('users.familyRole.reviewee');
+      case EFamilyRole.other:
+        return t('common.other');
+      default:
+        return '';
+    }
+  }, [familyRole]);
+  
   return (
     <View style={styles.row}>
       <View style={styles.avatarOuter}>
         {avatar ? (
           isRemote ? (
             <Image source={{ uri: avatar }} style={styles.avatarImage} />
+          ) : USER_AVATARS[avatar as keyof typeof USER_AVATARS] ? (
+            <Image
+              source={USER_AVATARS[avatar as keyof typeof USER_AVATARS]}
+              style={styles.avatarImage}
+            />
           ) : (
-            // @ts-ignore
-            <Image source={PARENT_AVATARS[avatar]} style={styles.avatarImage} />
+            <View style={[styles.avatarImage, styles.avatarFallback]}>
+              <Text
+                style={[styles.avatarText, textColor && { color: textColor }]}
+                numberOfLines={1}
+              >
+                {name?.[0]?.toUpperCase?.() || '?'}
+              </Text>
+            </View>
           )
         ) : (
           <View style={[styles.avatarImage, styles.avatarFallback]}>
@@ -178,7 +217,7 @@ const RowContent: React.FC<RowProps> = ({
         >
           {name}
         </Text>
-        {!!familyRole && (
+        {!!familyRoleText && familyRoleText !== '' && (
           <Text
             variant="bodySmall"
             fontFamily="fredoka"
@@ -186,12 +225,12 @@ const RowContent: React.FC<RowProps> = ({
             style={[styles.subtitle, textColor && { color: textColor, fontSize: 18 }]}
             numberOfLines={1}
           >
-            {familyRole}
+            {familyRoleText}
           </Text>
         )}
       </View>
 
-      {!!(onEdit || onDelete) && (
+      {!!(hasButtons && (onEdit || onDelete)) && (
         <View style={styles.actions}>
           {!!onEdit && (
             <ActionButton onPress={onEdit} accessibilityLabel="Edit user">

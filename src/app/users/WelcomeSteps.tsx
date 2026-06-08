@@ -1,6 +1,5 @@
-import { useMemo, useState } from 'react';
-import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
 import { useDispatch } from 'react-redux';
@@ -20,8 +19,8 @@ import { addParent, clearParents } from '~/store/parents/slice';
 import { ERole } from '~/store/settings/enums';
 import { setCurrentRole, setCurrentUser } from '~/store/settings/slice';
 import { Colors, spacing } from '~/styles';
+import { EFormMode } from '~/types/ECommon';
 import { ChildFormProps } from '~/types/IChild';
-import { EFormMode } from '~/types/ICommon';
 import { ParentFormProps } from '~/types/IParent';
 
 export default function WelcomeSteps() {

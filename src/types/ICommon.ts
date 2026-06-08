@@ -1,10 +1,7 @@
+import { ERole } from '~/store/settings/enums';
+
 export interface IId {
   id: string;
-}
-
-export enum EFormMode {
-  Add = 'add',
-  Edit = 'edit',
 }
 
 export interface IOptions<T> {
@@ -14,12 +11,9 @@ export interface IOptions<T> {
 
 export interface IStringOptions extends IOptions<string> {}
 
-export enum WeekDay {
-  Sunday = 0,
-  Monday = 1,
-  Tuesday = 2,
-  Wednesday = 3,
-  Thursday = 4,
-  Friday = 5,
-  Saturday = 6,
+export  interface IUserAvatar {
+  role: ERole,
+  id: string,
+  name: string,
+  avatar?: string;
 }

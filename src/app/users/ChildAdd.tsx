@@ -3,43 +3,38 @@ import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
-import { ParentForm } from '~/components/users/UserForm/ParentForm';
-// import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
-import { addParent } from '~/store/parents/slice';
-import { EFormMode } from '~/types/ICommon';
-import { IParent, ParentFormProps } from '~/types/IParent';
+import { ChildForm } from '~/components/users/UserForm/ChildForm';
+import { addChild } from '~/store/children/slice';
+import { EFormMode } from '~/types/ECommon';
+import { ChildFormProps, IChild } from '~/types/IChild';
 
-export default function ParentAdd() {
-  // useI18nHeaderTitle('parents.add_parent');
+export default function ChildAdd() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const handleSave = (user: ParentFormProps) => {
-
+  const handleSave = (user: ChildFormProps) => {
     const id = uuidv4();
-    const newUser: IParent = {
+    const newUser: IChild = {
       id,
       createdAt: new Date().toISOString(),
       ...user,
-    } as IParent;
+    } as IChild;
 
     dispatch(
-      addParent({
+      addChild({
         entity: newUser,
-      }),
-      {
         onSuccess: () => {
           if (router.canGoBack()) {
             router.back();
           }
         },
-      },
+      }),
     );
   };
 
   return (
     <SafeAreaBackground>
-      <ParentForm mode={EFormMode.Add} onSave={handleSave} />
+      <ChildForm mode={EFormMode.Add} onSave={handleSave} />
     </SafeAreaBackground>
   );
 }

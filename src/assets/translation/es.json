@@ -6,9 +6,10 @@
     "description": "Descripción",
     "disabled": "Deshabilitado",
     "expirationTime": "Tiempo de Caducidad",
+    "no_items": "No hay elementos",
     "loading": "Cargando...",
     "no_data_found": "No se encontraron datos",
-    "no_items": "No hay elementos",
+    "optional": "opcional",
     "other": "Otro",
     "rating": "Puntuación",
     "required": "Requerido",
@@ -28,7 +29,8 @@
     "next": "Siguiente",
     "previous": "Anterior",
     "reset": "Reiniciar",
-    "save": "Guardar"
+    "save": "Guardar",
+    "submit": "Enviar"
   },
   "time": {
     "day": "día",
@@ -101,18 +103,19 @@
       "uncle": "Tío"
     }
   },
+  "tasks": {
+    "title": "Tareas",
+    "task_templates": "plantillas de tareas"
+  },
+  "habits": {
+    "title": "Hábitos"
+  },
   "rewards": {
     "title": "Premio"
   },
-  "routines": {
-    "title": "Rutinas"
-  },
-  "tasks": {
-    "title": "Tareas"
-  },
   "welcome": {
     "title": "Bienvenido",
-    "daily_routines": "Rutinas Diarias",
+    "daily_habits": "Rutinas Diarias",
     "dailyRoutines1": "Rutinas matutinas y vespertinas",
     "dailyRoutines2": "Acciones guiadas paso a paso",
     "dailyRoutines3": "Recordatorios en tiempo real",
@@ -123,7 +126,7 @@
     "howItWorksSubtitle": "Guía paso a paso",
     "add_your_children": "Añade a tus hijos",
     "addYourChildrenDescription": "Comienza creando un perfil para cada uno de tus hijos. Incluye su nombre, fecha de nacimiento, un avatar divertido y un color de su tarjeta.\nEl padre con los derechos de administrador también puede añadir otros padres o persona que pueda revisar la finalización de las tareas y rutinas.\nLos padres pueden gestionar varios hijos desde un panel único.",
-    "create_tasks_and_routines": "Crea Tareas y Rutinas",
+    "create_tasks_and_habits": "Crea Tareas y Rutinas",
     "createTasksAndRoutinesDescription": "Diseña tareas que coincidan con las necesidades de tu familia. Establece valores de puntos, fechas límite, patrones de recurrencia y asignales a niños particulares.\nTienes todo bajo control!",
     "children_completion_and_earn": "Finalización de los Hijos y Ganar",
     "childrenCompletionAndEarnDescription": "Los niños ven sus tareas diarias en una interfaz simple y divertida. Marcan las tareas como hechas con un solo toque.\nPor cada tarea completada, ganan puntos y progreso hacia sus objetivos",
@@ -134,7 +137,7 @@
     "insights": "Insights",
     "insightsDescription": "Datos en tiempo real sobre tasas de completación y progreso familiar",
     "key_features": "Características Clave",
-    "keyFeaturesSubtitle": "Descubre herramientas poderosas",
+    "keyFeaturesDescription": "Descubre herramientas potentes",
     "learn_what_we_do": "Aprende qué hacemos",
     "motivation": "Motivación",
     "motivationDescription": "Puntos, insignias y premios que hacen que los niños estén emocionados por ayudar",
@@ -154,6 +157,7 @@
     "smartTaskManagement3": "Tareas diarias o semanales recurrentes",
     "smartTaskManagement4": "Asignación automática a un hijo particular",
     "skip_tour": "Saltar Tour",
+    "subtitle": "Completa tu perfil",
     "welcome_to_tareitas": "Bienvenido a Tareitas",
     "welcome_steps": "Completa tu perfil en unos pocos pasos."
   }

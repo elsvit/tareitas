@@ -1,35 +1,47 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useRouter } from 'expo-router';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
-import { ParentForm } from '~/components/users/UserForm/ParentForm';
-// import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
-import { updateParent } from '~/store/parents';
-import { EFormMode } from '~/types/ICommon';
-import { IParent, ParentFormProps } from '~/types/IParent';
+import { ChildForm } from '~/components/users/UserForm/ChildForm';
+import type { RootStateT } from '~/store';
+import { selectChildById } from '~/store/children/selectors';
+import { updateChild } from '~/store/children/slice';
+import { EFormMode } from '~/types/ECommon';
+import { ChildFormProps, IChild } from '~/types/IChild';
 
-export default function ParentEdit() {
-  // useI18nHeaderTitle('users.edit_parent');
+export default function ChildEdit() {
   const dispatch = useDispatch();
-  const route = useRoute<RouteProp<Record<string, { userId: string }>, string>>();
-  const userId = route.params?.userId;
-  const handleSave = (user: ParentFormProps) => {
-    const newUser: IParent = {
+  const router = useRouter();
+  const route = useRoute<RouteProp<Record<string, { id: string }>, string>>();
+  const userId = route.params?.id;
+
+  const child = useSelector((state: RootStateT) =>
+    userId ? selectChildById(state, userId) : undefined,
+  );
+
+  const handleSave = (user: ChildFormProps) => {
+    const newUser: IChild = {
       id: userId as string,
       updatedAt: new Date().toISOString(),
       ...user,
-    } as IParent;
+    } as IChild;
 
     dispatch(
-      updateParent({
+      updateChild({
         entity: newUser,
+        onSuccess: () => {
+          if (router.canGoBack()) {
+            router.back();
+          }
+        },
       }),
     );
   };
 
   return (
     <SafeAreaBackground>
-      <ParentForm mode={EFormMode.Edit} onSave={handleSave} />
+      <ChildForm mode={EFormMode.Edit} child={child} onSave={handleSave} />
     </SafeAreaBackground>
   );
 }

@@ -6,6 +6,10 @@ import { styles } from './styles';
 import { IIconButton, IScreenHeaderWithLogo } from './types';
 import ChevronLeftIcon from '~/assets/svg/common/chevron-left.svg';
 import LogoIcon from '~/assets/img/logo.png';
+import { useSelector } from "react-redux";
+import { selectCurrentRole, selectCurrentUser } from "~/store/settings";
+import { useCurrentUser } from "~/hooks/useCurrentUser";
+import { IUserAvatar } from '~/types';
 
 export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
   // title,
@@ -16,6 +20,8 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
   // titleStyle,
 }) => {
   const router = useRouter();
+
+  const currentUser: IUserAvatar = useCurrentUser();
 
   const renderButton = (
     btn: IIconButton,
