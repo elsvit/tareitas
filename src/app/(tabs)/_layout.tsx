@@ -7,8 +7,8 @@ import MoreIcon from '~/assets/img/tabs/tab_more.png';
 import MoreActiveIcon from '~/assets/img/tabs/tab_more_active.png';
 import RewardsIcon from '~/assets/img/tabs/tab_rewards.png';
 import RewardsActiveIcon from '~/assets/img/tabs/tab_rewards_active.png';
-import RoutinesIcon from '~/assets/img/tabs/tab_routines.png';
-import RoutinesActiveIcon from '~/assets/img/tabs/tab_routines_active.png';
+import RoutinesIcon from '~/assets/img/tabs/tab_habits.png';
+import RoutinesActiveIcon from '~/assets/img/tabs/tab_habits_active.png';
 import TasksIcon from '~/assets/img/tabs/tab_tasks.png';
 import TasksActiveIcon from '~/assets/img/tabs/tab_tasks_active.png';
 import { HapticTab } from '~/components/haptic-tab';
@@ -34,7 +34,7 @@ export default function TabLayout() {
       name: EMainTabs.Routines,
       Icon: RoutinesIcon,
       ActiveIcon: RoutinesActiveIcon,
-      title: t('routines.title') || 'Routines',
+      title: t('habits.title') || 'Routines',
     },
     {
       name: EMainTabs.Rewards,

@@ -10,6 +10,7 @@ export type ScreenRoutesParams = {
   [EMainTabs.Rewards]: undefined;
   [EMainTabs.More]: undefined;
   [EScreens.Settings]: undefined;
+  [EScreens.Users]: undefined;
   // [EScreens.UserAdd]: undefined;
   // [EScreens.UserEdit]: { userId: string };
 };

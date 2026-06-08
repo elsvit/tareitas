@@ -4,16 +4,16 @@ import { ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Divider, List } from 'react-native-paper';
 import { SvgProps } from 'react-native-svg';
-import { useSelector } from 'react-redux';
 
 import bgImgSrc from '~/assets/img/bg.png';
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
 import SettingsIcon from '~/assets/svg/more/settings.svg';
+import UsersIcon from '~/assets/svg/users/users.svg';
+import { ScreenHeaderWithLogo } from "~/components/blocks";
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
-import { ScreenHeader } from '~/components/blocks/ScreenHeader';
 import { t } from '~/services';
-import { palette, spacing, styleSheetFactory } from '~/styles';
+import { spacing, styleSheetFactory } from '~/styles';
 import { useStyle } from '~/styles/hooks';
 import { EScreens } from '~/types/ENavigation';
 
@@ -38,6 +38,11 @@ export default function More() {
       Icon: SettingsIcon,
       navigateTo: EScreens.Settings,
     },
+    {
+      title: t('users.title'),
+      Icon: UsersIcon,
+      navigateTo: EScreens.Users,
+    },
   ];
   const title = t('more.title');
 
@@ -57,7 +62,7 @@ export default function More() {
 
   return (
     <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
-      <ScreenHeader title={title} containerStyle={{backgroundColor: 'transparent'}} />
+      <ScreenHeaderWithLogo containerStyle={{backgroundColor: 'transparent'}} />
       <ScrollView>
         <List.Section>
           {MORE_ITEMS.map((item, index) => {

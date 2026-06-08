@@ -1,2 +1,2 @@
-export { registerThemes } from './registerThemes';
+export * from './registerThemes';
 export { spacing, styleSheetFactory } from './styleSheetFactory';

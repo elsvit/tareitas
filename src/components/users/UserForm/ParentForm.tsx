@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { Controller, useForm } from 'react-hook-form';
@@ -44,7 +44,7 @@ import { t } from '~/services';
 import { EFamilyRole, ERole } from '~/store/settings/enums';
 import { userColors } from '~/styles';
 import { IOptions, IParent, ParentFormProps } from '~/types';
-import { EFormMode } from '~/types/ICommon';
+import { EFormMode } from '~/types/ECommon';
 import { capitalizeFirst } from '~/utils/string';
 
 import { styles } from './styles';
@@ -319,7 +319,7 @@ export const ParentForm: FC<Props> = ({
                     <OTPInputIconButton
                       title={t('users.parent_password')}
                       onChange={onChange}
-                      maxLength={8}
+                      maxLength={4}
                     />
                     <GesturePasswordIconButton
                       title={t('users.parent_password')}

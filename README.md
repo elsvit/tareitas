@@ -16,6 +16,18 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npx expo start
    ```
 
+   The translation watcher now runs together with the app start scripts and keeps
+   `src/assets/translation/es.json` synchronized with `src/assets/translation/en.json`.
+   New or changed English strings are added as Spanish suggestions prefixed with
+   `[TODO: es] ` until you replace them with a real translation.
+
+   You can also run the translation tools manually:
+
+   ```bash
+   npm run translations:sync
+   npm run translations:watch
+   ```
+
 In the output, you'll find options to open the app in a
 
 - [development build](https://docs.expo.dev/develop/development-builds/introduction/)

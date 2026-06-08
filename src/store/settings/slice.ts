@@ -9,7 +9,7 @@ import type { IStateSettings } from './types';
 const initialState: IStateSettings = {
   lang: null,
   isLangInitiating: true, // TODO Change from null to true
-  isRecurringTabSeparated: true,
+  isHabitsTabSeparated: true,
   currentUser: null,
   currentRole: null,
 };
@@ -26,7 +26,7 @@ export const settingsSlice = createSlice({
       state.isLangInitiating = false; // Set to false when language is set
     },
     setIsRecurringTabSeparated: (state, action: PayloadAction<boolean>) => {
-      state.isRecurringTabSeparated = action.payload;
+      state.isHabitsTabSeparated = action.payload;
     },
     setCurrentUser: (state, action: PayloadAction<string | null>) => {
       state.currentUser = action.payload;

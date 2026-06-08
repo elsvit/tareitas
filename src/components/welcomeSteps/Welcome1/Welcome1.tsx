@@ -4,7 +4,7 @@ import { Image, StyleSheet, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import RewardImage from '~/assets/img/tabs/tab_rewards_active.png';
-import RoutinesImage from '~/assets/img/tabs/tab_routines_active.png';
+import RoutinesImage from '~/assets/img/tabs/tab_habits_active.png';
 import TasksImage from '~/assets/img/tabs/tab_tasks_active.png';
 import { Card, Space, Text } from '~/components/ui';
 import { t } from '~/services';
