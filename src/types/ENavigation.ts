@@ -18,5 +18,13 @@ export enum EScreens {
   ChildAdd = 'users/ChildAdd',
   ChildEdit = 'users/ChildEdit',
   ChildRemove = 'users/ChildRemove',
+  DefaultTasks = 'tasks/DefaultTasks',
+  BaseTasks = 'tasks/BaseTasks',
+  BaseTaskAdd = 'tasks/BaseTaskAdd',
+  BaseTaskEdit = 'tasks/BaseTaskEdit',
+  BaseTaskRemove = 'tasks/BaseTaskRemove',
+  TaskAdd = 'tasks/TaskAdd',
+  TaskEdit = 'tasks/TaskEdit',
+  TaskRemove = 'tasks/TaskRemove',
   WelcomeSteps = 'users/WelcomeSteps',
 }

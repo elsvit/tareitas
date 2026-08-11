@@ -1,21 +1,22 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import createSagaMiddleware from 'redux-saga';
-import { all } from 'redux-saga/effects';
+import logger from 'redux-logger';
 import { PersistConfig, persistReducer, persistStore } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
+import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 import { Persistor } from 'redux-persist/lib/types';
-import logger from 'redux-logger';
+import createSagaMiddleware from 'redux-saga';
+import { all } from 'redux-saga/effects';
 
+import { IS_WEB } from '~/constants';
 import { getStorage } from '~/services/storage/storage';
-import { settingsSagas, settingsSlice, IStateSettings } from './settings';
-import { parentsSlice, IStateParents } from './parents';
 import { childrenSlice, IStateChildren } from './children';
 import { commonSlice } from './common/slice';
-import { tasksSlice, IStateTasks } from './tasks';
-import { taskBaseSlice, IStateTaskBase } from './taskBase';
-import { taskAssignmentSlice, IStateTaskAssignment } from './taskAssignment';
 import { EStateName } from './enums';
-import { IS_WEB } from '~/constants';
+import { IStateParents, parentsSlice } from './parents';
+import { IStateSettings, settingsSagas, settingsSlice } from './settings';
+import { IStateTaskAssignment, taskAssignmentSlice } from './taskAssignment';
+import { IStateTaskBase, taskBaseSlice } from './taskBase';
+import { IStateTasks, tasksSlice } from './tasks';
 
 // Root saga
 function* rootSaga() {
@@ -61,7 +62,7 @@ const tasksPersistConfig: PersistConfig<IStateTasks> = {
 const taskBasePersistConfig: PersistConfig<IStateTaskBase> = {
   key: EStateName.taskBase,
   storage,
-  stateReconciler: autoMergeLevel2,
+  stateReconciler: hardSet,
   // whitelist: ['entities'],
 };
 

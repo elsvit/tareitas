@@ -106,5 +106,9 @@ export function createEntityReducers<T extends { id: string }>(
     clearEntities: (state: any) => {
       adapter.removeAll(state);
     },
+
+    resetEntities: (state: any, action: PayloadAction<T[]>) => {
+      adapter.setAll(state, action.payload);
+    },
   };
 }

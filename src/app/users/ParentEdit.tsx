@@ -4,15 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
 import { ParentForm } from '~/components/users/UserForm/ParentForm';
+import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 import { RootStateT } from '~/store';
-// import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 import { updateParent } from '~/store/parents';
 import { selectParentById } from '~/store/parents/selectors';
 import { EFormMode } from '~/types/ECommon';
 import { IParent, ParentFormProps } from '~/types/IParent';
 
 export default function ParentEdit() {
-  // useI18nHeaderTitle('users.edit_parent');
+  useI18nHeaderTitle('users.edit_parent');
+
   const dispatch = useDispatch();
   const router = useRouter();
   const route = useRoute<RouteProp<Record<string, { id: string }>, string>>();

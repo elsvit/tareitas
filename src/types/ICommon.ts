@@ -1,3 +1,4 @@
+import { ImageSourcePropType } from 'react-native';
 import { ERole } from '~/store/settings/enums';
 
 export interface IId {
@@ -7,6 +8,12 @@ export interface IId {
 export interface IOptions<T> {
   label: string;
   value: T;
+}
+
+export interface IImageOption {
+  label: string;
+  value: string;
+  image: ImageSourcePropType;
 }
 
 export interface IStringOptions extends IOptions<string> {}

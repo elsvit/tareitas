@@ -63,7 +63,17 @@ const syncNode = (englishNode, spanishNode, keyPath = []) => {
 };
 
 const writeJson = (filePath, json) => {
-  fs.writeFileSync(filePath, `${JSON.stringify(json, null, 2)}\n`, 'utf8');
+  const nextContent = `${JSON.stringify(json, null, 2)}\n`;
+  const currentContent = fs.existsSync(filePath)
+    ? fs.readFileSync(filePath, 'utf8')
+    : null;
+
+  if (currentContent === nextContent) {
+    return false;
+  }
+
+  fs.writeFileSync(filePath, nextContent, 'utf8');
+  return true;
 };
 
 const syncTranslations = () => {
@@ -73,8 +83,11 @@ const syncTranslations = () => {
     : {};
   const nextSpanishJson = syncNode(englishJson, spanishJson);
 
-  writeJson(targetFile, nextSpanishJson);
-  console.log(`Synchronized ${path.relative(projectRoot, targetFile)} from ${path.relative(projectRoot, sourceFile)}`);
+  const didWrite = writeJson(targetFile, nextSpanishJson);
+
+  if (didWrite) {
+    console.log(`Synchronized ${path.relative(projectRoot, targetFile)} from ${path.relative(projectRoot, sourceFile)}`);
+  }
 };
 
 const watchTranslations = () => {
@@ -96,8 +109,10 @@ const watchTranslations = () => {
 
   runSync();
 
-  fs.watch(sourceFile, () => {
-    runSync();
+  fs.watch(translationsDir, (_eventType, filename) => {
+    if (filename === path.basename(sourceFile)) {
+      runSync();
+    }
   });
 
   console.log(`Watching ${path.relative(projectRoot, sourceFile)} for changes...`);

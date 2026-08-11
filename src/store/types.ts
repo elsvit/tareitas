@@ -1,11 +1,11 @@
 import type { IStateChildren } from './children/types';
 import type { IStateCommon } from './common/types';
+import type { EStateName } from './enums';
 import type { IStateParents } from './parents/types';
 import type { IStateSettings } from './settings/types';
 import type { IStateTaskAssignment } from './taskAssignment/types';
 import type { IStateTaskBase } from './taskBase/types';
 import type { IStateTasks } from './tasks/types';
-import type { EStateName } from './enums';
 
 export interface IState {
   [EStateName.common]: IStateCommon;

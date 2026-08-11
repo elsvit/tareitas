@@ -41,7 +41,7 @@ export const parentsSlice = createSlice({
       entityReducers.upsertEntity(state, action as unknown as PayloadAction<IParent>);
     },
     removeParent: (state, action: PayloadAction<RemoveParentPayload>) => {
-      entityReducers.removeEntity(state, { ...action, payload: action.payload.entity, });
+      entityReducers.removeEntity(state, { ...action, payload: action.payload.id, });
     },
     removeParentSuccess: (state, action: PayloadAction<string>) => {
       // entityReducers.removeEntity expects payload to be the entity id (string)

@@ -9,18 +9,19 @@ import {
   Text,
 } from '~/components/ui';
 import { t } from '~/services';
-import { spacing } from '~/styles';
-import { Colors } from '~/styles';
+import { Colors, spacing } from '~/styles';
 
 export const Welcome2: React.FC = () => {
   const getCheckedText = ({
     text,
     color,
+    index,
   }: {
     text: string;
     color?: string;
+    index: number;
   }) => (
-    <View style={styles.rowCenter}>
+    <View style={styles.rowCenter} key={index}>
       <CheckCircleOutlineIcon />
       <View style={styles.textContainer}>
         <Text variant="titleMedium" color={color ?? Colors.green900}>
@@ -58,7 +59,7 @@ export const Welcome2: React.FC = () => {
           {title}
         </Text>
         <Space size={8} />
-        {texts.map((text) => getCheckedText({ text, color: textColor }))}
+        {texts.map((text, index) => getCheckedText({ text, color: textColor, index }))}
       </View>
     </LinearGradient>
   );

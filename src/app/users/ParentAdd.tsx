@@ -4,13 +4,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
 import { ParentForm } from '~/components/users/UserForm/ParentForm';
-// import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
+import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 import { addParent } from '~/store/parents/slice';
-import { EFormMode } from '~/types/ICommon';
+import { EFormMode } from '~/types/ECommon';
 import { IParent, ParentFormProps } from '~/types/IParent';
 
 export default function ParentAdd() {
-  // useI18nHeaderTitle('parents.add_parent');
+  useI18nHeaderTitle('users.add_parent');
+
   const dispatch = useDispatch();
   const router = useRouter();
 

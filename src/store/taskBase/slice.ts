@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ITaskBase } from '~/types/ITask';
+import { getBaseTasks } from '~/constants/tasks';
 import { EStateName } from '~/store/enums';
 import {
   createEntityReducers,
   createGenericEntityAdapter,
 } from '~/store/helpers';
+import { ITaskBase } from '~/types/ITask';
 import {
   AddTaskBasePayload,
   IStateTaskBase,
@@ -14,9 +15,10 @@ import {
 
 export const taskBaseAdapter = createGenericEntityAdapter<ITaskBase>();
 
-const initialState: IStateTaskBase = {
-  ...taskBaseAdapter.getInitialState(),
-};
+export const getTaskBaseInitialState = (): IStateTaskBase =>
+  taskBaseAdapter.setAll(taskBaseAdapter.getInitialState(), getBaseTasks());
+
+const initialState: IStateTaskBase = getTaskBaseInitialState();
 
 const entityReducers = createEntityReducers(taskBaseAdapter);
 
@@ -45,7 +47,7 @@ export const taskBaseSlice = createSlice({
     removeTaskBase: (state, action: PayloadAction<RemoveTaskBasePayload>) => {
       entityReducers.removeEntity(
         state,
-        { ...action, payload: action.payload.entity } as unknown as PayloadAction<string>
+        { ...action, payload: action.payload.id } as unknown as PayloadAction<string>
       );
     },
     removeTaskBaseSuccess: (state, action: PayloadAction<string>) => {
@@ -53,6 +55,24 @@ export const taskBaseSlice = createSlice({
     },
     clearTaskBase: state => {
       entityReducers.clearEntities(state);
+    },
+    resetTaskBase: state => {
+      entityReducers.resetEntities(
+        state,
+        { payload: getBaseTasks() } as PayloadAction<ITaskBase[]>,
+      );
+    },
+    syncTaskBaseTranslations: state => {
+      getBaseTasks().forEach(defaultTask => {
+        const existing = state.entities[defaultTask.id];
+
+        if (!existing) {
+          return;
+        }
+
+        existing.name = defaultTask.name;
+        existing.description = defaultTask.description;
+      });
     },
   },
 });
@@ -65,4 +85,6 @@ export const {
   removeTaskBase,
   removeTaskBaseSuccess,
   clearTaskBase,
+  resetTaskBase,
+  syncTaskBaseTranslations,
 } = taskBaseSlice.actions;

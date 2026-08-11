@@ -3,11 +3,16 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "node ./scripts/run-with-translation-watch.js expo start",
+    "start": "node ./scripts/run-with-translation-watch.js expo start --clear",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "node ./scripts/run-with-translation-watch.js expo start --android",
     "ios": "node ./scripts/run-with-translation-watch.js expo start --ios",
     "web": "node ./scripts/run-with-translation-watch.js expo start --web",
+    "build-dev": "eas build -p android --profile development",
+    "build-dev-ios": "eas build -p ios --profile development",
+    "build-preview-apk": "eas build -p android --profile preview",
+    "build-production-apk": "eas build -p android --profile production",
+    "prebuild": "npx expo prebuild",
     "lint": "expo lint",
     "translations:sync": "node ./scripts/sync-translations.js",
     "translations:watch": "node ./scripts/sync-translations.js --watch"

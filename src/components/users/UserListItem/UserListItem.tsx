@@ -4,16 +4,21 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import { CHILDREN_AVATARS, PARENT_AVATARS } from '~/assets/img/users/users';
 import DeleteIcon from '~/assets/svg/common/delete.svg';
 import EditIcon from '~/assets/svg/common/edit.svg';
 import { Text } from '~/components/ui';
-import { CHILDREN_AVATARS } from '~/components/users/UserForm/ChildForm';
-import { PARENT_AVATARS } from '~/components/users/UserForm/ParentForm';
 
-const USER_AVATARS = { ...PARENT_AVATARS, ...CHILDREN_AVATARS };
 import { t } from '~/services';
 import { EFamilyRole } from '~/store/settings/enums';
 import { lightenColor } from '~/utils/color';
+
+const USER_AVATAR_MAP = Object.fromEntries(
+  [...PARENT_AVATARS, ...CHILDREN_AVATARS].map(({ value, image }) => [
+    value,
+    image,
+  ]),
+);
 
 type Props = {
   avatar?: string;
@@ -173,16 +178,16 @@ const RowContent: React.FC<RowProps> = ({
         return '';
     }
   }, [familyRole]);
-  
+
   return (
     <View style={styles.row}>
       <View style={styles.avatarOuter}>
         {avatar ? (
           isRemote ? (
             <Image source={{ uri: avatar }} style={styles.avatarImage} />
-          ) : USER_AVATARS[avatar as keyof typeof USER_AVATARS] ? (
+          ) : USER_AVATAR_MAP[avatar] ? (
             <Image
-              source={USER_AVATARS[avatar as keyof typeof USER_AVATARS]}
+              source={USER_AVATAR_MAP[avatar]}
               style={styles.avatarImage}
             />
           ) : (
@@ -191,7 +196,7 @@ const RowContent: React.FC<RowProps> = ({
                 style={[styles.avatarText, textColor && { color: textColor }]}
                 numberOfLines={1}
               >
-                {name?.[0]?.toUpperCase?.() || '?'}
+                {name?.[0]?.toUpperCase() || '?'}
               </Text>
             </View>
           )
@@ -201,7 +206,7 @@ const RowContent: React.FC<RowProps> = ({
               style={[styles.avatarText, textColor && { color: textColor }]}
               numberOfLines={1}
             >
-              {name?.[0]?.toUpperCase?.() || '?'}
+              {name?.[0]?.toUpperCase() || '?'}
             </Text>
           </View>
         )}
