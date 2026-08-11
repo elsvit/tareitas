@@ -34,6 +34,7 @@ import { AppDispatch } from '~/store';
 import { selectParentIds } from '~/store/parents/selectors';
 import { initLanguage } from '~/store/settings';
 import { selectIsLangInitiating, selectLang } from '~/store/settings/selectors';
+import { EScreens } from '~/types';
 import { ELang } from '~/types/ELang';
 
 export default function RootStack() {
@@ -90,7 +91,7 @@ export default function RootStack() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack
           key={`stack-${lang}`}
-          // initialRouteName={initialRouteName}
+        // initialRouteName={initialRouteName}
         >
           <Stack.Screen
             name="users/WelcomeSteps"
@@ -129,6 +130,8 @@ export default function RootStack() {
             name="users/ChildRemove"
             options={minimalHeaderBackOptions}
           />
+
+          <Stack.Screen name={EScreens.BaseTasks} options={minimalHeaderBackOptions} />
         </Stack>
       </ThemeProvider>
     </PaperProvider>

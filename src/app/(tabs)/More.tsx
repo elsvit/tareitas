@@ -43,7 +43,13 @@ export default function More() {
       Icon: UsersIcon,
       navigateTo: EScreens.Users,
     },
+    {
+      title: t('tasks.base_tasks'),
+      Icon: UsersIcon,
+      navigateTo: EScreens.BaseTasks,
+    }
   ];
+
   const title = t('more.title');
 
   const handlePress = (
@@ -52,7 +58,7 @@ export default function More() {
   ) => {
     navigateTo &&
       router.push({
-        pathname: `/${navigateTo}` as any,
+        pathname: navigateTo as any,
         params: navigateToParams,
       });
   };

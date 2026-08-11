@@ -127,6 +127,8 @@ class LocalizationServiceClass {
 
 export const LocalizationService = new LocalizationServiceClass();
 
+LocalizationService.initSync();
+
 export type TranslationKey = KeyOfJson<typeof esJson>;
 
 export const t = (

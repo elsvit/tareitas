@@ -12,6 +12,7 @@ import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 import { LocalizationService, t } from '~/services/localization/localization';
 import { selectLang } from '~/store/settings/selectors';
 import { setLanguage } from '~/store/settings/slice';
+import { syncTaskBaseTranslations } from '~/store/taskBase/slice';
 import { palette, useStyle } from '~/styles';
 import { ELang } from '~/types/ELang';
 
@@ -33,6 +34,7 @@ export default function Settings() {
     try {
       await LocalizationService.changeLanguage(selectedLang);
       dispatch(setLanguage(selectedLang));
+      dispatch(syncTaskBaseTranslations());
     } catch (error) {
       // Handle error if needed
       console.error('Language change failed:', error);

@@ -35,11 +35,9 @@ function* updateParentSaga(action: PayloadAction<UpdateParentPayload>) {
 }
 
 function* removeParentSaga(action: PayloadAction<RemoveParentPayload>) {
-  const { entity, onSuccess } = action.payload;
-
+  const { id, onSuccess } = action.payload;
+  yield put(removeParentSuccess(id));
   // Remove user by id from the store
-  yield put(removeParentSuccess(entity));
-
   if (onSuccess) {
     yield call(onSuccess);
   }

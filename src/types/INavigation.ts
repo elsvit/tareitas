@@ -11,8 +11,13 @@ export type ScreenRoutesParams = {
   [EMainTabs.More]: undefined;
   [EScreens.Settings]: undefined;
   [EScreens.Users]: undefined;
-  // [EScreens.UserAdd]: undefined;
-  // [EScreens.UserEdit]: { userId: string };
+  [EScreens.ParentAdd]: { id: string };
+  [EScreens.ParentEdit]: { id: string };
+  [EScreens.ParentRemove]: { id: string };
+  [EScreens.ChildAdd]: { id: string };
+  [EScreens.ChildEdit]: { id: string };
+  [EScreens.ChildRemove]: { id: string };
+  [EScreens.WelcomeSteps]: undefined;
 };
 
 export type NavigationProp = NativeStackNavigationProp<ScreenRoutesParams>;

@@ -1,16 +1,17 @@
+import { WeekDay } from './ECommon';
 import { ETaskRepeatType, ETaskStatus } from './ETask';
-import { WeekDay } from './ICommon';
 
-export interface ITaskBase extends CreatedProps {
+export interface ITaskBase extends Partial<CreatedProps> {
   id: string;
   name: string;
   description?: string;
-  reward: number;
+  reward?: number;
   icon?: string;
   picture?: string;
 }
 
 export type TaskBaseFormProps = OmitCreatedKeys<ITaskBase>;
+
 
 export interface ITaskAssignment extends CreatedProps {
   id: string;
