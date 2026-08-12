@@ -137,6 +137,11 @@ export const TaskListItem: React.FC<Props> = ({
   };
 
   const handleChildStatusPress = () => {
+    if (status === ETaskStatus.Rejected) {
+      setStatus(ETaskStatus.Pending, []);
+      return;
+    }
+
     if (status === ETaskStatus.Pending) {
       setStatus(ETaskStatus.Completed);
       return;
@@ -148,8 +153,9 @@ export const TaskListItem: React.FC<Props> = ({
   };
 
   const canChildPressStatus =
-    !hasSubtasks &&
-    (status === ETaskStatus.Pending || status === ETaskStatus.Completed);
+    status === ETaskStatus.Rejected ||
+    (!hasSubtasks &&
+      (status === ETaskStatus.Pending || status === ETaskStatus.Completed));
 
   const handleToggleSubtask = (subtaskValue: string, checked: boolean) => {
     const nextCompleted = checked
