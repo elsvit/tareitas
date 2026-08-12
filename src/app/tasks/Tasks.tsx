@@ -18,12 +18,17 @@ import { TaskListItem } from '~/components/tasks/TaskListItem';
 import { Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
 import { t } from '~/services';
+import { ERole } from '~/store/settings/enums';
+import { selectCurrentRole, selectCurrentUser } from '~/store/settings/selectors';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
+import {
+  ScheduledTaskItem,
+  selectScheduledTasksForDate,
+  selectTasksByDate,
+} from '~/store/tasks/selectors';
 import { generateTasksForDate } from '~/store/tasks/slice';
-import { selectTasksByDate } from '~/store/tasks/selectors';
 import { Colors } from '~/styles';
 import { EScreens } from '~/types';
-import { ITask } from '~/types/ITask';
 
 export default function Tasks() {
   const router = useRouter();
@@ -33,12 +38,43 @@ export default function Tasks() {
     format(new Date(), 'yyyy-MM-dd'),
   );
 
+  const currentRole = useSelector(selectCurrentRole);
+  const currentUserId = useSelector(selectCurrentUser);
+  const isChild = currentRole === ERole.child;
+
   const assignments = useSelector(selectAllTaskAssignment);
-  const taskList = useSelector(useMemo(() => selectTasksByDate(selectedDate), [selectedDate]));
+
+  const parentTaskList = useSelector(
+    useMemo(() => selectTasksByDate(selectedDate), [selectedDate]),
+  );
+
+  const childTaskList = useSelector(
+    useMemo(
+      () => selectScheduledTasksForDate(selectedDate, currentUserId),
+      [selectedDate, currentUserId],
+    ),
+  );
+
+  const scheduledItems = useMemo<ScheduledTaskItem[]>(() => {
+    if (isChild) {
+      return childTaskList;
+    }
+
+    return parentTaskList.map(task => ({
+      id: task.id,
+      assignmentId: task.assignmentId,
+      date: task.date,
+      task,
+    }));
+  }, [childTaskList, isChild, parentTaskList]);
 
   useEffect(() => {
+    if (isChild) {
+      return;
+    }
+
     dispatch(generateTasksForDate({ date: selectedDate, assignments }));
-  }, [dispatch, selectedDate, assignments]);
+  }, [dispatch, selectedDate, assignments, isChild]);
 
   const handlePreviousDay = useCallback(() => {
     setSelectedDate(current =>
@@ -57,26 +93,26 @@ export default function Tasks() {
   }, [router, selectedDate]);
 
   const handlePressTask = useCallback(
-    (task: ITask) => {
+    (item: ScheduledTaskItem) => {
       router.push(
-        `/${EScreens.TaskAssignmentEdit}?id=${task.assignmentId}` as any,
+        `/${EScreens.TaskAssignmentEdit}?id=${item.assignmentId}` as any,
       );
     },
     [router],
   );
 
-  const renderItem = useCallback<ListRenderItem<ITask>>(
-    ({ item }) => {
-      const handlePress = () => {
-        handlePressTask(item);
-      };
-
-      return <TaskListItem id={item.id} onPress={handlePress} />;
-    },
-    [handlePressTask],
+  const renderItem = useCallback<ListRenderItem<ScheduledTaskItem>>(
+    ({ item }) => (
+      <TaskListItem
+        item={item}
+        isChildView={isChild}
+        onPress={isChild ? undefined : () => handlePressTask(item)}
+      />
+    ),
+    [handlePressTask, isChild],
   );
 
-  const keyExtractor = useCallback((item: ITask) => item.id, []);
+  const keyExtractor = useCallback((item: ScheduledTaskItem) => item.id, []);
 
   const renderSeparator = useCallback(
     () => <View style={styles.separator} />,
@@ -92,39 +128,36 @@ export default function Tasks() {
     [],
   );
 
-  const ListHeaderComponent = useCallback(
-    () => (
-      <TaskCalendarHeader
-        date={selectedDate}
-        onPrevious={handlePreviousDay}
-        onNext={handleNextDay}
-      />
-    ),
-    [selectedDate, handlePreviousDay, handleNextDay],
-  );
-
   return (
     <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
       <ScreenHeaderWithLogo containerStyle={{ backgroundColor: 'transparent' }} />
       <View style={styles.container}>
+        <TaskCalendarHeader
+          date={selectedDate}
+          onPrevious={handlePreviousDay}
+          onNext={handleNextDay}
+        />
+
         <FlatList
-          data={taskList}
+          data={scheduledItems}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
           ItemSeparatorComponent={renderSeparator}
           ListEmptyComponent={ListEmptyComponent}
-          ListHeaderComponent={ListHeaderComponent}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
+          style={styles.list}
         />
 
-        <View style={styles.fab}>
-          <IconButton
-            Icon={<PlusIcon width={32} height={32} fill="#FFFFFF" />}
-            onPress={handleAddTask}
-            size={56}
-          />
-        </View>
+        {!isChild && (
+          <View style={styles.fab}>
+            <IconButton
+              Icon={<PlusIcon width={32} height={32} fill="#FFFFFF" />}
+              onPress={handleAddTask}
+              size={56}
+            />
+          </View>
+        )}
       </View>
     </SafeAreaBackground>
   );
@@ -133,12 +166,16 @@ export default function Tasks() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    paddingHorizontal: 16,
+  },
+
+  list: {
+    flex: 1,
   },
 
   listContent: {
     flexGrow: 1,
-    paddingBottom: 96,
+    paddingBottom: 80,
   },
 
   separator: {

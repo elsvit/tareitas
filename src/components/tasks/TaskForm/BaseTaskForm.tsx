@@ -151,7 +151,7 @@ export const BaseTaskForm: FC<Props> = ({
               render={({ field: { value, onChange } }) => (
                 <>
                   <TextInput
-                    label={t('tasks.name')}
+                    label={t('common.title')}
                     value={value}
                     onChangeText={onChange}
                     mode="outlined"

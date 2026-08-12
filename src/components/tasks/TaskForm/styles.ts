@@ -24,6 +24,11 @@ export const styles = StyleSheet.create({
   switchRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  switchLabel: {
+    marginLeft: 8,
+    flex: 1,
   },
   disabledSwitch: {
     marginRight: spacing(2),
@@ -34,6 +39,27 @@ export const styles = StyleSheet.create({
   },
   label: {
     marginBottom: 8,
+  },
+  subtaskFieldRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+  },
+  subtaskInput: {
+    flex: 1,
+    minHeight: 72,
+  },
+  subtaskRemoveWrap: {
+    width: 48,
+    height: 56,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  subtaskRemoveButton: {
+    width: 48,
+    height: 56,
+    borderRadius: 12,
   },
   otpInput: {
     flex: 1,

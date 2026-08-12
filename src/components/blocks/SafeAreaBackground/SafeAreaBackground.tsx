@@ -36,7 +36,7 @@ export const SafeAreaBackground: React.FC<ISafeAreaBackground> = ({
           styles.wrapperSafe,
           {
             paddingTop: hasTopInsets ? insets.top : 0,
-            paddingBottom: insets.bottom,
+            // paddingBottom: insets.bottom,
             paddingLeft: insets.left,
             paddingRight: insets.right,
           },

@@ -128,7 +128,6 @@
     "reset_base_tasks": "Reiniciar Tareas Básicas",
     "reset_base_tasks_confirm": "¿Estás seguro de querer reiniciar las tareas básicas?",
     "description": "Descripción",
-    "name": "Nombre",
     "no_base_tasks": "No hay tareas básicas todavía",
     "no_tasks": "No hay tareas todavía",
     "reward": "Recompensa",
@@ -144,6 +143,12 @@
     "time": "Hora",
     "invalid_date": "Usa el formato AAAA-MM-DD",
     "invalid_time": "Usa el formato HH:mm",
+    "with_subtasks": "Con subtareas",
+    "subtasks": "Subtareas",
+    "subtask_label": "Subtarea",
+    "add_subtask": "Añadir subtarea",
+    "subtasks_required": "Añade al menos una subtarea",
+    "done": "Hecho",
     "week_days": {
       "label": "Repetir en",
       "required": "Selecciona al menos un día",
@@ -216,6 +221,7 @@
       "waterPlantsDescription": "Regar las plantas"
     },
     "taskStatus": {
+      "approve": "Aprobar",
       "approved": "Aprobado",
       "completed": "Completado",
       "expired": "Expirado",
@@ -224,6 +230,7 @@
       "not_completed": "No completado",
       "not_rejected": "No rechazado",
       "pending": "Pendiente",
+      "reject": "Rechazar",
       "rejected": "Rechazado"
     }
   },
