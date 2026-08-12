@@ -6,9 +6,7 @@ import {
   Space,
   Text,
 } from '~/components/ui';
-import { t } from '~/services';
-import { spacing } from '~/styles';
-import { Colors } from '~/styles';
+import { Colors, spacing } from '~/styles';
 
 export const Welcome3: React.FC = () => {
   const getCard = ({
@@ -38,7 +36,7 @@ export const Welcome3: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.titleContainer}>
+      {/* <View style={styles.titleContainer}>
         <Text
           variant="headlineMedium"
           fontFamily="fredoka"
@@ -74,7 +72,7 @@ export const Welcome3: React.FC = () => {
         title: `4. ${t('welcome.parent_approval_and_rewards')}`,
         color: Colors.yellow500,
         description: t('welcome.parentApprovalAndRewardsDescription'),
-      })}
+      })} */}
     </View>
   );
 };

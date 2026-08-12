@@ -16,7 +16,9 @@
     "search": "Search",
     "step": "Step",
     "stepIndicator": "Step {{step}} of {{totalSteps}}",
-    "tags": "Tags"
+    "tags": "Tags",
+    "time": "Time",
+    "title": "Title"
   },
   "button": {
     "add": "Add",
@@ -47,7 +49,16 @@
     "minutes": "minutes",
     "sec": "sec",
     "second": "second",
-    "seconds": "seconds"
+    "seconds": "seconds",
+    "weekDays": {
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
+    }
   },
   "home": {
     "title": "Home"
@@ -118,9 +129,31 @@
     "description": "Description",
     "name": "Name",
     "no_base_tasks": "No base tasks yet",
+    "no_tasks": "No tasks yet",
     "reward": "Reward",
     "reward_positive": "Reward must be ≥ 0",
     "task_templates": "task templates",
+    "add_task": "Add Task",
+    "edit_task": "Edit Task",
+    "child": "Child",
+    "base_task_template": "Use base task",
+    "repeats": "Repeats",
+    "start_date": "Start date",
+    "end_date": "End date",
+    "time": "Time",
+    "invalid_date": "Use YYYY-MM-DD format",
+    "invalid_time": "Use HH:mm format",
+    "week_days": {
+      "label": "Repeat on",
+      "required": "Select at least one day",
+      "mon": "M",
+      "tue": "T",
+      "wed": "W",
+      "thu": "T",
+      "fri": "F",
+      "sat": "S",
+      "sun": "S"
+    },
     "baseTasks": {
       "brushTeethEvening": "Brush teeth in the evening",
       "brushTeethEveningDescription": "Brush teeth in the evening",
