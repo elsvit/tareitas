@@ -16,7 +16,9 @@
     "search": "Buscar",
     "step": "Paso",
     "stepIndicator": "Paso {{step}} de {{totalSteps}}",
-    "tags": "Etiquetas"
+    "tags": "Etiquetas",
+    "time": "Tiempo",
+    "title": "Título"
   },
   "button": {
     "add": "Añadir",
@@ -47,7 +49,16 @@
     "minutes": "minutos",
     "sec": "seg",
     "second": "segundo",
-    "seconds": "segundos"
+    "seconds": "segundos",
+    "weekDays": {
+      "monday": "Lunes",
+      "tuesday": "Martes",
+      "wednesday": "Miércoles",
+      "thursday": "Jueves",
+      "friday": "Viernes",
+      "saturday": "Sábado",
+      "sunday": "Domingo"
+    }
   },
   "home": {
     "title": "Inicio"
@@ -68,8 +79,8 @@
     "add": "Añadir Usuario",
     "add_child": "Añadir Hijo",
     "add_parent": "Añadir Padre",
-    "edit_parent": "[TODO: es] Edit Parent",
-    "edit_child": "[TODO: es] Edit Child",
+    "edit_parent": "Editar Padre",
+    "edit_child": "Editar Hijo",
     "admin": "Admin",
     "avatar": "Avatar",
     "child": "Hijo o hija",
@@ -118,9 +129,31 @@
     "description": "Descripción",
     "name": "Nombre",
     "no_base_tasks": "No hay tareas básicas todavía",
+    "no_tasks": "No hay tareas todavía",
     "reward": "Recompensa",
     "reward_positive": "La recompensa debe ser ≥ 0",
     "task_templates": "plantillas de tareas",
+    "add_task": "Añadir Tarea",
+    "edit_task": "Editar Tarea",
+    "child": "Niño",
+    "base_task_template": "Usar tarea básica",
+    "repeats": "Repetir",
+    "start_date": "Fecha de inicio",
+    "end_date": "Fecha de fin",
+    "time": "Hora",
+    "invalid_date": "Usa el formato AAAA-MM-DD",
+    "invalid_time": "Usa el formato HH:mm",
+    "week_days": {
+      "label": "Repetir en",
+      "required": "Selecciona al menos un día",
+      "mon": "L",
+      "tue": "M",
+      "wed": "X",
+      "thu": "J",
+      "fri": "V",
+      "sat": "S",
+      "sun": "D"
+    },
     "baseTasks": {
       "brushTeethEvening": "Cepillarse los dientes en la tarde",
       "brushTeethEveningDescription": "Cepillarse los dientes en la tarde",

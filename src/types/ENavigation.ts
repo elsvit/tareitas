@@ -22,9 +22,10 @@ export enum EScreens {
   BaseTasks = 'tasks/BaseTasks',
   BaseTaskAdd = 'tasks/BaseTaskAdd',
   BaseTaskEdit = 'tasks/BaseTaskEdit',
-  BaseTaskRemove = 'tasks/BaseTaskRemove',
+  Tasks = 'tasks/Tasks',
   TaskAdd = 'tasks/TaskAdd',
   TaskEdit = 'tasks/TaskEdit',
-  TaskRemove = 'tasks/TaskRemove',
+  TaskAssignmentAdd = 'tasks/TaskAssignmentAdd',
+  TaskAssignmentEdit = 'tasks/TaskAssignmentEdit',
   WelcomeSteps = 'users/WelcomeSteps',
 }

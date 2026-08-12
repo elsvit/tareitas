@@ -132,6 +132,19 @@ export default function RootStack() {
           />
 
           <Stack.Screen name={EScreens.BaseTasks} options={minimalHeaderBackOptions} />
+          <Stack.Screen name={EScreens.BaseTaskAdd} options={minimalHeaderBackOptions} />
+          <Stack.Screen name={EScreens.BaseTaskEdit} options={minimalHeaderBackOptions} />
+          <Stack.Screen name={EScreens.Tasks} options={minimalHeaderBackOptions} />
+          <Stack.Screen name={EScreens.TaskAdd} options={minimalHeaderBackOptions} />
+          <Stack.Screen name={EScreens.TaskEdit} options={minimalHeaderBackOptions} />
+          <Stack.Screen
+            name={EScreens.TaskAssignmentAdd}
+            options={minimalHeaderBackOptions}
+          />
+          <Stack.Screen
+            name={EScreens.TaskAssignmentEdit}
+            options={minimalHeaderBackOptions}
+          />
         </Stack>
       </ThemeProvider>
     </PaperProvider>

@@ -8,7 +8,6 @@ import {
   Space,
   Text,
 } from '~/components/ui';
-import { t } from '~/services';
 import { Colors, spacing } from '~/styles';
 
 export const Welcome2: React.FC = () => {
@@ -66,7 +65,7 @@ export const Welcome2: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.titleContainer}>
+      {/* <View style={styles.titleContainer}>
         <Text
           variant="headlineMedium"
           fontFamily="fredoka"
@@ -126,7 +125,7 @@ export const Welcome2: React.FC = () => {
           t('welcome.progressTracking3'),
           t('welcome.progressTracking4'),
         ],
-      })}
+      })} */}
 
     </View>
   );

@@ -1,15 +1,10 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { LinearGradient } from 'expo-linear-gradient';
 
-import RewardImage from '~/assets/img/tabs/tab_rewards_active.png';
-import RoutinesImage from '~/assets/img/tabs/tab_habits_active.png';
-import TasksImage from '~/assets/img/tabs/tab_tasks_active.png';
-import { Card, Space, Text } from '~/components/ui';
+import { Text } from '~/components/ui';
 import { t } from '~/services';
-import { spacing } from '~/styles';
-import { Colors } from '~/styles';
+import { Colors, spacing } from '~/styles';
 
 export const Welcome1: React.FC = () => {
   return (
@@ -24,7 +19,7 @@ export const Welcome1: React.FC = () => {
           {t('welcome.welcome_to_tareitas')}
         </Text>
       </View>
-      <View style={styles.titleContainer}>
+      {/* <View style={styles.titleContainer}>
         <Text variant="bodyLarge">{t('welcome.learn_what_we_do')}</Text>
       </View>
 
@@ -43,9 +38,9 @@ export const Welcome1: React.FC = () => {
           <Image source={RoutinesImage} style={styles.introImage} />
           <Image source={RewardImage} style={styles.introImage} />
         </View>
-      </Card>
+      </Card> */}
 
-      <LinearGradient
+      {/* <LinearGradient
         colors={[Colors.blue500, Colors.blue100]}
         end={{ x: 0.5, y: 0 }}
         start={{ x: 0.5, y: 1 }}
@@ -71,9 +66,9 @@ export const Welcome1: React.FC = () => {
             </Text>
           </View>
         </View>
-      </LinearGradient>
+      </LinearGradient> */}
 
-      <LinearGradient
+      {/* <LinearGradient
         colors={[Colors.brightGreen500, Colors.brightGreen100]}
         end={{ x: 0.5, y: 0 }}
         start={{ x: 0.5, y: 1 }}
@@ -99,9 +94,9 @@ export const Welcome1: React.FC = () => {
             </Text>
           </View>
         </View>
-      </LinearGradient>
+      </LinearGradient> */}
 
-      <LinearGradient
+      {/* <LinearGradient
         colors={[Colors.yellow500, Colors.yellow100]}
         end={{ x: 0.5, y: 0 }}
         start={{ x: 0.5, y: 1 }}
@@ -127,7 +122,7 @@ export const Welcome1: React.FC = () => {
             </Text>
           </View>
         </View>
-      </LinearGradient>
+      </LinearGradient> */}
     </View>
   );
 };

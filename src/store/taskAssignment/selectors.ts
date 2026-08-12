@@ -7,8 +7,11 @@ export const getTaskAssignmentState = (state: RootStateT) => state.taskAssignmen
 // Adapter selectors
 export const {
   selectAll: selectAllTaskAssignment,
-  selectById: selectTaskAssignmentById,
+  selectById,
   selectIds: selectTaskAssignmentIds,
   selectEntities: selectTaskAssignmentEntities,
   selectTotal: selectTotalTaskAssignment,
 } = taskAssignmentAdapter.getSelectors((state: RootStateT) => state.taskAssignment);
+
+export const selectTaskAssignmentById = (id: string) => (state: RootStateT) =>
+  selectById(state, id);

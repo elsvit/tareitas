@@ -8,7 +8,7 @@ export enum ETaskStatus {
 
 export enum ETaskRepeatType {
   None = 'none',
-  Daily = 'daily',
-  Weekly = 'weekly',
-  Monthly = 'monthly',
+  Day = 'day', // daily
+  Week = 'week', // weekly
+  Month = 'month', // monthly
 }
