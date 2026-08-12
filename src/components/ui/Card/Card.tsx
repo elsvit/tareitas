@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react';
 
 import { Card as PaperCard } from 'react-native-paper';
 
-// import { StyleProp, TextStyle } from 'react-native';
+import { FORM_FIELD, FORM_FIELD_PAPER_THEME } from '~/constants/formField';
 
 export type PaperCardProps = ComponentProps<typeof PaperCard>;
 
@@ -14,8 +14,16 @@ interface CardComponent extends React.FC<PaperCardProps> {
   Title: typeof PaperCard.Title;
 }
 
-export const CardBase: React.FC<PaperCardProps> = ({ children, ...rest }) => {
-  return <PaperCard {...rest}>{children}</PaperCard>;
+export const CardBase: React.FC<PaperCardProps> = ({ children, style, ...rest }) => {
+  return (
+    <PaperCard
+      theme={FORM_FIELD_PAPER_THEME}
+      style={[{ backgroundColor: FORM_FIELD.background }, style]}
+      {...rest}
+    >
+      {children}
+    </PaperCard>
+  );
 };
 
 export const Card = CardBase as CardComponent;

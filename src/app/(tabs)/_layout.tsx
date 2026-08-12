@@ -1,6 +1,8 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { t } from 'i18next';
+import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
 import MoreIcon from '~/assets/img/tabs/tab_more.png';
@@ -13,13 +15,46 @@ import TasksIcon from '~/assets/img/tabs/tab_tasks.png';
 import TasksActiveIcon from '~/assets/img/tabs/tab_tasks_active.png';
 import { HapticTab } from '~/components/haptic-tab';
 import { BottomTab } from '~/components/ui/BottomTab/BottomTab';
+import { IS_ANDROID } from '~/constants/settings';
 import { ThemeColors } from '~/constants/theme';
 import { useColorScheme } from '~/hooks/use-color-scheme';
 import { selectIsRecurringTabSeparated } from '~/store/settings/selectors';
 import { EMainTabs } from '~/types/ENavigation';
 
+const TAB_BAR_PADDING_TOP = 20;
+const TAB_BAR_MIN_PADDING_BOTTOM = 12;
+const TAB_BAR_CONTENT_HEIGHT = 60;
+const TAB_BAR_COLOR = '#016FE8';
+const ANDROID_SYSTEM_BAR_COLOR = '#000000';
+
+function TabBarBackground({
+  bottomInset,
+}: {
+  bottomInset: number;
+}) {
+  if (!IS_ANDROID) {
+    return <View style={{ flex: 1, backgroundColor: TAB_BAR_COLOR }} />;
+  }
+
+  return (
+    <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: TAB_BAR_COLOR }} />
+      <View
+        style={{
+          height: bottomInset,
+          backgroundColor: ANDROID_SYSTEM_BAR_COLOR,
+        }}
+      />
+    </View>
+  );
+}
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const insets = useSafeAreaInsets();
+  const tabBarPaddingBottom = Math.max(insets.bottom, TAB_BAR_MIN_PADDING_BOTTOM);
+  const tabBarHeight =
+    TAB_BAR_PADDING_TOP + TAB_BAR_CONTENT_HEIGHT + tabBarPaddingBottom;
 
   const isRoutinesTabSeparated = useSelector(selectIsRecurringTabSeparated);
 
@@ -65,12 +100,17 @@ export default function TabLayout() {
         tabBarInactiveTintColor: '#8e8e93',
 
         tabBarStyle: {
-          height: 92,
-          paddingTop: 20,
-          paddingBottom: 12,
+          height: tabBarHeight,
+          paddingTop: TAB_BAR_PADDING_TOP,
+          paddingBottom: tabBarPaddingBottom,
           paddingHorizontal: 8,
-          backgroundColor: '#016FE8',
+          backgroundColor: IS_ANDROID ? 'transparent' : TAB_BAR_COLOR,
+          borderTopWidth: 0,
         },
+
+        tabBarBackground: () => (
+          <TabBarBackground bottomInset={tabBarPaddingBottom} />
+        ),
 
         tabBarItemStyle: {
           flex: 1,

@@ -3,6 +3,7 @@ import type { ComponentProps } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button as PaperButton } from 'react-native-paper';
 import { BUTTON_HEIGHT } from '~/constants/sizes';
+import { Colors } from '~/styles/colors';
 
 export type PaperButtonProps = ComponentProps<typeof PaperButton>;
 
@@ -22,7 +23,7 @@ export enum ButtonColors {
   Gray = 'Gray',
 }
 
-const COLOR_MAP: Record<ButtonColors, string> = {
+export const COLOR_MAP: Record<ButtonColors, string> = {
   [ButtonColors.Green]: '#4CAF50',
   [ButtonColors.Brown]: '#6d4c41',
   [ButtonColors.Orange]: '#fb8c00',
@@ -31,38 +32,54 @@ const COLOR_MAP: Record<ButtonColors, string> = {
   [ButtonColors.Gray]: '#9e9e9e',
 };
 
-export const Button: React.FC<ButtonProps> = ({
-  isFullSize = false,
-  bgColor = ButtonColors.Green,
-  style,
-  contentStyle,
-  buttonColor,
-  ...rest
-}) => {
-  const resolvedButtonColor = buttonColor ?? (bgColor ? COLOR_MAP[bgColor] : undefined);
+export const Button = React.forwardRef<React.ComponentRef<typeof PaperButton>, ButtonProps>(
+  function Button(
+    {
+      isFullSize = false,
+      bgColor = ButtonColors.Green,
+      style,
+      contentStyle,
+      buttonColor,
+      mode = 'contained',
+      textColor,
+      labelStyle,
+      ...rest
+    },
+    ref,
+  ) {
+    const resolvedButtonColor =
+      buttonColor ?? (bgColor ? COLOR_MAP[bgColor] : undefined);
 
-  if (isFullSize) {
-    return (
-      <View style={styles.fullWidthWrapper}>
-        <PaperButton
-          {...rest}
-          buttonColor={resolvedButtonColor}
-          style={[styles.baseRadius, style as any]}
-          contentStyle={[styles.fixedHeight, contentStyle as any]}
-        />
-      </View>
-    );
-  }
+    const resolvedTextColor =
+      textColor ??
+      (mode === 'contained' && resolvedButtonColor ? Colors.white : undefined);
 
-  return (
-    <PaperButton
-      {...rest}
-      buttonColor={resolvedButtonColor}
-      style={[styles.baseRadius, styles.minWidth, style as any]}
-      contentStyle={[styles.fixedHeight, contentStyle as any]}
-    />
-  );
-};
+    const resolvedLabelStyle =
+      mode === 'contained' && resolvedButtonColor && !textColor
+        ? [styles.containedLabel, labelStyle]
+        : labelStyle;
+
+    const paperButtonProps = {
+      ...rest,
+      mode,
+      buttonColor: resolvedButtonColor,
+      textColor: resolvedTextColor,
+      labelStyle: resolvedLabelStyle,
+      style: [styles.baseRadius, !isFullSize && styles.minWidth, style as any],
+      contentStyle: [styles.fixedHeight, contentStyle as any],
+    };
+
+    if (isFullSize) {
+      return (
+        <View style={styles.fullWidthWrapper}>
+          <PaperButton ref={ref} {...paperButtonProps} />
+        </View>
+      );
+    }
+
+    return <PaperButton ref={ref} {...paperButtonProps} />;
+  },
+);
 
 const styles = StyleSheet.create({
   baseRadius: {
@@ -76,5 +93,8 @@ const styles = StyleSheet.create({
   },
   fixedHeight: {
     height: BUTTON_HEIGHT,
+  },
+  containedLabel: {
+    color: Colors.white,
   },
 });

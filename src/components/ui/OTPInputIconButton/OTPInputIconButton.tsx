@@ -32,7 +32,6 @@ export const OTPInputIconButton: React.FC<Props> = ({
   const handleComplete = React.useCallback(
     (str: string) => {
       onChange?.(str);
-      console.log('TEST_36 OTPInputIconButton handleComplete', str);
       setOpen(false);
     },
     [onChange],

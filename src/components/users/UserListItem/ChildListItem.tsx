@@ -20,13 +20,14 @@ export const ChildListItem: React.FC<Props> = ({ id, onPress }) => {
 
   const child = useSelector(state => selectChildById(state as any, id));
 
-  const handleEdit = React.useCallback(() => {
-    router.push({ pathname: EScreens.ChildEdit as any, params: { id } });
-  }, [id, router]);
+  const handlePress = React.useCallback(() => {
+    if (!isAdmin) {
+      onPress?.();
+      return;
+    }
 
-  const handleDelete = React.useCallback(() => {
-    router.push({ pathname: EScreens.ChildRemove as any, params: { id } });
-  }, [id, router]);
+    router.push({ pathname: EScreens.ChildEdit as any, params: { id } });
+  }, [id, isAdmin, onPress, router]);
 
   if (!child) return null;
 
@@ -35,10 +36,7 @@ export const ChildListItem: React.FC<Props> = ({ id, onPress }) => {
       name={child.name}
       avatar={child.avatar}
       color={child.color}
-      onPress={onPress}
-      hasButtons={isAdmin}
-      onEdit={isAdmin ? handleEdit : undefined}
-      onDelete={isAdmin ? handleDelete : undefined}
+      onPress={isAdmin || onPress ? handlePress : undefined}
     />
   );
 };

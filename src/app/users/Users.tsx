@@ -2,14 +2,13 @@ import React, { useCallback } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { useHeaderHeight } from '@react-navigation/elements';
 import { useRouter } from 'expo-router';
 
 import bgImgSrc from '~/assets/img/bg.png';
+import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
 import { Button, Space, Text } from '~/components/ui';
 import { ChildListItem, ParentListItem } from '~/components/users/UserListItem';
-import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectAllParents } from '~/store/parents/selectors';
@@ -19,10 +18,7 @@ import { Colors } from '~/styles';
 import { EScreens } from '~/types';
 
 export default function Users() {
-  useI18nHeaderTitle('users.title');
-
   const router = useRouter();
-  const headerHeight = useHeaderHeight();
   const parents = useSelector(selectAllParents);
   const children = useSelector(selectAllChildren);
   const currentRole = useSelector(selectCurrentRole);
@@ -37,13 +33,13 @@ export default function Users() {
   }, [router]);
 
   return (
-    <SafeAreaBackground bgImg={bgImgSrc}>
-      <ScrollView
-        contentContainerStyle={[
-          styles.container,
-          { paddingTop: headerHeight },
-        ]}
-      >
+    <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
+      <ScreenHeader
+        hasBackButton
+        title={t('users.title')}
+        containerStyle={styles.screenHeader}
+      />
+      <ScrollView contentContainerStyle={styles.container}>
         <Text variant="titleLarge" fontFamily="fredoka" weight="bold" style={styles.sectionTitle} >
           {t('users.parents') || 'Parents'}
         </Text>
@@ -56,7 +52,7 @@ export default function Users() {
           ) : (
             parents.map(p => (
               <View style={styles.item} key={p.id}>
-                <ParentListItem id={p.id} role={ERole.parent} />
+                <ParentListItem id={p.id} />
               </View>
             ))
           )}
@@ -97,6 +93,11 @@ export default function Users() {
 }
 
 const styles = StyleSheet.create({
+  screenHeader: {
+    backgroundColor: 'transparent',
+    borderBottomWidth: 0,
+  },
+
   container: {
     padding: 16,
   },

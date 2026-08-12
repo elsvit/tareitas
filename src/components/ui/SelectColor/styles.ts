@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { SCREEN_TEXT } from '~/constants/formField';
 import { spacing } from '~/styles';
 import { Colors } from '~/styles';
 
@@ -10,6 +11,7 @@ export const styles = StyleSheet.create({
   },
   label: {
     marginBottom: 8,
+    color: SCREEN_TEXT.primary,
   },
   swatchGrid: {
     flexDirection: 'row',

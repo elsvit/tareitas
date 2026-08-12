@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import { format, isToday, parseISO } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 
-import ChevronLeftIcon from '~/assets/svg/common/chevron-left.svg';
 import ChevronRightIcon from '~/assets/svg/common/chevron-right.svg';
 import { Text } from '~/components/ui';
 import { DEFAULT_DATE_LOCALE, DEFAULT_LANG } from '~/constants/settings';
@@ -13,6 +12,9 @@ import { selectLang } from '~/store/settings/selectors';
 import { ELang } from '~/types/ELang';
 
 import { styles } from './styles';
+
+const CHEVRON_SIZE = 24;
+const CHEVRON_COLOR = '#374151';
 
 type Props = {
   date: string;
@@ -52,7 +54,13 @@ export const TaskCalendarHeader: React.FC<Props> = ({
           onPress={onPrevious}
           style={styles.navButton}
         >
-          <ChevronLeftIcon width={24} height={24} fill="#374151" />
+          <View style={styles.chevronPrevious}>
+            <ChevronRightIcon
+              width={CHEVRON_SIZE}
+              height={CHEVRON_SIZE}
+              fill={CHEVRON_COLOR}
+            />
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -61,7 +69,11 @@ export const TaskCalendarHeader: React.FC<Props> = ({
           onPress={onNext}
           style={styles.navButton}
         >
-          <ChevronRightIcon width={24} height={24} fill="#374151" />
+          <ChevronRightIcon
+            width={CHEVRON_SIZE}
+            height={CHEVRON_SIZE}
+            fill={CHEVRON_COLOR}
+          />
         </TouchableOpacity>
       </View>
     </View>

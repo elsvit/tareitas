@@ -2,16 +2,14 @@ import { useRouter } from 'expo-router';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
+import bgImgSrc from '~/assets/img/bg.png';
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
 import { ChildForm } from '~/components/users/UserForm/ChildForm';
-import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 import { addChild } from '~/store/children/slice';
 import { EFormMode } from '~/types/ECommon';
 import { ChildFormProps, IChild } from '~/types/IChild';
 
 export default function ChildAdd() {
-  useI18nHeaderTitle('users.add_child');
-
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -35,7 +33,7 @@ export default function ChildAdd() {
   };
 
   return (
-    <SafeAreaBackground>
+    <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
       <ChildForm mode={EFormMode.Add} onSave={handleSave} />
     </SafeAreaBackground>
   );

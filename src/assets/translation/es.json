@@ -88,6 +88,7 @@
     "color": "Color",
     "complete_your_profile": "Completa tu perfil",
     "delete": "Eliminar Usuario",
+    "delete_confirm": "¿Estás seguro de que quieres eliminar este usuario?",
     "draw_password_pattern": "Dibuja tu patrón de contraseña",
     "edit": "Editar Usuario",
     "family": "Familia",

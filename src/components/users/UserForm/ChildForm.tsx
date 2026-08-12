@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
+import { useRouter } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import { z } from 'zod';
 
-import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { ScreenHeader } from '~/components/blocks';
+import { DeleteModal } from '~/components/modals';
 import {
   Button,
+  ButtonColors,
   Card,
   Space,
   Text,
@@ -18,9 +22,11 @@ import { SelectColor } from '~/components/ui/SelectColor';
 import { CHILDREN_AVATARS } from '~/assets/img/users/users';
 import { SelectImage } from '~/components/ui/SelectImage';
 import { t } from '~/services';
+import { removeChild } from '~/store/children/slice';
 import { ERole } from '~/store/settings/enums';
+import { selectCurrentRole } from '~/store/settings/selectors';
 import { userColors } from '~/styles';
-import { ChildFormProps } from '~/types';
+import { ChildFormProps, IChild } from '~/types';
 import { EFormMode } from '~/types/ECommon';
 import { capitalizeFirst } from '~/utils/string';
 
@@ -47,9 +53,10 @@ import { styles } from './styles';
 type Props = {
   title?: string;
   mode: EFormMode;
-  child?: ChildFormProps;
+  child?: Partial<IChild>;
   onSave?: (child: ChildFormProps) => void;
   onValidityChange?: (isValid: boolean) => void;
+  showScreenHeader?: boolean;
 };
 
 type FormValues = {
@@ -71,10 +78,19 @@ export const ChildForm: React.FC<Props> = ({
   title,
   onSave,
   onValidityChange,
+  showScreenHeader = true,
 }) => {
-  // useI18nHeaderTitle(
-  //   mode === EFormMode.Add ? 'users.add_parent' : 'users.edit_parent',
-  // );
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+
+  const currentRole = useSelector(selectCurrentRole);
+  const isAdmin = currentRole === ERole.admin;
+  const isEditMode = mode === EFormMode.Edit;
+
+  const headerTitle =
+    title ??
+    (mode === EFormMode.Add ? t('users.add_child') : t('users.edit_child'));
 
   const requiredMessage = t('common.required') || 'Required';
 
@@ -147,19 +163,43 @@ export const ChildForm: React.FC<Props> = ({
     onSave?.(newChild);
   };
 
+  const handleDelete = () => {
+    setIsDeleteModalVisible(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (!child?.id) {
+      return;
+    }
+
+    dispatch(removeChild({ id: child.id }));
+
+    if (router.canGoBack()) {
+      router.back();
+    }
+  };
+
   return (
-    <SafeAreaBackground>
+    <>
+      {showScreenHeader && (
+        <ScreenHeader
+          hasBackButton
+          title={headerTitle}
+          containerStyle={styles.screenHeader}
+        />
+      )}
       <ScrollView
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
       >
         <Card>
-          {title && (
+          {title && !showScreenHeader && (
             <View style={styles.titleContainer}>
-              <Text variant="titleMedium">{title}</Text>
+              <Text variant="titleMedium" style={styles.title}>{title}</Text>
             </View>
           )}
           <Card.Content>
+          <Space size={8} />
             {/* Name */}
             <Controller
               control={control}
@@ -249,10 +289,31 @@ export const ChildForm: React.FC<Props> = ({
               {t('button.save') || 'Save'}
             </Button>
 
+            {isEditMode && isAdmin && (
+              <>
+                <Space size={12} />
+                <Button
+                  mode="contained"
+                  bgColor={ButtonColors.Red}
+                  onPress={handleDelete}
+                >
+                  {t('button.delete')}
+                </Button>
+              </>
+            )}
+
             <Space size={20} />
           </Card.Content>
         </Card>
       </ScrollView>
-    </SafeAreaBackground>
+
+      <DeleteModal
+        isVisible={isDeleteModalVisible}
+        onRequestClose={() => setIsDeleteModalVisible(false)}
+        onConfirm={handleConfirmDelete}
+        title={t('users.delete')}
+        message={t('users.delete_confirm')}
+      />
+    </>
   );
 };
