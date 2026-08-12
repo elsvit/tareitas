@@ -31,13 +31,12 @@ export default function ChildEdit() {
     dispatch(
       updateChild({
         entity: newUser,
-        onSuccess: () => {
-          if (router.canGoBack()) {
-            router.back();
-          }
-        },
       }),
     );
+
+    if (router.canGoBack()) {
+      router.back();
+    }
   };
 
   return (
