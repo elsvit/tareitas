@@ -1,27 +1,35 @@
 import React from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
-import { useRouter } from "expo-router";
+import { useRouter } from 'expo-router';
+
+import { Image as ExpoImage } from 'expo-image';
 
 import { styles } from './styles';
 import { IIconButton, IScreenHeaderWithLogo } from './types';
 import ChevronLeftIcon from '~/assets/svg/common/chevron-left.svg';
 import LogoIcon from '~/assets/img/logo.png';
-import { useSelector } from "react-redux";
-import { selectCurrentRole, selectCurrentUser } from "~/store/settings";
-import { useCurrentUser } from "~/hooks/useCurrentUser";
-import { IUserAvatar } from '~/types';
+import { CHILDREN_AVATARS, PARENT_AVATARS } from '~/assets/img/users/users';
+import { useUserSwitch } from '~/hooks/useUserSwitch';
+import { useCurrentUser } from '~/hooks/useCurrentUser';
+import { Text } from '~/components/ui';
+import { t } from '~/services';
+
+const USER_AVATAR_MAP = Object.fromEntries(
+  [...PARENT_AVATARS, ...CHILDREN_AVATARS].map(({ value, image }) => [
+    value,
+    image,
+  ]),
+);
 
 export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
-  // title,
   hasBackButton,
   leftButton,
   rightButtons = [],
   containerStyle,
-  // titleStyle,
 }) => {
   const router = useRouter();
-
-  const currentUser: IUserAvatar = useCurrentUser();
+  const { user: currentUser } = useCurrentUser();
+  const { openSelectUsers, modals } = useUserSwitch();
 
   const renderButton = (
     btn: IIconButton,
@@ -39,7 +47,9 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
           <IconComponent width={24} height={24} />
         </TouchableOpacity>
       );
-    } else if (btn.imageSource) {
+    }
+
+    if (btn.imageSource) {
       return (
         <TouchableOpacity
           key={`btn-${position}-${index}`}
@@ -50,11 +60,14 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
         </TouchableOpacity>
       );
     }
+
     return null;
   };
 
   const renderBackButton = () => {
-    if (!hasBackButton) return null;
+    if (!hasBackButton) {
+      return null;
+    }
 
     const handleBackPress = () => {
       if (router.canGoBack()) {
@@ -74,22 +87,89 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
     );
   };
 
+  const renderUserSwitch = () => {
+    const handlePress = openSelectUsers;
+    const displayName = currentUser?.name ?? t('users.select_user_please');
+
+    const renderAvatar = () => {
+      if (!currentUser) {
+        return (
+          <View style={styles.avatarButton}>
+            <View style={styles.avatarFallback}>
+              <Text style={styles.avatarFallbackText}>?</Text>
+            </View>
+          </View>
+        );
+      }
+
+      const { avatar, name, color } = currentUser;
+      const isRemote = !!avatar && /^(https?:\/\/|data:)/.test(avatar);
+      const avatarSource = avatar ? USER_AVATAR_MAP[avatar] : undefined;
+
+      return (
+        <View
+          style={[styles.avatarButton, color ? { borderColor: color } : null]}
+        >
+          {avatar && isRemote ? (
+            <ExpoImage source={{ uri: avatar }} style={styles.avatarImage} />
+          ) : avatarSource ? (
+            <ExpoImage source={avatarSource} style={styles.avatarImage} />
+          ) : (
+            <View style={styles.avatarFallback}>
+              <Text style={styles.avatarFallbackText}>
+                {name?.[0]?.toUpperCase() || '?'}
+              </Text>
+            </View>
+          )}
+        </View>
+      );
+    };
+
+    return (
+      <TouchableOpacity
+        accessibilityRole="button"
+        accessibilityLabel={t('users.select_user_please')}
+        onPress={handlePress}
+        style={styles.userSwitch}
+      >
+        <Text
+          variant="bodyMedium"
+          fontFamily="fredoka"
+          weight="medium"
+          numberOfLines={1}
+          style={[
+            styles.userName,
+            currentUser?.color ? { color: currentUser.color } : null,
+          ]}
+        >
+          {displayName}
+        </Text>
+        {renderAvatar()}
+      </TouchableOpacity>
+    );
+  };
+
   return (
-    <View style={[styles.container, containerStyle]}>
-      <View style={styles.leftContainer}>
-        {renderBackButton()}
-        {leftButton && renderButton(leftButton, 0, 'left')}
+    <>
+      <View style={[styles.container, containerStyle]}>
+        <View style={styles.leftContainer}>
+          {renderBackButton()}
+          {leftButton && renderButton(leftButton, 0, 'left')}
+        </View>
+
+        <View style={styles.titleContainer}>
+          <Image source={LogoIcon} style={{ width: 100, height: 30 }} />
+        </View>
+
+        <View style={styles.rightContainer}>
+          {renderUserSwitch()}
+          {rightButtons
+            .slice(0, 3)
+            .map((btn, index) => renderButton(btn, index, 'right'))}
+        </View>
       </View>
 
-      <View style={styles.titleContainer}>
-        <Image source={LogoIcon} style={{ width: 100, height: 30 }} />
-      </View>
-
-      <View style={styles.rightContainer}>
-        {rightButtons
-          .slice(0, 3)
-          .map((btn, index) => renderButton(btn, index, 'right'))}
-      </View>
-    </View>
+      {modals}
+    </>
   );
 };

@@ -31,4 +31,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
+
+  errorText: {
+    color: '#DC2626',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
 });

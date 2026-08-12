@@ -37,6 +37,7 @@ export function useCurrentUser() {
         role: currentUserRole,
         name: child.name,
         avatar: child.avatar,
+        color: child.color,
       };
     }
 
@@ -49,6 +50,7 @@ export function useCurrentUser() {
         role: currentUserRole,
         name: parent.name,
         avatar: parent.avatar,
+        color: parent.color,
       };
     }
 

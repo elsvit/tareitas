@@ -101,6 +101,7 @@
     "parent_password": "Contraseña del Padre",
     "child_password": "Contraseña del Hijo",
     "select_user_please": "Selecciona Usuario, por favor",
+    "wrong_password": "Contraseña incorrecta. Inténtalo de nuevo.",
     "role": "Rol",
     "familyRole": {
       "aunt": "Tía",

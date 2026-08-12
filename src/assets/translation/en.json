@@ -101,6 +101,7 @@
     "parent_password": "Parent Password",
     "child_password": "Child Password",
     "select_user_please": "Select User, please",
+    "wrong_password": "Wrong password. Try again.",
     "role": "Role",
     "familyRole": {
       "aunt": "Aunt",
