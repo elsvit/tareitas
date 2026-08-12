@@ -7,12 +7,33 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 12,
     paddingHorizontal: 4,
+    paddingTop: 8,
+    paddingBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.grey200,
+  },
+
+  dateArea: {
+    flex: 1,
+    minWidth: 0,
+    marginRight: 8,
+  },
+
+  dateBadge: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+
+  dateBadgeToday: {
+    borderColor: Colors.green500,
   },
 
   dateText: {
-    flex: 1,
     textTransform: 'capitalize',
     color: Colors.grey900,
   },
@@ -20,6 +41,7 @@ export const styles = StyleSheet.create({
   actions: {
     flexDirection: 'row',
     alignItems: 'center',
+    flexShrink: 0,
     gap: 4,
   },
 

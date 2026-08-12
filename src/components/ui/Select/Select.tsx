@@ -3,6 +3,8 @@ import { ScrollView, View } from 'react-native';
 
 import { Menu, TextInput as PaperTextInput } from 'react-native-paper';
 
+import { TextInput } from '~/components/ui/TextInput';
+import { Colors } from '~/styles';
 import { IOptions } from '~/types/ICommon';
 
 import { styles } from './styles';
@@ -29,7 +31,20 @@ export type SelectProps = SingleSelectProps | MultipleSelectProps;
 export function Select({ label, options, ...rest }: SelectProps) {
   const [visible, setVisible] = React.useState(false);
   const isMultiple = (rest as MultipleSelectProps).isMultiple;
-  console.log('TEST_32 Select options : ', options);
+
+  const inputTheme = React.useMemo(
+    () => ({
+      colors: {
+        onSurfaceVariant: Colors.grey700,
+        primary: Colors.grey700,
+        onSurface: Colors.grey900,
+        surface: Colors.white,
+        background: Colors.white,
+      },
+    }),
+    [],
+  );
+
   // Build helper maps once per options change
   const valueToLabel = React.useMemo(
     () => new Map(options.map(opt => [opt.value, opt.label] as const)),
@@ -83,14 +98,17 @@ export function Select({ label, options, ...rest }: SelectProps) {
         visible={visible}
         onDismiss={() => setVisible(false)}
         anchor={
-          <PaperTextInput
+          <TextInput
             mode="outlined"
             label={label}
             value={displayValue}
             editable={false}
             multiline={false}
             onPressIn={() => setVisible(true)}
-            // ellipsizeMode="tail"
+            textColor={Colors.grey900}
+            outlineColor="#9E9E9E"
+            activeOutlineColor={Colors.grey700}
+            theme={inputTheme}
             right={
               <PaperTextInput.Icon
                 icon="chevron-down"
@@ -101,7 +119,6 @@ export function Select({ label, options, ...rest }: SelectProps) {
             }
             outlineStyle={styles.outlineStyle}
             style={styles.input}
-            // outlineColor="#9E9E9E"
           />
         }
       >

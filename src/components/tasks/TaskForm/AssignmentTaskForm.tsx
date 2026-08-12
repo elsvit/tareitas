@@ -3,10 +3,12 @@ import { ScrollView, View } from 'react-native';
 
 import { format } from 'date-fns';
 import { useRouter } from 'expo-router';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
+import CrossIcon from '~/assets/svg/common/cross.svg';
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
 import { DeleteModal } from '~/components/modals';
 import { WeekDaySelector } from '~/components/tasks/WeekDaySelector';
@@ -19,6 +21,7 @@ import {
   Text,
   TextInput,
 } from '~/components/ui';
+import { IconButton } from '~/components/ui/IconButton';
 import { Select } from '~/components/ui/Select/Select';
 import { SelectColor } from '~/components/ui/SelectColor';
 import { SelectImage } from '~/components/ui/SelectImage/SelectImage';
@@ -29,10 +32,10 @@ import { ERole } from '~/store/settings/enums';
 import { selectCurrentRole } from '~/store/settings/selectors';
 import { removeTaskAssignment } from '~/store/taskAssignment/slice';
 import { selectAllTaskBase } from '~/store/taskBase/selectors';
-import { userColors } from '~/styles';
+import { Colors, userColors } from '~/styles';
 import { EFormMode, WeekDay } from '~/types/ECommon';
 import { ETaskRepeatType } from '~/types/ETask';
-import { ITaskAssignment, TaskAssignmentFormProps } from '~/types/ITask';
+import { ISubtask, ITaskAssignment, TaskAssignmentFormProps } from '~/types/ITask';
 import { capitalizeFirst } from '~/utils/string';
 
 import { styles } from './styles';
@@ -60,6 +63,8 @@ type FormValues = {
   repeats: boolean;
   weekDays: WeekDay[];
   baseTaskId?: string;
+  withSubtasks: boolean;
+  subtasks: ISubtask[];
 };
 
 const COLOR_OPTIONS = Object.entries(userColors).map(([key, value]) => ({
@@ -78,10 +83,23 @@ const buildSchema = (repeats: boolean) =>
       childId: z.string().trim().min(1, requiredMessage),
       title: z.string().trim().min(1, requiredMessage),
       description: z.string().optional(),
-      reward: z.coerce
-        .number()
-        .min(0, t('tasks.reward_positive') || 'Reward must be ≥ 0')
-        .optional(),
+      reward: z.preprocess(
+        value => {
+          if (
+            value === '' ||
+            value === undefined ||
+            value === null ||
+            (typeof value === 'number' && Number.isNaN(value))
+          ) {
+            return Number.NaN;
+          }
+
+          return value;
+        },
+        z
+          .number({ message: requiredMessage })
+          .min(0, t('tasks.reward_positive') || 'Reward must be ≥ 0'),
+      ),
       picture: z.string().optional(),
       color: z.string().trim().min(1, requiredMessage),
       startDate: z
@@ -96,8 +114,29 @@ const buildSchema = (repeats: boolean) =>
       repeats: z.boolean(),
       weekDays: z.array(z.nativeEnum(WeekDay)),
       baseTaskId: z.string().optional(),
+      withSubtasks: z.boolean(),
+      subtasks: z.array(
+        z.object({
+          value: z.string(),
+          label: z.string(),
+        }),
+      ),
     })
     .superRefine((values, ctx) => {
+      if (values.withSubtasks) {
+        const hasValidSubtask = values.subtasks.some(
+          subtask => subtask.label.trim().length > 0,
+        );
+
+        if (!hasValidSubtask) {
+          ctx.addIssue({
+            code: 'custom',
+            message: t('tasks.subtasks_required') || 'Add at least one subtask',
+            path: ['subtasks'],
+          });
+        }
+      }
+
       if (values.repeats) {
         if (!values.endDate || !DATE_PATTERN.test(values.endDate)) {
           ctx.addIssue({
@@ -167,23 +206,35 @@ export const AssignmentTaskForm: FC<Props> = ({
         assignment?.repeat?.weekDays ??
         (isHabit
           ? [
-              WeekDay.Mon,
-              WeekDay.Tue,
-              WeekDay.Wed,
-              WeekDay.Thu,
-              WeekDay.Fri,
-              WeekDay.Sat,
-              WeekDay.Sun,
-            ]
+            WeekDay.Mon,
+            WeekDay.Tue,
+            WeekDay.Wed,
+            WeekDay.Thu,
+            WeekDay.Fri,
+            WeekDay.Sat,
+            WeekDay.Sun,
+          ]
           : []),
       baseTaskId: '',
+      withSubtasks: (assignment?.subtasks?.length ?? 0) > 0,
+      subtasks:
+        assignment?.subtasks?.map(subtask => ({
+          value: subtask.value,
+          label: subtask.label,
+        })) ?? [],
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
 
   const repeats = watch('repeats');
+  const withSubtasks = watch('withSubtasks');
   const selectedColor = watch('color');
+
+  const { fields: subtaskFields, append, remove } = useFieldArray({
+    control,
+    name: 'subtasks',
+  });
 
   const childOptions = useMemo(
     () =>
@@ -264,13 +315,21 @@ export const AssignmentTaskForm: FC<Props> = ({
       isHabit,
       repeat: parsed.data.repeats
         ? {
-            type: ETaskRepeatType.Week,
-            weekDays: parsed.data.weekDays,
-          }
+          type: ETaskRepeatType.Week,
+          weekDays: parsed.data.weekDays,
+        }
         : {
-            type: ETaskRepeatType.None,
-          },
+          type: ETaskRepeatType.None,
+        },
       endDate: parsed.data.repeats ? parsed.data.endDate : undefined,
+      subtasks: parsed.data.withSubtasks
+        ? parsed.data.subtasks
+          .filter(subtask => subtask.label.trim().length > 0)
+          .map(subtask => ({
+            value: subtask.value || uuidv4(),
+            label: subtask.label.trim(),
+          }))
+        : undefined,
     };
 
     onSave?.(payload);
@@ -351,7 +410,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               render={({ field: { value, onChange } }) => (
                 <>
                   <TextInput
-                    label={t('tasks.name')}
+                    label={t('common.title')}
                     value={value}
                     onChangeText={onChange}
                     mode="outlined"
@@ -389,8 +448,25 @@ export const AssignmentTaskForm: FC<Props> = ({
                 <>
                   <TextInput
                     label={t('tasks.reward')}
-                    value={String(value ?? 0)}
-                    onChangeText={text => onChange(Number(text))}
+                    value={
+                      value != null && !Number.isNaN(value) ? String(value) : ''
+                    }
+                    onChangeText={text => {
+                      if (text.trim() === '') {
+                        onChange(undefined);
+                        return;
+                      }
+
+                      if (!/^\d+$/.test(text)) {
+                        return;
+                      }
+
+                      const parsed = Number(text);
+
+                      if (!Number.isNaN(parsed) && parsed >= 0) {
+                        onChange(parsed);
+                      }
+                    }}
                     keyboardType="numeric"
                     mode="outlined"
                   />
@@ -420,7 +496,83 @@ export const AssignmentTaskForm: FC<Props> = ({
             <Space size={16} />
 
             <View style={styles.switchRow}>
-              <Text style={styles.label}>{t('tasks.repeats')}</Text>
+              <Text style={styles.switchLabel}>{t('tasks.with_subtasks')}</Text>
+              <Controller
+                control={control}
+                name="withSubtasks"
+                render={({ field: { value, onChange } }) => (
+                  <Switch
+                    value={value}
+                    onValueChange={nextValue => {
+                      onChange(nextValue);
+
+                      if (nextValue && subtaskFields.length === 0) {
+                        append({ value: uuidv4(), label: '' });
+                      }
+                    }}
+                  />
+                )}
+              />
+            </View>
+
+            {withSubtasks && (
+              <>
+                <Space size={12} />
+                {subtaskFields.map((field, index) => (
+                  <View key={field.id} style={styles.subtaskFieldRow}>
+                    <Controller
+                      control={control}
+                      name={`subtasks.${index}.label`}
+                      render={({ field: { value, onChange } }) => (
+                        <TextInput
+                          label={t('tasks.subtask_label')}
+                          value={value}
+                          onChangeText={onChange}
+                          mode="outlined"
+                          multiline
+                          numberOfLines={2}
+                          style={styles.subtaskInput}
+                        />
+                      )}
+                    />
+                    <View style={styles.subtaskRemoveWrap}>
+                      <IconButton
+                        onPress={() => remove(index)}
+                        disabled={subtaskFields.length === 1}
+                        accessibilityLabel={t('button.delete')}
+                        size={56}
+                        borderRadius={12}
+                        style={styles.subtaskRemoveButton}
+                        Icon={
+                          <CrossIcon
+                            width={22}
+                            height={22}
+                            fill={Colors.grey700}
+                          />
+                        }
+                      />
+                    </View>
+                  </View>
+                ))}
+                <Space size={8} />
+                <Button
+                  mode="outlined"
+                  onPress={() => append({ value: uuidv4(), label: '' })}
+                >
+                  {t('tasks.add_subtask')}
+                </Button>
+                {!!errors.subtasks && (
+                  <Text style={styles.errorText}>
+                    {errors.subtasks.message as string}
+                  </Text>
+                )}
+              </>
+            )}
+
+            <Space size={16} />
+
+            <View style={styles.switchRow}>
+              <Text style={styles.switchLabel}>{t('tasks.repeats')}</Text>
               <Controller
                 control={control}
                 name="repeats"
@@ -500,20 +652,6 @@ export const AssignmentTaskForm: FC<Props> = ({
               )}
             />
 
-            <Space size={12} />
-
-            <Controller
-              control={control}
-              name="color"
-              render={({ field: { value, onChange } }) => (
-                <SelectColor
-                  options={COLOR_OPTIONS}
-                  value={value}
-                  onChange={onChange}
-                />
-              )}
-            />
-
             {repeats && (
               <>
                 <Space size={12} />
@@ -537,6 +675,20 @@ export const AssignmentTaskForm: FC<Props> = ({
                 />
               </>
             )}
+
+            <Space size={12} />
+
+            <Controller
+              control={control}
+              name="color"
+              render={({ field: { value, onChange } }) => (
+                <SelectColor
+                  options={COLOR_OPTIONS}
+                  value={value}
+                  onChange={onChange}
+                />
+              )}
+            />
 
             <Space size={24} />
 

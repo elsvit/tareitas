@@ -2,12 +2,13 @@ import React, { useMemo } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { format, parseISO } from 'date-fns';
-import { enUS, es } from 'date-fns/locale';
+import { format, isToday, parseISO } from 'date-fns';
+import { enUS } from 'date-fns/locale';
 
 import ChevronLeftIcon from '~/assets/svg/common/chevron-left.svg';
 import ChevronRightIcon from '~/assets/svg/common/chevron-right.svg';
 import { Text } from '~/components/ui';
+import { DEFAULT_DATE_LOCALE, DEFAULT_LANG } from '~/constants/settings';
 import { selectLang } from '~/store/settings/selectors';
 import { ELang } from '~/types/ELang';
 
@@ -24,19 +25,25 @@ export const TaskCalendarHeader: React.FC<Props> = ({
   onPrevious,
   onNext,
 }) => {
-  const lang = useSelector(selectLang);
+  const lang = useSelector(selectLang) ?? DEFAULT_LANG;
 
   const formattedDate = useMemo(() => {
-    const locale = lang === ELang.es ? es : enUS;
+    const locale = lang === ELang.en ? enUS : DEFAULT_DATE_LOCALE;
 
     return format(parseISO(date), 'EEEE, MMM d', { locale });
   }, [date, lang]);
 
+  const isSelectedToday = useMemo(() => isToday(parseISO(date)), [date]);
+
   return (
     <View style={styles.container}>
-      <Text variant="titleMedium" style={styles.dateText}>
-        {formattedDate}
-      </Text>
+      <View style={styles.dateArea}>
+        <View style={[styles.dateBadge, isSelectedToday && styles.dateBadgeToday]}>
+          <Text variant="titleMedium" style={styles.dateText}>
+            {formattedDate}
+          </Text>
+        </View>
+      </View>
 
       <View style={styles.actions}>
         <TouchableOpacity

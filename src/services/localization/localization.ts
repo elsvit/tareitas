@@ -87,6 +87,8 @@ class LocalizationServiceClass {
     await i18next.init(i18nextOptions);
     this.isInitialized = true;
 
+    setDefaultOptions({ locale: this.getDateLocale(lang) });
+
     return lang;
   };
 
@@ -110,6 +112,8 @@ class LocalizationServiceClass {
       returnEmptyString: false,
       returnNull: false,
     });
+
+    setDefaultOptions({ locale: DEFAULT_DATE_LOCALE });
 
     this.isInitialized = true;
   }
