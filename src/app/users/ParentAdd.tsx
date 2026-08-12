@@ -28,14 +28,11 @@ export default function ParentAdd() {
       addParent({
         entity: newUser,
       }),
-      {
-        onSuccess: () => {
-          if (router.canGoBack()) {
-            router.back();
-          }
-        },
-      },
     );
+
+    if (router.canGoBack()) {
+      router.back();
+    }
   };
 
   return (

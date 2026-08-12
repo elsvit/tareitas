@@ -97,13 +97,24 @@ export default function RootStack() {
             name="users/WelcomeSteps"
             options={minimalHeaderBackOptions}
           />
-          <Stack.Screen name="users/Users" options={minimalHeaderBackOptions} />
+          <Stack.Screen
+            name="users/Users"
+            options={{
+              ...minimalHeaderBackOptions,
+              headerTransparent: true,
+              headerShadowVisible: false,
+            }}
+          />
 
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
           <Stack.Screen
             name="more/Settings/Settings"
-            options={minimalHeaderBackOptions}
+            options={{
+              ...minimalHeaderBackOptions,
+              headerTransparent: true,
+              headerShadowVisible: false,
+            }}
           />
 
           <Stack.Screen
@@ -131,7 +142,14 @@ export default function RootStack() {
             options={minimalHeaderBackOptions}
           />
 
-          <Stack.Screen name={EScreens.BaseTasks} options={minimalHeaderBackOptions} />
+          <Stack.Screen
+            name={EScreens.BaseTasks}
+            options={{
+              ...minimalHeaderBackOptions,
+              headerTransparent: true,
+              headerShadowVisible: false,
+            }}
+          />
           <Stack.Screen name={EScreens.BaseTaskAdd} options={minimalHeaderBackOptions} />
           <Stack.Screen name={EScreens.BaseTaskEdit} options={minimalHeaderBackOptions} />
           <Stack.Screen name={EScreens.Tasks} options={minimalHeaderBackOptions} />

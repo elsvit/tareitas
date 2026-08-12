@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { useHeaderHeight } from '@react-navigation/elements';
+
 import bgImgSrc from '~/assets/img/bg.png';
 import PlusIcon from '~/assets/svg/common/plus.svg';
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
@@ -28,6 +30,7 @@ export default function BaseTasks() {
 
   const dispatch = useDispatch();
   const router = useRouter();
+  const headerHeight = useHeaderHeight();
   const [isResetModalVisible, setIsResetModalVisible] = useState(false);
 
   const taskBaseList = useSelector(selectAllTaskBase);
@@ -87,17 +90,8 @@ export default function BaseTasks() {
 
   return (
     <SafeAreaBackground bgImg={bgImgSrc}>
-      <View style={styles.container}>
+      <View style={[styles.container, { paddingTop: headerHeight }]}>
         <View style={styles.header}>
-          <Text
-            variant="titleLarge"
-            fontFamily="fredoka"
-            weight="bold"
-            style={styles.sectionTitle}
-          >
-            {t('tasks.base_tasks')}
-          </Text>
-
           <Button mode="outlined" onPress={handleOpenResetModal}>
             {t('button.reset')}
           </Button>
@@ -140,13 +134,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     marginBottom: 8,
-  },
-
-  sectionTitle: {
-    flex: 1,
-    color: Colors.blue500,
   },
 
   listContent: {
