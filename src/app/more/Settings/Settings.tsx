@@ -1,12 +1,12 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 
-// import { useNavigation } from 'expo-router';
+import { useHeaderHeight } from '@react-navigation/elements';
 import { List } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
+import bgImgSrc from '~/assets/img/bg.png';
 import CheckIcon from '~/assets/svg/common/check.svg';
-// import { ScreenHeader } from '~/components/blocks/ScreenHeader';
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
 import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 import { LocalizationService, t } from '~/services/localization/localization';
@@ -20,7 +20,7 @@ import themedStyles from './styles';
 
 export default function Settings() {
   const dispatch = useDispatch();
-  // const navigation = useNavigation();
+  const headerHeight = useHeaderHeight();
 
   const [styles] = useStyle(themedStyles);
   const currentLang = useSelector(selectLang);
@@ -47,14 +47,8 @@ export default function Settings() {
   ];
 
   return (
-    <SafeAreaBackground bgColor={palette.background.primary}>
-      {/*<ScreenHeader*/}
-      {/*  title={title}*/}
-      {/*  hasBackButton*/}
-      {/*  containerStyle={styles.headerContainer}*/}
-      {/*/>*/}
-
-      <ScrollView>
+    <SafeAreaBackground bgImg={bgImgSrc}>
+      <ScrollView contentContainerStyle={{ paddingTop: headerHeight }}>
         <List.Section>
           <List.Subheader style={styles.listSubheader}>
             {t('settings.language')}

@@ -11,7 +11,7 @@ export const themedStyles = styleSheetFactory(palette => ({
   item: {
     height: 40,
     paddingHorizontal: spacing(4),
-    backgroundColor: palette.background.primary,
+    backgroundColor: 'transparent',
   },
   checkboxStyle: {
     width: 24,

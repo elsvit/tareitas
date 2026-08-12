@@ -26,13 +26,12 @@ export default function ChildAdd() {
     dispatch(
       addChild({
         entity: newUser,
-        onSuccess: () => {
-          if (router.canGoBack()) {
-            router.back();
-          }
-        },
       }),
     );
+
+    if (router.canGoBack()) {
+      router.back();
+    }
   };
 
   return (
