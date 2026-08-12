@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
+import { HEADER_HEIGHT } from '~/constants/sizes';
 import { palette } from '~/styles';
-import { HEADER_HEIGHT } from '~/constants';
 
 export const styles = StyleSheet.create({
   container: {
@@ -30,7 +30,6 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#000',
   },
   rightButton: {
     paddingHorizontal: 8,

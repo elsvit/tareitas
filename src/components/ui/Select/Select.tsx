@@ -3,8 +3,9 @@ import { ScrollView, View } from 'react-native';
 
 import { Menu, TextInput as PaperTextInput } from 'react-native-paper';
 
+import { FORM_FIELD, FORM_FIELD_MENU_THEME } from '~/constants/formField';
 import { TextInput } from '~/components/ui/TextInput';
-import { Colors } from '~/styles';
+
 import { IOptions } from '~/types/ICommon';
 
 import { styles } from './styles';
@@ -31,19 +32,6 @@ export type SelectProps = SingleSelectProps | MultipleSelectProps;
 export function Select({ label, options, ...rest }: SelectProps) {
   const [visible, setVisible] = React.useState(false);
   const isMultiple = (rest as MultipleSelectProps).isMultiple;
-
-  const inputTheme = React.useMemo(
-    () => ({
-      colors: {
-        onSurfaceVariant: Colors.grey700,
-        primary: Colors.grey700,
-        onSurface: Colors.grey900,
-        surface: Colors.white,
-        background: Colors.white,
-      },
-    }),
-    [],
-  );
 
   // Build helper maps once per options change
   const valueToLabel = React.useMemo(
@@ -97,6 +85,8 @@ export function Select({ label, options, ...rest }: SelectProps) {
       <Menu
         visible={visible}
         onDismiss={() => setVisible(false)}
+        theme={FORM_FIELD_MENU_THEME}
+        contentStyle={styles.menuContent}
         anchor={
           <TextInput
             mode="outlined"
@@ -105,16 +95,13 @@ export function Select({ label, options, ...rest }: SelectProps) {
             editable={false}
             multiline={false}
             onPressIn={() => setVisible(true)}
-            textColor={Colors.grey900}
-            outlineColor="#9E9E9E"
-            activeOutlineColor={Colors.grey700}
-            theme={inputTheme}
             right={
               <PaperTextInput.Icon
                 icon="chevron-down"
                 onPress={() => setVisible(true)}
                 forceTextInputFocus={false}
                 accessibilityLabel="Open menu"
+                color={FORM_FIELD.label}
               />
             }
             outlineStyle={styles.outlineStyle}
@@ -152,6 +139,7 @@ export function Select({ label, options, ...rest }: SelectProps) {
                 onPress={handlePress}
                 leadingIcon={selected ? 'check' : undefined}
                 style={styles.menuItem}
+                titleStyle={styles.menuItemTitle}
               />
             );
           })}

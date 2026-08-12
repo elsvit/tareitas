@@ -9,9 +9,11 @@ import bgImgSrc from '~/assets/img/bg.png';
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
 import SettingsIcon from '~/assets/svg/more/settings.svg';
+import TasksIcon from '~/assets/svg/tasks/tasks-open.svg';
 import UsersIcon from '~/assets/svg/users/users.svg';
 import { ScreenHeaderWithLogo } from "~/components/blocks";
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { SCREEN_TEXT } from '~/constants/formField';
 import { t } from '~/services';
 import { spacing, styleSheetFactory } from '~/styles';
 import { useStyle } from '~/styles/hooks';
@@ -45,7 +47,7 @@ export default function More() {
     },
     {
       title: t('tasks.base_tasks'),
-      Icon: UsersIcon,
+      Icon: TasksIcon,
       navigateTo: EScreens.BaseTasks,
     }
   ];
@@ -166,7 +168,7 @@ const themedStyles = styleSheetFactory(palette => ({
     lineHeight: 20,
     letterSpacing: 0.2,
     fontWeight: '700',
-    color: palette.text.primary,
+    color: SCREEN_TEXT.primary,
   },
   disabledTitle: {
     color: palette.text.disabled,
@@ -190,7 +192,7 @@ const themedStyles = styleSheetFactory(palette => ({
     lineHeight: 20,
     fontWeight: '600',
     letterSpacing: 0.2,
-    color: palette.text.primary,
+    color: SCREEN_TEXT.primary,
   },
   divider: {
     height: 1,

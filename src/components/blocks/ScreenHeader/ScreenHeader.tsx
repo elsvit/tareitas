@@ -2,6 +2,8 @@ import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { useRouter } from "expo-router";
 
+import { SCREEN_TEXT } from '~/constants/formField';
+
 import { styles } from './styles';
 import { IIconButton, IScreenHeader } from './types';
 import ChevronLeftIcon from '~/assets/svg/common/chevron-left.svg';
@@ -62,7 +64,7 @@ export const ScreenHeader: React.FC<IScreenHeader> = ({
         style={styles.leftButton}
         onPress={handleBackPress}
       >
-        <ChevronLeftIcon width={24} height={24} />
+        <ChevronLeftIcon width={24} height={24} fill={SCREEN_TEXT.primary} />
       </TouchableOpacity>
     );
   };
@@ -76,7 +78,14 @@ export const ScreenHeader: React.FC<IScreenHeader> = ({
 
       <View style={styles.titleContainer}>
         {title ? (
-          <Text style={[styles.title, titleStyle]} numberOfLines={1}>
+          <Text
+            style={[
+              styles.title,
+              { color: SCREEN_TEXT.primary },
+              titleStyle,
+            ]}
+            numberOfLines={1}
+          >
             {title}
           </Text>
         ) : null}

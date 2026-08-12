@@ -3,15 +3,12 @@ import { useRouter } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AssignmentTaskForm } from '~/components/tasks/TaskForm/AssignmentTaskForm';
-import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 import { selectTaskAssignmentById } from '~/store/taskAssignment/selectors';
 import { updateTaskAssignment } from '~/store/taskAssignment/slice';
 import { EFormMode } from '~/types/ECommon';
 import { ITaskAssignment, TaskAssignmentFormProps } from '~/types/ITask';
 
 export default function TaskAssignmentEdit() {
-  useI18nHeaderTitle('tasks.edit_task');
-
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -40,7 +37,7 @@ export default function TaskAssignmentEdit() {
     <AssignmentTaskForm
       mode={EFormMode.Edit}
       assignment={assignment}
-      isRoutine={assignment?.isRoutine}
+      isHabit={assignment?.isHabit}
       onSave={handleSave}
     />
   );

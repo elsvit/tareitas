@@ -1,12 +1,14 @@
+import { useColorScheme } from 'react-native';
+
 import { darkPalette, lightPalette } from '~/styles';
 
 import { registerThemes } from '~/styles/services';
 
-const useColorScheme = (): 'light' | 'dark' => 'light';
+const getAppearance = (): 'light' | 'dark' => useColorScheme() ?? 'light';
 
 export const styleSheetFactory = registerThemes(
   { light: lightPalette, dark: darkPalette },
-  useColorScheme,
+  getAppearance,
 );
 
 export const SPACING = 4;

@@ -4,6 +4,8 @@ import { StyleProp, TextStyle } from 'react-native';
 
 import { Text as PaperText } from 'react-native-paper';
 
+import { SCREEN_TEXT } from '~/constants/formField';
+
 export type PaperTextProps = ComponentProps<typeof PaperText>;
 
 type FontFamily = 'rubik' | 'roboto' | 'fredoka';
@@ -54,12 +56,10 @@ export const Text: React.FC<Props> = ({
   const textStyle: StyleProp<TextStyle> = {
     fontFamily: font,
     fontWeight: undefined, // IMPORTANT: avoid conflict with custom fonts
+    color: color ?? SCREEN_TEXT.primary,
   };
 
   const containerStyle = [textStyle, style];
-  if (color) {
-    containerStyle.push({ color });
-  }
 
   return (
     <PaperText variant={variant} style={containerStyle} {...rest}>

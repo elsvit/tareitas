@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Pressable, SafeAreaView, View } from 'react-native';
 
 import { Button, ButtonColors, Text } from '~/components/ui';
+import { SCREEN_TEXT } from '~/constants/formField';
 import { t } from '~/services';
 
 import { styles } from './styles';
@@ -59,7 +60,12 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           )}
 
           <View style={styles.actions}>
-            <Button mode="outlined" onPress={onRequestClose}>
+            <Button
+              mode="contained"
+              bgColor={ButtonColors.Gray}
+              textColor={SCREEN_TEXT.primary}
+              onPress={onRequestClose}
+            >
               {cancelLabel}
             </Button>
             <Button mode="contained" bgColor={confirmBgColor} onPress={handleConfirm}>

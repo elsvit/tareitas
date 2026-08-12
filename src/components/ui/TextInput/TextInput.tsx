@@ -1,16 +1,33 @@
 import * as React from 'react';
 import type { ComponentProps } from 'react';
-import { TextInput as PaperTextInput } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
+import { TextInput as PaperTextInput } from 'react-native-paper';
+
+import {
+  FORM_FIELD,
+  FORM_FIELD_PAPER_THEME,
+} from '~/constants/formField';
 
 export type TextInputProps = ComponentProps<typeof PaperTextInput>;
 
-export function TextInput({ outlineStyle, outlineColor, ...rest }: TextInputProps) {
+export function TextInput({
+  outlineStyle,
+  outlineColor,
+  activeOutlineColor,
+  textColor,
+  theme,
+  style,
+  ...rest
+}: TextInputProps) {
   return (
     <PaperTextInput
       mode="outlined"
-      outlineStyle={[styles.container, outlineStyle as any]}
-      outlineColor={outlineColor ?? '#9E9E9E'}
+      outlineStyle={[styles.outline, outlineStyle as any]}
+      outlineColor={outlineColor ?? FORM_FIELD.border}
+      activeOutlineColor={activeOutlineColor ?? FORM_FIELD.borderActive}
+      textColor={textColor ?? FORM_FIELD.text}
+      theme={theme ?? FORM_FIELD_PAPER_THEME}
+      style={[styles.input, style]}
       {...rest}
     />
   );
@@ -19,8 +36,11 @@ export function TextInput({ outlineStyle, outlineColor, ...rest }: TextInputProp
 TextInput.Icon = PaperTextInput.Icon;
 
 const styles = StyleSheet.create({
-  container: {
+  outline: {
     borderRadius: 12,
-    borderColor: '#9E9E9E',
+    borderColor: FORM_FIELD.border,
+  },
+  input: {
+    backgroundColor: FORM_FIELD.background,
   },
 });

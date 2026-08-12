@@ -1,32 +1,28 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 
-import { useHeaderHeight } from '@react-navigation/elements';
 import { List } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
 import bgImgSrc from '~/assets/img/bg.png';
 import CheckIcon from '~/assets/svg/common/check.svg';
+import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
-import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
+import { SCREEN_TEXT } from '~/constants/formField';
 import { LocalizationService, t } from '~/services/localization/localization';
 import { selectLang } from '~/store/settings/selectors';
 import { setLanguage } from '~/store/settings/slice';
 import { syncTaskBaseTranslations } from '~/store/taskBase/slice';
-import { palette, useStyle } from '~/styles';
+import { useStyle } from '~/styles';
 import { ELang } from '~/types/ELang';
 
 import themedStyles from './styles';
 
 export default function Settings() {
   const dispatch = useDispatch();
-  const headerHeight = useHeaderHeight();
 
   const [styles] = useStyle(themedStyles);
   const currentLang = useSelector(selectLang);
-
-  // Keep native header title in sync with language
-  useI18nHeaderTitle('settings.title');
 
   const handleLanguageChange = async (selectedLang: ELang) => {
     // Update Redux store
@@ -47,8 +43,13 @@ export default function Settings() {
   ];
 
   return (
-    <SafeAreaBackground bgImg={bgImgSrc}>
-      <ScrollView contentContainerStyle={{ paddingTop: headerHeight }}>
+    <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
+      <ScreenHeader
+        hasBackButton
+        title={t('settings.title')}
+        containerStyle={styles.screenHeader}
+      />
+      <ScrollView>
         <List.Section>
           <List.Subheader style={styles.listSubheader}>
             {t('settings.language')}
@@ -71,8 +72,8 @@ export default function Settings() {
                 titleStyle={{
                   ...styles.titleStyle,
                   color: isChecked
-                    ? palette.text.primary
-                    : palette.text.secondary,
+                    ? SCREEN_TEXT.primary
+                    : SCREEN_TEXT.secondary,
                 }}
                 onPress={onPress}
                 left={renderLeft}

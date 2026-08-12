@@ -6,13 +6,13 @@ import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import bgImgSrc from '~/assets/img/bg.png';
+import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
 import { Button, ProgressBar } from '~/components/ui';
 import { ButtonColors } from '~/components/ui/Button';
 import { ChildForm } from '~/components/users/UserForm/ChildForm';
 import { ParentForm } from '~/components/users/UserForm/ParentForm';
 import { Welcome1, Welcome2, Welcome3 } from '~/components/welcomeSteps';
-import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 import { t } from '~/services';
 import { addChild, clearChildren } from '~/store/children/slice';
 import { addParent, clearParents } from '~/store/parents/slice';
@@ -24,7 +24,6 @@ import { ChildFormProps } from '~/types/IChild';
 import { ParentFormProps } from '~/types/IParent';
 
 export default function WelcomeSteps() {
-  useI18nHeaderTitle('users.complete_your_profile');
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -106,7 +105,11 @@ export default function WelcomeSteps() {
     (step === 4 && (!isChildValid || !child?.name));
 
   return (
-    <SafeAreaBackground bgImg={bgImgSrc}>
+    <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
+      <ScreenHeader
+        title={t('users.complete_your_profile')}
+        containerStyle={styles.screenHeader}
+      />
       <ScrollView
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
@@ -122,6 +125,7 @@ export default function WelcomeSteps() {
             parent={parent}
             onSave={onParentSave}
             onValidityChange={setIsParentValid}
+            showScreenHeader={false}
           />
         )}
         {step === 4 && (
@@ -131,11 +135,12 @@ export default function WelcomeSteps() {
             child={child}
             onSave={onChildSave}
             onValidityChange={setIsChildValid}
+            showScreenHeader={false}
           />
         )}
 
         <View style={styles.footer}>
-          {step > 0 && (
+          {step > 0 ? (
             <Button
               mode="contained"
               onPress={onBack}
@@ -144,6 +149,8 @@ export default function WelcomeSteps() {
             >
               {t('button.go_back') || 'Go Back'}
             </Button>
+          ) : (
+            <View />
           )}
           <Button
             mode="contained"
@@ -160,6 +167,10 @@ export default function WelcomeSteps() {
 }
 
 const styles = StyleSheet.create({
+  screenHeader: {
+    backgroundColor: 'transparent',
+    borderBottomWidth: 0,
+  },
   container: {
     padding: spacing(4),
     paddingBottom: spacing(8),
@@ -174,11 +185,10 @@ const styles = StyleSheet.create({
     marginTop: spacing(2),
   },
   footer: {
-    marginRight: spacing(4),
     flexDirection: 'row',
     gap: spacing(2),
     alignSelf: 'stretch',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
   footerBtn: {
     minWidth: 120,

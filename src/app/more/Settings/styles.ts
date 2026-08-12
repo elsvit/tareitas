@@ -1,12 +1,18 @@
 import { spacing, styleSheetFactory } from '~/styles';
+import { SCREEN_TEXT } from '~/constants/formField';
 
 export const themedStyles = styleSheetFactory(palette => ({
+  screenHeader: {
+    backgroundColor: 'transparent',
+    borderBottomWidth: 0,
+  },
   headerContainer: {
     backgroundColor: palette.background.primary,
   },
   listSubheader: {
     fontSize: 20,
     fontWeight: '700',
+    color: SCREEN_TEXT.primary,
   },
   item: {
     height: 40,

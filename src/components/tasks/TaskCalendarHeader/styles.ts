@@ -54,5 +54,10 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: Colors.grey200,
+    marginLeft: 8,
+  },
+
+  chevronPrevious: {
+    transform: [{ rotate: '180deg' }],
   },
 });

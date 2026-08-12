@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { AssignmentTaskForm } from '~/components/tasks/TaskForm/AssignmentTaskForm';
-import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
 import { addTaskAssignment } from '~/store/taskAssignment/slice';
 import {
@@ -15,17 +14,15 @@ import { EFormMode } from '~/types/ECommon';
 import { ITaskAssignment, TaskAssignmentFormProps } from '~/types/ITask';
 
 export default function TaskAssignmentAdd() {
-  useI18nHeaderTitle('tasks.add_task');
-
   const dispatch = useDispatch();
   const router = useRouter();
 
   const { params } = useRoute<
-    RouteProp<Record<string, { date?: string; isRoutine?: string }>, string>
+    RouteProp<Record<string, { date?: string; isHabit?: string }>, string>
   >();
 
   const selectedDate = params?.date;
-  const isRoutine = params?.isRoutine === 'true';
+  const isHabit = params?.isHabit === 'true';
   const assignments = useSelector(selectAllTaskAssignment);
 
   const handleSave = (values: TaskAssignmentFormProps) => {
@@ -60,7 +57,7 @@ export default function TaskAssignmentAdd() {
     <AssignmentTaskForm
       mode={EFormMode.Add}
       defaultDate={selectedDate}
-      isRoutine={isRoutine}
+      isHabit={isHabit}
       onSave={handleSave}
     />
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Pressable, SafeAreaView, View } from 'react-native';
 
 import CloseIcon from '~/assets/svg/common/cross.svg';
@@ -30,6 +30,12 @@ export const OTPInputModal: React.FC<Props> = ({
   dismissOnBackdrop = true,
 }) => {
   const [value, setValue] = useState('');
+
+  useEffect(() => {
+    if (!isVisible) {
+      setValue('');
+    }
+  }, [isVisible]);
 
   const handleChange = (newValue: string) => {
     setValue(newValue);

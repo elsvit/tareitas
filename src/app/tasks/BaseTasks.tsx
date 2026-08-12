@@ -8,16 +8,14 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useHeaderHeight } from '@react-navigation/elements';
-
 import bgImgSrc from '~/assets/img/bg.png';
 import PlusIcon from '~/assets/svg/common/plus.svg';
+import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
 import { ResetModal } from '~/components/modals';
 import { TaskBaseListItem } from '~/components/tasks/TaskBaseListItem';
 import { Button, Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
-import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 import { t } from '~/services';
 import { ERole } from '~/store/settings/enums';
 import { selectCurrentRole } from '~/store/settings/selectors';
@@ -28,11 +26,8 @@ import { EScreens } from '~/types';
 import { ITaskBase } from '~/types/ITask';
 
 export default function BaseTasks() {
-  useI18nHeaderTitle('tasks.base_tasks');
-
   const dispatch = useDispatch();
   const router = useRouter();
-  const headerHeight = useHeaderHeight();
   const [isResetModalVisible, setIsResetModalVisible] = useState(false);
 
   const taskBaseList = useSelector(selectAllTaskBase);
@@ -101,11 +96,16 @@ export default function BaseTasks() {
   );
 
   return (
-    <SafeAreaBackground bgImg={bgImgSrc}>
-      <View style={[styles.container, { paddingTop: headerHeight }]}>
+    <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
+      <ScreenHeader
+        hasBackButton
+        title={t('tasks.base_tasks')}
+        containerStyle={styles.screenHeader}
+      />
+      <View style={styles.container}>
         {isAdmin && (
           <View style={styles.header}>
-            <Button mode="outlined" onPress={handleOpenResetModal}>
+            <Button mode="contained" onPress={handleOpenResetModal}>
               {t('button.reset')}
             </Button>
           </View>
@@ -142,6 +142,11 @@ export default function BaseTasks() {
 }
 
 const styles = StyleSheet.create({
+  screenHeader: {
+    backgroundColor: 'transparent',
+    borderBottomWidth: 0,
+  },
+
   container: {
     flex: 1,
     padding: 16,

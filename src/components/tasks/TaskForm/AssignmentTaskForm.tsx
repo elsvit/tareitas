@@ -9,7 +9,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
 import CrossIcon from '~/assets/svg/common/cross.svg';
+import bgImgSrc from '~/assets/img/bg.png';
 import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { ScreenHeader } from '~/components/blocks';
 import { DeleteModal } from '~/components/modals';
 import { WeekDaySelector } from '~/components/tasks/WeekDaySelector';
 import {
@@ -48,6 +50,7 @@ type Props = {
   isHabit?: boolean;
   onSave?: (assignment: TaskAssignmentFormProps) => void;
   onValidityChange?: (valid: boolean) => void;
+  showScreenHeader?: boolean;
 };
 
 type FormValues = {
@@ -164,7 +167,12 @@ export const AssignmentTaskForm: FC<Props> = ({
   isHabit,
   onSave,
   onValidityChange,
+  showScreenHeader = true,
 }) => {
+  const headerTitle =
+    title ??
+    (mode === EFormMode.Add ? t('tasks.add_task') : t('tasks.edit_task'));
+
   const dispatch = useDispatch();
   const router = useRouter();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -348,19 +356,27 @@ export const AssignmentTaskForm: FC<Props> = ({
   };
 
   return (
-    <SafeAreaBackground>
+    <SafeAreaBackground hasTopInsets={showScreenHeader} bgImg={bgImgSrc}>
+      {showScreenHeader && (
+        <ScreenHeader
+          hasBackButton
+          title={headerTitle}
+          containerStyle={styles.screenHeader}
+        />
+      )}
       <ScrollView
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
       >
         <Card>
-          {!!title && (
+          {!!title && !showScreenHeader && (
             <View style={styles.titleContainer}>
-              <Text variant="titleMedium">{title}</Text>
+              <Text variant="titleMedium" style={styles.title}>{title}</Text>
             </View>
           )}
 
           <Card.Content>
+            <Space size={8} />
             {childOptions.length > 0 && (
               <>
                 <Controller

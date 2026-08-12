@@ -9,6 +9,7 @@ import { IIconButton, IScreenHeaderWithLogo } from './types';
 import ChevronLeftIcon from '~/assets/svg/common/chevron-left.svg';
 import LogoIcon from '~/assets/img/logo.png';
 import { CHILDREN_AVATARS, PARENT_AVATARS } from '~/assets/img/users/users';
+import { SCREEN_TEXT } from '~/constants/formField';
 import { useUserSwitch } from '~/hooks/useUserSwitch';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { Text } from '~/components/ui';
@@ -82,7 +83,7 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
         style={styles.leftButton}
         onPress={handleBackPress}
       >
-        <ChevronLeftIcon width={24} height={24} />
+        <ChevronLeftIcon width={24} height={24} fill={SCREEN_TEXT.primary} />
       </TouchableOpacity>
     );
   };

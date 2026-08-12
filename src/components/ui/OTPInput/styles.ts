@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { FORM_FIELD } from '~/constants/formField';
 import { spacing } from '~/styles';
 
 export const styles = StyleSheet.create({
@@ -26,19 +27,19 @@ export const styles = StyleSheet.create({
     borderRadius: spacing(3),
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: FORM_FIELD.background,
   },
 
   slotText: {
     fontSize: 24,
     fontWeight: '600',
     lineHeight: 28,
+    color: FORM_FIELD.text,
   },
 
   footer: {
     flexDirection: 'row',
-    gap: spacing(2),
     width: '100%',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
 });

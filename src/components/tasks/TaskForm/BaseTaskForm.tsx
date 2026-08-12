@@ -6,7 +6,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { z } from 'zod';
 
-import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { ScreenHeader } from '~/components/blocks';
 import { DeleteModal } from '~/components/modals';
 import {
   Button,
@@ -33,6 +33,7 @@ type Props = {
   task?: Partial<ITaskBase>;
   onSave?: (task: TaskBaseFormProps) => void;
   onValidityChange?: (valid: boolean) => void;
+  showScreenHeader?: boolean;
 };
 
 type FormValues = TaskBaseFormProps;
@@ -54,7 +55,12 @@ export const BaseTaskForm: FC<Props> = ({
   mode,
   onSave,
   onValidityChange,
+  showScreenHeader = true,
 }) => {
+  const headerTitle =
+    title ??
+    (mode === EFormMode.Add ? t('tasks.add_base_task') : t('tasks.edit_base_task'));
+
   const dispatch = useDispatch();
   const router = useRouter();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -131,20 +137,27 @@ export const BaseTaskForm: FC<Props> = ({
   };
 
   return (
-    <SafeAreaBackground>
+    <>
+      {showScreenHeader && (
+        <ScreenHeader
+          hasBackButton
+          title={headerTitle}
+          containerStyle={styles.screenHeader}
+        />
+      )}
       <ScrollView
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
       >
         <Card>
-          {!!title && (
+          {!!title && !showScreenHeader && (
             <View style={styles.titleContainer}>
-              <Text variant="titleMedium">{title}</Text>
+              <Text variant="titleMedium" style={styles.title}>{title}</Text>
             </View>
           )}
 
           <Card.Content>
-
+            <Space size={8} />
             <Controller
               control={control}
               name="name"
@@ -257,6 +270,6 @@ export const BaseTaskForm: FC<Props> = ({
         onRequestClose={() => setIsDeleteModalVisible(false)}
         onConfirm={handleConfirmDelete}
       />
-    </SafeAreaBackground>
+    </>
   );
 };
