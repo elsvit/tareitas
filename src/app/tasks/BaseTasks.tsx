@@ -19,6 +19,8 @@ import { Button, Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
 import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 import { t } from '~/services';
+import { ERole } from '~/store/settings/enums';
+import { selectCurrentRole } from '~/store/settings/selectors';
 import { selectAllTaskBase } from '~/store/taskBase/selectors';
 import { resetTaskBase } from '~/store/taskBase/slice';
 import { Colors } from '~/styles';
@@ -34,10 +36,16 @@ export default function BaseTasks() {
   const [isResetModalVisible, setIsResetModalVisible] = useState(false);
 
   const taskBaseList = useSelector(selectAllTaskBase);
+  const currentRole = useSelector(selectCurrentRole);
+  const isAdmin = currentRole === ERole.admin;
 
   const handleAddTask = useCallback(() => {
+    if (!isAdmin) {
+      return;
+    }
+
     router.push(`/${EScreens.BaseTaskAdd}`);
-  }, [router]);
+  }, [isAdmin, router]);
 
   const handleResetTasks = useCallback(() => {
     dispatch(resetTaskBase());
@@ -48,25 +56,29 @@ export default function BaseTasks() {
   }, []);
 
   const handlePressTask = useCallback((id: string) => {
+    if (!isAdmin) {
+      return;
+    }
+
     router.push(`/${EScreens.BaseTaskEdit}?id=${id}`);
-  }, [router]);
+  }, [isAdmin, router]);
 
   const renderItem = useCallback<ListRenderItem<ITaskBase>>(
     ({ item }) => {
       const handlePress = () => {
-        console.log('TEST_42 handlePress', item.id);
         handlePressTask(item.id);
       };
+
       return (
         <TaskBaseListItem
           name={item.name}
           description={item.description}
           picture={item.picture}
           reward={item.reward}
-          onPress={handlePress}
+          onPress={isAdmin ? handlePress : undefined}
         />
       );
-    }, [handlePressTask]
+    }, [handlePressTask, isAdmin],
   );
 
   const keyExtractor = useCallback(
@@ -91,11 +103,13 @@ export default function BaseTasks() {
   return (
     <SafeAreaBackground bgImg={bgImgSrc}>
       <View style={[styles.container, { paddingTop: headerHeight }]}>
-        <View style={styles.header}>
-          <Button mode="outlined" onPress={handleOpenResetModal}>
-            {t('button.reset')}
-          </Button>
-        </View>
+        {isAdmin && (
+          <View style={styles.header}>
+            <Button mode="outlined" onPress={handleOpenResetModal}>
+              {t('button.reset')}
+            </Button>
+          </View>
+        )}
 
         <FlatList
           data={taskBaseList}
@@ -107,13 +121,15 @@ export default function BaseTasks() {
           showsVerticalScrollIndicator={false}
         />
 
-        <View style={styles.fab}>
-          <IconButton
-            Icon={<PlusIcon width={32} height={32} fill="#FFFFFF" />}
-            onPress={handleAddTask}
-            size={56}
-          />
-        </View>
+        {isAdmin && (
+          <View style={styles.fab}>
+            <IconButton
+              Icon={<PlusIcon width={32} height={32} fill="#FFFFFF" />}
+              onPress={handleAddTask}
+              size={56}
+            />
+          </View>
+        )}
       </View>
 
       <ResetModal

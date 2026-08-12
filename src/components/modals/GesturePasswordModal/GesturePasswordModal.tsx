@@ -13,6 +13,7 @@ type Props = {
   onRequestClose: () => void;
   onComplete?: (pattern: number[]) => void;
   title?: string;
+  errorMessage?: string;
   size?: number;
   minLength?: number;
   dismissOnBackdrop?: boolean;
@@ -23,6 +24,7 @@ export const GesturePasswordModal: React.FC<Props> = ({
   onRequestClose,
   onComplete,
   title = t('users.password'),
+  errorMessage,
   size,
   minLength,
   dismissOnBackdrop = true,
@@ -54,6 +56,10 @@ export const GesturePasswordModal: React.FC<Props> = ({
               // iconColor={ThemeColors.dark.icon}
             />
           </View>
+
+          {!!errorMessage && (
+            <Text style={styles.errorText}>{errorMessage}</Text>
+          )}
 
           <GesturePassword
             size={size}
@@ -92,6 +98,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  errorText: {
+    color: '#DC2626',
+    marginBottom: 12,
+    textAlign: 'center',
   },
 });
 

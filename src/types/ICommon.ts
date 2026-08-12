@@ -23,4 +23,5 @@ export  interface IUserAvatar {
   id: string,
   name: string,
   avatar?: string;
+  color?: string;
 }

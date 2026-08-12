@@ -15,6 +15,7 @@ type Props = {
   onRequestClose: () => void;
   onComplete?: (password: string) => void;
   title?: string;
+  errorMessage?: string;
   maxLength?: number;
   dismissOnBackdrop?: boolean;
 };
@@ -24,6 +25,7 @@ export const OTPInputModal: React.FC<Props> = ({
   onRequestClose,
   onComplete,
   title = t('users.password'),
+  errorMessage,
   maxLength = 4,
   dismissOnBackdrop = true,
 }) => {
@@ -68,6 +70,10 @@ export const OTPInputModal: React.FC<Props> = ({
               onPress={handleClose}
             />
           </View>
+
+          {!!errorMessage && (
+            <Text style={styles.errorText}>{errorMessage}</Text>
+          )}
 
           <OTPInput
             maxLength={maxLength}
