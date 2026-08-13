@@ -1,16 +1,16 @@
-import React from 'react';
 import { Tabs } from 'expo-router';
 import { t } from 'i18next';
+import React from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
+import RoutinesIcon from '~/assets/img/tabs/tab_habits.png';
+import RoutinesActiveIcon from '~/assets/img/tabs/tab_habits_active.png';
 import MoreIcon from '~/assets/img/tabs/tab_more.png';
 import MoreActiveIcon from '~/assets/img/tabs/tab_more_active.png';
 import RewardsIcon from '~/assets/img/tabs/tab_rewards.png';
 import RewardsActiveIcon from '~/assets/img/tabs/tab_rewards_active.png';
-import RoutinesIcon from '~/assets/img/tabs/tab_habits.png';
-import RoutinesActiveIcon from '~/assets/img/tabs/tab_habits_active.png';
 import TasksIcon from '~/assets/img/tabs/tab_tasks.png';
 import TasksActiveIcon from '~/assets/img/tabs/tab_tasks_active.png';
 import { HapticTab } from '~/components/haptic-tab';
@@ -66,10 +66,10 @@ export default function TabLayout() {
       title: t('tasks.title') || 'Tasks',
     },
     {
-      name: EMainTabs.Routines,
+      name: EMainTabs.Habits,
       Icon: RoutinesIcon,
       ActiveIcon: RoutinesActiveIcon,
-      title: t('habits.title') || 'Routines',
+      title: t('habits.title') || 'Habits',
     },
     {
       name: EMainTabs.Rewards,
@@ -122,14 +122,14 @@ export default function TabLayout() {
       }}
     >
       {MAIN_TABS.map(({ name, Icon, ActiveIcon, title }) => {
-        const hideThisTab = !isRoutinesTabSeparated && name === EMainTabs.Routines;
+        const hideThisTab = !isRoutinesTabSeparated && name === EMainTabs.Habits;
         return (
         <Tabs.Screen
           key={name}
           name={name}
           options={{
             title,
-            // Hide the Routines tab when it isn't separated
+            // Hide the Habits tab when it isn't separated
             href: hideThisTab ? null : undefined,
             tabBarIcon: ({ focused }) => (
               <BottomTab

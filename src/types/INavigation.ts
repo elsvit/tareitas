@@ -6,7 +6,7 @@ export type ScreenRoutes = EMainTabs | EScreens;
 export type ScreenRoutesParams = {
   // [EScreens.MainTabs]: undefined;
   [EMainTabs.Tasks]: undefined;
-  [EMainTabs.Routines]: undefined;
+  [EMainTabs.Habits]: undefined;
   [EMainTabs.Rewards]: undefined;
   [EMainTabs.More]: undefined;
   [EScreens.Settings]: undefined;

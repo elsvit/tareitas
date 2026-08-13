@@ -33,6 +33,11 @@ export type ScheduledTaskItem = {
   task: ITask | null;
 };
 
+const matchesHabitFilter = (
+  assignment: ITaskAssignment | undefined,
+  isHabit: boolean,
+) => (isHabit ? assignment?.isHabit === true : !assignment?.isHabit);
+
 export type TaskListItemView = {
   id: string;
   task: ITask | null;
@@ -52,12 +57,17 @@ export type TaskListItemView = {
   status: ETaskStatus;
 };
 
-export const selectTasksByDate = (date: string) =>
+export const selectTasksByDate = (date: string, isHabit = false) =>
   createSelector(
     [selectAllTasks, (state: RootStateT) => state],
     (tasks, state) =>
       tasks
         .filter(task => task.date === date)
+        .filter(task => {
+          const assignment = selectTaskAssignmentById(task.assignmentId)(state);
+
+          return matchesHabitFilter(assignment, isHabit);
+        })
         .sort((a, b) => {
           const assignmentA = selectTaskAssignmentById(a.assignmentId)(state);
           const assignmentB = selectTaskAssignmentById(b.assignmentId)(state);
@@ -71,6 +81,7 @@ export const selectTasksByDate = (date: string) =>
 export const selectScheduledTasksForDate = (
   date: string,
   childId?: string | null,
+  isHabit = false,
 ) =>
   createSelector(
     [selectAllTaskAssignment, selectTaskEntities],
@@ -78,6 +89,7 @@ export const selectScheduledTasksForDate = (
       assignments
         .filter(assignment => shouldShowAssignmentOnDate(assignment, date))
         .filter(assignment => !childId || assignment.childId === childId)
+        .filter(assignment => matchesHabitFilter(assignment, isHabit))
         .map(assignment => {
           const id = createTaskId(assignment.id, date);
 

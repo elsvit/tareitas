@@ -1,6 +1,6 @@
 export enum EMainTabs {
   Tasks = 'Tasks',
-  Routines = 'Routines',
+  Habits = 'Habits',
   Rewards = 'Rewards',
   More = 'More',
 }

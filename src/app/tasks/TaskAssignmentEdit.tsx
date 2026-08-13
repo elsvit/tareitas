@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AssignmentTaskForm } from '~/components/tasks/TaskForm/AssignmentTaskForm';
+import { t } from '~/services';
 import { selectTaskAssignmentById } from '~/store/taskAssignment/selectors';
 import { updateTaskAssignment } from '~/store/taskAssignment/slice';
 import { EFormMode } from '~/types/ECommon';
@@ -12,10 +13,14 @@ export default function TaskAssignmentEdit() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { params } = useRoute<RouteProp<Record<string, { id: string }>, string>>();
+  const { params } = useRoute<
+    RouteProp<Record<string, { id: string; isHabit?: string }>, string>
+  >();
   const { id } = params;
+  const isHabitFromRoute = params?.isHabit === 'true';
 
   const assignment = useSelector(selectTaskAssignmentById(id));
+  const isHabit = assignment?.isHabit ?? isHabitFromRoute;
 
   const handleSave = (values: TaskAssignmentFormProps) => {
     dispatch(
@@ -37,7 +42,8 @@ export default function TaskAssignmentEdit() {
     <AssignmentTaskForm
       mode={EFormMode.Edit}
       assignment={assignment}
-      isHabit={assignment?.isHabit}
+      isHabit={isHabit}
+      title={isHabit ? t('habits.edit_habit') : undefined}
       onSave={handleSave}
     />
   );

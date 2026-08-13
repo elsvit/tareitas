@@ -7,7 +7,7 @@ import { WeekDay } from '~/types/ECommon';
 
 import { styles } from './styles';
 
-const WEEK_DAYS: WeekDay[] = [
+export const ALL_WEEK_DAYS: WeekDay[] = [
   WeekDay.Mon,
   WeekDay.Tue,
   WeekDay.Wed,
@@ -17,26 +17,30 @@ const WEEK_DAYS: WeekDay[] = [
   WeekDay.Sun,
 ];
 
+const WEEK_DAYS = ALL_WEEK_DAYS;
+
 const WEEK_DAY_LABEL_KEYS: Record<WeekDay, string> = {
-  [WeekDay.Mon]: 'tasks.week_days.mon',
-  [WeekDay.Tue]: 'tasks.week_days.tue',
-  [WeekDay.Wed]: 'tasks.week_days.wed',
-  [WeekDay.Thu]: 'tasks.week_days.thu',
-  [WeekDay.Fri]: 'tasks.week_days.fri',
-  [WeekDay.Sat]: 'tasks.week_days.sat',
-  [WeekDay.Sun]: 'tasks.week_days.sun',
+  [WeekDay.Mon]: 'time.shortWeekDays.mon',
+  [WeekDay.Tue]: 'time.shortWeekDays.tue',
+  [WeekDay.Wed]: 'time.shortWeekDays.wed',
+  [WeekDay.Thu]: 'time.shortWeekDays.thu',
+  [WeekDay.Fri]: 'time.shortWeekDays.fri',
+  [WeekDay.Sat]: 'time.shortWeekDays.sat',
+  [WeekDay.Sun]: 'time.shortWeekDays.sun',
 };
 
 type Props = {
   value: WeekDay[];
   onChange: (value: WeekDay[]) => void;
   color?: string;
+  readOnly?: boolean;
 };
 
 export const WeekDaySelector: React.FC<Props> = ({
   value,
   onChange,
   color = '#2563EB',
+  readOnly = false,
 }) => {
   const toggleDay = (day: WeekDay) => {
     const isSelected = value.includes(day);
@@ -51,10 +55,32 @@ export const WeekDaySelector: React.FC<Props> = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{t('tasks.week_days.label')}</Text>
+      <Text style={styles.label}>{t('time.shortWeekDays.label')}</Text>
       <View style={styles.row}>
         {WEEK_DAYS.map(day => {
           const isSelected = value.includes(day);
+          const dayStyle = [
+            styles.dayButton,
+            isSelected && { backgroundColor: color, borderColor: color },
+          ];
+          const label = (
+            <Text
+              style={[
+                styles.dayLabel,
+                isSelected && styles.dayLabelSelected,
+              ]}
+            >
+              {t(WEEK_DAY_LABEL_KEYS[day] as any)}
+            </Text>
+          );
+
+          if (readOnly) {
+            return (
+              <View key={day} style={dayStyle}>
+                {label}
+              </View>
+            );
+          }
 
           return (
             <TouchableOpacity
@@ -62,19 +88,9 @@ export const WeekDaySelector: React.FC<Props> = ({
               accessibilityRole="button"
               accessibilityState={{ selected: isSelected }}
               onPress={() => toggleDay(day)}
-              style={[
-                styles.dayButton,
-                isSelected && { backgroundColor: color, borderColor: color },
-              ]}
+              style={dayStyle}
             >
-              <Text
-                style={[
-                  styles.dayLabel,
-                  isSelected && styles.dayLabelSelected,
-                ]}
-              >
-                {t(WEEK_DAY_LABEL_KEYS[day] as any)}
-              </Text>
+              {label}
             </TouchableOpacity>
           );
         })}

@@ -29,7 +29,7 @@ import { generateTasksForDate } from '~/store/tasks/slice';
 import { Colors } from '~/styles';
 import { EScreens } from '~/types';
 
-export default function Tasks() {
+export default function Habits() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user: currentUser } = useCurrentUser();
@@ -50,7 +50,7 @@ export default function Tasks() {
         selectScheduledTasksForDate(
           selectedDate,
           isChild ? currentUserId : null,
-          false,
+          true,
         ),
       [selectedDate, currentUserId, isChild],
     ),
@@ -76,14 +76,16 @@ export default function Tasks() {
     );
   }, []);
 
-  const handleAddTask = useCallback(() => {
-    router.push(`/${EScreens.TaskAssignmentAdd}?date=${selectedDate}` as any);
+  const handleAddHabit = useCallback(() => {
+    router.push(
+      `/${EScreens.TaskAssignmentAdd}?date=${selectedDate}&isHabit=true` as any,
+    );
   }, [router, selectedDate]);
 
-  const handlePressTask = useCallback(
+  const handlePressHabit = useCallback(
     (item: ScheduledTaskItem) => {
       router.push(
-        `/${EScreens.TaskAssignmentEdit}?id=${item.assignmentId}` as any,
+        `/${EScreens.TaskAssignmentEdit}?id=${item.assignmentId}&isHabit=true` as any,
       );
     },
     [router],
@@ -94,10 +96,10 @@ export default function Tasks() {
       <TaskListItem
         item={item}
         isChildView={isChild}
-        onPress={isChild ? undefined : () => handlePressTask(item)}
+        onPress={isChild ? undefined : () => handlePressHabit(item)}
       />
     ),
-    [handlePressTask, isChild],
+    [handlePressHabit, isChild],
   );
 
   const keyExtractor = useCallback((item: ScheduledTaskItem) => item.id, []);
@@ -110,7 +112,7 @@ export default function Tasks() {
   const ListEmptyComponent = useCallback(
     () => (
       <Text variant="bodyMedium" style={styles.emptyText}>
-        {t('tasks.no_tasks')}
+        {t('habits.no_habits')}
       </Text>
     ),
     [],
@@ -122,34 +124,34 @@ export default function Tasks() {
       {!currentUser ? (
         <SelectUserPrompt />
       ) : (
-      <View style={styles.container}>
-        <TaskCalendarHeader
-          date={selectedDate}
-          onPrevious={handlePreviousDay}
-          onNext={handleNextDay}
-        />
+        <View style={styles.container}>
+          <TaskCalendarHeader
+            date={selectedDate}
+            onPrevious={handlePreviousDay}
+            onNext={handleNextDay}
+          />
 
-        <FlatList
-          data={scheduledItems}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          ItemSeparatorComponent={renderSeparator}
-          ListEmptyComponent={ListEmptyComponent}
-          contentContainerStyle={styles.listContent}
-          showsVerticalScrollIndicator={false}
-          style={styles.list}
-        />
+          <FlatList
+            data={scheduledItems}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            ItemSeparatorComponent={renderSeparator}
+            ListEmptyComponent={ListEmptyComponent}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+            style={styles.list}
+          />
 
-        {!isChild && (
-          <View style={styles.fab}>
-            <IconButton
-              Icon={<PlusIcon width={32} height={32} fill="#FFFFFF" />}
-              onPress={handleAddTask}
-              size={56}
-            />
-          </View>
-        )}
-      </View>
+          {!isChild && (
+            <View style={styles.fab}>
+              <IconButton
+                Icon={<PlusIcon width={32} height={32} fill="#FFFFFF" />}
+                onPress={handleAddHabit}
+                size={56}
+              />
+            </View>
+          )}
+        </View>
       )}
     </SafeAreaBgImage>
   );
