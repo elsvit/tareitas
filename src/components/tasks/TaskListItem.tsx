@@ -143,6 +143,17 @@ export const TaskListItem: React.FC<Props> = ({
     }
 
     if (status === ETaskStatus.Pending) {
+      if (hasSubtasks) {
+        const allSubtasksDone = subtasks.every(subtask =>
+          completedSubtasks.includes(subtask.value),
+        );
+
+        if (!allSubtasksDone) {
+          setAreSubtasksExpanded(true);
+          return;
+        }
+      }
+
       setStatus(ETaskStatus.Completed);
       return;
     }
@@ -152,10 +163,14 @@ export const TaskListItem: React.FC<Props> = ({
     }
   };
 
+  const handleParentReviewStatusPress = () => {
+    setStatus(ETaskStatus.Completed);
+  };
+
   const canChildPressStatus =
     status === ETaskStatus.Rejected ||
-    (!hasSubtasks &&
-      (status === ETaskStatus.Pending || status === ETaskStatus.Completed));
+    status === ETaskStatus.Pending ||
+    (!hasSubtasks && status === ETaskStatus.Completed);
 
   const handleToggleSubtask = (subtaskValue: string, checked: boolean) => {
     const nextCompleted = checked
@@ -303,7 +318,11 @@ export const TaskListItem: React.FC<Props> = ({
     </View>
   ) : status === ETaskStatus.Approved || status === ETaskStatus.Rejected ? (
     <View style={styles.statusColumn}>
-      <TaskStatusBadge status={status} compact />
+      <TaskStatusBadge
+        status={status}
+        onPress={handleParentReviewStatusPress}
+        compact
+      />
     </View>
   ) : null;
 
