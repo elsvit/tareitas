@@ -3,6 +3,13 @@ import { t } from '~/services';
 import { IImageOption } from '~/types';
 import { ITaskBase } from '~/types/ITask';
 
+export {
+  getNextParentStatus,
+  normalizeTaskStatus,
+  PARENT_STATUS_CYCLE,
+  TASK_STATUS_COLORS,
+} from './tasks/taskStatus';
+
 export const getBaseTasks = (): ITaskBase[] => {
   // LocalizationService.initSync();
 

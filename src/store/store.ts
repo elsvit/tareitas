@@ -14,6 +14,7 @@ import { commonSlice } from './common/slice';
 import { EStateName } from './enums';
 import { IStateParents, parentsSlice } from './parents';
 import { IStateSettings, settingsSagas, settingsSlice } from './settings';
+import { IStateRewardBase, rewardBaseSlice } from './rewardBase';
 import { IStateTaskAssignment, taskAssignmentSlice } from './taskAssignment';
 import { IStateTaskBase, taskBaseSlice } from './taskBase';
 import { IStateTasks, tasksSlice } from './tasks';
@@ -66,6 +67,13 @@ const taskBasePersistConfig: PersistConfig<IStateTaskBase> = {
   // whitelist: ['entities'],
 };
 
+const rewardBasePersistConfig: PersistConfig<IStateRewardBase> = {
+  key: EStateName.rewardBase,
+  storage,
+  stateReconciler: hardSet,
+  // whitelist: ['entities'],
+};
+
 const taskAssignmentPersistConfig: PersistConfig<IStateTaskAssignment> = {
   key: EStateName.taskAssignment,
   storage,
@@ -94,6 +102,10 @@ const taskBaseReducer = IS_WEB
   ? taskBaseSlice.reducer
   : persistReducer<IStateTaskBase>(taskBasePersistConfig, taskBaseSlice.reducer);
 
+const rewardBaseReducer = IS_WEB
+  ? rewardBaseSlice.reducer
+  : persistReducer<IStateRewardBase>(rewardBasePersistConfig, rewardBaseSlice.reducer);
+
 const taskAssignmentReducer = IS_WEB
   ? taskAssignmentSlice.reducer
   : persistReducer<IStateTaskAssignment>(
@@ -108,6 +120,7 @@ const rootReducer = combineReducers({
   [EStateName.children]: childrenReducer,
   [EStateName.tasks]: tasksReducer,
   [EStateName.taskBase]: taskBaseReducer,
+  [EStateName.rewardBase]: rewardBaseReducer,
   [EStateName.taskAssignment]: taskAssignmentReducer,
 });
 

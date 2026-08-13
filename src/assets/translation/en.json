@@ -239,7 +239,31 @@
     "title": "Habits"
   },
   "rewards": {
-    "title": "Rewards"
+    "title": "Rewards",
+    "add_reward": "Add Reward",
+    "base_rewards": "Base Rewards",
+    "delete_reward": "Delete Reward",
+    "delete_reward_confirm": "Are you sure you want to delete this reward?",
+    "edit_reward": "Edit Reward",
+    "no_base_rewards": "No reward templates yet",
+    "reward": "Reward",
+    "reward_positive": "Reward must be ≥ 0",
+    "reset_base_rewards": "Reset Reward Templates",
+    "reset_base_rewards_confirm": "Are you sure you want to reset reward templates?"
+  },
+  "baseRewards": {
+    "choose_desert": "Choose tonight’s dessert",
+    "movie": "Pick the family movie",
+    "screen_time": "20 minutes extra screen time",
+    "music_in_car": "Choose the music in the car",
+    "stay_up_15_minutes_more": "Stay up 15 minutes later",
+    "choose_breakfast": "Choose tomorrow’s breakfast",
+    "choose_family_game": "Pick the family game",
+    "skip_one_chore": "Skip one small household chore",
+    "choose_what_for_dinner": "Choose what’s for dinner",
+    "special_time_with_parents": "Special one-on-one time with parents",
+    "trip_to_playground": "Trip to the playground",
+    "ice_cream": "Go for ice cream"
   },
   "welcome": {
     "title": "Welcome",

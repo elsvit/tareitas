@@ -9,6 +9,7 @@ import bgImgSrc from '~/assets/img/bg.png';
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
 import SettingsIcon from '~/assets/svg/more/settings.svg';
+import RewardsIcon from '~/assets/svg/rewards/rewards.svg';
 import TasksIcon from '~/assets/svg/tasks/tasks-open.svg';
 import UsersIcon from '~/assets/svg/users/users.svg';
 import { ScreenHeaderWithLogo } from "~/components/blocks";
@@ -49,7 +50,12 @@ export default function More() {
       title: t('tasks.base_tasks'),
       Icon: TasksIcon,
       navigateTo: EScreens.BaseTasks,
-    }
+    },
+    {
+      title: t('rewards.base_rewards'),
+      Icon: RewardsIcon,
+      navigateTo: EScreens.BaseRewards,
+    },
   ];
 
   const title = t('more.title');

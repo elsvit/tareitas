@@ -5,5 +5,6 @@ export enum EStateName {
   children = 'children',
   tasks = 'tasks',
   taskBase = 'taskBase',
+  rewardBase = 'rewardBase',
   taskAssignment = 'taskAssignment',
 }
