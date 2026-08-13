@@ -1,10 +1,11 @@
+import { Colors } from '~/styles/colors';
 import { ETaskStatus } from '~/types/ETask';
 
 export const TASK_STATUS_COLORS: Record<ETaskStatus, string> = {
-  [ETaskStatus.Pending]: '#9CA3AF',
-  [ETaskStatus.Completed]: '#22C55E',
-  [ETaskStatus.Approved]: '#F59E0B',
-  [ETaskStatus.Rejected]: '#EF4444',
+  [ETaskStatus.Pending]: Colors.grey500, // #9CA3AF
+  [ETaskStatus.Completed]: Colors.green500, // #22C55E
+  [ETaskStatus.Approved]: Colors.green500, // #22C55E
+  [ETaskStatus.Rejected]: Colors.red500, // #EF4444
 };
 
 export const PARENT_STATUS_CYCLE: ETaskStatus[] = [

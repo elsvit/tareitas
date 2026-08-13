@@ -156,6 +156,10 @@ export default function RootStack() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
+            name={EScreens.FilteredTasks}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name={EScreens.BaseRewards}
             options={{ headerShown: false }}
           />

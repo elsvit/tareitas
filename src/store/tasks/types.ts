@@ -1,5 +1,14 @@
 import { EntityState } from '@reduxjs/toolkit';
+import { ETaskStatus } from '~/types/ETask';
 import { ITask } from '~/types/ITask';
+
+export interface ITaskFilters {
+  status?: ETaskStatus[];
+  startDate: string;
+  endDate: string;
+  childId?: string;
+  isHabit?: boolean;
+}
 
 export interface IStateTasks extends EntityState<ITask, string> {}
 

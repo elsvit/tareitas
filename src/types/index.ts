@@ -7,4 +7,5 @@ export * from './IError';
 export * from './ILang';
 export * from './INavigation';
 export * from './IParent';
+export * from './IReward';
 export * from './ITask';
