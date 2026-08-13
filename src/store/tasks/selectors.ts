@@ -8,6 +8,7 @@ import { selectTaskAssignmentById } from '~/store/taskAssignment/selectors';
 import { ISubtask, ITask, ITaskAssignment, ITaskBase } from '~/types/ITask';
 import { IChild } from '~/types/IChild';
 import { ETaskStatus } from '~/types/ETask';
+import { normalizeTaskStatus } from '~/constants/tasks/taskStatus';
 import {
   createTaskId,
   shouldShowAssignmentOnDate,
@@ -124,12 +125,13 @@ const buildTaskListItemViewFromParts = (
     task?.status === ETaskStatus.Approved ||
     allSubtasksDone;
 
-  const status =
+  const status = normalizeTaskStatus(
     allSubtasksDone &&
-    task?.status !== ETaskStatus.Approved &&
-    task?.status !== ETaskStatus.Rejected
+      task?.status !== ETaskStatus.Approved &&
+      task?.status !== ETaskStatus.Rejected
       ? ETaskStatus.Completed
-      : task?.status ?? ETaskStatus.Pending;
+      : task?.status ?? ETaskStatus.Pending,
+  );
 
   return {
     id,

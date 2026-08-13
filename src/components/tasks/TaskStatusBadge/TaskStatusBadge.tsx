@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Text } from '~/components/ui';
-import { TASK_STATUS_COLORS } from '~/constants/tasks/taskStatus';
+import { normalizeTaskStatus, TASK_STATUS_COLORS } from '~/constants/tasks/taskStatus';
 import { t } from '~/services';
 import { ETaskStatus } from '~/types/ETask';
 
@@ -26,8 +26,12 @@ export const TaskStatusBadge: React.FC<Props> = ({
   compact = false,
   labelKey,
 }) => {
-  const color = TASK_STATUS_COLORS[status];
-  const label = t((labelKey ?? STATUS_LABEL_KEYS[status]) as any);
+  const resolvedStatus = normalizeTaskStatus(status);
+  const color =
+    TASK_STATUS_COLORS[resolvedStatus] ?? TASK_STATUS_COLORS[ETaskStatus.Pending];
+  const label = t(
+    (labelKey ?? STATUS_LABEL_KEYS[resolvedStatus]) as any,
+  );
 
   const content = (
     <View

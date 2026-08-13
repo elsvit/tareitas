@@ -20,3 +20,13 @@ export const getNextParentStatus = (current: ETaskStatus): ETaskStatus => {
 
   return PARENT_STATUS_CYCLE[nextIndex];
 };
+
+export const normalizeTaskStatus = (
+  status?: ETaskStatus | string | null,
+): ETaskStatus => {
+  if (status && Object.values(ETaskStatus).includes(status as ETaskStatus)) {
+    return status as ETaskStatus;
+  }
+
+  return ETaskStatus.Pending;
+};

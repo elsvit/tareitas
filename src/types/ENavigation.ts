@@ -27,5 +27,8 @@ export enum EScreens {
   TaskEdit = 'tasks/TaskEdit',
   TaskAssignmentAdd = 'tasks/TaskAssignmentAdd',
   TaskAssignmentEdit = 'tasks/TaskAssignmentEdit',
+  BaseRewards = 'rewards/BaseRewards',
+  BaseRewardAdd = 'rewards/BaseRewardAdd',
+  BaseRewardEdit = 'rewards/BaseRewardEdit',
   WelcomeSteps = 'users/WelcomeSteps',
 }

@@ -154,6 +154,18 @@ export default function RootStack() {
             name={EScreens.TaskAssignmentEdit}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name={EScreens.BaseRewards}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={EScreens.BaseRewardAdd}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={EScreens.BaseRewardEdit}
+            options={{ headerShown: false }}
+          />
         </Stack>
       </ThemeProvider>
     </PaperProvider>
