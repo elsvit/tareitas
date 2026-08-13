@@ -15,6 +15,9 @@ import { EStateName } from './enums';
 import { IStateParents, parentsSlice } from './parents';
 import { IStateSettings, settingsSagas, settingsSlice } from './settings';
 import { IStateRewardBase, rewardBaseSlice } from './rewardBase';
+import { IStateRewardAssignment, rewardAssignmentSlice } from './rewardAssignment';
+import { IStateRewards, rewardsSlice } from './rewards';
+import { normalizeEarnedRewardPeriods } from './rewards/rewardCalculations';
 import { IStateTaskAssignment, taskAssignmentSlice } from './taskAssignment';
 import { IStateTaskBase, taskBaseSlice } from './taskBase';
 import { IStateTasks, tasksSlice } from './tasks';
@@ -81,6 +84,34 @@ const taskAssignmentPersistConfig: PersistConfig<IStateTaskAssignment> = {
   // whitelist: ['entities'],
 };
 
+const rewardAssignmentPersistConfig: PersistConfig<IStateRewardAssignment> = {
+  key: EStateName.rewardAssignment,
+  storage,
+  stateReconciler: autoMergeLevel2,
+};
+
+const rewardsPersistConfig: PersistConfig<IStateRewards> = {
+  key: EStateName.rewards,
+  storage,
+  stateReconciler: autoMergeLevel2,
+  version: 2,
+  migrate: (state => {
+    const rewards = state as IStateRewards | undefined;
+
+    if (rewards?.earnedRewardPeriods) {
+      return Promise.resolve({
+        ...(state as object),
+        ...rewards,
+        earnedRewardPeriods: normalizeEarnedRewardPeriods(
+          rewards.earnedRewardPeriods,
+        ),
+      });
+    }
+
+    return Promise.resolve(state);
+  }) as PersistConfig<IStateRewards>['migrate'],
+};
+
 // Combine reducers
 const settingsReducer = IS_WEB
   ? settingsSlice.reducer
@@ -113,6 +144,17 @@ const taskAssignmentReducer = IS_WEB
       taskAssignmentSlice.reducer
     );
 
+const rewardAssignmentReducer = IS_WEB
+  ? rewardAssignmentSlice.reducer
+  : persistReducer<IStateRewardAssignment>(
+      rewardAssignmentPersistConfig,
+      rewardAssignmentSlice.reducer
+    );
+
+const rewardsReducer = IS_WEB
+  ? rewardsSlice.reducer
+  : persistReducer<IStateRewards>(rewardsPersistConfig, rewardsSlice.reducer);
+
 const rootReducer = combineReducers({
   [EStateName.common]: commonSlice.reducer,
   [EStateName.settings]: settingsReducer,
@@ -122,6 +164,8 @@ const rootReducer = combineReducers({
   [EStateName.taskBase]: taskBaseReducer,
   [EStateName.rewardBase]: rewardBaseReducer,
   [EStateName.taskAssignment]: taskAssignmentReducer,
+  [EStateName.rewardAssignment]: rewardAssignmentReducer,
+  [EStateName.rewards]: rewardsReducer,
 });
 
 // Saga middleware

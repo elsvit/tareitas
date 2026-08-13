@@ -12,7 +12,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { BASE_REWARDS_IMAGES } from '~/assets/img/rewards/rewards';
 import { Text } from '~/components/ui';
-import { Colors } from '~/styles';
 import { lightenColor } from '~/utils/color';
 
 type Props = {
@@ -21,6 +20,7 @@ type Props = {
   reward?: number;
   color?: string;
   onPress?: () => void;
+  footer?: React.ReactNode;
 };
 
 const IMAGE_SIZE = 56;
@@ -56,26 +56,58 @@ const RowContent: React.FC<{
   picture?: string | number;
   reward?: number;
   textColor: string;
-}> = ({ title, picture, reward, textColor }) => {
+  footer?: React.ReactNode;
+}> = ({ title, picture, reward, textColor, footer }) => {
   const pictureSource = useMemo(
     () => resolveRewardPictureSource(picture),
     [picture],
   );
 
+  const rewardText = reward != null ? String(reward) : '';
+  const isLongReward = rewardText.length > 3;
+
   return (
     <View style={styles.row}>
-      <View style={styles.imageContainer}>
-        {pictureSource ? (
-          <Image
-            source={pictureSource}
-            style={styles.image}
-            contentFit="contain"
-          />
-        ) : (
-          <View style={styles.placeholder}>
-            <Text fontFamily="fredoka" weight="bold">
-              🎁
-            </Text>
+      <View style={styles.leftColumn}>
+        <View style={styles.imageContainer}>
+          {pictureSource ? (
+            <Image
+              source={pictureSource}
+              style={styles.image}
+              contentFit="contain"
+            />
+          ) : (
+            <View style={styles.placeholder}>
+              <Text fontFamily="fredoka" weight="bold">
+                🎁
+              </Text>
+            </View>
+          )}
+        </View>
+
+        {reward != null && (
+          <View
+            style={[
+              styles.rewardBadge,
+              isLongReward && styles.rewardBadgeCompact,
+            ]}
+          >
+            {isLongReward ? (
+              <>
+                <Text
+                  style={[styles.reward, styles.rewardCompact, styles.rewardLine]}
+                >
+                  ⭐ {rewardText.slice(0, 3)}
+                </Text>
+                <Text
+                  style={[styles.reward, styles.rewardCompact, styles.rewardLine]}
+                >
+                  {rewardText.slice(3)}
+                </Text>
+              </>
+            ) : (
+              <Text style={styles.reward}>⭐ {rewardText}</Text>
+            )}
           </View>
         )}
       </View>
@@ -86,16 +118,12 @@ const RowContent: React.FC<{
           fontFamily="fredoka"
           weight="bold"
           numberOfLines={2}
-          style={{ color: textColor, lineHeight: 24 }}
+          style={{ color: textColor, lineHeight: 22 }}
         >
           {title}
         </Text>
 
-        {reward != null && (
-          <Text style={styles.reward}>
-            ⭐ {reward}
-          </Text>
-        )}
+        {footer ? <View style={styles.footer}>{footer}</View> : null}
       </View>
     </View>
   );
@@ -107,6 +135,7 @@ export const RewardBaseListItem: React.FC<Props> = ({
   reward,
   color = '#F59F00',
   onPress,
+  footer,
 }) => {
   const gradientColors = useMemo(
     () =>
@@ -120,6 +149,7 @@ export const RewardBaseListItem: React.FC<Props> = ({
       picture={picture}
       reward={reward}
       textColor={color}
+      footer={footer}
     />
   );
 
@@ -185,9 +215,14 @@ const styles = StyleSheet.create({
 
   row: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'stretch',
     paddingVertical: 8,
     paddingHorizontal: 8,
+  },
+
+  leftColumn: {
+    alignItems: 'center',
+    flexShrink: 0,
   },
 
   imageContainer: {
@@ -216,12 +251,42 @@ const styles = StyleSheet.create({
     flex: 1,
     minWidth: 0,
     marginLeft: 12,
+    justifyContent: 'space-between',
+  },
+
+  rewardBadge: {
+    marginTop: 6,
+    width: IMAGE_SIZE,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  rewardBadgeCompact: {
+    paddingHorizontal: 2,
   },
 
   reward: {
-    marginTop: 6,
     fontWeight: '600',
-    color: Colors.orange500,
+    fontSize: 13,
+    color: '#F59F00',
+  },
+
+  rewardCompact: {
+    fontSize: 10,
+  },
+
+  rewardLine: {
+    textAlign: 'center',
+    lineHeight: 12,
+  },
+
+  footer: {
+    marginTop: 8,
+    alignSelf: 'stretch',
   },
 });
 

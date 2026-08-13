@@ -15,6 +15,7 @@ import { TaskCalendarHeader } from '~/components/tasks/TaskCalendarHeader';
 import { TaskListItem } from '~/components/tasks/TaskListItem';
 import { TaskScreenFabs } from '~/components/tasks/TaskScreenFabs';
 import { Text } from '~/components/ui';
+import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { useHasCompletedTasksInPast } from '~/hooks/useHasCompletedTasksInPast';
 import { t } from '~/services';
@@ -42,6 +43,8 @@ export default function Tasks() {
   const currentRole = useSelector(selectCurrentRole);
   const currentUserId = useSelector(selectCurrentUser);
   const isChild = currentRole === ERole.child;
+
+  useSyncEarnedRewardPeriods();
 
   const assignments = useSelector(selectAllTaskAssignment);
 
