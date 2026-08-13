@@ -31,11 +31,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from '~/components/ui/Loading';
 import { SCREEN_TEXT } from '~/constants/formField';
 import { useColorScheme } from '~/hooks/use-color-scheme';
-import { darkPaperTheme, lightPaperTheme } from '~/styles/paperTheme';
 import { AppDispatch } from '~/store';
 import { selectParentIds } from '~/store/parents/selectors';
 import { initLanguage } from '~/store/settings';
 import { selectIsLangInitiating, selectLang } from '~/store/settings/selectors';
+import { darkPaperTheme, lightPaperTheme } from '~/styles/paperTheme';
 import { EScreens } from '~/types';
 import { ELang } from '~/types/ELang';
 
@@ -100,12 +100,13 @@ export default function RootStack() {
             name="users/WelcomeSteps"
             options={{ headerShown: false }}
           />
+
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+
           <Stack.Screen
             name="users/Users"
             options={{ headerShown: false }}
           />
-
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
           <Stack.Screen
             name="more/Settings/Settings"

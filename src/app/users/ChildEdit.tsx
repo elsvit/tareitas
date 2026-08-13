@@ -2,8 +2,7 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import bgImgSrc from '~/assets/img/bg.png';
-import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { ChildForm } from '~/components/users/UserForm/ChildForm';
 import type { RootStateT } from '~/store';
 import { selectChildById } from '~/store/children/selectors';
@@ -40,8 +39,8 @@ export default function ChildEdit() {
   };
 
   return (
-    <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
+    <SafeAreaBgImage>
       <ChildForm mode={EFormMode.Edit} child={child} onSave={handleSave} />
-    </SafeAreaBackground>
+    </SafeAreaBgImage>
   );
 }

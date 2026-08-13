@@ -8,10 +8,9 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import bgImgSrc from '~/assets/img/bg.png';
 import PlusIcon from '~/assets/svg/common/plus.svg';
 import { ScreenHeader } from '~/components/blocks';
-import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { ResetModal } from '~/components/modals';
 import { RewardBaseListItem } from '~/components/rewards/RewardBaseListItem';
 import { Button, Text } from '~/components/ui';
@@ -96,7 +95,7 @@ export default function BaseRewards() {
   );
 
   return (
-    <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
+    <SafeAreaBgImage>
       <ScreenHeader
         hasBackButton
         title={t('rewards.base_rewards')}
@@ -139,7 +138,7 @@ export default function BaseRewards() {
         title={t('rewards.reset_base_rewards')}
         message={t('rewards.reset_base_rewards_confirm')}
       />
-    </SafeAreaBackground>
+    </SafeAreaBgImage>
   );
 }
 

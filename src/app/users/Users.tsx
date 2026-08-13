@@ -4,9 +4,8 @@ import { useSelector } from 'react-redux';
 
 import { useRouter } from 'expo-router';
 
-import bgImgSrc from '~/assets/img/bg.png';
 import { ScreenHeader } from '~/components/blocks';
-import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { Button, Space, Text } from '~/components/ui';
 import { ChildListItem, ParentListItem } from '~/components/users/UserListItem';
 import { t } from '~/services';
@@ -33,7 +32,7 @@ export default function Users() {
   }, [router]);
 
   return (
-    <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
+    <SafeAreaBgImage>
       <ScreenHeader
         hasBackButton
         title={t('users.title')}
@@ -88,7 +87,7 @@ export default function Users() {
           </View>
         )}
       </ScrollView>
-    </SafeAreaBackground>
+    </SafeAreaBgImage>
   );
 }
 

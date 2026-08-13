@@ -1,5 +1,6 @@
 import React from 'react';
-import { Modal, Pressable, SafeAreaView, View } from 'react-native';
+import { Modal, Pressable, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button, ButtonColors, Text } from '~/components/ui';
 import { SCREEN_TEXT } from '~/constants/formField';

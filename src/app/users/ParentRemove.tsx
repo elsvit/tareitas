@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
 // import { useDispatch } from 'react-redux';
 
-import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { Button } from '~/components/ui/Button/Button';
 import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 import { t } from '~/services';
@@ -22,7 +22,7 @@ export default function ParentRemove() {
   };
 
   return (
-    <SafeAreaBackground>
+    <SafeAreaBgImage>
       <View style={styles.container}>
         <Button
           mode="contained"
@@ -33,7 +33,7 @@ export default function ParentRemove() {
           {t('users.delete')}
         </Button>
       </View>
-    </SafeAreaBackground>
+    </SafeAreaBgImage>
   );
 }
 

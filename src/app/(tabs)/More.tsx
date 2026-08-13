@@ -5,20 +5,20 @@ import { useRouter } from 'expo-router';
 import { Divider, List } from 'react-native-paper';
 import { SvgProps } from 'react-native-svg';
 
-import bgImgSrc from '~/assets/img/bg.png';
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
 import SettingsIcon from '~/assets/svg/more/settings.svg';
 import RewardsIcon from '~/assets/svg/rewards/rewards.svg';
 import TasksIcon from '~/assets/svg/tasks/tasks-open.svg';
 import UsersIcon from '~/assets/svg/users/users.svg';
-import { ScreenHeaderWithLogo } from "~/components/blocks";
-import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { ScreenHeaderWithLogo, SelectUserPrompt } from "~/components/blocks";
 import { SCREEN_TEXT } from '~/constants/formField';
+import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { t } from '~/services';
 import { spacing, styleSheetFactory } from '~/styles';
 import { useStyle } from '~/styles/hooks';
 import { EScreens } from '~/types/ENavigation';
+import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 
 export interface IMoreItem {
   title: string;
@@ -32,6 +32,7 @@ export interface IMoreItem {
 
 export default function More() {
   const router = useRouter();
+  const { user: currentUser } = useCurrentUser();
 
   const [styles] = useStyle(themedStyles);
 
@@ -75,8 +76,11 @@ export default function More() {
     `${item.title}-${index}`;
 
   return (
-    <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
+    <SafeAreaBgImage>
       <ScreenHeaderWithLogo containerStyle={{backgroundColor: 'transparent'}} />
+      {!currentUser ? (
+        <SelectUserPrompt />
+      ) : (
       <ScrollView>
         <List.Section>
           {MORE_ITEMS.map((item, index) => {
@@ -152,7 +156,8 @@ export default function More() {
           })}
         </List.Section>
       </ScrollView>
-    </SafeAreaBackground>
+      )}
+    </SafeAreaBgImage>
   );
 }
 

@@ -8,10 +8,9 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import bgImgSrc from '~/assets/img/bg.png';
 import PlusIcon from '~/assets/svg/common/plus.svg';
 import { ScreenHeader } from '~/components/blocks';
-import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { ResetModal } from '~/components/modals';
 import { TaskBaseListItem } from '~/components/tasks/TaskBaseListItem';
 import { Button, Text } from '~/components/ui';
@@ -96,7 +95,7 @@ export default function BaseTasks() {
   );
 
   return (
-    <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
+    <SafeAreaBgImage>
       <ScreenHeader
         hasBackButton
         title={t('tasks.base_tasks')}
@@ -137,7 +136,7 @@ export default function BaseTasks() {
         onRequestClose={() => setIsResetModalVisible(false)}
         onConfirm={handleResetTasks}
       />
-    </SafeAreaBackground>
+    </SafeAreaBgImage>
   );
 }
 

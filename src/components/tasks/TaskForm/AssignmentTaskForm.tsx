@@ -8,10 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
-import bgImgSrc from '~/assets/img/bg.png';
 import CrossIcon from '~/assets/svg/common/cross.svg';
 import { ScreenHeader } from '~/components/blocks';
-import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { DeleteModal } from '~/components/modals';
 import { WeekDaySelector } from '~/components/tasks/WeekDaySelector';
 import {
@@ -356,7 +355,7 @@ export const AssignmentTaskForm: FC<Props> = ({
   };
 
   return (
-    <SafeAreaBackground hasTopInsets={showScreenHeader} bgImg={bgImgSrc}>
+    <SafeAreaBgImage>
       {showScreenHeader && (
         <ScreenHeader
           hasBackButton
@@ -737,6 +736,6 @@ export const AssignmentTaskForm: FC<Props> = ({
         onRequestClose={() => setIsDeleteModalVisible(false)}
         onConfirm={handleConfirmDelete}
       />
-    </SafeAreaBackground>
+    </SafeAreaBgImage>
   );
 };
