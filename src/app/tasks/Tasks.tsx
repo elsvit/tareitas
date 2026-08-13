@@ -9,14 +9,14 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import bgImgSrc from '~/assets/img/bg.png';
 import PlusIcon from '~/assets/svg/common/plus.svg';
-import { ScreenHeaderWithLogo } from '~/components/blocks';
-import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { ScreenHeaderWithLogo, SelectUserPrompt } from '~/components/blocks';
+import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { TaskCalendarHeader } from '~/components/tasks/TaskCalendarHeader';
 import { TaskListItem } from '~/components/tasks/TaskListItem';
 import { Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
+import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { t } from '~/services';
 import { ERole } from '~/store/settings/enums';
 import { selectCurrentRole, selectCurrentUser } from '~/store/settings/selectors';
@@ -33,6 +33,7 @@ import { EScreens } from '~/types';
 export default function Tasks() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { user: currentUser } = useCurrentUser();
 
   const [selectedDate, setSelectedDate] = useState(() =>
     format(new Date(), 'yyyy-MM-dd'),
@@ -129,8 +130,11 @@ export default function Tasks() {
   );
 
   return (
-    <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
+    <SafeAreaBgImage>
       <ScreenHeaderWithLogo containerStyle={{ backgroundColor: 'transparent' }} />
+      {!currentUser ? (
+        <SelectUserPrompt />
+      ) : (
       <View style={styles.container}>
         <TaskCalendarHeader
           date={selectedDate}
@@ -159,7 +163,8 @@ export default function Tasks() {
           </View>
         )}
       </View>
-    </SafeAreaBackground>
+      )}
+    </SafeAreaBgImage>
   );
 }
 

@@ -2,11 +2,11 @@ import React from 'react';
 import {
   Modal,
   Pressable,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
 import CloseIcon from '~/assets/svg/common/cross.svg';
@@ -32,6 +32,7 @@ type Props = {
   isVisible: boolean;
   onRequestClose: () => void;
   onSelectUser: (user: SelectedUser) => void;
+  onLogout: () => void;
 };
 
 const toParentUser = (parent: IParent): SelectedUser => ({
@@ -52,6 +53,7 @@ export const SelectUsersModal: React.FC<Props> = ({
   isVisible,
   onRequestClose,
   onSelectUser,
+  onLogout,
 }) => {
   const parents = useSelector(selectAllParents);
   const children = useSelector(selectAllChildren);
@@ -128,6 +130,19 @@ export const SelectUsersModal: React.FC<Props> = ({
                 ))
               )}
             </View>
+
+            <Pressable
+              accessibilityRole="button"
+              onPress={onLogout}
+              style={({ pressed }) => [
+                styles.logoutRow,
+                pressed && styles.logoutRowPressed,
+              ]}
+            >
+              <Text variant="titleMedium" weight="bold" style={styles.logoutText}>
+                {t('users.logout')}
+              </Text>
+            </Pressable>
           </ScrollView>
         </View>
       </SafeAreaView>
@@ -174,5 +189,18 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     opacity: 0.6,
+  },
+  logoutRow: {
+    marginTop: 24,
+    paddingVertical: 16,
+    alignItems: 'center',
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: Colors.grey200,
+  },
+  logoutRowPressed: {
+    opacity: 0.7,
+  },
+  logoutText: {
+    color: Colors.red500,
   },
 });

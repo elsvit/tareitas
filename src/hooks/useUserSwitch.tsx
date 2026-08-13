@@ -32,6 +32,15 @@ export function useUserSwitch() {
     setIsSelectUsersVisible(false);
   }, []);
 
+  const logoutUser = useCallback(() => {
+    dispatch(setCurrentUser(null));
+    dispatch(setCurrentRole(null));
+    setPendingUser(null);
+    setIsPinModalVisible(false);
+    setIsGestureModalVisible(false);
+    setPasswordError(null);
+  }, [dispatch]);
+
   const completeLogin = useCallback(
     (user: SelectedUser) => {
       dispatch(setCurrentUser(user.id));
@@ -44,12 +53,15 @@ export function useUserSwitch() {
     [dispatch],
   );
 
+  const handleLogout = useCallback(() => {
+    setIsSelectUsersVisible(false);
+    logoutUser();
+  }, [logoutUser]);
+
   const handleSelectUser = useCallback(
     (user: SelectedUser) => {
       setIsSelectUsersVisible(false);
-      dispatch(setCurrentUser(null));
-      dispatch(setCurrentRole(null));
-      setPasswordError(null);
+      logoutUser();
 
       if (!user.passwordPattern) {
         completeLogin(user);
@@ -64,7 +76,7 @@ export function useUserSwitch() {
         setIsGestureModalVisible(true);
       }
     },
-    [completeLogin, dispatch],
+    [completeLogin, logoutUser],
   );
 
   const handlePinComplete = useCallback(
@@ -123,6 +135,7 @@ export function useUserSwitch() {
         isVisible={isSelectUsersVisible}
         onRequestClose={closeSelectUsers}
         onSelectUser={handleSelectUser}
+        onLogout={handleLogout}
       />
 
       <OTPInputModal

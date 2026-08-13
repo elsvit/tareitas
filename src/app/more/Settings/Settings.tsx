@@ -4,10 +4,9 @@ import { ScrollView, View } from 'react-native';
 import { List } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
-import bgImgSrc from '~/assets/img/bg.png';
 import CheckIcon from '~/assets/svg/common/check.svg';
 import { ScreenHeader } from '~/components/blocks';
-import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { SCREEN_TEXT } from '~/constants/formField';
 import { LocalizationService, t } from '~/services/localization/localization';
 import { selectLang } from '~/store/settings/selectors';
@@ -43,7 +42,7 @@ export default function Settings() {
   ];
 
   return (
-    <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
+    <SafeAreaBgImage>
       <ScreenHeader
         hasBackButton
         title={t('settings.title')}
@@ -82,6 +81,6 @@ export default function Settings() {
           })}
         </List.Section>
       </ScrollView>
-    </SafeAreaBackground>
+    </SafeAreaBgImage>
   );
 }

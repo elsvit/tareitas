@@ -2,8 +2,7 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import bgImgSrc from '~/assets/img/bg.png';
-import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { BaseRewardForm } from '~/components/rewards/RewardForm';
 import { selectRewardBaseById } from '~/store/rewardBase/selectors';
 import { updateRewardBase } from '~/store/rewardBase/slice';
@@ -36,12 +35,12 @@ export default function BaseRewardEdit() {
   };
 
   return (
-    <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
+    <SafeAreaBgImage>
       <BaseRewardForm
         mode={EFormMode.Edit}
         reward={reward}
         onSave={handleSave}
       />
-    </SafeAreaBackground>
+    </SafeAreaBgImage>
   );
 }

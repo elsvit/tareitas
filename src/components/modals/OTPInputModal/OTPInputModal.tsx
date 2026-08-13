@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Pressable, SafeAreaView, View } from 'react-native';
+import { Modal, Pressable, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import CloseIcon from '~/assets/svg/common/cross.svg';
 import { Text } from '~/components/ui';

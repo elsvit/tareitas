@@ -5,9 +5,8 @@ import { useRouter } from 'expo-router';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
-import bgImgSrc from '~/assets/img/bg.png';
 import { ScreenHeader } from '~/components/blocks';
-import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { Button, ProgressBar } from '~/components/ui';
 import { ButtonColors } from '~/components/ui/Button';
 import { ChildForm } from '~/components/users/UserForm/ChildForm';
@@ -105,7 +104,7 @@ export default function WelcomeSteps() {
     (step === 4 && (!isChildValid || !child?.name));
 
   return (
-    <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
+    <SafeAreaBgImage>
       <ScreenHeader
         title={t('users.complete_your_profile')}
         containerStyle={styles.screenHeader}
@@ -162,7 +161,7 @@ export default function WelcomeSteps() {
           </Button>
         </View>
       </ScrollView>
-    </SafeAreaBackground>
+    </SafeAreaBgImage>
   );
 }
 

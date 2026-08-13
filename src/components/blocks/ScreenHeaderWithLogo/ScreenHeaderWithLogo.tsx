@@ -1,19 +1,19 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
-import { useRouter } from 'expo-router';
 
 import { Image as ExpoImage } from 'expo-image';
 
-import { styles } from './styles';
-import { IIconButton, IScreenHeaderWithLogo } from './types';
-import ChevronLeftIcon from '~/assets/svg/common/chevron-left.svg';
 import LogoIcon from '~/assets/img/logo.png';
 import { CHILDREN_AVATARS, PARENT_AVATARS } from '~/assets/img/users/users';
-import { SCREEN_TEXT } from '~/constants/formField';
-import { useUserSwitch } from '~/hooks/useUserSwitch';
-import { useCurrentUser } from '~/hooks/useCurrentUser';
+import ChevronLeftIcon from '~/assets/svg/common/chevron-left.svg';
 import { Text } from '~/components/ui';
+import { SCREEN_TEXT } from '~/constants/formField';
+import { useCurrentUser } from '~/hooks/useCurrentUser';
+import { useUserSwitch } from '~/hooks/useUserSwitch';
 import { t } from '~/services';
+import { styles } from './styles';
+import { IIconButton, IScreenHeaderWithLogo } from './types';
 
 const USER_AVATAR_MAP = Object.fromEntries(
   [...PARENT_AVATARS, ...CHILDREN_AVATARS].map(({ value, image }) => [
@@ -90,7 +90,7 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
 
   const renderUserSwitch = () => {
     const handlePress = openSelectUsers;
-    const displayName = currentUser?.name ?? t('users.select_user_please');
+    const displayName = currentUser?.name ?? t('users.login');
 
     const renderAvatar = () => {
       if (!currentUser) {
@@ -129,7 +129,7 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
     return (
       <TouchableOpacity
         accessibilityRole="button"
-        accessibilityLabel={t('users.select_user_please')}
+        accessibilityLabel={t('users.login')}
         onPress={handlePress}
         style={styles.userSwitch}
       >

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Modal, Pressable, SafeAreaView, StyleSheet, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Text } from '~/components/ui';
 import { GesturePassword } from '~/components/ui/GesturePassword';

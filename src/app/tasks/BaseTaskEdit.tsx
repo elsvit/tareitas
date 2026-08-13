@@ -2,8 +2,7 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import bgImgSrc from '~/assets/img/bg.png';
-import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { BaseTaskForm } from '~/components/tasks/TaskForm/BaseTaskForm';
 import { selectTaskBaseById } from '~/store/taskBase/selectors';
 import { updateTaskBase } from '~/store/taskBase/slice';
@@ -38,12 +37,12 @@ export default function BaseTaskEdit() {
   };
 
   return (
-    <SafeAreaBackground hasTopInsets bgImg={bgImgSrc}>
+    <SafeAreaBgImage>
       <BaseTaskForm
         mode={EFormMode.Edit}
         task={task}
         onSave={handleSave}
       />
-    </SafeAreaBackground>
+    </SafeAreaBgImage>
   );
 }
