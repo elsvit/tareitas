@@ -58,6 +58,17 @@
       "friday": "Friday",
       "saturday": "Saturday",
       "sunday": "Sunday"
+    },
+    "shortWeekDays": {
+      "label": "Repeat on",
+      "required": "Select at least one day",
+      "mon": "M",
+      "tue": "T",
+      "wed": "W",
+      "thu": "T",
+      "fri": "F",
+      "sat": "S",
+      "sun": "S"
     }
   },
   "home": {
@@ -152,17 +163,6 @@
     "add_subtask": "Add subtask",
     "subtasks_required": "Add at least one subtask",
     "done": "Done",
-    "week_days": {
-      "label": "Repeat on",
-      "required": "Select at least one day",
-      "mon": "M",
-      "tue": "T",
-      "wed": "W",
-      "thu": "T",
-      "fri": "F",
-      "sat": "S",
-      "sun": "S"
-    },
     "baseTasks": {
       "brushTeethEvening": "Brush teeth in the evening",
       "brushTeethEveningDescription": "Brush teeth in the evening",
@@ -238,7 +238,10 @@
     }
   },
   "habits": {
-    "title": "Habits"
+    "title": "Habits",
+    "no_habits": "No habits yet",
+    "add_habit": "Add Habit",
+    "edit_habit": "Edit Habit"
   },
   "rewards": {
     "title": "Rewards",
@@ -269,7 +272,7 @@
   },
   "welcome": {
     "title": "Welcome",
-    "daily_habits": "Daily Routines",
+    "daily_habits": "Daily Habits",
     "dailyRoutines1": "Morning & evening habits",
     "dailyRoutines2": "Step-by-step guided actions",
     "dailyRoutines3": "Timely reminders",
@@ -280,7 +283,7 @@
     "howItWorksSubtitle": "Step-by-step guide",
     "add_your_children": "Add Your Children",
     "addYourChildrenDescription": "Start by creating a profile for each of your children. Include their name, date of birth, a fun avatar and a color of their card.\nParent with the rights of admin also can add other parents or person who can review the completion of tasks and routine.\nParents can manage multiple children from one dashboard.",
-    "create_tasks_and_habits": "Create Tasks and Routines",
+    "create_tasks_and_habits": "Create Tasks and Habits",
     "createTasksAndRoutinesDescription": "Design tasks that match your family needs. Set point values, due dates, recurrence patterns and assign them to particular children. \nYou control everything!",
     "children_completion_and_earn": "Children Completion & Earn",
     "childrenCompletionAndEarnDescription": "Kids see their daily tasks in a simple, fun interface. They mark tasks as done with one tap.\nFor each completed task, they earn points and progress toward their goals",

@@ -12,7 +12,7 @@ import CrossIcon from '~/assets/svg/common/cross.svg';
 import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { DeleteModal } from '~/components/modals';
-import { WeekDaySelector } from '~/components/tasks/WeekDaySelector';
+import { WeekDaySelector, ALL_WEEK_DAYS } from '~/components/tasks/WeekDaySelector';
 import {
   Button,
   ButtonColors,
@@ -79,7 +79,7 @@ const TIME_PATTERN = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
 const requiredMessage = t('common.required') || 'Required';
 
-const buildSchema = (repeats: boolean) =>
+const buildSchema = (repeats: boolean, isHabitForm = false) =>
   z
     .object({
       childId: z.string().trim().min(1, requiredMessage),
@@ -140,7 +140,15 @@ const buildSchema = (repeats: boolean) =>
       }
 
       if (values.repeats) {
-        if (!values.endDate || !DATE_PATTERN.test(values.endDate)) {
+        if (!isHabitForm) {
+          if (!values.endDate || !DATE_PATTERN.test(values.endDate)) {
+            ctx.addIssue({
+              code: 'custom',
+              message: t('tasks.invalid_date') || 'Invalid date',
+              path: ['endDate'],
+            });
+          }
+        } else if (values.endDate && !DATE_PATTERN.test(values.endDate)) {
           ctx.addIssue({
             code: 'custom',
             message: t('tasks.invalid_date') || 'Invalid date',
@@ -148,10 +156,10 @@ const buildSchema = (repeats: boolean) =>
           });
         }
 
-        if (values.weekDays.length === 0) {
+        if (!isHabitForm && values.weekDays.length === 0) {
           ctx.addIssue({
             code: 'custom',
-            message: t('tasks.week_days.required') || 'Select at least one day',
+            message: t('time.shortWeekDays.required') || 'Select at least one day',
             path: ['weekDays'],
           });
         }
@@ -170,7 +178,13 @@ export const AssignmentTaskForm: FC<Props> = ({
 }) => {
   const headerTitle =
     title ??
-    (mode === EFormMode.Add ? t('tasks.add_task') : t('tasks.edit_task'));
+    (isHabit
+      ? mode === EFormMode.Add
+        ? t('habits.add_habit')
+        : t('habits.edit_habit')
+      : mode === EFormMode.Add
+        ? t('tasks.add_task')
+        : t('tasks.edit_task'));
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -209,19 +223,7 @@ export const AssignmentTaskForm: FC<Props> = ({
       endDate: assignment?.endDate ?? initialDate,
       time: assignment?.time ?? '09:00',
       repeats: isHabit || isRepeating,
-      weekDays:
-        assignment?.repeat?.weekDays ??
-        (isHabit
-          ? [
-            WeekDay.Mon,
-            WeekDay.Tue,
-            WeekDay.Wed,
-            WeekDay.Thu,
-            WeekDay.Fri,
-            WeekDay.Sat,
-            WeekDay.Sun,
-          ]
-          : []),
+      weekDays: assignment?.repeat?.weekDays ?? (isHabit ? ALL_WEEK_DAYS : []),
       baseTaskId: '',
       withSubtasks: (assignment?.subtasks?.length ?? 0) > 0,
       subtasks:
@@ -237,6 +239,16 @@ export const AssignmentTaskForm: FC<Props> = ({
   const repeats = watch('repeats');
   const withSubtasks = watch('withSubtasks');
   const selectedColor = watch('color');
+  const effectiveRepeats = isHabit || repeats;
+
+  useEffect(() => {
+    if (!isHabit) {
+      return;
+    }
+
+    setValue('repeats', true);
+    setValue('weekDays', ALL_WEEK_DAYS);
+  }, [isHabit, setValue]);
 
   const { fields: subtaskFields, append, remove } = useFieldArray({
     control,
@@ -265,17 +277,18 @@ export const AssignmentTaskForm: FC<Props> = ({
 
   useEffect(() => {
     const sub = watch(() => {
-      const valid = buildSchema(getValues().repeats).safeParse(getValues())
-        .success;
+      const valid = buildSchema(isHabit || getValues().repeats, !!isHabit).safeParse(
+        getValues(),
+      ).success;
       onValidityChange?.(valid);
     });
 
     onValidityChange?.(
-      buildSchema(getValues().repeats).safeParse(getValues()).success,
+      buildSchema(isHabit || getValues().repeats, !!isHabit).safeParse(getValues()).success,
     );
 
     return () => sub.unsubscribe();
-  }, [watch, getValues, onValidityChange]);
+  }, [watch, getValues, onValidityChange, isHabit]);
 
   const handleBaseTaskChange = (baseTaskId: string) => {
     setValue('baseTaskId', baseTaskId);
@@ -295,7 +308,11 @@ export const AssignmentTaskForm: FC<Props> = ({
   };
 
   const onSubmit = (values: FormValues) => {
-    const parsed = buildSchema(values.repeats).safeParse(values);
+    const repeatsForSave = isHabit || values.repeats;
+    const valuesForValidation = isHabit
+      ? { ...values, repeats: true, weekDays: ALL_WEEK_DAYS }
+      : values;
+    const parsed = buildSchema(repeatsForSave, !!isHabit).safeParse(valuesForValidation);
 
     if (!parsed.success) {
       parsed.error.issues.forEach(issue => {
@@ -319,16 +336,28 @@ export const AssignmentTaskForm: FC<Props> = ({
       color: parsed.data.color,
       startDate: parsed.data.startDate,
       time: parsed.data.time,
-      isHabit,
-      repeat: parsed.data.repeats
+      isHabit: isHabit ? true : undefined,
+      repeat: isHabit
         ? {
           type: ETaskRepeatType.Week,
-          weekDays: parsed.data.weekDays,
+          weekDays: ALL_WEEK_DAYS,
         }
-        : {
-          type: ETaskRepeatType.None,
-        },
-      endDate: parsed.data.repeats ? parsed.data.endDate : undefined,
+        : repeatsForSave
+          ? {
+            type: ETaskRepeatType.Week,
+            weekDays: parsed.data.weekDays,
+          }
+          : {
+            type: ETaskRepeatType.None,
+          },
+      endDate: isHabit
+        ? parsed.data.endDate?.trim() &&
+          parsed.data.endDate !== parsed.data.startDate
+          ? parsed.data.endDate
+          : undefined
+        : repeatsForSave
+          ? parsed.data.endDate
+          : undefined,
       subtasks: parsed.data.withSubtasks
         ? parsed.data.subtasks
           .filter(subtask => subtask.label.trim().length > 0)
@@ -588,18 +617,22 @@ export const AssignmentTaskForm: FC<Props> = ({
 
             <Space size={16} />
 
-            <View style={styles.switchRow}>
-              <Text style={styles.switchLabel}>{t('tasks.repeats')}</Text>
-              <Controller
-                control={control}
-                name="repeats"
-                render={({ field: { value, onChange } }) => (
-                  <Switch value={value} onValueChange={onChange} />
-                )}
-              />
-            </View>
+            {!isHabit && (
+              <>
+                <View style={styles.switchRow}>
+                  <Text style={styles.switchLabel}>{t('tasks.repeats')}</Text>
+                  <Controller
+                    control={control}
+                    name="repeats"
+                    render={({ field: { value, onChange } }) => (
+                      <Switch value={value} onValueChange={onChange} />
+                    )}
+                  />
+                </View>
 
-            <Space size={12} />
+                <Space size={12} />
+              </>
+            )}
 
             <Controller
               control={control}
@@ -624,7 +657,7 @@ export const AssignmentTaskForm: FC<Props> = ({
 
             <Space size={12} />
 
-            {repeats && (
+            {effectiveRepeats && (
               <>
                 <Controller
                   control={control}
@@ -633,7 +666,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                     <>
                       <TextInput
                         label={t('tasks.end_date')}
-                        value={value}
+                        value={value ?? ''}
                         onChangeText={onChange}
                         placeholder="YYYY-MM-DD"
                         mode="outlined"
@@ -669,7 +702,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               )}
             />
 
-            {repeats && (
+            {effectiveRepeats && (
               <>
                 <Space size={12} />
                 <Controller
@@ -678,11 +711,12 @@ export const AssignmentTaskForm: FC<Props> = ({
                   render={({ field: { value, onChange } }) => (
                     <>
                       <WeekDaySelector
-                        value={value}
+                        value={isHabit ? ALL_WEEK_DAYS : value}
                         onChange={onChange}
                         color={selectedColor}
+                        readOnly={isHabit}
                       />
-                      {!!errors.weekDays && (
+                      {!isHabit && !!errors.weekDays && (
                         <Text style={styles.errorText}>
                           {errors.weekDays.message}
                         </Text>
