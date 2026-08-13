@@ -1,9 +1,9 @@
 export enum ETaskStatus {
-  Pending = 'pending',
-  Completed = 'completed',
-  Approved = 'approved',
-  Rejected = 'rejected',
-  Cancelled = 'cancelled',
+  Pending = 'pending', // gray
+  Completed = 'completed', // green
+  Approved = 'approved', // gold
+  Rejected = 'rejected', // red
+  // Cancelled = 'cancelled', // gray
 }
 
 export enum ETaskRepeatType {

@@ -147,10 +147,10 @@ export const userColors = {
   orange500: Colors.orange500, // #F97316
   yellow400: Colors.yellow400, // #FACC15
   gold500: Colors.gold500, // #FBB03B
-  green500: Colors.green500, // #10B981     
-  green700: Colors.green700, // #047857
   teal700: Colors.teal700, // #14B8A6
+  green500: Colors.green500, // #10B981     
   brightGreen500: Colors.brightGreen500, // #1AFF3F
-  blueGray: '#607D8B',
+  green700: Colors.green700, // #047857
+  blueGray: '#607D8B', // #607D8B
   grey700: Colors.grey700, // #374151
 }

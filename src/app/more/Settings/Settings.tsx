@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import CheckIcon from '~/assets/svg/common/check.svg';
 import { ScreenHeader } from '~/components/blocks';
-import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { SCREEN_TEXT } from '~/constants/formField';
 import { LocalizationService, t } from '~/services/localization/localization';
 import { selectLang } from '~/store/settings/selectors';
@@ -15,6 +14,7 @@ import { syncTaskBaseTranslations } from '~/store/taskBase/slice';
 import { useStyle } from '~/styles';
 import { ELang } from '~/types/ELang';
 
+import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import themedStyles from './styles';
 
 export default function Settings() {

@@ -9,25 +9,26 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import PlusIcon from '~/assets/svg/common/plus.svg';
 import { ScreenHeaderWithLogo, SelectUserPrompt } from '~/components/blocks';
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { TaskCalendarHeader } from '~/components/tasks/TaskCalendarHeader';
 import { TaskListItem } from '~/components/tasks/TaskListItem';
+import { TaskScreenFabs } from '~/components/tasks/TaskScreenFabs';
 import { Text } from '~/components/ui';
-import { IconButton } from '~/components/ui/IconButton';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
+import { useHasCompletedTasksInPast } from '~/hooks/useHasCompletedTasksInPast';
 import { t } from '~/services';
 import { ERole } from '~/store/settings/enums';
 import { selectCurrentRole, selectCurrentUser } from '~/store/settings/selectors';
+import { PAST_COMPLETED_SEARCH_DAYS } from '~/store/tasks/taskFilters';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
 import {
   ScheduledTaskItem,
   selectScheduledTasksForDate,
 } from '~/store/tasks/selectors';
 import { generateTasksForDate } from '~/store/tasks/slice';
-import { Colors } from '~/styles';
 import { EScreens } from '~/types';
+import { ETaskStatus } from '~/types/ETask';
 
 export default function Habits() {
   const router = useRouter();
@@ -81,6 +82,21 @@ export default function Habits() {
       `/${EScreens.TaskAssignmentAdd}?date=${selectedDate}&isHabit=true` as any,
     );
   }, [router, selectedDate]);
+
+  const showCompletedHistory = useHasCompletedTasksInPast(true);
+
+  const handleOpenCompletedHistory = useCallback(() => {
+    router.push({
+      pathname: `/${EScreens.FilteredTasks}`,
+      params: {
+        startDate: format(subDays(new Date(), PAST_COMPLETED_SEARCH_DAYS), 'yyyy-MM-dd'),
+        endDate: format(subDays(new Date(), 1), 'yyyy-MM-dd'),
+        status: ETaskStatus.Completed,
+        isHabit: 'true',
+        ...(isChild && currentUserId ? { childId: currentUserId } : {}),
+      },
+    } as any);
+  }, [router, isChild, currentUserId]);
 
   const handlePressHabit = useCallback(
     (item: ScheduledTaskItem) => {
@@ -142,16 +158,13 @@ export default function Habits() {
             style={styles.list}
           />
 
-          {!isChild && (
-            <View style={styles.fab}>
-              <IconButton
-                Icon={<PlusIcon width={32} height={32} fill="#FFFFFF" />}
-                onPress={handleAddHabit}
-                size={56}
-              />
-            </View>
-          )}
-        </View>
+        <TaskScreenFabs
+          showAdd={!isChild}
+          onAdd={handleAddHabit}
+          showCompletedHistory={showCompletedHistory}
+          onOpenCompletedHistory={handleOpenCompletedHistory}
+        />
+      </View>
       )}
     </SafeAreaBgImage>
   );
@@ -180,25 +193,5 @@ const styles = StyleSheet.create({
     marginTop: 24,
     textAlign: 'center',
     opacity: 0.6,
-  },
-
-  fab: {
-    position: 'absolute',
-    right: 16,
-    bottom: 8,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: Colors.blue500,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 6,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 6,
   },
 });

@@ -110,7 +110,7 @@ export const selectScheduledTasksForDate = (
         }),
   );
 
-const buildTaskListItemViewFromParts = (
+export const buildTaskListItemViewFromParts = (
   id: string,
   assignmentId: string,
   date: string,

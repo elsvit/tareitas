@@ -163,6 +163,8 @@
     "add_subtask": "Add subtask",
     "subtasks_required": "Add at least one subtask",
     "done": "Done",
+    "completed_history": "Completed Tasks",
+    "no_filtered_tasks": "No tasks found",
     "baseTasks": {
       "brushTeethEvening": "Brush teeth in the evening",
       "brushTeethEveningDescription": "Brush teeth in the evening",
@@ -241,7 +243,8 @@
     "title": "Habits",
     "no_habits": "No habits yet",
     "add_habit": "Add Habit",
-    "edit_habit": "Edit Habit"
+    "edit_habit": "Edit Habit",
+    "completed_history": "Completed Habits"
   },
   "rewards": {
     "title": "Rewards",

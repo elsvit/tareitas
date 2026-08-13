@@ -163,6 +163,8 @@
     "add_subtask": "Añadir subtarea",
     "subtasks_required": "Añade al menos una subtarea",
     "done": "Hecho",
+    "completed_history": "Tareas completadas",
+    "no_filtered_tasks": "No se encontraron tareas",
     "baseTasks": {
       "brushTeethEvening": "Cepillarse los dientes en la tarde",
       "brushTeethEveningDescription": "Cepillarse los dientes en la tarde",
@@ -241,7 +243,8 @@
     "title": "Hábitos",
     "no_habits": "No hay rutinas todavía",
     "add_habit": "Añadir Hábito",
-    "edit_habit": "Editar Hábito"
+    "edit_habit": "Editar Hábito",
+    "completed_history": "Hábitos completados"
   },
   "rewards": {
     "title": "Premio",
