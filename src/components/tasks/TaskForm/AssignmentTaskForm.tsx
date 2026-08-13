@@ -8,10 +8,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
-import CrossIcon from '~/assets/svg/common/cross.svg';
 import bgImgSrc from '~/assets/img/bg.png';
-import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
+import CrossIcon from '~/assets/svg/common/cross.svg';
 import { ScreenHeader } from '~/components/blocks';
+import { SafeAreaBackground } from '~/components/blocks/SafeAreaBackground';
 import { DeleteModal } from '~/components/modals';
 import { WeekDaySelector } from '~/components/tasks/WeekDaySelector';
 import {
@@ -512,7 +512,7 @@ export const AssignmentTaskForm: FC<Props> = ({
             <Space size={16} />
 
             <View style={styles.switchRow}>
-              <Text style={styles.switchLabel}>{t('tasks.with_subtasks')}</Text>
+              <Text style={styles.switchLabel}>{t('tasks.subtasks')}</Text>
               <Controller
                 control={control}
                 name="withSubtasks"
@@ -533,55 +533,57 @@ export const AssignmentTaskForm: FC<Props> = ({
 
             {withSubtasks && (
               <>
-                <Space size={12} />
-                {subtaskFields.map((field, index) => (
-                  <View key={field.id} style={styles.subtaskFieldRow}>
-                    <Controller
-                      control={control}
-                      name={`subtasks.${index}.label`}
-                      render={({ field: { value, onChange } }) => (
-                        <TextInput
-                          label={t('tasks.subtask_label')}
-                          value={value}
-                          onChangeText={onChange}
-                          mode="outlined"
-                          multiline
-                          numberOfLines={2}
-                          style={styles.subtaskInput}
-                        />
-                      )}
-                    />
-                    <View style={styles.subtaskRemoveWrap}>
-                      <IconButton
-                        onPress={() => remove(index)}
-                        disabled={subtaskFields.length === 1}
-                        accessibilityLabel={t('button.delete')}
-                        size={56}
-                        borderRadius={12}
-                        style={styles.subtaskRemoveButton}
-                        Icon={
-                          <CrossIcon
-                            width={22}
-                            height={22}
-                            fill={Colors.grey700}
+                <Space size={4} />
+                <View style={styles.subtasksContainer}>
+                  {subtaskFields.map((field, index) => (
+                    <View key={field.id} style={styles.subtaskFieldRow}>
+                      <Controller
+                        control={control}
+                        name={`subtasks.${index}.label`}
+                        render={({ field: { value, onChange } }) => (
+                          <TextInput
+                            label={`${t('tasks.subtask_label')} ${index + 1}`}
+                            value={value}
+                            onChangeText={onChange}
+                            mode="outlined"
+                            multiline
+                            numberOfLines={2}
+                            style={styles.subtaskInput}
                           />
-                        }
+                        )}
                       />
+                      <View style={styles.subtaskRemoveWrap}>
+                        <IconButton
+                          onPress={() => remove(index)}
+                          disabled={subtaskFields.length === 1}
+                          accessibilityLabel={t('button.delete')}
+                          size={56}
+                          borderRadius={12}
+                          style={styles.subtaskRemoveButton}
+                          Icon={
+                            <CrossIcon
+                              width={22}
+                              height={22}
+                              fill={Colors.grey700}
+                            />
+                          }
+                        />
+                      </View>
                     </View>
-                  </View>
-                ))}
-                <Space size={8} />
-                <Button
-                  mode="outlined"
-                  onPress={() => append({ value: uuidv4(), label: '' })}
-                >
-                  {t('tasks.add_subtask')}
-                </Button>
-                {!!errors.subtasks && (
-                  <Text style={styles.errorText}>
-                    {errors.subtasks.message as string}
-                  </Text>
-                )}
+                  ))}
+                  <Space size={8} />
+                  <Button
+                    mode="contained"
+                    onPress={() => append({ value: uuidv4(), label: '' })}
+                  >
+                    {t('tasks.add_subtask')}
+                  </Button>
+                  {!!errors.subtasks && (
+                    <Text style={styles.errorText}>
+                      {errors.subtasks.message as string}
+                    </Text>
+                  )}
+                </View>
               </>
             )}
 

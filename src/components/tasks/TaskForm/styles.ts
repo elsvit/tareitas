@@ -48,6 +48,15 @@ export const styles = StyleSheet.create({
   label: {
     marginBottom: 8,
   },
+  subtasksContainer: {
+    paddingHorizontal: 8,
+    paddingTop: 4,
+    paddingBottom: 8,
+    borderWidth: 1,
+    borderColor: Colors.grey200,
+    borderRadius: 12,
+    backgroundColor: Colors.grey100,
+  },
   subtaskFieldRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -56,7 +65,8 @@ export const styles = StyleSheet.create({
   },
   subtaskInput: {
     flex: 1,
-    minHeight: 72,
+    minHeight: 32,
+    fontSize: 14,
   },
   subtaskRemoveWrap: {
     width: 48,
