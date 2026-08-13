@@ -250,6 +250,7 @@
     "title": "Rewards",
     "add_reward": "Add Reward",
     "base_rewards": "Base Rewards",
+    "base_reward_template": "Use base reward",
     "delete_reward": "Delete Reward",
     "delete_reward_confirm": "Are you sure you want to delete this reward?",
     "edit_reward": "Edit Reward",
@@ -257,7 +258,46 @@
     "reward": "Reward",
     "reward_positive": "Reward must be ≥ 0",
     "reset_base_rewards": "Reset Reward Templates",
-    "reset_base_rewards_confirm": "Are you sure you want to reset reward templates?"
+    "reset_base_rewards_confirm": "Are you sure you want to reset reward templates?",
+    "children": "Children",
+    "all_children": "All children",
+    "select_children": "Select at least one child",
+    "current_rewards": "Current rewards",
+    "current_reward": "Current Reward",
+    "no_rewards": "No rewards yet",
+    "no_selected": "No selected rewards",
+    "no_approved": "No approved rewards",
+    "no_history": "No history yet",
+    "initial_reward": "Initial reward",
+    "month_reward": "Month reward",
+    "approve_period": "Approve period",
+    "approve_period_confirm": "Close reward periods through this month and carry forward balances for all open months?",
+    "approve_month": "Approve month",
+    "set_initial_reward": "Set initial reward",
+    "set_initial_reward_confirm": "You are changing the real initial reward balance. Continue?",
+    "tabs": {
+      "selected": "Selected",
+      "approved": "Approved",
+      "rewards": "Rewards",
+      "history": "History"
+    },
+    "status": {
+      "available": "Available",
+      "not_enough_stars": "Not enough stars",
+      "pending": "Pending",
+      "selected": "Selected",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "action": {
+      "select": "Select",
+      "redeem_again": "Redeem Again",
+      "enjoy_it": "Enjoy it",
+      "redeemed": "Redeemed",
+      "reject": "Reject",
+      "approve": "Approve",
+      "complete": "Complete"
+    }
   },
   "baseRewards": {
     "choose_desert": "Choose tonight’s dessert",

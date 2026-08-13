@@ -1,5 +1,6 @@
 export * from './ELang';
 export * from './ENavigation';
+export * from './EReward';
 export * from './ETask';
 export * from './IChild';
 export * from './ICommon';

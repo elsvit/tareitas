@@ -22,4 +22,10 @@ export const styles = StyleSheet.create({
     color: Colors.red500,
     marginTop: spacing(1),
   },
+  checkboxRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 4,
+  },
 });

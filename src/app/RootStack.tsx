@@ -17,9 +17,8 @@ import {
   Rubik_700Bold,
 } from '@expo-google-fonts/rubik';
 import {
-  DarkTheme,
   DefaultTheme,
-  ThemeProvider,
+  ThemeProvider
 } from '@react-navigation/native';
 import type { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
@@ -35,7 +34,7 @@ import { AppDispatch } from '~/store';
 import { selectParentIds } from '~/store/parents/selectors';
 import { initLanguage } from '~/store/settings';
 import { selectIsLangInitiating, selectLang } from '~/store/settings/selectors';
-import { darkPaperTheme, lightPaperTheme } from '~/styles/paperTheme';
+import { lightPaperTheme } from '~/styles/paperTheme';
 import { EScreens } from '~/types';
 import { ELang } from '~/types/ELang';
 
@@ -89,9 +88,12 @@ export default function RootStack() {
   //   initialRouteName,
   // );
 
+  // <PaperProvider theme={colorScheme === 'dark' ? darkPaperTheme : lightPaperTheme}>
+  // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+
   return (
-    <PaperProvider theme={colorScheme === 'dark' ? darkPaperTheme : lightPaperTheme}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <PaperProvider theme={lightPaperTheme}>
+      <ThemeProvider value={DefaultTheme}>
         <Stack
           key={`stack-${lang}`}
         // initialRouteName={initialRouteName}
@@ -145,8 +147,6 @@ export default function RootStack() {
           <Stack.Screen name={EScreens.BaseTaskAdd} options={{ headerShown: false }} />
           <Stack.Screen name={EScreens.BaseTaskEdit} options={{ headerShown: false }} />
           <Stack.Screen name={EScreens.Tasks} options={minimalHeaderBackOptions} />
-          <Stack.Screen name={EScreens.TaskAdd} options={{ headerShown: false }} />
-          <Stack.Screen name={EScreens.TaskEdit} options={{ headerShown: false }} />
           <Stack.Screen
             name={EScreens.TaskAssignmentAdd}
             options={{ headerShown: false }}
@@ -169,6 +169,14 @@ export default function RootStack() {
           />
           <Stack.Screen
             name={EScreens.BaseRewardEdit}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={EScreens.RewardAdd}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={EScreens.RewardEdit}
             options={{ headerShown: false }}
           />
         </Stack>

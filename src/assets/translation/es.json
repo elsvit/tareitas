@@ -250,6 +250,7 @@
     "title": "Premio",
     "add_reward": "Añadir Premio",
     "base_rewards": "Premios Básicos",
+    "base_reward_template": "Usar premio básico",
     "delete_reward": "Eliminar Premio",
     "delete_reward_confirm": "¿Estás seguro de querer eliminar este premio?",
     "edit_reward": "Editar Premio",
@@ -257,7 +258,46 @@
     "reward": "Premio",
     "reward_positive": "La recompensa debe ser ≥ 0",
     "reset_base_rewards": "Reiniciar Plantillas de Premios",
-    "reset_base_rewards_confirm": "¿Estás seguro de querer reiniciar las plantillas de premios?"
+    "reset_base_rewards_confirm": "¿Estás seguro de querer reiniciar las plantillas de premios?",
+    "children": "Niños",
+    "all_children": "Todos los niños",
+    "select_children": "Selecciona al menos un niño",
+    "current_rewards": "Premios actuales",
+    "current_reward": "Premio actual",
+    "no_rewards": "No hay premios todavía",
+    "no_selected": "No hay premios seleccionados",
+    "no_approved": "No hay premios aprobados",
+    "no_history": "No hay historial todavía",
+    "initial_reward": "Premio inicial",
+    "month_reward": "Premio del mes",
+    "approve_period": "Aprobar periodo",
+    "approve_period_confirm": "¿Cerrar los periodos de premios hasta este mes y arrastrar los saldos de todos los meses abiertos?",
+    "approve_month": "Aprobar mes",
+    "set_initial_reward": "Establecer premio inicial",
+    "set_initial_reward_confirm": "Estás cambiando el saldo real del premio inicial. ¿Continuar?",
+    "tabs": {
+      "selected": "Seleccionados",
+      "approved": "Aprobados",
+      "rewards": "Premios",
+      "history": "Historial"
+    },
+    "status": {
+      "available": "Disponible",
+      "not_enough_stars": "No hay suficientes estrellas",
+      "pending": "Pendiente",
+      "selected": "Seleccionado",
+      "approved": "Aprobado",
+      "rejected": "Rechazado"
+    },
+    "action": {
+      "select": "Seleccionar",
+      "redeem_again": "Canjear de nuevo",
+      "enjoy_it": "Disfrútalo",
+      "redeemed": "Canjeado",
+      "reject": "Rechazar",
+      "approve": "Aprobar",
+      "complete": "Completar"
+    }
   },
   "baseRewards": {
     "choose_desert": "Elegir el postre de esta noche",
