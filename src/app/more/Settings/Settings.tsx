@@ -1,45 +1,105 @@
-import React from 'react';
-import { ScrollView, View } from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import { ScrollView } from 'react-native';
 
-import { List } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CheckIcon from '~/assets/svg/common/check.svg';
 import { ScreenHeader } from '~/components/blocks';
-import { SCREEN_TEXT } from '~/constants/formField';
+import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
+import { SettingsSection, SettingsSections } from '~/components/settings';
 import { LocalizationService, t } from '~/services/localization/localization';
-import { selectLang } from '~/store/settings/selectors';
-import { setLanguage } from '~/store/settings/slice';
+import { ERole } from '~/store/settings/enums';
+import {
+  selectCurrentRole,
+  selectIsChildPasswordObligatory,
+  selectLang,
+} from '~/store/settings/selectors';
+import {
+  setIsChildPasswordObligatory,
+  setLanguage,
+} from '~/store/settings/slice';
 import { syncTaskBaseTranslations } from '~/store/taskBase/slice';
 import { useStyle } from '~/styles';
 import { ELang } from '~/types/ELang';
 
-import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import themedStyles from './styles';
+
+const LANGUAGES = [
+  { code: ELang.es, name: 'Español' },
+  { code: ELang.en, name: 'English' },
+] as const;
 
 export default function Settings() {
   const dispatch = useDispatch();
-
   const [styles] = useStyle(themedStyles);
+
   const currentLang = useSelector(selectLang);
+  const currentRole = useSelector(selectCurrentRole);
+  const isChildPasswordObligatory = useSelector(selectIsChildPasswordObligatory);
+  const isAdmin = currentRole === ERole.admin;
 
-  const handleLanguageChange = async (selectedLang: ELang) => {
-    // Update Redux store
-    if (selectedLang === currentLang) return;
-    try {
-      await LocalizationService.changeLanguage(selectedLang);
-      dispatch(setLanguage(selectedLang));
-      dispatch(syncTaskBaseTranslations());
-    } catch (error) {
-      // Handle error if needed
-      console.error('Language change failed:', error);
-    }
-  };
+  const handleLanguageChange = useCallback(
+    async (selectedLang: ELang) => {
+      if (selectedLang === currentLang) {
+        return;
+      }
 
-  const languages = [
-    { code: ELang.es, name: 'Español' },
-    { code: ELang.en, name: 'English' },
-  ];
+      try {
+        await LocalizationService.changeLanguage(selectedLang);
+        dispatch(setLanguage(selectedLang));
+        dispatch(syncTaskBaseTranslations());
+      } catch (error) {
+        console.error('Language change failed:', error);
+      }
+    },
+    [currentLang, dispatch],
+  );
+
+  const handleChildPasswordObligatoryChange = useCallback(
+    (value: boolean) => {
+      dispatch(setIsChildPasswordObligatory(value));
+    },
+    [dispatch],
+  );
+
+  const sections = useMemo((): SettingsSection[] => {
+    const allSections: SettingsSection[] = [
+      {
+        id: 'language',
+        title: t('settings.language'),
+        items: LANGUAGES.map(language => ({
+          type: 'select',
+          id: language.code,
+          title: language.name,
+          selected: currentLang === language.code,
+          onPress: () => {
+            void handleLanguageChange(language.code);
+          },
+        })),
+      },
+      {
+        id: 'children',
+        title: t('settings.children'),
+        visible: isAdmin,
+        items: [
+          {
+            type: 'switch',
+            id: 'child-password-obligatory',
+            title: t('settings.child_password_obligatory'),
+            value: isChildPasswordObligatory,
+            onValueChange: handleChildPasswordObligatoryChange,
+          },
+        ],
+      },
+    ];
+
+    return allSections.filter(section => section.visible !== false);
+  }, [
+    currentLang,
+    handleChildPasswordObligatoryChange,
+    handleLanguageChange,
+    isAdmin,
+    isChildPasswordObligatory,
+  ]);
 
   return (
     <SafeAreaBgImage>
@@ -48,38 +108,13 @@ export default function Settings() {
         title={t('settings.title')}
         containerStyle={styles.screenHeader}
       />
-      <ScrollView>
-        <List.Section>
-          <List.Subheader style={styles.listSubheader}>
-            {t('settings.language')}
-          </List.Subheader>
-          {languages.map(language => {
-            const isChecked = currentLang === language.code;
-            const onPress = () => handleLanguageChange(language.code);
-
-            const renderLeft = () => (
-              <View style={styles.checkboxStyle}>
-                {isChecked ? <CheckIcon /> : null}
-              </View>
-            );
-
-            return (
-              <List.Item
-                key={language.code}
-                title={language.name}
-                style={styles.item}
-                titleStyle={{
-                  ...styles.titleStyle,
-                  color: isChecked
-                    ? SCREEN_TEXT.primary
-                    : SCREEN_TEXT.secondary,
-                }}
-                onPress={onPress}
-                left={renderLeft}
-              />
-            );
-          })}
-        </List.Section>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+      >
+        <SettingsSections sections={sections} />
       </ScrollView>
     </SafeAreaBgImage>
   );

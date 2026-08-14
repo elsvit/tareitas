@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from '~/components/ui/Loading';
 import { SCREEN_TEXT } from '~/constants/formField';
 import { useColorScheme } from '~/hooks/use-color-scheme';
+import { usePruneOrphanedTaskAssignments } from '~/hooks/usePruneOrphanedTaskAssignments';
 import { AppDispatch } from '~/store';
 import { selectParentIds } from '~/store/parents/selectors';
 import { initLanguage } from '~/store/settings';
@@ -41,6 +42,8 @@ import { ELang } from '~/types/ELang';
 export default function RootStack() {
   const colorScheme = useColorScheme();
   const dispatch = useDispatch<AppDispatch>();
+
+  usePruneOrphanedTaskAssignments();
 
   const lang = useSelector(selectLang) ?? ELang.es;
 

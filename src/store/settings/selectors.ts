@@ -13,6 +13,10 @@ export const selectIsLangInitiating = (state: RootStateT) =>
 export const selectIsRecurringTabSeparated = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>).isHabitsTabSeparated;
 
+export const selectIsChildPasswordObligatory = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .isChildPasswordObligatory ?? true;
+
 export const selectCurrentUser = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>).currentUser;
 

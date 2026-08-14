@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { useRouter } from 'expo-router';
-import { useDispatch } from 'react-redux';
+import { Redirect, useRouter } from 'expo-router';
+import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { ScreenHeader } from '~/components/blocks';
@@ -15,6 +15,7 @@ import { Welcome1, Welcome2, Welcome3 } from '~/components/welcomeSteps';
 import { t } from '~/services';
 import { addChild, clearChildren } from '~/store/children/slice';
 import { addParent, clearParents } from '~/store/parents/slice';
+import { selectParentIds } from '~/store/parents/selectors';
 import { ERole } from '~/store/settings/enums';
 import { setCurrentRole, setCurrentUser } from '~/store/settings/slice';
 import { Colors, spacing } from '~/styles';
@@ -25,6 +26,7 @@ import { ParentFormProps } from '~/types/IParent';
 export default function WelcomeSteps() {
   const dispatch = useDispatch();
   const router = useRouter();
+  const parentIds = useSelector(selectParentIds);
 
   const [step, setStep] = useState(0);
   const [isParentValid, setIsParentValid] = useState(false);
@@ -102,6 +104,10 @@ export default function WelcomeSteps() {
   const isNextDisabled =
     (step === 3 && (!isParentValid || !parent.name)) ||
     (step === 4 && (!isChildValid || !child?.name));
+
+  if (parentIds.length > 0) {
+    return <Redirect href="/(tabs)/Tasks" />;
+  }
 
   return (
     <SafeAreaBgImage>

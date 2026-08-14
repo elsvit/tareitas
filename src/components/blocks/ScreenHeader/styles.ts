@@ -23,6 +23,15 @@ export const styles = StyleSheet.create({
   leftButton: {
     marginRight: 12,
   },
+  backButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.35)',
+    marginRight: 12,
+  },
   titleContainer: {
     flex: 1,
     alignItems: 'center',

@@ -1,10 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { REHYDRATE } from 'redux-persist';
+
 import { ITaskAssignment } from '~/types/ITask';
 import { EStateName } from '~/store/enums';
 import {
   createEntityReducers,
   createGenericEntityAdapter,
 } from '~/store/helpers';
+import { removeChild } from '~/store/children/slice';
+import type { IState } from '~/store/types';
+
+import { pruneOrphanedTaskAssignmentsInState } from './taskAssignmentCleanup';
 import {
   AddTaskAssignmentPayload,
   IStateTaskAssignment,
@@ -88,6 +94,34 @@ export const taskAssignmentSlice = createSlice({
     clearTaskAssignment: (state) => {
       entityReducers.clearEntities(state);
     },
+    pruneOrphanedTaskAssignments: (
+      state,
+      action: PayloadAction<{ validChildIds: string[] }>,
+    ) => {
+      pruneOrphanedTaskAssignmentsInState(state, action.payload.validChildIds);
+    },
+  },
+  extraReducers: builder => {
+    builder.addCase(removeChild, (state, action) => {
+      const childId = action.payload.id;
+      const idsToRemove = state.ids.filter(
+        id => state.entities[id]?.childId === childId,
+      );
+
+      if (idsToRemove.length > 0) {
+        taskAssignmentAdapter.removeMany(state, idsToRemove);
+      }
+    });
+
+    builder.addCase(REHYDRATE, (state, action) => {
+      const payload = (action as { payload?: IState }).payload;
+
+      if (!payload?.children) {
+        return;
+      }
+
+      pruneOrphanedTaskAssignmentsInState(state, payload.children.ids);
+    });
   },
 });
 
@@ -99,4 +133,5 @@ export const {
   removeTaskAssignment,
   removeTaskAssignmentSuccess,
   clearTaskAssignment,
+  pruneOrphanedTaskAssignments,
 } = taskAssignmentSlice.actions;

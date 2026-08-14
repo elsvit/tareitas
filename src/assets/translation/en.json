@@ -83,7 +83,9 @@
   },
   "settings": {
     "title": "Settings",
-    "language": "Language"
+    "language": "Language",
+    "children": "Children",
+    "child_password_obligatory": "Child password required"
   },
   "users": {
     "title": "Users",
@@ -264,8 +266,8 @@
     "select_children": "Select at least one child",
     "current_rewards": "Current rewards",
     "current_reward": "Current Reward",
-    "no_rewards": "No rewards yet",
-    "no_selected": "No selected rewards",
+    "no_rewards": "No rewards yet. Push the button to add a reward",
+    "no_selected": "Child hasn't selected any rewards yet",
     "no_approved": "No approved rewards",
     "no_history": "No history yet",
     "initial_reward": "Initial reward",
