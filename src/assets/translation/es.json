@@ -34,6 +34,19 @@
     "save": "Guardar",
     "submit": "Enviar"
   },
+  "imageLoader": {
+    "label": "Foto personalizada",
+    "add": "Añadir foto",
+    "change": "Cambiar foto",
+    "remove": "Eliminar foto",
+    "load_photo": "Cargar foto",
+    "loaded_photos": "Fotos cargadas",
+    "choose_from_gallery": "Elige una foto de tu dispositivo",
+    "choose_photo": "Elegir foto",
+    "edit_photo": "Editar foto",
+    "crop_hint": "Arrastra y pellizca para elegir el área cuadrada al seleccionar la foto.",
+    "adjust_crop": "Ajustar recorte"
+  },
   "time": {
     "day": "día",
     "days": "días",
@@ -79,7 +92,12 @@
   },
   "more": {
     "title": "Más",
-    "language": "Idioma"
+    "language": "Idioma",
+    "loaded_images": "Imágenes cargadas",
+    "loaded_images_empty": "No hay fotos cargadas",
+    "remove_loaded_image": "Eliminar foto",
+    "remove_loaded_image_title": "¿Eliminar foto?",
+    "remove_loaded_image_message": "Esta foto se eliminará del teléfono y no se puede deshacer."
   },
   "settings": {
     "title": "Ajustes",

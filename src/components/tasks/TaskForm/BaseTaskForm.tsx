@@ -16,7 +16,7 @@ import {
   Text,
   TextInput,
 } from '~/components/ui';
-import { SelectImage } from '~/components/ui/SelectImage/SelectImage';
+import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWithCustom';
 import { getTaskImageOptions } from '~/constants/tasks';
 import { t } from '~/services';
 import { removeTaskBase } from '~/store/taskBase/slice';
@@ -226,15 +226,12 @@ export const BaseTaskForm: FC<Props> = ({
               control={control}
               name="picture"
               render={({ field: { value, onChange } }) => (
-                <SelectImage
+                <SelectImageWithCustom
+                  kind="task"
                   options={taskImageOptions}
                   value={value}
                   onChange={onChange}
-                // errorMessage={
-                //   // errors?.avatar?.message || requiredMessage
-                // }
                 />
-
               )}
             />
 

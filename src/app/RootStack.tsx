@@ -113,6 +113,11 @@ export default function RootStack() {
           />
 
           <Stack.Screen
+            name="more/LoadedPhotos/LoadedPhotos"
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
             name="users/ParentAdd"
             options={{ headerShown: false }}
           />

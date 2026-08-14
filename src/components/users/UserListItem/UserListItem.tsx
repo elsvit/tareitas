@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { CHILDREN_AVATARS, PARENT_AVATARS } from '~/assets/img/users/users';
 import { Text } from '~/components/ui';
-
+import { selectUserImageUrls } from '~/store/images';
 import { t } from '~/services';
 import { EFamilyRole } from '~/store/settings/enums';
 import { lightenColor } from '~/utils/color';
+import { resolvePictureSource } from '~/utils/pictureSource';
 
 const USER_AVATAR_MAP = Object.fromEntries(
   [...PARENT_AVATARS, ...CHILDREN_AVATARS].map(({ value, image }) => [
@@ -33,7 +35,7 @@ export const UserListItem: React.FC<Props> = ({
   color,
   onPress,
 }) => {
-  const isRemote = !!avatar && /^(https?:\/\/|data:)/.test(avatar);
+  const userUrls = useSelector(selectUserImageUrls);
 
   const gradientColors = React.useMemo<
     readonly [string, string] | undefined
@@ -46,7 +48,7 @@ export const UserListItem: React.FC<Props> = ({
   const content = (
     <RowContent
       avatar={avatar}
-      isRemote={isRemote}
+      userUrls={userUrls}
       name={name}
       familyRole={familyRole}
       textColor={color}
@@ -112,7 +114,7 @@ const AVATAR_SIZE = 48;
 
 type RowProps = {
   avatar?: string;
-  isRemote: boolean;
+  userUrls: Record<string, string>;
   name: string;
   familyRole?: string;
   textColor?: string;
@@ -120,11 +122,16 @@ type RowProps = {
 
 const RowContent: React.FC<RowProps> = ({
   avatar,
-  isRemote,
+  userUrls,
   name,
   familyRole,
   textColor,
 }) => {
+  const avatarSource = useMemo(
+    () => resolvePictureSource(avatar, userUrls, USER_AVATAR_MAP),
+    [avatar, userUrls],
+  );
+
   const familyRoleText = React.useMemo(() => {
     switch (familyRole) {
       case EFamilyRole.mother:
@@ -159,24 +166,8 @@ const RowContent: React.FC<RowProps> = ({
   return (
     <View style={styles.row}>
       <View style={styles.avatarOuter}>
-        {avatar ? (
-          isRemote ? (
-            <Image source={{ uri: avatar }} style={styles.avatarImage} />
-          ) : USER_AVATAR_MAP[avatar] ? (
-            <Image
-              source={USER_AVATAR_MAP[avatar]}
-              style={styles.avatarImage}
-            />
-          ) : (
-            <View style={[styles.avatarImage, styles.avatarFallback]}>
-              <Text
-                style={[styles.avatarText, textColor && { color: textColor }]}
-                numberOfLines={1}
-              >
-                {name?.[0]?.toUpperCase() || '?'}
-              </Text>
-            </View>
-          )
+        {avatarSource ? (
+          <Image source={avatarSource} style={styles.avatarImage} />
         ) : (
           <View style={[styles.avatarImage, styles.avatarFallback]}>
             <Text

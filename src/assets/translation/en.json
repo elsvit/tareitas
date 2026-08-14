@@ -34,6 +34,19 @@
     "save": "Save",
     "submit": "Submit"
   },
+  "imageLoader": {
+    "label": "Custom photo",
+    "add": "Add photo",
+    "change": "Change photo",
+    "remove": "Remove photo",
+    "load_photo": "Load photo",
+    "loaded_photos": "Loaded photos",
+    "choose_from_gallery": "Choose a photo from your device",
+    "choose_photo": "Choose photo",
+    "edit_photo": "Edit photo",
+    "crop_hint": "Drag and pinch to choose the square area when selecting a photo.",
+    "adjust_crop": "Adjust crop"
+  },
   "time": {
     "day": "day",
     "days": "days",
@@ -79,7 +92,12 @@
   },
   "more": {
     "title": "More",
-    "language": "Language"
+    "language": "Language",
+    "loaded_images": "Loaded Images",
+    "loaded_images_empty": "No loaded photos",
+    "remove_loaded_image": "Remove photo",
+    "remove_loaded_image_title": "Remove photo?",
+    "remove_loaded_image_message": "This photo will be deleted from your phone and cannot be undone."
   },
   "settings": {
     "title": "Settings",

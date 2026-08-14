@@ -7,18 +7,19 @@ import { SvgProps } from 'react-native-svg';
 
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
+import ImageXIcon from '~/assets/svg/more/image-x.svg';
 import SettingsIcon from '~/assets/svg/more/settings.svg';
 import RewardsIcon from '~/assets/svg/rewards/rewards.svg';
 import TasksIcon from '~/assets/svg/tasks/tasks-open.svg';
 import UsersIcon from '~/assets/svg/users/users.svg';
 import { ScreenHeaderWithLogo, SelectUserPrompt } from "~/components/blocks";
+import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { SCREEN_TEXT } from '~/constants/formField';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { t } from '~/services';
 import { spacing, styleSheetFactory } from '~/styles';
 import { useStyle } from '~/styles/hooks';
 import { EScreens } from '~/types/ENavigation';
-import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 
 export interface IMoreItem {
   title: string;
@@ -56,6 +57,11 @@ export default function More() {
       title: t('rewards.base_rewards'),
       Icon: RewardsIcon,
       navigateTo: EScreens.BaseRewards,
+    },
+    {
+      title: t('more.loaded_images'),
+      Icon: ImageXIcon,
+      navigateTo: EScreens.LoadedPhotos,
     },
   ];
 
@@ -144,6 +150,11 @@ export default function More() {
                       style={styles.icon}
                       width={24}
                       height={24}
+                      stroke={
+                        item.navigateTo === EScreens.LoadedPhotos
+                          ? SCREEN_TEXT.primary
+                          : undefined
+                      }
                     />
                   )}
                   onPress={() => handlePress(item.navigateTo)}

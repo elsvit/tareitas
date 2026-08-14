@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Image, ImageSource } from 'expo-image';
+import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { BASE_TASKS_IMAGES } from '~/assets/img/tasks/tasks';
@@ -23,10 +23,12 @@ import {
   selectTaskListItemViewByScheduledItem,
 } from '~/store/tasks/selectors';
 import { addTask, updateTask } from '~/store/tasks/slice';
+import { selectTaskImageUrls } from '~/store/images';
 import { Colors } from '~/styles';
 import { ETaskStatus } from '~/types/ETask';
 import { ITask } from '~/types/ITask';
 import { lightenColor } from '~/utils/color';
+import { resolvePictureSource } from '~/utils/pictureSource';
 import { createTaskId } from '~/utils/tasks/taskGeneration';
 
 type Props = {
@@ -37,38 +39,13 @@ type Props = {
 
 const IMAGE_SIZE = 56;
 
-type TaskImageKey = keyof typeof BASE_TASKS_IMAGES;
-
-const resolveTaskPictureSource = (
-  picture?: string | number,
-): ImageSource | number | null => {
-  if (picture == null || picture === '') {
-    return null;
-  }
-
-  if (typeof picture === 'string') {
-    if (/^(https?:\/\/|data:)/.test(picture)) {
-      return { uri: picture };
-    }
-
-    if (picture in BASE_TASKS_IMAGES) {
-      return BASE_TASKS_IMAGES[picture as TaskImageKey];
-    }
-  }
-
-  if (typeof picture === 'number') {
-    return picture;
-  }
-
-  return null;
-};
-
 export const TaskListItem: React.FC<Props> = ({
   item,
   isChildView = false,
   onPress,
 }) => {
   const dispatch = useDispatch();
+  const customUrls = useSelector(selectTaskImageUrls);
   const taskView = useSelector((state: RootStateT) =>
     selectTaskListItemViewByScheduledItem(state, item),
   );
@@ -187,8 +164,8 @@ export const TaskListItem: React.FC<Props> = ({
   };
 
   const pictureSource = useMemo(
-    () => resolveTaskPictureSource(picture),
-    [picture],
+    () => resolvePictureSource(picture, customUrls, BASE_TASKS_IMAGES),
+    [customUrls, picture],
   );
 
   const renderEditPressable = (

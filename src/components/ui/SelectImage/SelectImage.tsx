@@ -27,7 +27,6 @@ export const SelectImage: React.FC<Props> = ({
   errorMessage,
   onChange,
 }) => {
-  console.log('TEST_31 SelectAvatars errorMessage: ', errorMessage);
   return (
     <>
       <Text style={styles.label}>{t('users.avatar') || 'Color'}</Text>

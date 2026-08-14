@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { Image as ExpoImage } from 'expo-image';
 
@@ -12,6 +13,8 @@ import { SCREEN_TEXT } from '~/constants/formField';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { useUserSwitch } from '~/hooks/useUserSwitch';
 import { t } from '~/services';
+import { selectUserImageUrls } from '~/store/images';
+import { resolvePictureSource } from '~/utils/pictureSource';
 import { styles } from './styles';
 import { IIconButton, IScreenHeaderWithLogo } from './types';
 
@@ -31,6 +34,14 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
   const router = useRouter();
   const { user: currentUser } = useCurrentUser();
   const { openSelectUsers, modals } = useUserSwitch();
+  const userUrls = useSelector(selectUserImageUrls);
+  const currentUserAvatarSource = useMemo(
+    () =>
+      currentUser?.avatar
+        ? resolvePictureSource(currentUser.avatar, userUrls, USER_AVATAR_MAP)
+        : null,
+    [currentUser?.avatar, userUrls],
+  );
 
   const renderButton = (
     btn: IIconButton,
@@ -103,18 +114,14 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
         );
       }
 
-      const { avatar, name, color } = currentUser;
-      const isRemote = !!avatar && /^(https?:\/\/|data:)/.test(avatar);
-      const avatarSource = avatar ? USER_AVATAR_MAP[avatar] : undefined;
+      const { name, color } = currentUser;
 
       return (
         <View
           style={[styles.avatarButton, color ? { borderColor: color } : null]}
         >
-          {avatar && isRemote ? (
-            <ExpoImage source={{ uri: avatar }} style={styles.avatarImage} />
-          ) : avatarSource ? (
-            <ExpoImage source={avatarSource} style={styles.avatarImage} />
+          {currentUserAvatarSource ? (
+            <ExpoImage source={currentUserAvatarSource} style={styles.avatarImage} />
           ) : (
             <View style={styles.avatarFallback}>
               <Text style={styles.avatarFallbackText}>
