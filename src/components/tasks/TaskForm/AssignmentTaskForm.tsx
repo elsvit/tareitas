@@ -40,6 +40,7 @@ import { ETaskRepeatType } from '~/types/ETask';
 import { ISubtask, ITaskAssignment, TaskAssignmentFormProps } from '~/types/ITask';
 import { capitalizeFirst } from '~/utils/string';
 
+import { SelectDate } from '~/components/ui/SelectDate';
 import { styles } from './styles';
 
 type Props = {
@@ -674,12 +675,10 @@ export const AssignmentTaskForm: FC<Props> = ({
               name="startDate"
               render={({ field: { value, onChange } }) => (
                 <>
-                  <TextInput
+                  <SelectDate
                     label={t('tasks.start_date')}
                     value={value}
-                    onChangeText={onChange}
-                    placeholder="YYYY-MM-DD"
-                    mode="outlined"
+                    onChange={onChange}
                   />
                   {!!errors.startDate && (
                     <Text style={styles.errorText}>
@@ -699,12 +698,10 @@ export const AssignmentTaskForm: FC<Props> = ({
                   name="endDate"
                   render={({ field: { value, onChange } }) => (
                     <>
-                      <TextInput
+                      <SelectDate
                         label={t('tasks.end_date')}
                         value={value ?? ''}
-                        onChangeText={onChange}
-                        placeholder="YYYY-MM-DD"
-                        mode="outlined"
+                        onChange={onChange}
                       />
                       {!!errors.endDate && (
                         <Text style={styles.errorText}>
