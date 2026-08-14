@@ -11,6 +11,7 @@ import ChevronLeftIcon from '~/assets/svg/common/chevron-left.svg';
 export const ScreenHeader: React.FC<IScreenHeader> = ({
   title,
   hasBackButton,
+  onBackPress,
   leftButton,
   rightButtons = [],
   containerStyle,
@@ -52,6 +53,11 @@ export const ScreenHeader: React.FC<IScreenHeader> = ({
     if (!hasBackButton) return null;
 
     const handleBackPress = () => {
+      if (onBackPress) {
+        onBackPress();
+        return;
+      }
+
       if (router.canGoBack()) {
         router.back();
       } else {

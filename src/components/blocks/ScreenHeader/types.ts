@@ -10,6 +10,7 @@ export interface IIconButton {
 export interface IScreenHeader {
   title?: string;
   hasBackButton?: boolean;
+  onBackPress?: () => void;
   leftButton?: IIconButton;
   rightButtons?: IIconButton[];
   containerStyle?: ViewStyle;
