@@ -4,6 +4,7 @@ export * from './Checkbox';
 export * from './Loading';
 export * from './ProgressBar';
 export * from './Select';
+export * from './SelectMulti';
 export * from './Switch';
 export * from './Text';
 export * from './TextInput';

@@ -6,7 +6,7 @@ import { useRouter } from 'expo-router';
 
 import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
-import { Button, Space, Text } from '~/components/ui';
+import { Button, Text } from '~/components/ui';
 import { ChildListItem, ParentListItem } from '~/components/users/UserListItem';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
@@ -57,6 +57,14 @@ export default function Users() {
           )}
         </View>
 
+        {isAdmin && (
+          <View style={styles.sectionAction}>
+            <Button mode="contained" onPress={handleAddParent}>
+              {t('users.add_parent')}
+            </Button>
+          </View>
+        )}
+
         <Text variant="titleLarge" fontFamily="fredoka" weight="bold" style={[styles.sectionTitle, styles.sectionSpacing]}>
           {t('users.children') || 'Children'}
         </Text>
@@ -76,11 +84,7 @@ export default function Users() {
         </View>
 
         {isAdmin && (
-          <View style={styles.actions}>
-            <Button mode="contained" onPress={handleAddParent}>
-              {t('users.add_parent')}
-            </Button>
-            <Space size={12} />
+          <View style={styles.sectionAction}>
             <Button mode="contained" onPress={handleAddChild}>
               {t('users.add_child')}
             </Button>
@@ -116,7 +120,7 @@ const styles = StyleSheet.create({
   emptyText: {
     opacity: 0.6,
   },
-  actions: {
-    marginTop: 24,
+  sectionAction: {
+    marginTop: 12,
   },
 });

@@ -12,7 +12,7 @@ import CrossIcon from '~/assets/svg/common/cross.svg';
 import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { DeleteModal } from '~/components/modals';
-import { WeekDaySelector, ALL_WEEK_DAYS } from '~/components/tasks/WeekDaySelector';
+import { ALL_WEEK_DAYS, WeekDaySelector } from '~/components/tasks/WeekDaySelector';
 import {
   Button,
   ButtonColors,
@@ -26,6 +26,7 @@ import { IconButton } from '~/components/ui/IconButton';
 import { Select } from '~/components/ui/Select/Select';
 import { SelectColor } from '~/components/ui/SelectColor';
 import { SelectImage } from '~/components/ui/SelectImage/SelectImage';
+import { SelectMulti } from '~/components/ui/SelectMulti';
 import { getTaskImageOptions } from '~/constants/tasks';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
@@ -47,16 +48,16 @@ type Props = {
   assignment?: Partial<ITaskAssignment>;
   defaultDate?: string;
   isHabit?: boolean;
-  onSave?: (assignment: TaskAssignmentFormProps) => void;
+  onSave?: (assignments: TaskAssignmentFormProps[]) => void;
   onValidityChange?: (valid: boolean) => void;
   showScreenHeader?: boolean;
 };
 
 type FormValues = {
-  childId: string;
+  childIds: string[];
   title: string;
   description?: string;
-  reward?: number;
+  reward?: number | null;
   picture?: string;
   color: string;
   startDate: string;
@@ -82,7 +83,7 @@ const requiredMessage = t('common.required') || 'Required';
 const buildSchema = (repeats: boolean, isHabitForm = false) =>
   z
     .object({
-      childId: z.string().trim().min(1, requiredMessage),
+      childIds: z.array(z.string()).min(1, requiredMessage),
       title: z.string().trim().min(1, requiredMessage),
       description: z.string().optional(),
       reward: z.preprocess(
@@ -195,6 +196,8 @@ export const AssignmentTaskForm: FC<Props> = ({
   const currentRole = useSelector(selectCurrentRole);
   const isAdmin = currentRole === ERole.admin;
   const isEditMode = mode === EFormMode.Edit;
+  const hasMultipleChildren = children.length > 1;
+  const singleChild = children.length === 1 ? children[0] : undefined;
 
   const today = format(new Date(), 'yyyy-MM-dd');
   const initialDate = defaultDate ?? assignment?.startDate ?? today;
@@ -213,10 +216,14 @@ export const AssignmentTaskForm: FC<Props> = ({
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      childId: assignment?.childId ?? children[0]?.id ?? '',
+      childIds: assignment?.childId
+        ? [assignment.childId]
+        : singleChild?.id
+          ? [singleChild.id]
+          : [],
       title: assignment?.title ?? '',
       description: assignment?.description ?? '',
-      reward: assignment?.reward ?? 0,
+      reward: assignment?.reward ?? null,
       picture: assignment?.picture ?? '',
       color: assignment?.color ?? userColors.blue600,
       startDate: initialDate,
@@ -240,6 +247,14 @@ export const AssignmentTaskForm: FC<Props> = ({
   const withSubtasks = watch('withSubtasks');
   const selectedColor = watch('color');
   const effectiveRepeats = isHabit || repeats;
+
+  useEffect(() => {
+    if (isEditMode || children.length !== 1 || !children[0]?.id) {
+      return;
+    }
+
+    setValue('childIds', [children[0].id], { shouldValidate: true });
+  }, [children, isEditMode, setValue]);
 
   useEffect(() => {
     if (!isHabit) {
@@ -303,7 +318,7 @@ export const AssignmentTaskForm: FC<Props> = ({
     setValue('description', baseTask.description ?? '', {
       shouldValidate: true,
     });
-    setValue('reward', baseTask.reward ?? 0, { shouldValidate: true });
+    setValue('reward', baseTask.reward ?? null, { shouldValidate: true });
     setValue('picture', baseTask.picture ?? '', { shouldValidate: true });
   };
 
@@ -327,8 +342,7 @@ export const AssignmentTaskForm: FC<Props> = ({
       return;
     }
 
-    const payload: TaskAssignmentFormProps = {
-      childId: parsed.data.childId,
+    const basePayload = {
       title: parsed.data.title,
       description: parsed.data.description,
       reward: parsed.data.reward,
@@ -368,7 +382,12 @@ export const AssignmentTaskForm: FC<Props> = ({
         : undefined,
     };
 
-    onSave?.(payload);
+    const payloads: TaskAssignmentFormProps[] = parsed.data.childIds.map(childId => ({
+      ...basePayload,
+      childId,
+    }));
+
+    onSave?.(payloads);
   };
 
   const handleConfirmDelete = () => {
@@ -407,25 +426,41 @@ export const AssignmentTaskForm: FC<Props> = ({
             <Space size={8} />
             {childOptions.length > 0 && (
               <>
-                <Controller
-                  control={control}
-                  name="childId"
-                  render={({ field: { value, onChange } }) => (
-                    <>
-                      <Select
-                        label={t('tasks.child')}
-                        options={childOptions}
-                        value={value}
-                        onChange={onChange}
-                      />
-                      {!!errors.childId && (
-                        <Text style={styles.errorText}>
-                          {errors.childId.message}
-                        </Text>
-                      )}
-                    </>
-                  )}
-                />
+                {hasMultipleChildren ? (
+                  <Controller
+                    control={control}
+                    name="childIds"
+                    render={({ field: { value, onChange } }) => (
+                      <>
+                        {isEditMode ? (
+                          <Select
+                            label={t('users.child')}
+                            options={childOptions}
+                            value={value[0] ?? ''}
+                            onChange={nextValue => onChange([nextValue])}
+                          />
+                        ) : (
+                          <SelectMulti
+                            label={t('users.childs')}
+                            options={childOptions}
+                            value={value}
+                            onChange={onChange}
+                          />
+                        )}
+                        {!!errors.childIds && (
+                          <Text style={styles.errorText}>
+                            {errors.childIds.message}
+                          </Text>
+                        )}
+                      </>
+                    )}
+                  />
+                ) : (
+                  <>
+                    <Text style={styles.label}>{t('users.child')}</Text>
+                    <Text variant="bodyLarge">{singleChild?.name}</Text>
+                  </>
+                )}
                 <Space size={12} />
               </>
             )}
@@ -497,7 +532,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                     }
                     onChangeText={text => {
                       if (text.trim() === '') {
-                        onChange(undefined);
+                        onChange(null);
                         return;
                       }
 

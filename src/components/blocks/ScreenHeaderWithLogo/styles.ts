@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
+import { HEADER_HEIGHT } from '~/constants/sizes';
 import { palette } from '~/styles';
-import { HEADER_HEIGHT } from '~/constants';
 
 const AVATAR_SIZE = 36;
 
@@ -80,6 +80,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     pointerEvents: 'none',
+  },
+  image: {
+    width: 90,
+    resizeMode: 'contain',
   },
   title: {
     fontSize: 18,

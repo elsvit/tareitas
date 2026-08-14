@@ -30,41 +30,49 @@ export default function TaskAssignmentAdd() {
   const isHabit = parseIsHabitParam(params?.isHabit);
   const assignments = useSelector(selectAllTaskAssignment);
 
-  const handleSave = (values: TaskAssignmentFormProps) => {
-    const id = uuidv4();
-    const calendarDate = selectedDate ?? values.startDate;
+  const handleSave = (valuesList: TaskAssignmentFormProps[]) => {
+    if (valuesList.length === 0) {
+      return;
+    }
 
-    const habitValues = isHabit
-      ? {
-        ...values,
-        isHabit: true,
-        endDate:
-          values.endDate?.trim() && values.endDate !== values.startDate
-            ? values.endDate
-            : undefined,
-        repeat: {
-          type: ETaskRepeatType.Week,
-          weekDays: ALL_WEEK_DAYS,
-        },
-      }
-      : values;
+    const calendarDate = selectedDate ?? valuesList[0].startDate;
+    const newAssignments = valuesList.map(values => {
+      const id = uuidv4();
 
-    const newAssignment: ITaskAssignment = {
-      id,
-      createdAt: new Date().toISOString(),
-      ...habitValues,
-    } as ITaskAssignment;
+      const habitValues = isHabit
+        ? {
+          ...values,
+          isHabit: true,
+          endDate:
+            values.endDate?.trim() && values.endDate !== values.startDate
+              ? values.endDate
+              : undefined,
+          repeat: {
+            type: ETaskRepeatType.Week,
+            weekDays: ALL_WEEK_DAYS,
+          },
+        }
+        : values;
 
-    dispatch(
-      addTaskAssignment({
-        entity: newAssignment,
-      }),
-    );
+      return {
+        id,
+        createdAt: new Date().toISOString(),
+        ...habitValues,
+      } as ITaskAssignment;
+    });
+
+    newAssignments.forEach(newAssignment => {
+      dispatch(
+        addTaskAssignment({
+          entity: newAssignment,
+        }),
+      );
+    });
 
     dispatch(
       generateTasksForDate({
         date: calendarDate,
-        assignments: [...assignments, newAssignment],
+        assignments: [...assignments, ...newAssignments],
       }),
     );
 

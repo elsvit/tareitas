@@ -32,7 +32,6 @@ import { SCREEN_TEXT } from '~/constants/formField';
 import { useColorScheme } from '~/hooks/use-color-scheme';
 import { usePruneOrphanedTaskAssignments } from '~/hooks/usePruneOrphanedTaskAssignments';
 import { AppDispatch } from '~/store';
-import { selectParentIds } from '~/store/parents/selectors';
 import { initLanguage } from '~/store/settings';
 import { selectIsLangInitiating, selectLang } from '~/store/settings/selectors';
 import { lightPaperTheme } from '~/styles/paperTheme';
@@ -48,9 +47,6 @@ export default function RootStack() {
   const lang = useSelector(selectLang) ?? ELang.es;
 
   const isLangInitiating = useSelector(selectIsLangInitiating);
-  const parentIds = useSelector(selectParentIds);
-
-  console.log('TEST_51 RootStack', parentIds);
 
   const [fontsLoaded] = useFonts({
     Roboto_400Regular,
@@ -83,13 +79,6 @@ export default function RootStack() {
 
   // const initialRouteName = 'users/WelcomeSteps';
   // parentIds.length === 0 ? 'users/WelcomeSteps' : 'users/Users';
-
-  // console.log(
-  //   'TEST_79',
-  //   parentIds.length,
-  //   'initialRouteName',
-  //   initialRouteName,
-  // );
 
   // <PaperProvider theme={colorScheme === 'dark' ? darkPaperTheme : lightPaperTheme}>
   // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
