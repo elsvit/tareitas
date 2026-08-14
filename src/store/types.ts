@@ -1,5 +1,6 @@
 import type { IStateChildren } from './children/types';
 import type { IStateCommon } from './common/types';
+import type { IStateImages } from './images/types';
 import type { EStateName } from './enums';
 import type { IStateParents } from './parents/types';
 import type { IStateSettings } from './settings/types';
@@ -21,6 +22,7 @@ export interface IState {
   [EStateName.taskAssignment]: IStateTaskAssignment;
   [EStateName.rewardAssignment]: IStateRewardAssignment;
   [EStateName.rewards]: IStateRewards;
+  [EStateName.images]: IStateImages;
 }
 
 export type Saga = (...args: any[]) => Generator<any>;

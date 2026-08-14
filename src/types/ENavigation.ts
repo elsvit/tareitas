@@ -8,6 +8,7 @@ export enum EMainTabs {
 export enum EScreens {
   // MainTabs = 'MainTabs',
   Settings = 'more/Settings/Settings',
+  LoadedPhotos = 'more/LoadedPhotos/LoadedPhotos',
   Users = 'users/Users',
   UserAdd = 'users/UserAdd',
   UserEdit = 'users/UserEdit',

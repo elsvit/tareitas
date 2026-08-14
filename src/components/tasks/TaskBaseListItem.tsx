@@ -7,13 +7,16 @@ import {
   View,
 } from 'react-native';
 
-import { Image, ImageSource } from 'expo-image';
+import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector } from 'react-redux';
 
 import { BASE_TASKS_IMAGES } from '~/assets/img/tasks/tasks';
 import { Text } from '~/components/ui';
+import { selectTaskImageUrls } from '~/store/images';
 import { Colors } from '~/styles';
 import { lightenColor } from '~/utils/color';
+import { resolvePictureSource } from '~/utils/pictureSource';
 
 type Props = {
   name: string;
@@ -26,42 +29,17 @@ type Props = {
 
 const IMAGE_SIZE = 56;
 
-type TaskImageKey = keyof typeof BASE_TASKS_IMAGES;
-
-const resolveTaskPictureSource = (
-  picture?: string | number,
-): ImageSource | number | null => {
-  if (picture == null || picture === '') {
-    return null;
-  }
-
-  if (typeof picture === 'string') {
-    if (/^(https?:\/\/|data:)/.test(picture)) {
-      return { uri: picture };
-    }
-
-    if (picture in BASE_TASKS_IMAGES) {
-      return BASE_TASKS_IMAGES[picture as TaskImageKey];
-    }
-  }
-
-  if (typeof picture === 'number') {
-    return picture;
-  }
-
-  return null;
-};
-
 const RowContent: React.FC<{
   name: string;
   description?: string;
   picture?: string | number;
   reward?: number;
   textColor: string;
-}> = ({ name, description, picture, reward, textColor }) => {
+  customUrls: Record<string, string>;
+}> = ({ name, description, picture, reward, textColor, customUrls }) => {
   const pictureSource = useMemo(
-    () => resolveTaskPictureSource(picture),
-    [picture],
+    () => resolvePictureSource(picture, customUrls, BASE_TASKS_IMAGES),
+    [customUrls, picture],
   );
 
   return (
@@ -123,6 +101,7 @@ export const TaskBaseListItem: React.FC<Props> = ({
   color = '#5CD304',
   onPress,
 }) => {
+  const customUrls = useSelector(selectTaskImageUrls);
   const gradientColors = useMemo(
     () =>
       [lightenColor(color, 0.2), lightenColor(color, 0.8)] as const,
@@ -136,6 +115,7 @@ export const TaskBaseListItem: React.FC<Props> = ({
       picture={picture}
       reward={reward}
       textColor={color}
+      customUrls={customUrls}
     />
   );
 

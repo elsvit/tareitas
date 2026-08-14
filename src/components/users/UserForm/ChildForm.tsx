@@ -20,7 +20,7 @@ import { SelectColor } from '~/components/ui/SelectColor';
 // import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 // import { CHILDREN_AVATARS } from '~/assets/img/users/users';
 import { CHILDREN_AVATARS } from '~/assets/img/users/users';
-import { SelectImage } from '~/components/ui/SelectImage';
+import { SelectImageWithCustom } from '~/components/ui/SelectImage';
 import { t } from '~/services';
 import { removeChild } from '~/store/children/slice';
 import { ERole } from '~/store/settings/enums';
@@ -33,7 +33,6 @@ import { ChildFormProps, IChild } from '~/types';
 import { EFormMode } from '~/types/ECommon';
 import { capitalizeFirst } from '~/utils/string';
 
-import { GesturePasswordIconButton } from '~/components/ui/GesturePasswordIconButton';
 import { OTPInputIconButton } from '~/components/ui/OTPInputIconButton';
 import { styles } from './styles';
 import type { UserFormHandle } from './types';
@@ -248,12 +247,12 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
                       onChange={onChange}
                       maxLength={4}
                     />
-                    <GesturePasswordIconButton
+                    {/* <GesturePasswordIconButton
                       title={t('users.child_password')}
                       onChange={onChange}
                       minLength={4}
                       style={styles.otpInput}
-                    />
+                    /> */}
                   </View>
                   {!!errors.passwordPattern && (
                     <Text style={styles.errorText}>
@@ -270,14 +269,14 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
               control={control}
               name="avatar"
               render={({ field: { value, onChange } }) => (
-                <>
-                  <SelectImage
-                    options={CHILDREN_AVATARS}
-                    value={value}
-                    onChange={onChange}
-                    errorMessage={errors.avatar?.message}
-                  />
-                </>
+                <SelectImageWithCustom
+                  kind="user"
+                  options={CHILDREN_AVATARS}
+                  value={value}
+                  onChange={onChange}
+                  label={t('users.avatar')}
+                  errorMessage={errors.avatar?.message}
+                />
               )}
             />
 

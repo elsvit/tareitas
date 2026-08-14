@@ -25,7 +25,7 @@ import {
 import { IconButton } from '~/components/ui/IconButton';
 import { Select } from '~/components/ui/Select/Select';
 import { SelectColor } from '~/components/ui/SelectColor';
-import { SelectImage } from '~/components/ui/SelectImage/SelectImage';
+import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWithCustom';
 import { SelectMulti } from '~/components/ui/SelectMulti';
 import { getTaskImageOptions } from '~/constants/tasks';
 import { t } from '~/services';
@@ -566,7 +566,8 @@ export const AssignmentTaskForm: FC<Props> = ({
               control={control}
               name="picture"
               render={({ field: { value, onChange } }) => (
-                <SelectImage
+                <SelectImageWithCustom
+                  kind="task"
                   options={taskImageOptions}
                   value={value ?? ''}
                   onChange={onChange}

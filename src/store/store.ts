@@ -20,6 +20,7 @@ import { IStateRewards, rewardsSlice } from './rewards';
 import { normalizeEarnedRewardPeriods } from './rewards/rewardCalculations';
 import { IStateTaskAssignment, taskAssignmentSlice } from './taskAssignment';
 import { IStateTaskBase, taskBaseSlice } from './taskBase';
+import { IStateImages, imagesSlice } from './images';
 import { IStateTasks, tasksSlice } from './tasks';
 
 // Root saga
@@ -54,6 +55,12 @@ const childrenPersistConfig: PersistConfig<IStateChildren> = {
   storage,
   stateReconciler: autoMergeLevel2,
   // whitelist: ['entities', 'ids'],
+};
+
+const imagesPersistConfig: PersistConfig<IStateImages> = {
+  key: EStateName.images,
+  storage,
+  stateReconciler: autoMergeLevel2,
 };
 
 const tasksPersistConfig: PersistConfig<IStateTasks> = {
@@ -125,6 +132,10 @@ const childrenReducer = IS_WEB
   ? childrenSlice.reducer
   : persistReducer<IStateChildren>(childrenPersistConfig, childrenSlice.reducer);
 
+const imagesReducer = IS_WEB
+  ? imagesSlice.reducer
+  : persistReducer<IStateImages>(imagesPersistConfig, imagesSlice.reducer);
+
 const tasksReducer = IS_WEB
   ? tasksSlice.reducer
   : persistReducer<IStateTasks>(tasksPersistConfig, tasksSlice.reducer);
@@ -166,6 +177,7 @@ const rootReducer = combineReducers({
   [EStateName.taskAssignment]: taskAssignmentReducer,
   [EStateName.rewardAssignment]: rewardAssignmentReducer,
   [EStateName.rewards]: rewardsReducer,
+  [EStateName.images]: imagesReducer,
 });
 
 // Saga middleware

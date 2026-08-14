@@ -12,7 +12,7 @@ import { Button, ButtonColors, Card, Select, Space, Text, TextInput } from '~/co
 import { GesturePasswordIconButton } from '~/components/ui/GesturePasswordIconButton';
 import { OTPInputIconButton } from '~/components/ui/OTPInputIconButton';
 import { SelectColor } from '~/components/ui/SelectColor';
-import { SelectImage } from '~/components/ui/SelectImage/SelectImage';
+import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWithCustom';
 // import { useI18nHeaderTitle } from '~/hooks/useI18nHeaderTitle';
 import { PARENT_AVATARS } from '~/assets/img/users/users';
 import { t } from '~/services';
@@ -334,14 +334,14 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
               control={control}
               name="avatar"
               render={({ field: { value, onChange } }) => (
-                <>
-                  <SelectImage
-                    options={PARENT_AVATARS}
-                    value={value}
-                    onChange={onChange}
-                    errorMessage={errors.avatar?.message}
-                  />
-                </>
+                <SelectImageWithCustom
+                  kind="user"
+                  options={PARENT_AVATARS}
+                  value={value}
+                  onChange={onChange}
+                  label={t('users.avatar')}
+                  errorMessage={errors.avatar?.message}
+                />
               )}
             />
 

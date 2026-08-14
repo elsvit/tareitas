@@ -16,7 +16,7 @@ import {
   Text,
   TextInput,
 } from '~/components/ui';
-import { SelectImage } from '~/components/ui/SelectImage/SelectImage';
+import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWithCustom';
 import { getRewardImageOptions } from '~/constants/rewards';
 import { t } from '~/services';
 import { removeRewardBase } from '~/store/rewardBase/slice';
@@ -207,7 +207,8 @@ export const BaseRewardForm: FC<Props> = ({
               control={control}
               name="picture"
               render={({ field: { value, onChange } }) => (
-                <SelectImage
+                <SelectImageWithCustom
+                  kind="reward"
                   options={rewardImageOptions}
                   value={value}
                   onChange={onChange}

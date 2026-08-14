@@ -7,12 +7,15 @@ import {
   View,
 } from 'react-native';
 
-import { Image, ImageSource } from 'expo-image';
+import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector } from 'react-redux';
 
 import { BASE_REWARDS_IMAGES } from '~/assets/img/rewards/rewards';
 import { Text } from '~/components/ui';
+import { selectRewardImageUrls } from '~/store/images';
 import { lightenColor } from '~/utils/color';
+import { resolvePictureSource } from '~/utils/pictureSource';
 
 type Props = {
   title: string;
@@ -25,42 +28,17 @@ type Props = {
 
 const IMAGE_SIZE = 56;
 
-type RewardImageKey = keyof typeof BASE_REWARDS_IMAGES;
-
-const resolveRewardPictureSource = (
-  picture?: string | number,
-): ImageSource | number | null => {
-  if (picture == null || picture === '') {
-    return null;
-  }
-
-  if (typeof picture === 'string') {
-    if (/^(https?:\/\/|data:)/.test(picture)) {
-      return { uri: picture };
-    }
-
-    if (picture in BASE_REWARDS_IMAGES) {
-      return BASE_REWARDS_IMAGES[picture as RewardImageKey];
-    }
-  }
-
-  if (typeof picture === 'number') {
-    return picture;
-  }
-
-  return null;
-};
-
 const RowContent: React.FC<{
   title: string;
   picture?: string | number;
   reward?: number;
   textColor: string;
   footer?: React.ReactNode;
-}> = ({ title, picture, reward, textColor, footer }) => {
+  customUrls: Record<string, string>;
+}> = ({ title, picture, reward, textColor, footer, customUrls }) => {
   const pictureSource = useMemo(
-    () => resolveRewardPictureSource(picture),
-    [picture],
+    () => resolvePictureSource(picture, customUrls, BASE_REWARDS_IMAGES),
+    [customUrls, picture],
   );
 
   const rewardText = reward != null ? String(reward) : '';
@@ -137,6 +115,7 @@ export const RewardBaseListItem: React.FC<Props> = ({
   onPress,
   footer,
 }) => {
+  const customUrls = useSelector(selectRewardImageUrls);
   const gradientColors = useMemo(
     () =>
       [lightenColor(color, 0.2), lightenColor(color, 0.8)] as const,
@@ -150,6 +129,7 @@ export const RewardBaseListItem: React.FC<Props> = ({
       reward={reward}
       textColor={color}
       footer={footer}
+      customUrls={customUrls}
     />
   );
 
