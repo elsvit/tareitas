@@ -7,6 +7,11 @@ export const styles = StyleSheet.create({
   container: {
     marginVertical: 0,
   },
+  anchorWrapper: {
+    position: 'relative',
+    minHeight: INPUT_HEIGHT,
+    overflow: 'hidden',
+  },
   outlineStyle: {
     borderRadius: 12,
     borderColor: FORM_FIELD.border,
@@ -14,6 +19,20 @@ export const styles = StyleSheet.create({
   input: {
     height: INPUT_HEIGHT,
     backgroundColor: FORM_FIELD.background,
+  },
+  inputContentWithValue: {
+    paddingRight: 8,
+  },
+  valueOverlay: {
+    position: 'absolute',
+    left: 12,
+    right: 44,
+    top: 13,
+    bottom: 6,
+    justifyContent: 'center',
+  },
+  valueText: {
+    color: FORM_FIELD.text,
   },
   menuContent: {
     backgroundColor: FORM_FIELD.menuBackground,

@@ -18,6 +18,7 @@ export type SelectProps = {
 };
 
 const MENU_WIDTH_RATIO = 0.9;
+const FLOATING_LABEL_VALUE = '\u200B';
 
 export function Select({ label, options, value, onChange }: SelectProps) {
   const [visible, setVisible] = React.useState(false);
@@ -30,6 +31,9 @@ export function Select({ label, options, value, onChange }: SelectProps) {
     const selectedOption = options.find(opt => opt.value === value);
     return selectedOption?.label || '';
   }, [options, value]);
+
+  const hasSelection = Boolean(displayValue);
+  const shouldFloatLabel = hasSelection || visible;
 
   const handleSetVisibleOn = () => {
     setVisible(true);
@@ -53,25 +57,41 @@ export function Select({ label, options, value, onChange }: SelectProps) {
           menuWidth ? { width: menuWidth } : undefined,
         ]}
         anchor={
-          <TextInput
-            mode="outlined"
-            label={label}
-            value={displayValue}
-            editable={false}
-            multiline={false}
-            onPressIn={handleSetVisibleOn}
-            right={
-              <PaperTextInput.Icon
-                icon={visible ? 'chevron-up' : 'chevron-down'}
-                onPress={handleSetVisibleOn}
-                forceTextInputFocus={false}
-                accessibilityLabel="Open menu"
-                color={FORM_FIELD.label}
-              />
-            }
-            outlineStyle={styles.outlineStyle}
-            style={styles.input}
-          />
+          <View style={styles.anchorWrapper}>
+            <TextInput
+              mode="outlined"
+              label={label}
+              value={shouldFloatLabel ? FLOATING_LABEL_VALUE : ''}
+              editable={false}
+              multiline={false}
+              onPressIn={handleSetVisibleOn}
+              right={
+                <PaperTextInput.Icon
+                  icon={visible ? 'chevron-up' : 'chevron-down'}
+                  onPress={handleSetVisibleOn}
+                  forceTextInputFocus={false}
+                  accessibilityLabel="Open menu"
+                  color={FORM_FIELD.label}
+                />
+              }
+              outlineStyle={styles.outlineStyle}
+              style={styles.input}
+              contentStyle={hasSelection ? styles.inputContentWithValue : undefined}
+            />
+
+            {hasSelection ? (
+              <View pointerEvents="none" style={styles.valueOverlay}>
+                <Text
+                  variant="bodyLarge"
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={styles.valueText}
+                >
+                  {displayValue}
+                </Text>
+              </View>
+            ) : null}
+          </View>
         }
       >
         <ScrollView
