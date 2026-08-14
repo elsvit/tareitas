@@ -6,30 +6,30 @@ import DateTimePicker, {
 } from '@react-native-community/datetimepicker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import CalendarIcon from '~/assets/svg/common/calendar.svg';
+import TimeIcon from '~/assets/svg/common/time.svg';
 import { Button, ButtonColors, Text, TextInput } from '~/components/ui';
 import { FORM_FIELD, SCREEN_TEXT } from '~/constants/formField';
 import { t } from '~/services';
 
 import {
-  dateStringToDate,
-  dateToString,
-  formatDateLabel,
-  type SelectDateProps,
-} from './SelectDate.utils';
+  dateToTimeString,
+  formatTimeLabel,
+  timeStringToDate,
+  type SelectTimeProps,
+} from './SelectTime.utils';
 import { styles } from './styles';
 
-export function SelectDate({ label, value, onChange }: SelectDateProps) {
+export function SelectTime({ label, value, onChange }: SelectTimeProps) {
   const [open, setOpen] = useState(false);
-  const [draftDate, setDraftDate] = useState(() => dateStringToDate(value));
+  const [draftTime, setDraftTime] = useState(() => timeStringToDate(value));
 
-  const selectedDate = useMemo(() => dateStringToDate(value), [value]);
+  const selectedTime = useMemo(() => timeStringToDate(value), [value]);
 
   useEffect(() => {
     if (open) {
-      setDraftDate(selectedDate);
+      setDraftTime(selectedTime);
     }
-  }, [open, selectedDate]);
+  }, [open, selectedTime]);
 
   const openPicker = () => {
     setOpen(true);
@@ -39,14 +39,14 @@ export function SelectDate({ label, value, onChange }: SelectDateProps) {
     setOpen(false);
   };
 
-  const handleDraftChange = (_event: DateTimePickerEvent, nextDate?: Date) => {
-    if (nextDate) {
-      setDraftDate(nextDate);
+  const handleDraftChange = (_event: DateTimePickerEvent, nextTime?: Date) => {
+    if (nextTime) {
+      setDraftTime(nextTime);
     }
   };
 
   const handleConfirm = () => {
-    onChange(dateToString(draftDate));
+    onChange(dateToTimeString(draftTime));
     closePicker();
   };
 
@@ -61,14 +61,14 @@ export function SelectDate({ label, value, onChange }: SelectDateProps) {
           <TextInput
             mode="outlined"
             label={label}
-            value={formatDateLabel(value)}
+            value={formatTimeLabel(value)}
             editable={false}
             style={styles.input}
             outlineStyle={styles.outlineStyle}
             right={
               <TextInput.Icon
                 icon={({ size, color }) => (
-                  <CalendarIcon width={size} height={size} fill={color} />
+                  <TimeIcon width={size} height={size} fill={color} />
                 )}
                 forceTextInputFocus={false}
                 color={FORM_FIELD.label}
@@ -96,8 +96,8 @@ export function SelectDate({ label, value, onChange }: SelectDateProps) {
 
             <View style={styles.pickerContainer}>
               <DateTimePicker
-                value={draftDate}
-                mode="date"
+                value={draftTime}
+                mode="time"
                 display="spinner"
                 onChange={handleDraftChange}
               />
@@ -128,4 +128,4 @@ export function SelectDate({ label, value, onChange }: SelectDateProps) {
   );
 }
 
-export default SelectDate;
+export default SelectTime;

@@ -41,6 +41,7 @@ import { ISubtask, ITaskAssignment, TaskAssignmentFormProps } from '~/types/ITas
 import { capitalizeFirst } from '~/utils/string';
 
 import { SelectDate } from '~/components/ui/SelectDate';
+import { SelectTime } from '~/components/ui/SelectTime';
 import { styles } from './styles';
 
 type Props = {
@@ -720,12 +721,10 @@ export const AssignmentTaskForm: FC<Props> = ({
               name="time"
               render={({ field: { value, onChange } }) => (
                 <>
-                  <TextInput
+                  <SelectTime
                     label={t('tasks.time')}
                     value={value}
-                    onChangeText={onChange}
-                    placeholder="HH:mm"
-                    mode="outlined"
+                    onChange={onChange}
                   />
                   {!!errors.time && (
                     <Text style={styles.errorText}>{errors.time.message}</Text>
