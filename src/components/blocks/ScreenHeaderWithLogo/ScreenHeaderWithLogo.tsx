@@ -80,7 +80,7 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
 
     return (
       <TouchableOpacity
-        style={styles.leftButton}
+        style={styles.backButton}
         onPress={handleBackPress}
       >
         <ChevronLeftIcon width={24} height={24} fill={SCREEN_TEXT.primary} />
@@ -159,7 +159,12 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
         </View>
 
         <View style={styles.titleContainer}>
-          <Image source={LogoIcon} style={{ width: 100, height: 30 }} />
+          <Image source={LogoIcon} style={
+            {
+              width: 90,
+              resizeMode: 'contain'
+            }
+          } />
         </View>
 
         <View style={styles.rightContainer}>

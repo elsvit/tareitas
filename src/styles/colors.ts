@@ -138,19 +138,22 @@ export const Colors = {
 export const userColors = {
   blue500 : Colors.blue500, // #3B82F6
   blue600: Colors.blue600, // #1D4ED8
-  blue900: Colors.blue900, // #1E3A8A
+  blue800: Colors.blue800, // #1E40AF
+  violet500: Colors.violet500, // #5B21B6
   violet700: Colors.violet700, // #7C3AED
-  brightRed500: Colors.brightRed500, // #FF1A1A
-  red500: Colors.red500, // #EF4444
+  magenta: '#FF00FF', // #FF00FF
+  pink: '#FF7AA9', // #FF7AA9
   pink500: Colors.pink500, // #FF4D85
+  brightRed400: Colors.brightRed400, // #FF4D4D
+  cherry: '#DC2626', // #DC2626
+  brightRed: '#FF0000', // #FF0000
   pink700: Colors.pink700, // #B32452
+  yellow500: Colors.yellow500, // #FACC15
+  gold500: Colors.gold500, // #D97706
   orange500: Colors.orange500, // #F97316
-  yellow400: Colors.yellow400, // #FACC15
-  gold500: Colors.gold500, // #FBB03B
-  teal700: Colors.teal700, // #14B8A6
-  green500: Colors.green500, // #10B981     
   brightGreen500: Colors.brightGreen500, // #1AFF3F
-  green700: Colors.green700, // #047857
+  green500: Colors.green500, // #10B981     
+  brightGreen800: Colors.brightGreen800, // #00800F 
   blueGray: '#607D8B', // #607D8B
   grey700: Colors.grey700, // #374151
 }

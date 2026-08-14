@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
@@ -24,7 +24,10 @@ import { SelectImage } from '~/components/ui/SelectImage';
 import { t } from '~/services';
 import { removeChild } from '~/store/children/slice';
 import { ERole } from '~/store/settings/enums';
-import { selectCurrentRole } from '~/store/settings/selectors';
+import {
+  selectCurrentRole,
+  selectIsChildPasswordObligatory,
+} from '~/store/settings/selectors';
 import { userColors } from '~/styles';
 import { ChildFormProps, IChild } from '~/types';
 import { EFormMode } from '~/types/ECommon';
@@ -85,6 +88,7 @@ export const ChildForm: React.FC<Props> = ({
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   const currentRole = useSelector(selectCurrentRole);
+  const isChildPasswordObligatory = useSelector(selectIsChildPasswordObligatory);
   const isAdmin = currentRole === ERole.admin;
   const isEditMode = mode === EFormMode.Edit;
 
@@ -94,13 +98,19 @@ export const ChildForm: React.FC<Props> = ({
 
   const requiredMessage = t('common.required') || 'Required';
 
-  const schema = z.object({
-    name: z.string().trim().min(1, requiredMessage),
-    color: z.string().trim().min(1, requiredMessage),
-    role: z.nativeEnum(ERole),
-    avatar: z.string().trim().min(1, requiredMessage),
-    passwordPattern: z.string().trim().optional(),
-  });
+  const schema = useMemo(
+    () =>
+      z.object({
+        name: z.string().trim().min(1, requiredMessage),
+        color: z.string().trim().min(1, requiredMessage),
+        role: z.nativeEnum(ERole),
+        avatar: z.string().trim().min(1, requiredMessage),
+        passwordPattern: isChildPasswordObligatory
+          ? z.string().trim().min(4, requiredMessage)
+          : z.string().trim().optional(),
+      }),
+    [isChildPasswordObligatory, requiredMessage],
+  );
 
   const {
     control,
@@ -130,7 +140,7 @@ export const ChildForm: React.FC<Props> = ({
     const initialValid = schema.safeParse(getValues()).success;
     onValidityChange?.(initialValid);
     return () => sub.unsubscribe();
-  }, [watch, getValues, onValidityChange]);
+  }, [watch, getValues, onValidityChange, schema]);
 
   const onSubmit = (raw: FormValues) => {
     const parsed = schema.safeParse(raw);
@@ -226,7 +236,10 @@ export const ChildForm: React.FC<Props> = ({
               name="passwordPattern"
               render={({ field: { onChange } }) => (
                 <>
-                  <Text style={styles.label}>{t('users.password')}</Text>
+                  <Text style={styles.label}>
+                    {t('users.password')}
+                    {isChildPasswordObligatory ? ' *' : ''}
+                  </Text>
                   <View style={styles.row}>
                     <OTPInputIconButton
                       title={t('users.child_password')}

@@ -83,7 +83,9 @@
   },
   "settings": {
     "title": "Ajustes",
-    "language": "Idioma"
+    "language": "Idioma",
+    "children": "Hijos",
+    "child_password_obligatory": "Contraseña del hijo obligatoria"
   },
   "users": {
     "title": "Usuarios",
@@ -264,8 +266,8 @@
     "select_children": "Selecciona al menos un niño",
     "current_rewards": "Premios actuales",
     "current_reward": "Premio actual",
-    "no_rewards": "No hay premios todavía",
-    "no_selected": "No hay premios seleccionados",
+    "no_rewards": "No hay premios todavía. Pulsa el botón para añadir un premio",
+    "no_selected": "El niño no ha seleccionado ningún premio todavía",
     "no_approved": "No hay premios aprobados",
     "no_history": "No hay historial todavía",
     "initial_reward": "Premio inicial",
