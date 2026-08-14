@@ -152,6 +152,7 @@
     "task_templates": "plantillas de tareas",
     "add_task": "Añadir Tarea",
     "edit_task": "Editar Tarea",
+    "child": "[TODO: es] Child",
     "base_task_template": "Usar tarea básica",
     "repeats": "Repetir",
     "start_date": "Fecha de inicio",

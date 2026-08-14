@@ -43,7 +43,8 @@ type Props = {
   showScreenHeader?: boolean;
 };
 
-type FormValues = RewardAssignmentFormProps & {
+type FormValues = Omit<RewardAssignmentFormProps, 'reward'> & {
+  reward?: number | null;
   allChildren: boolean;
   selectedChildIds: string[];
   baseRewardId?: string;
@@ -54,9 +55,23 @@ const requiredMessage = t('common.required') || 'Required';
 const schema = z
   .object({
     title: z.string().trim().min(1, requiredMessage),
-    reward: z.coerce
-      .number()
-      .min(0, t('rewards.reward_positive') || 'Reward must be ≥ 0'),
+    reward: z.preprocess(
+      value => {
+        if (
+          value === '' ||
+          value === undefined ||
+          value === null ||
+          (typeof value === 'number' && Number.isNaN(value))
+        ) {
+          return Number.NaN;
+        }
+
+        return value;
+      },
+      z
+        .number({ message: requiredMessage })
+        .min(0, t('rewards.reward_positive') || 'Reward must be ≥ 0'),
+    ),
     picture: z.string().trim().min(1, requiredMessage),
     allChildren: z.boolean(),
     selectedChildIds: z.array(z.string()),
@@ -108,7 +123,7 @@ export const RewardForm: FC<Props> = ({
   } = useForm<FormValues>({
     defaultValues: {
       title: reward?.title ?? '',
-      reward: reward?.reward ?? 0,
+      reward: reward?.reward ?? null,
       picture: reward?.picture ?? '',
       allChildren: initialAllChildren,
       selectedChildIds: reward?.childIds ?? [],
@@ -140,7 +155,7 @@ export const RewardForm: FC<Props> = ({
     }
 
     setValue('title', baseReward.title, { shouldValidate: true });
-    setValue('reward', baseReward.reward ?? 0, { shouldValidate: true });
+    setValue('reward', baseReward.reward ?? null, { shouldValidate: true });
     setValue('picture', baseReward.picture ?? '', { shouldValidate: true });
   };
 
@@ -277,8 +292,25 @@ export const RewardForm: FC<Props> = ({
                 <>
                   <TextInput
                     label={`⭐ ${t('rewards.reward')}`}
-                    value={String(value)}
-                    onChangeText={text => onChange(Number(text))}
+                    value={
+                      value != null && !Number.isNaN(value) ? String(value) : ''
+                    }
+                    onChangeText={text => {
+                      if (text.trim() === '') {
+                        onChange(null);
+                        return;
+                      }
+
+                      if (!/^\d+$/.test(text)) {
+                        return;
+                      }
+
+                      const parsed = Number(text);
+
+                      if (!Number.isNaN(parsed) && parsed >= 0) {
+                        onChange(parsed);
+                      }
+                    }}
                     keyboardType="numeric"
                     mode="outlined"
                   />

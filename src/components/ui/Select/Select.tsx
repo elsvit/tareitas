@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { ScrollView, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 
-import { Menu, TextInput as PaperTextInput } from 'react-native-paper';
+import { Icon, Menu, TextInput as PaperTextInput } from 'react-native-paper';
 
+import { Text } from '~/components/ui/Text';
 import { TextInput } from '~/components/ui/TextInput';
 import { FORM_FIELD, FORM_FIELD_MENU_THEME } from '~/constants/formField';
 import { IOptions } from '~/types/ICommon';
@@ -16,8 +17,14 @@ export type SelectProps = {
   onChange: (value: any) => void;
 };
 
+const MENU_WIDTH_RATIO = 0.9;
+
 export function Select({ label, options, value, onChange }: SelectProps) {
   const [visible, setVisible] = React.useState(false);
+  const [anchorWidth, setAnchorWidth] = React.useState(0);
+
+  const menuWidth =
+    anchorWidth > 0 ? Math.round(anchorWidth * MENU_WIDTH_RATIO) : undefined;
 
   const displayValue = React.useMemo(() => {
     const selectedOption = options.find(opt => opt.value === value);
@@ -33,12 +40,18 @@ export function Select({ label, options, value, onChange }: SelectProps) {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      onLayout={event => setAnchorWidth(event.nativeEvent.layout.width)}
+    >
       <Menu
         visible={visible}
         onDismiss={handleSetVisibleOff}
         theme={FORM_FIELD_MENU_THEME}
-        contentStyle={styles.menuContent}
+        contentStyle={[
+          styles.menuContent,
+          menuWidth ? { width: menuWidth } : undefined,
+        ]}
         anchor={
           <TextInput
             mode="outlined"
@@ -61,22 +74,40 @@ export function Select({ label, options, value, onChange }: SelectProps) {
           />
         }
       >
-        <ScrollView style={styles.menuScroll} bounces={false}>
+        <ScrollView
+          style={[styles.menuScroll, menuWidth ? { width: menuWidth } : undefined]}
+          bounces={false}
+        >
           {options.map(option => {
             const selected = value === option.value;
 
             return (
-              <Menu.Item
+              <Pressable
                 key={String(option.value)}
-                title={option.label}
                 onPress={() => {
                   onChange(option.value);
                   setVisible(false);
                 }}
-                leadingIcon={selected ? 'check' : undefined}
-                style={styles.menuItem}
-                titleStyle={styles.menuItemTitle}
-              />
+                style={({ pressed }) => [
+                  styles.menuItem,
+                  pressed && styles.menuItemPressed,
+                ]}
+              >
+                <View style={styles.menuItemRow}>
+                  <View style={styles.menuItemIconSlot}>
+                    {selected ? (
+                      <Icon source="check" size={24} color={FORM_FIELD.menuText} />
+                    ) : null}
+                  </View>
+                  <Text
+                    variant="bodyLarge"
+                    numberOfLines={2}
+                    style={styles.menuItemTitle}
+                  >
+                    {option.label}
+                  </Text>
+                </View>
+              </Pressable>
             );
           })}
         </ScrollView>
