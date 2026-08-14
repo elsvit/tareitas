@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { ScreenHeaderWithLogo, SelectUserPrompt } from '~/components/blocks';
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
+import { TaskFilterModal } from '~/components/modals';
 import { TaskCalendarHeader } from '~/components/tasks/TaskCalendarHeader';
 import { TaskListItem } from '~/components/tasks/TaskListItem';
 import { TaskScreenFabs } from '~/components/tasks/TaskScreenFabs';
@@ -19,17 +20,27 @@ import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { useHasCompletedTasksInPast } from '~/hooks/useHasCompletedTasksInPast';
 import { t } from '~/services';
+import { selectAllChildren } from '~/store/children/selectors';
 import { ERole } from '~/store/settings/enums';
 import { selectCurrentRole, selectCurrentUser } from '~/store/settings/selectors';
+import { selectAllTaskBase } from '~/store/taskBase/selectors';
 import { PAST_COMPLETED_SEARCH_DAYS } from '~/store/tasks/taskFilters';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
 import {
+  buildTaskListItemViewFromParts,
   ScheduledTaskItem,
   selectScheduledTasksForDate,
 } from '~/store/tasks/selectors';
 import { generateTasksForDate } from '~/store/tasks/slice';
 import { EScreens } from '~/types';
 import { ETaskStatus } from '~/types/ETask';
+import {
+  createDefaultTaskCalendarFilter,
+  getActiveTaskCalendarFilterCount,
+  matchesTaskCalendarFilter,
+  mergeTaskCalendarFilterChildren,
+  TaskCalendarFilter,
+} from '~/utils/tasks/taskCalendarFilter';
 
 export default function Tasks() {
   const router = useRouter();
@@ -39,10 +50,21 @@ export default function Tasks() {
   const [selectedDate, setSelectedDate] = useState(() =>
     format(new Date(), 'yyyy-MM-dd'),
   );
+  const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
 
   const currentRole = useSelector(selectCurrentRole);
   const currentUserId = useSelector(selectCurrentUser);
   const isChild = currentRole === ERole.child;
+  const children = useSelector(selectAllChildren);
+  const taskBaseList = useSelector(selectAllTaskBase);
+
+  const [filter, setFilter] = useState<TaskCalendarFilter>(() =>
+    createDefaultTaskCalendarFilter(children),
+  );
+
+  useEffect(() => {
+    setFilter(current => mergeTaskCalendarFilterChildren(current, children));
+  }, [children]);
 
   useSyncEarnedRewardPeriods();
 
@@ -58,6 +80,56 @@ export default function Tasks() {
         ),
       [selectedDate, currentUserId, isChild],
     ),
+  );
+
+  const showChildrenFilter = !isChild && children.length > 0;
+
+  const activeFilterCount = useMemo(
+    () => getActiveTaskCalendarFilterCount(filter, showChildrenFilter),
+    [filter, showChildrenFilter],
+  );
+
+  const filteredItems = useMemo(
+    () =>
+      scheduledItems.filter(item => {
+        const assignment = assignments.find(
+          assignmentItem => assignmentItem.id === item.assignmentId,
+        );
+
+        if (!assignment) {
+          return false;
+        }
+
+        const child = children.find(childItem => childItem.id === assignment.childId);
+        const taskView = buildTaskListItemViewFromParts(
+          item.id,
+          item.assignmentId,
+          item.date,
+          item.task,
+          assignment,
+          child,
+          taskBaseList,
+        );
+
+        if (!taskView) {
+          return false;
+        }
+
+        return matchesTaskCalendarFilter(
+          assignment.childId,
+          taskView.status,
+          filter,
+          showChildrenFilter,
+        );
+      }),
+    [
+      scheduledItems,
+      assignments,
+      children,
+      taskBaseList,
+      filter,
+      showChildrenFilter,
+    ],
   );
 
   useEffect(() => {
@@ -78,6 +150,14 @@ export default function Tasks() {
     setSelectedDate(current =>
       format(addDays(parseISO(current), 1), 'yyyy-MM-dd'),
     );
+  }, []);
+
+  const handleOpenFilter = useCallback(() => {
+    setIsFilterModalVisible(true);
+  }, []);
+
+  const handleCloseFilter = useCallback(() => {
+    setIsFilterModalVisible(false);
   }, []);
 
   const handleAddTask = useCallback(() => {
@@ -146,10 +226,13 @@ export default function Tasks() {
           date={selectedDate}
           onPrevious={handlePreviousDay}
           onNext={handleNextDay}
+          showFilter
+          activeFilterCount={activeFilterCount}
+          onFilterPress={handleOpenFilter}
         />
 
         <FlatList
-          data={scheduledItems}
+          data={filteredItems}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
           ItemSeparatorComponent={renderSeparator}
@@ -164,6 +247,14 @@ export default function Tasks() {
           onAdd={handleAddTask}
           showCompletedHistory={showCompletedHistory}
           onOpenCompletedHistory={handleOpenCompletedHistory}
+        />
+
+        <TaskFilterModal
+          isVisible={isFilterModalVisible}
+          onRequestClose={handleCloseFilter}
+          filter={filter}
+          onFilterChange={setFilter}
+          showChildrenFilter={showChildrenFilter}
         />
       </View>
       )}

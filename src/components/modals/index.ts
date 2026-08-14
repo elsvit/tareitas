@@ -6,3 +6,4 @@ export { DeleteModal } from './DeleteModal';
 export { ResetModal } from './ResetModal';
 export { SelectUsersModal } from './SelectUsersModal';
 export type { SelectedUser } from './SelectUsersModal';
+export { TaskFilterModal } from './TaskFilterModal';

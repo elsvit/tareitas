@@ -186,6 +186,9 @@
     "done": "Hecho",
     "completed_history": "Tareas completadas",
     "no_filtered_tasks": "No se encontraron tareas",
+    "filter": "Filtrar",
+    "filter_children": "Niños",
+    "filter_statuses": "Estados",
     "baseTasks": {
       "brushTeethEvening": "Cepillarse los dientes en la tarde",
       "brushTeethEveningDescription": "Cepillarse los dientes en la tarde",
