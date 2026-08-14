@@ -221,7 +221,6 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
       avatar: data.avatar,
       passwordPattern: data.passwordPattern,
     };
-    console.log('TEST_219 onSubmit', newParent);
 
     onSave?.(newParent);
   };

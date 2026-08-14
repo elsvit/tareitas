@@ -13,7 +13,7 @@ export default function Index() {
     return <Redirect href="/(onboarding)" />;
   }
 
-  return <Redirect href="/(onboarding)" />; // TODO remove later after testing
+  // return <Redirect href="/(onboarding)" />; // TODO remove later after testing
 
-  // return <Redirect href="/(tabs)/Tasks" />;
+  return <Redirect href="/(tabs)/Tasks" />;
 }

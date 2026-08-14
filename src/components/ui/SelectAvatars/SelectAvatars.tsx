@@ -14,6 +14,7 @@ type Option = {
 };
 
 type Props = {
+  title?: string;
   options: Option[];
   images: Record<string, any>; // map value -> image source
   value?: string;
@@ -22,16 +23,16 @@ type Props = {
 };
 
 export const SelectAvatars: React.FC<Props> = ({
+  title,
   options,
   images,
   value,
   errorMessage,
   onChange,
 }) => {
-  console.log('TEST_31 SelectAvatars errorMessage: ', errorMessage);
   return (
     <>
-      <Text style={styles.label}>{t('users.avatar') || 'Color'}</Text>
+      <Text style={styles.label}>{title || t('users.avatar')}</Text>
       <View style={styles.grid}>
         {options.map(opt => {
           const isSelected = value === opt.value;

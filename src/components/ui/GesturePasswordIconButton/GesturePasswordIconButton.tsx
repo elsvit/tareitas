@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
+import GesturePasswordIcon from '~/assets/svg/users/password-gesture.svg';
 import { ButtonColors } from '~/components/ui/Button';
+import { IconButton } from '~/components/ui/IconButton';
 import { GesturePasswordModal } from '~/components/users/UserPassword';
 import { t } from '~/services';
-import { IconButton } from '~/components/ui/IconButton';
-import GesturePasswordIcon from '~/assets/svg/users/password-gesture.svg';
 
 type Props = {
   onChange?: (password: string) => void;
@@ -35,7 +35,6 @@ export const GesturePasswordIconButton: React.FC<Props> = ({
     (pattern: number[]) => {
       const str = (pattern || []).join('');
       onChange?.(str);
-      console.log('TEST_36 handleComplete', pattern, str);
       setOpen(false);
     },
     [onChange],

@@ -22,7 +22,13 @@ export default function TaskAssignmentEdit() {
   const assignment = useSelector(selectTaskAssignmentById(id));
   const isHabit = assignment?.isHabit ?? isHabitFromRoute;
 
-  const handleSave = (values: TaskAssignmentFormProps) => {
+  const handleSave = (valuesList: TaskAssignmentFormProps[]) => {
+    const values = valuesList[0];
+
+    if (!values) {
+      return;
+    }
+
     dispatch(
       updateTaskAssignment({
         entity: {
