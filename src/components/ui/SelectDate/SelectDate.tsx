@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Modal, Pressable, View } from 'react-native';
+import { Modal, Platform, Pressable, View } from 'react-native';
 
 import DateTimePicker, {
   type DateTimePickerEvent,
@@ -50,6 +50,19 @@ export function SelectDate({ label, value, onChange }: SelectDateProps) {
     closePicker();
   };
 
+  const handleAndroidChange = (
+    event: DateTimePickerEvent,
+    nextDate?: Date,
+  ) => {
+    if (event.type === 'dismissed' || !nextDate) {
+      closePicker();
+      return;
+    }
+
+    onChange(dateToString(nextDate));
+    closePicker();
+  };
+
   return (
     <View style={styles.container}>
       <Pressable
@@ -78,6 +91,15 @@ export function SelectDate({ label, value, onChange }: SelectDateProps) {
         </View>
       </Pressable>
 
+      {Platform.OS === 'android' ? (
+        open ? (
+          <DateTimePicker
+            value={selectedDate}
+            mode="date"
+            onChange={handleAndroidChange}
+          />
+        ) : null
+      ) : (
       <Modal
         visible={open}
         animationType="slide"
@@ -124,6 +146,7 @@ export function SelectDate({ label, value, onChange }: SelectDateProps) {
           </SafeAreaView>
         </View>
       </Modal>
+      )}
     </View>
   );
 }
