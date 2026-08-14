@@ -102,6 +102,11 @@ export default function RootStack() {
         // initialRouteName={initialRouteName}
         >
           <Stack.Screen
+            name="(onboarding)"
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
             name="users/WelcomeSteps"
             options={{ headerShown: false }}
           />

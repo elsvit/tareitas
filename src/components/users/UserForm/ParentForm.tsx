@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
@@ -25,6 +25,7 @@ import { EFormMode } from '~/types/ECommon';
 import { capitalizeFirst } from '~/utils/string';
 
 import { styles } from './styles';
+import type { UserFormHandle } from './types';
 
 // export const AVATAR_OPTIONS = [
 //   { label: 'Man 1', value: 'man1' },
@@ -55,6 +56,8 @@ type Props = {
   onSave?: (parent: ParentFormProps) => void;
   onValidityChange?: (isValid: boolean) => void;
   showScreenHeader?: boolean;
+  embedded?: boolean;
+  showSubmitButton?: boolean;
 };
 
 type FormValues = {
@@ -71,14 +74,19 @@ const COLOR_OPTIONS = Object.entries(userColors).map(([key, value]) => ({
   value,
 }));
 
-export const ParentForm: FC<Props> = ({
-  mode,
-  parent,
-  title,
-  onSave,
-  onValidityChange,
-  showScreenHeader = true,
-}) => {
+export const ParentForm = React.forwardRef<UserFormHandle, Props>(function ParentForm(
+  {
+    mode,
+    parent,
+    title,
+    onSave,
+    onValidityChange,
+    showScreenHeader = true,
+    embedded = false,
+    showSubmitButton = true,
+  },
+  ref,
+) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -168,6 +176,7 @@ export const ParentForm: FC<Props> = ({
       familyRole: parent?.familyRole ?? EFamilyRole.mother,
       role: parent?.role ?? ERole.parent,
       avatar: parent?.avatar ?? '',
+      passwordPattern: parent?.passwordPattern ?? '',
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -217,6 +226,12 @@ export const ParentForm: FC<Props> = ({
     onSave?.(newParent);
   };
 
+  useImperativeHandle(ref, () => ({
+    submit: () => {
+      handleSubmit(onSubmit)();
+    },
+  }));
+
   const handleDelete = () => {
     setIsDeleteModalVisible(true);
   };
@@ -233,27 +248,15 @@ export const ParentForm: FC<Props> = ({
     }
   };
 
-  return (
-    <>
-      {showScreenHeader && (
-        <ScreenHeader
-          hasBackButton
-          title={headerTitle}
-          containerStyle={styles.screenHeader}
-        />
+  const formBody = (
+    <Card>
+      {title && !showScreenHeader && !embedded && (
+        <View style={styles.titleContainer}>
+          <Text variant="titleMedium" style={styles.title}>{title}</Text>
+        </View>
       )}
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled"
-      >
-        <Card>
-          {title && !showScreenHeader && (
-            <View style={styles.titleContainer}>
-              <Text variant="titleMedium" style={styles.title}>{title}</Text>
-            </View>
-          )}
-          <Card.Content>
-          <Space size={8} />
+      <Card.Content>
+      <Space size={8} />
             {/* Name */}
             <Controller
               control={control}
@@ -337,7 +340,7 @@ export const ParentForm: FC<Props> = ({
                     options={PARENT_AVATARS}
                     value={value}
                     onChange={onChange}
-                    errorMessage={errors.avatar?.message || requiredMessage}
+                    errorMessage={errors.avatar?.message}
                   />
                 </>
               )}
@@ -361,10 +364,11 @@ export const ParentForm: FC<Props> = ({
 
             <Space size={20} />
 
-            {/* Save */}
-            <Button mode="contained" onPress={handleSubmit(onSubmit)}>
-              {t('button.save') || 'Save'}
-            </Button>
+            {showSubmitButton && (
+              <Button mode="contained" onPress={handleSubmit(onSubmit)}>
+                {t('button.save') || 'Save'}
+              </Button>
+            )}
 
             {isEditMode && isAdmin && (
               <>
@@ -382,7 +386,27 @@ export const ParentForm: FC<Props> = ({
             <Space size={20} />
           </Card.Content>
         </Card>
-      </ScrollView>
+  );
+
+  return (
+    <>
+      {showScreenHeader && (
+        <ScreenHeader
+          hasBackButton
+          title={headerTitle}
+          containerStyle={styles.screenHeader}
+        />
+      )}
+      {embedded ? (
+        formBody
+      ) : (
+        <ScrollView
+          contentContainerStyle={styles.container}
+          keyboardShouldPersistTaps="handled"
+        >
+          {formBody}
+        </ScrollView>
+      )}
 
       <DeleteModal
         isVisible={isDeleteModalVisible}
@@ -393,4 +417,4 @@ export const ParentForm: FC<Props> = ({
       />
     </>
   );
-};
+});

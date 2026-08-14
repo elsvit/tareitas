@@ -315,6 +315,39 @@
     "trip_to_playground": "Trip to the playground",
     "ice_cream": "Go for ice cream"
   },
+  "onboarding": {
+    "header": "Welcome to Tareitas",
+    "slides": {
+      "create_tasks": {
+        "title": "Create tasks by Parent",
+        "description": "Turn everyday activities into fun challenges."
+      },
+      "earn_stars": {
+        "title": "Complete tasks by Child and earn reward stars",
+        "description": "Complete tasks and earn stars."
+      },
+      "select_reward": {
+        "title": "Select reward and enjoy it",
+        "description": "Make everyday family activities more enjoyable."
+      }
+    },
+    "complete": {
+      "header": "You're all set!",
+      "title": "Enjoy Tareitas together!",
+      "description": "{{parent}} and {{child}} are ready to start earning stars and rewards.",
+      "parent_fallback": "Parent",
+      "child_fallback": "Child",
+      "cta": "Go to the app"
+    },
+    "parent": {
+      "subtitle": "Create your profile as the family admin. You will manage tasks, rewards, and children.",
+      "step_indicator": "Step 1 of 2"
+    },
+    "child": {
+      "subtitle": "Add your first child. You can add more children later from Settings.",
+      "step_indicator": "Step 2 of 2"
+    }
+  },
   "welcome": {
     "title": "Welcome",
     "daily_habits": "Daily Habits",

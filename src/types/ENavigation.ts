@@ -32,4 +32,5 @@ export enum EScreens {
   RewardAdd = 'rewards/RewardAdd',
   RewardEdit = 'rewards/RewardEdit',
   WelcomeSteps = 'users/WelcomeSteps',
+  Onboarding = '(onboarding)',
 }

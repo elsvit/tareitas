@@ -315,6 +315,39 @@
     "trip_to_playground": "Viajar al parque",
     "ice_cream": "Ir a la heladería"
   },
+  "onboarding": {
+    "header": "Bienvenido a Tareitas",
+    "slides": {
+      "create_tasks": {
+        "title": "Crea tareas como padre",
+        "description": "Convierte las actividades diarias en retos divertidos."
+      },
+      "earn_stars": {
+        "title": "Completa tareas como hijo y gana estrellas",
+        "description": "Completa tareas y gana estrellas."
+      },
+      "select_reward": {
+        "title": "Elige un premio y disfrútalo",
+        "description": "Haz que las actividades familiares sean más divertidas."
+      }
+    },
+    "complete": {
+      "header": "¡Todo listo!",
+      "title": "¡Disfrutad de Tareitas juntos!",
+      "description": "{{parent}} y {{child}} están listos para ganar estrellas y premios.",
+      "parent_fallback": "Padre",
+      "child_fallback": "Hijo",
+      "cta": "Ir a la app"
+    },
+    "parent": {
+      "subtitle": "Crea tu perfil como administrador de la familia. Gestionarás tareas, premios e hijos.",
+      "step_indicator": "Paso 1 de 2"
+    },
+    "child": {
+      "subtitle": "Añade tu primer hijo. Podrás añadir más hijos más tarde desde Ajustes.",
+      "step_indicator": "Paso 2 de 2"
+    }
+  },
   "welcome": {
     "title": "Bienvenido",
     "daily_habits": "Rutinas Diarias",

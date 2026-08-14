@@ -10,8 +10,10 @@ export default function Index() {
   const parentIds = useSelector(selectParentIds);
 
   if (parentIds.length === 0) {
-    return <Redirect href="/users/WelcomeSteps" />;
+    return <Redirect href="/(onboarding)" />;
   }
 
-  return <Redirect href="/(tabs)/Tasks" />;
+  return <Redirect href="/(onboarding)" />; // TODO remove later after testing
+
+  // return <Redirect href="/(tabs)/Tasks" />;
 }

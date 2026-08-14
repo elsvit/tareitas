@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useImperativeHandle, useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
@@ -36,6 +36,7 @@ import { capitalizeFirst } from '~/utils/string';
 import { GesturePasswordIconButton } from '~/components/ui/GesturePasswordIconButton';
 import { OTPInputIconButton } from '~/components/ui/OTPInputIconButton';
 import { styles } from './styles';
+import type { UserFormHandle } from './types';
 
 // export const AVATAR_OPTIONS = [
 //   { label: 'Girl 1', value: 'girl1' },
@@ -60,6 +61,8 @@ type Props = {
   onSave?: (child: ChildFormProps) => void;
   onValidityChange?: (isValid: boolean) => void;
   showScreenHeader?: boolean;
+  embedded?: boolean;
+  showSubmitButton?: boolean;
 };
 
 type FormValues = {
@@ -75,14 +78,19 @@ const COLOR_OPTIONS = Object.entries(userColors).map(([key, value]) => ({
   value,
 }));
 
-export const ChildForm: React.FC<Props> = ({
-  mode,
-  child,
-  title,
-  onSave,
-  onValidityChange,
-  showScreenHeader = true,
-}) => {
+export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildForm(
+  {
+    mode,
+    child,
+    title,
+    onSave,
+    onValidityChange,
+    showScreenHeader = true,
+    embedded = false,
+    showSubmitButton = true,
+  },
+  ref,
+) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -173,6 +181,12 @@ export const ChildForm: React.FC<Props> = ({
     onSave?.(newChild);
   };
 
+  useImperativeHandle(ref, () => ({
+    submit: () => {
+      handleSubmit(onSubmit)();
+    },
+  }));
+
   const handleDelete = () => {
     setIsDeleteModalVisible(true);
   };
@@ -189,27 +203,15 @@ export const ChildForm: React.FC<Props> = ({
     }
   };
 
-  return (
-    <>
-      {showScreenHeader && (
-        <ScreenHeader
-          hasBackButton
-          title={headerTitle}
-          containerStyle={styles.screenHeader}
-        />
+  const formBody = (
+    <Card>
+      {title && !showScreenHeader && !embedded && (
+        <View style={styles.titleContainer}>
+          <Text variant="titleMedium" style={styles.title}>{title}</Text>
+        </View>
       )}
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled"
-      >
-        <Card>
-          {title && !showScreenHeader && (
-            <View style={styles.titleContainer}>
-              <Text variant="titleMedium" style={styles.title}>{title}</Text>
-            </View>
-          )}
-          <Card.Content>
-          <Space size={8} />
+      <Card.Content>
+      <Space size={8} />
             {/* Name */}
             <Controller
               control={control}
@@ -297,10 +299,11 @@ export const ChildForm: React.FC<Props> = ({
 
             <Space size={20} />
 
-            {/* Save */}
-            <Button mode="contained" onPress={handleSubmit(onSubmit)}>
-              {t('button.save') || 'Save'}
-            </Button>
+            {showSubmitButton && (
+              <Button mode="contained" onPress={handleSubmit(onSubmit)}>
+                {t('button.save') || 'Save'}
+              </Button>
+            )}
 
             {isEditMode && isAdmin && (
               <>
@@ -318,7 +321,27 @@ export const ChildForm: React.FC<Props> = ({
             <Space size={20} />
           </Card.Content>
         </Card>
-      </ScrollView>
+  );
+
+  return (
+    <>
+      {showScreenHeader && (
+        <ScreenHeader
+          hasBackButton
+          title={headerTitle}
+          containerStyle={styles.screenHeader}
+        />
+      )}
+      {embedded ? (
+        formBody
+      ) : (
+        <ScrollView
+          contentContainerStyle={styles.container}
+          keyboardShouldPersistTaps="handled"
+        >
+          {formBody}
+        </ScrollView>
+      )}
 
       <DeleteModal
         isVisible={isDeleteModalVisible}
@@ -329,4 +352,4 @@ export const ChildForm: React.FC<Props> = ({
       />
     </>
   );
-};
+});
