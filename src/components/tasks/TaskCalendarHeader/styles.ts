@@ -6,7 +6,6 @@ export const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     paddingHorizontal: 4,
     paddingTop: 8,
     paddingBottom: 8,
@@ -14,14 +13,23 @@ export const styles = StyleSheet.create({
     borderBottomColor: Colors.grey200,
   },
 
-  dateArea: {
+  sideSlot: {
+    width: 88,
+    flexShrink: 0,
+  },
+
+  sideSlotRight: {
+    alignItems: 'flex-end',
+  },
+
+  centerArea: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     minWidth: 0,
-    marginRight: 8,
   },
 
   dateBadge: {
-    alignSelf: 'flex-start',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
@@ -36,12 +44,43 @@ export const styles = StyleSheet.create({
   dateText: {
     textTransform: 'capitalize',
     color: Colors.grey900,
+    textAlign: 'center',
+  },
+
+  filterButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: Colors.grey200,
+  },
+
+  filterBadge: {
+    position: 'absolute',
+    top: -4,
+    right: -4,
+    minWidth: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: Colors.blue500,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+
+  filterBadgeText: {
+    color: '#FFFFFF',
+    fontSize: 10,
+    lineHeight: 12,
+    fontWeight: '700',
   },
 
   actions: {
     flexDirection: 'row',
     alignItems: 'center',
-    flexShrink: 0,
     gap: 4,
   },
 
@@ -54,7 +93,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: Colors.grey200,
-    marginLeft: 8,
   },
 
   chevronPrevious: {

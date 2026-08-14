@@ -186,6 +186,9 @@
     "done": "Done",
     "completed_history": "Completed Tasks",
     "no_filtered_tasks": "No tasks found",
+    "filter": "Filter",
+    "filter_children": "Children",
+    "filter_statuses": "Statuses",
     "baseTasks": {
       "brushTeethEvening": "Brush teeth in the evening",
       "brushTeethEveningDescription": "Brush teeth in the evening",

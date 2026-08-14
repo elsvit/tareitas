@@ -9,7 +9,6 @@ import { z } from 'zod';
 import { ScreenHeader } from '~/components/blocks';
 import { DeleteModal } from '~/components/modals';
 import { Button, ButtonColors, Card, Select, Space, Text, TextInput } from '~/components/ui';
-import { GesturePasswordIconButton } from '~/components/ui/GesturePasswordIconButton';
 import { OTPInputIconButton } from '~/components/ui/OTPInputIconButton';
 import { SelectColor } from '~/components/ui/SelectColor';
 import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWithCustom';
@@ -312,12 +311,12 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
                       onChange={onChange}
                       maxLength={4}
                     />
-                    <GesturePasswordIconButton
+                    {/* <GesturePasswordIconButton
                       title={t('users.parent_password')}
                       onChange={onChange}
                       minLength={4}
                       style={styles.otpInput}
-                    />
+                    /> */}
                   </View>
                   {!!errors.passwordPattern && (
                     <Text style={styles.errorText}>
