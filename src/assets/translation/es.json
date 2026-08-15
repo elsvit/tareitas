@@ -170,7 +170,6 @@
     "task_templates": "plantillas de tareas",
     "add_task": "Añadir Tarea",
     "edit_task": "Editar Tarea",
-    "child": "[TODO: es] Child",
     "base_task_template": "Usar tarea básica",
     "repeats": "Repetir",
     "start_date": "Fecha de inicio",
@@ -189,6 +188,8 @@
     "filter": "Filtrar",
     "filter_children": "Niños",
     "filter_statuses": "Estados",
+    "task_date_before_closed_period": "Las tareas de {{childName}} deben empezar en {{month}} o después, una vez cerrado el periodo de premios actual",
+    "task_end_date_before_closed_period": "La fecha de fin de la tarea de {{childName}} debe ser en {{month}} o después, una vez cerrado el periodo de premios actual",
     "baseTasks": {
       "brushTeethEvening": "Cepillarse los dientes en la tarde",
       "brushTeethEveningDescription": "Cepillarse los dientes en la tarde",

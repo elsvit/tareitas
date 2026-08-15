@@ -170,7 +170,6 @@
     "task_templates": "task templates",
     "add_task": "Add Task",
     "edit_task": "Edit Task",
-    "child": "Child",
     "base_task_template": "Use base task",
     "repeats": "Repeats",
     "start_date": "Start date",
@@ -189,6 +188,8 @@
     "filter": "Filter",
     "filter_children": "Children",
     "filter_statuses": "Statuses",
+    "task_date_before_closed_period": "Tasks for {{childName}} must start in {{month}} or later after the current reward period is closed",
+    "task_end_date_before_closed_period": "Task end date for {{childName}} must be in {{month}} or later after the current reward period is closed",
     "baseTasks": {
       "brushTeethEvening": "Brush teeth in the evening",
       "brushTeethEveningDescription": "Brush teeth in the evening",
