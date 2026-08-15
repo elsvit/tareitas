@@ -3,6 +3,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { EStateName } from '~/store/enums';
 import { ERole } from '~/store/settings/enums';
 import { ELang } from '~/types/ELang';
+import { getTodayDateString } from '~/utils/date';
 
 import type { IStateSettings } from './types';
 
@@ -13,6 +14,7 @@ const initialState: IStateSettings = {
   isChildPasswordObligatory: true,
   currentUser: null,
   currentRole: null,
+  taskCalendarDate: getTodayDateString(),
 };
 
 export const settingsSlice = createSlice({
@@ -38,6 +40,9 @@ export const settingsSlice = createSlice({
     setCurrentRole: (state, action: PayloadAction<ERole | null>) => {
       state.currentRole = action.payload;
     },
+    setTaskCalendarDate: (state, action: PayloadAction<string>) => {
+      state.taskCalendarDate = action.payload;
+    },
   },
 });
 
@@ -49,4 +54,5 @@ export const {
   setIsChildPasswordObligatory,
   setCurrentRole,
   setCurrentUser,
+  setTaskCalendarDate,
 } = settingsSlice.actions;

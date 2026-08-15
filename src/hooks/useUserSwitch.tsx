@@ -8,7 +8,8 @@ import {
 } from '~/components/modals';
 import type { SelectedUser } from '~/components/modals';
 import { t } from '~/services';
-import { setCurrentRole, setCurrentUser } from '~/store/settings/slice';
+import { setCurrentRole, setCurrentUser, setTaskCalendarDate } from '~/store/settings/slice';
+import { getTodayDateString } from '~/utils/date';
 import {
   isPinPassword,
   patternToString,
@@ -45,6 +46,7 @@ export function useUserSwitch() {
     (user: SelectedUser) => {
       dispatch(setCurrentUser(user.id));
       dispatch(setCurrentRole(user.role));
+      dispatch(setTaskCalendarDate(getTodayDateString()));
       setPendingUser(null);
       setIsPinModalVisible(false);
       setIsGestureModalVisible(false);

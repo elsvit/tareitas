@@ -1,5 +1,7 @@
 import type { RootStateT } from '~/store';
 import { EStateName } from '~/store/enums';
+import { getTodayDateString } from '~/utils/date';
+
 import type { IStateSettings } from './types';
 
 export const getSettingsState = (state: RootStateT) => state[EStateName.settings];
@@ -22,3 +24,7 @@ export const selectCurrentUser = (state: RootStateT) =>
 
 export const selectCurrentRole = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>).currentRole;
+
+export const selectTaskCalendarDate = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>).taskCalendarDate ??
+  getTodayDateString();

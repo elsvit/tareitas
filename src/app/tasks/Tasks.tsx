@@ -1,4 +1,4 @@
-import { addDays, format, parseISO, subDays } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
@@ -16,24 +16,26 @@ import { TaskCalendarHeader } from '~/components/tasks/TaskCalendarHeader';
 import { TaskListItem } from '~/components/tasks/TaskListItem';
 import { TaskScreenFabs } from '~/components/tasks/TaskScreenFabs';
 import { Text } from '~/components/ui';
-import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { useHasCompletedTasksInPast } from '~/hooks/useHasCompletedTasksInPast';
+import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
+import { useTaskCalendarDate } from '~/hooks/useTaskCalendarDate';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
 import { ERole } from '~/store/settings/enums';
 import { selectCurrentRole, selectCurrentUser } from '~/store/settings/selectors';
-import { selectAllTaskBase } from '~/store/taskBase/selectors';
-import { PAST_COMPLETED_SEARCH_DAYS } from '~/store/tasks/taskFilters';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
+import { selectAllTaskBase } from '~/store/taskBase/selectors';
 import {
   buildTaskListItemViewFromParts,
   ScheduledTaskItem,
   selectScheduledTasksForDate,
 } from '~/store/tasks/selectors';
 import { generateTasksForDate } from '~/store/tasks/slice';
+import { PAST_COMPLETED_SEARCH_DAYS } from '~/store/tasks/taskFilters';
 import { EScreens } from '~/types';
 import { ETaskStatus } from '~/types/ETask';
+import { getAssignmentFieldsForDate } from '~/utils/tasks/recurringTaskEdit';
 import {
   createDefaultTaskCalendarFilter,
   getActiveTaskCalendarFilterCount,
@@ -41,17 +43,14 @@ import {
   mergeTaskCalendarFilterChildren,
   TaskCalendarFilter,
 } from '~/utils/tasks/taskCalendarFilter';
-import { getAssignmentFieldsForDate } from '~/utils/tasks/recurringTaskEdit';
 import { compareTaskTimes } from '~/utils/tasks/taskSort';
 
 export default function Tasks() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user: currentUser } = useCurrentUser();
+  const { selectedDate, handlePreviousDay, handleNextDay } = useTaskCalendarDate();
 
-  const [selectedDate, setSelectedDate] = useState(() =>
-    format(new Date(), 'yyyy-MM-dd'),
-  );
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -102,43 +101,43 @@ export default function Tasks() {
     () =>
       scheduledItems
         .filter(item => {
-        const assignment = assignments.find(
-          assignmentItem => assignmentItem.id === item.assignmentId,
-        );
+          const assignment = assignments.find(
+            assignmentItem => assignmentItem.id === item.assignmentId,
+          );
 
-        if (!assignment) {
-          return false;
-        }
+          if (!assignment) {
+            return false;
+          }
 
-        const child = children.find(childItem => childItem.id === assignment.childId);
-        const taskView = buildTaskListItemViewFromParts(
-          item.id,
-          item.assignmentId,
-          item.date,
-          item.task,
-          assignment,
-          child,
-          taskBaseList,
-        );
+          const child = children.find(childItem => childItem.id === assignment.childId);
+          const taskView = buildTaskListItemViewFromParts(
+            item.id,
+            item.assignmentId,
+            item.date,
+            item.task,
+            assignment,
+            child,
+            taskBaseList,
+          );
 
-        if (!taskView) {
-          return false;
-        }
+          if (!taskView) {
+            return false;
+          }
 
-        if (
-          normalizedSearchQuery &&
-          !taskView.name.toLowerCase().includes(normalizedSearchQuery)
-        ) {
-          return false;
-        }
+          if (
+            normalizedSearchQuery &&
+            !taskView.name.toLowerCase().includes(normalizedSearchQuery)
+          ) {
+            return false;
+          }
 
-        return matchesTaskCalendarFilter(
-          assignment.childId,
-          taskView.status,
-          filter,
-          showChildrenFilter,
-        );
-      })
+          return matchesTaskCalendarFilter(
+            assignment.childId,
+            taskView.status,
+            filter,
+            showChildrenFilter,
+          );
+        })
         .sort((a, b) => {
           const assignmentA = assignments.find(
             assignmentItem => assignmentItem.id === a.assignmentId,
@@ -174,18 +173,6 @@ export default function Tasks() {
 
     dispatch(generateTasksForDate({ date: selectedDate, assignments }));
   }, [dispatch, selectedDate, assignments, isChild]);
-
-  const handlePreviousDay = useCallback(() => {
-    setSelectedDate(current =>
-      format(subDays(parseISO(current), 1), 'yyyy-MM-dd'),
-    );
-  }, []);
-
-  const handleNextDay = useCallback(() => {
-    setSelectedDate(current =>
-      format(addDays(parseISO(current), 1), 'yyyy-MM-dd'),
-    );
-  }, []);
 
   const handleOpenFilter = useCallback(() => {
     setIsFilterModalVisible(true);
@@ -246,10 +233,25 @@ export default function Tasks() {
   );
 
   const ListEmptyComponent = useCallback(
-    () => (
+    () => (<>
       <Text variant="bodyMedium" style={styles.emptyText}>
         {t('tasks.no_tasks')}
       </Text>
+      {!isChild && <>
+        <Text variant="bodyMedium" style={styles.emptyText}>
+          {t('tasks.push_to_add_task')}
+        </Text>
+        <Text variant="bodyMedium" style={styles.emptyText}>
+          {t('tasks.empty_tasks_definition')}
+        </Text>
+        <Text variant="bodyMedium" style={styles.emptyText}>
+          {t('tasks.empty_habits_definition')}
+        </Text>
+        <Text variant="bodyMedium" style={styles.emptyText}>
+          {t('tasks.empty_tasks_habits_difference')}
+        </Text>
+      </>}
+    </>
     ),
     [],
   );
@@ -260,47 +262,47 @@ export default function Tasks() {
       {!currentUser ? (
         <SelectUserPrompt />
       ) : (
-      <View style={styles.container}>
-        <TaskCalendarHeader
-          date={selectedDate}
-          onPrevious={handlePreviousDay}
-          onNext={handleNextDay}
-          showSearch
-          isSearchVisible={isSearchVisible}
-          onSearchPress={handleSearchPress}
-          searchQuery={searchQuery}
-          onSearchQueryChange={setSearchQuery}
-          showFilter
-          activeFilterCount={activeFilterCount}
-          onFilterPress={handleOpenFilter}
-        />
+        <View style={styles.container}>
+          <TaskCalendarHeader
+            date={selectedDate}
+            onPrevious={handlePreviousDay}
+            onNext={handleNextDay}
+            showSearch
+            isSearchVisible={isSearchVisible}
+            onSearchPress={handleSearchPress}
+            searchQuery={searchQuery}
+            onSearchQueryChange={setSearchQuery}
+            showFilter
+            activeFilterCount={activeFilterCount}
+            onFilterPress={handleOpenFilter}
+          />
 
-        <FlatList
-          data={filteredItems}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          ItemSeparatorComponent={renderSeparator}
-          ListEmptyComponent={ListEmptyComponent}
-          contentContainerStyle={styles.listContent}
-          showsVerticalScrollIndicator={false}
-          style={styles.list}
-        />
+          <FlatList
+            data={filteredItems}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            ItemSeparatorComponent={renderSeparator}
+            ListEmptyComponent={ListEmptyComponent}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+            style={styles.list}
+          />
 
-        <TaskScreenFabs
-          showAdd={!isChild}
-          onAdd={handleAddTask}
-          showCompletedHistory={showCompletedHistory}
-          onOpenCompletedHistory={handleOpenCompletedHistory}
-        />
+          <TaskScreenFabs
+            showAdd={!isChild}
+            onAdd={handleAddTask}
+            showCompletedHistory={showCompletedHistory}
+            onOpenCompletedHistory={handleOpenCompletedHistory}
+          />
 
-        <TaskFilterModal
-          isVisible={isFilterModalVisible}
-          onRequestClose={handleCloseFilter}
-          filter={filter}
-          onFilterChange={setFilter}
-          showChildrenFilter={showChildrenFilter}
-        />
-      </View>
+          <TaskFilterModal
+            isVisible={isFilterModalVisible}
+            onRequestClose={handleCloseFilter}
+            filter={filter}
+            onFilterChange={setFilter}
+            showChildrenFilter={showChildrenFilter}
+          />
+        </View>
       )}
     </SafeAreaBgImage>
   );
