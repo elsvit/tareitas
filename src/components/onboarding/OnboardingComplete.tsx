@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { View } from 'react-native';
 
 import { Image } from 'expo-image';
@@ -12,13 +12,16 @@ import Animated, {
   withSpring,
   ZoomIn,
 } from 'react-native-reanimated';
+import { useSelector } from 'react-redux';
 
 import { CHILDREN_AVATARS, PARENT_AVATARS } from '~/assets/img/users/users';
 import { Text } from '~/components/ui';
 import { t } from '~/services';
+import { selectUserImageUrls } from '~/store/images';
 import { Colors } from '~/styles';
 import type { ChildFormProps } from '~/types/IChild';
 import type { ParentFormProps } from '~/types/IParent';
+import { resolvePictureSource } from '~/utils/pictureSource';
 
 import { onboardingStyles as styles } from './styles';
 
@@ -27,12 +30,15 @@ type OnboardingCompleteProps = {
   child?: ChildFormProps;
 };
 
-const getAvatarSource = (avatar?: string, isParent = false) => {
-  const options = isParent ? PARENT_AVATARS : CHILDREN_AVATARS;
-  return options.find(option => option.value === avatar)?.image;
-};
+const USER_AVATAR_MAP = Object.fromEntries(
+  [...PARENT_AVATARS, ...CHILDREN_AVATARS].map(({ value, image }) => [
+    value,
+    image,
+  ]),
+);
 
 export function OnboardingComplete({ parent, child }: OnboardingCompleteProps) {
+  const userUrls = useSelector(selectUserImageUrls);
   const bounce = useSharedValue(1);
 
   useEffect(() => {
@@ -47,8 +53,15 @@ export function OnboardingComplete({ parent, child }: OnboardingCompleteProps) {
     transform: [{ scale: bounce.value }],
   }));
 
-  const parentAvatar = getAvatarSource(parent?.avatar, true);
-  const childAvatar = getAvatarSource(child?.avatar, false);
+  const parentAvatar = useMemo(
+    () => resolvePictureSource(parent?.avatar, userUrls, USER_AVATAR_MAP),
+    [parent?.avatar, userUrls],
+  );
+
+  const childAvatar = useMemo(
+    () => resolvePictureSource(child?.avatar, userUrls, USER_AVATAR_MAP),
+    [child?.avatar, userUrls],
+  );
 
   return (
     <Animated.View entering={FadeIn.duration(400)} style={styles.completeContainer}>
