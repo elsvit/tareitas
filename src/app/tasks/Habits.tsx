@@ -21,8 +21,6 @@ import { useHasCompletedTasksInPast } from '~/hooks/useHasCompletedTasksInPast';
 import { useTaskCalendarDate } from '~/hooks/useTaskCalendarDate';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
-import { ERole } from '~/store/settings/enums';
-import { selectCurrentRole, selectCurrentUser } from '~/store/settings/selectors';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
 import { selectAllTaskBase } from '~/store/taskBase/selectors';
 import {
@@ -47,16 +45,13 @@ import { compareTaskTimes } from '~/utils/tasks/taskSort';
 export default function Habits() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { user: currentUser } = useCurrentUser();
+  const { user: currentUser, currentUserId, isChild } = useCurrentUser();
   const { selectedDate, handlePreviousDay, handleNextDay } = useTaskCalendarDate();
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const currentRole = useSelector(selectCurrentRole);
-  const currentUserId = useSelector(selectCurrentUser);
-  const isChild = currentRole === ERole.child;
   const children = useSelector(selectAllChildren);
   const taskBaseList = useSelector(selectAllTaskBase);
 
@@ -238,7 +233,7 @@ export default function Habits() {
       </Text>
       {!isChild && <>
         <Text variant="bodyMedium" style={styles.emptyText}>
-          {t('tasks.push_to_add_task')}
+          {t('habits.push_to_add_habit')}
         </Text>
         <Text variant="bodyMedium" style={styles.emptyText}>
           {t('tasks.empty_habits_definition')}
@@ -252,7 +247,7 @@ export default function Habits() {
       </>}
     </>
     ),
-    [],
+    [isChild],
   );
 
   return (

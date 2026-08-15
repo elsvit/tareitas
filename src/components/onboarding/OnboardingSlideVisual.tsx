@@ -14,8 +14,8 @@ import Animated, {
   ZoomIn,
 } from 'react-native-reanimated';
 
-import makeBed from '~/assets/img/tasks/make_bed.jpg';
-import packBackpack from '~/assets/img/tasks/pack_backpack.jpg';
+import Image1 from '~/assets/img/tasks/dust_furniture.jpg';
+import Image2 from '~/assets/img/tasks/pack_backpack.jpg';
 import Girl1 from '~/assets/img/users/girl1_320.jpg';
 import Man1 from '~/assets/img/users/man1_320.jpg';
 import { Text } from '~/components/ui';
@@ -64,7 +64,7 @@ function CreateTasksVisual() {
       </Animated.View>
       <Animated.View entering={ZoomIn.delay(300).springify()} style={{ marginTop: 16 }}>
         <View style={styles.taskCard}>
-          <Image source={makeBed} style={styles.taskImage} contentFit="cover" />
+          <Image source={Image1} style={styles.taskImage} contentFit="cover" />
         </View>
       </Animated.View>
       <Animated.View entering={FadeIn.delay(500)} style={{ marginTop: 12 }}>
@@ -86,7 +86,7 @@ function EarnStarsVisual() {
       </Animated.View>
       <Animated.View entering={ZoomIn.delay(350).springify()} style={{ marginTop: 16 }}>
         <View style={styles.taskCard}>
-          <Image source={packBackpack} style={styles.taskImage} contentFit="cover" />
+          <Image source={Image2} style={styles.taskImage} contentFit="cover" />
         </View>
       </Animated.View>
       <View style={{ flexDirection: 'row', gap: 12, marginTop: 16 }}>

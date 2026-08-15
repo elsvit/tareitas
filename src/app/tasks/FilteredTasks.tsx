@@ -18,10 +18,9 @@ import { Text } from '~/components/ui';
 import { DEFAULT_DATE_LOCALE, DEFAULT_LANG } from '~/constants/settings';
 import { t } from '~/services';
 import { RootStateT } from '~/store';
-import { ERole } from '~/store/settings/enums';
 import {
-  selectCurrentRole,
   selectCurrentUser,
+  selectIsChild,
   selectLang,
 } from '~/store/settings/selectors';
 import {
@@ -61,9 +60,8 @@ const parseIsHabitParam = (value: unknown) =>
 export default function FilteredTasks() {
   const { params } = useRoute<RouteProp<Record<string, RouteParams>, string>>();
   const lang = useSelector(selectLang) ?? DEFAULT_LANG;
-  const currentRole = useSelector(selectCurrentRole);
   const currentUserId = useSelector(selectCurrentUser);
-  const isChild = currentRole === ERole.child;
+  const isChild = useSelector(selectIsChild);
 
   const filters = useMemo<ITaskFilters>(() => {
     const today = format(new Date(), 'yyyy-MM-dd');

@@ -290,6 +290,7 @@
   "habits": {
     "title": "Habits",
     "no_habits": "No habits yet",
+    "push_to_add_habit": "Push the button to add a habit",
     "add_habit": "Add Habit",
     "edit_habit": "Edit Habit",
     "completed_history": "Completed Habits"

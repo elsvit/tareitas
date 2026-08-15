@@ -36,8 +36,7 @@ import {
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectEarnedRewardPeriods } from '~/store/rewards/selectors';
-import { ERole } from '~/store/settings/enums';
-import { selectCurrentRole } from '~/store/settings/selectors';
+import { selectIsAdmin, selectIsChild } from '~/store/settings/selectors';
 import { removeTaskAssignment } from '~/store/taskAssignment/slice';
 import { selectAllTaskBaseInDefaultOrder } from '~/store/taskBase/selectors';
 import { Colors, userColors } from '~/styles';
@@ -294,9 +293,9 @@ export const AssignmentTaskForm: FC<Props> = ({
   const children = useSelector(selectAllChildren);
   const earnedRewardPeriods = useSelector(selectEarnedRewardPeriods);
   const baseTasks = useSelector(selectAllTaskBaseInDefaultOrder);
-  const currentRole = useSelector(selectCurrentRole);
-  const isAdmin = currentRole === ERole.admin;
-  const isParentView = currentRole !== ERole.child;
+  const isAdmin = useSelector(selectIsAdmin);
+  const isChild = useSelector(selectIsChild);
+  const isParentView = !isChild;
   const isEditMode = mode === EFormMode.Edit;
   const hasMultipleChildren = children.length > 1;
   const singleChild = children.length === 1 ? children[0] : undefined;
