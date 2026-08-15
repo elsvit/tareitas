@@ -8,4 +8,5 @@ export interface IStateSettings {
   isChildPasswordObligatory: boolean;
   currentUser: string | null; // Current user ID
   currentRole: ERole | null; // Current user role
+  taskCalendarDate: string;
 }

@@ -8,13 +8,13 @@ import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeArea
 import { ParentRewardsTabs } from '~/components/rewards/ParentRewardsTabs';
 import { RewardItem } from '~/components/rewards/RewardItem';
 import { Text } from '~/components/ui';
-import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
+import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
 import { t } from '~/services';
 import {
+  RewardListItemView,
   selectChildRewardBalance,
   selectRewardListItemsForChild,
-  RewardListItemView,
 } from '~/store/rewards/selectors';
 import {
   addReward,
@@ -130,7 +130,14 @@ export default function Rewards() {
             contentContainerStyle={styles.listContent}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
             ListEmptyComponent={
-              <Text style={styles.emptyText}>{t('rewards.no_rewards')}</Text>
+              <>
+                <Text style={styles.emptyText}>{t('rewards.no_rewards')}</Text>
+                {!isChild && <>
+                  <Text variant="bodyMedium" style={styles.emptyText}>
+                    {t('rewards.push_to_add_reward')}
+                  </Text>
+                </>}
+              </>
             }
           />
         </View>

@@ -1,4 +1,4 @@
-import { addDays, format, parseISO, subDays } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
@@ -18,21 +18,23 @@ import { TaskScreenFabs } from '~/components/tasks/TaskScreenFabs';
 import { Text } from '~/components/ui';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { useHasCompletedTasksInPast } from '~/hooks/useHasCompletedTasksInPast';
+import { useTaskCalendarDate } from '~/hooks/useTaskCalendarDate';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
 import { ERole } from '~/store/settings/enums';
 import { selectCurrentRole, selectCurrentUser } from '~/store/settings/selectors';
-import { selectAllTaskBase } from '~/store/taskBase/selectors';
-import { PAST_COMPLETED_SEARCH_DAYS } from '~/store/tasks/taskFilters';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
+import { selectAllTaskBase } from '~/store/taskBase/selectors';
 import {
   buildTaskListItemViewFromParts,
   ScheduledTaskItem,
   selectScheduledTasksForDate,
 } from '~/store/tasks/selectors';
 import { generateTasksForDate } from '~/store/tasks/slice';
+import { PAST_COMPLETED_SEARCH_DAYS } from '~/store/tasks/taskFilters';
 import { EScreens } from '~/types';
 import { ETaskStatus } from '~/types/ETask';
+import { getAssignmentFieldsForDate } from '~/utils/tasks/recurringTaskEdit';
 import {
   createDefaultTaskCalendarFilter,
   getActiveTaskCalendarFilterCount,
@@ -40,17 +42,14 @@ import {
   mergeTaskCalendarFilterChildren,
   TaskCalendarFilter,
 } from '~/utils/tasks/taskCalendarFilter';
-import { getAssignmentFieldsForDate } from '~/utils/tasks/recurringTaskEdit';
 import { compareTaskTimes } from '~/utils/tasks/taskSort';
 
 export default function Habits() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user: currentUser } = useCurrentUser();
+  const { selectedDate, handlePreviousDay, handleNextDay } = useTaskCalendarDate();
 
-  const [selectedDate, setSelectedDate] = useState(() =>
-    format(new Date(), 'yyyy-MM-dd'),
-  );
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -99,43 +98,43 @@ export default function Habits() {
     () =>
       scheduledItems
         .filter(item => {
-        const assignment = assignments.find(
-          assignmentItem => assignmentItem.id === item.assignmentId,
-        );
+          const assignment = assignments.find(
+            assignmentItem => assignmentItem.id === item.assignmentId,
+          );
 
-        if (!assignment) {
-          return false;
-        }
+          if (!assignment) {
+            return false;
+          }
 
-        const child = children.find(childItem => childItem.id === assignment.childId);
-        const taskView = buildTaskListItemViewFromParts(
-          item.id,
-          item.assignmentId,
-          item.date,
-          item.task,
-          assignment,
-          child,
-          taskBaseList,
-        );
+          const child = children.find(childItem => childItem.id === assignment.childId);
+          const taskView = buildTaskListItemViewFromParts(
+            item.id,
+            item.assignmentId,
+            item.date,
+            item.task,
+            assignment,
+            child,
+            taskBaseList,
+          );
 
-        if (!taskView) {
-          return false;
-        }
+          if (!taskView) {
+            return false;
+          }
 
-        if (
-          normalizedSearchQuery &&
-          !taskView.name.toLowerCase().includes(normalizedSearchQuery)
-        ) {
-          return false;
-        }
+          if (
+            normalizedSearchQuery &&
+            !taskView.name.toLowerCase().includes(normalizedSearchQuery)
+          ) {
+            return false;
+          }
 
-        return matchesTaskCalendarFilter(
-          assignment.childId,
-          taskView.status,
-          filter,
-          showChildrenFilter,
-        );
-      })
+          return matchesTaskCalendarFilter(
+            assignment.childId,
+            taskView.status,
+            filter,
+            showChildrenFilter,
+          );
+        })
         .sort((a, b) => {
           const assignmentA = assignments.find(
             assignmentItem => assignmentItem.id === a.assignmentId,
@@ -171,18 +170,6 @@ export default function Habits() {
 
     dispatch(generateTasksForDate({ date: selectedDate, assignments }));
   }, [dispatch, selectedDate, assignments, isChild]);
-
-  const handlePreviousDay = useCallback(() => {
-    setSelectedDate(current =>
-      format(subDays(parseISO(current), 1), 'yyyy-MM-dd'),
-    );
-  }, []);
-
-  const handleNextDay = useCallback(() => {
-    setSelectedDate(current =>
-      format(addDays(parseISO(current), 1), 'yyyy-MM-dd'),
-    );
-  }, []);
 
   const handleOpenFilter = useCallback(() => {
     setIsFilterModalVisible(true);
@@ -245,10 +232,25 @@ export default function Habits() {
   );
 
   const ListEmptyComponent = useCallback(
-    () => (
+    () => (<>
       <Text variant="bodyMedium" style={styles.emptyText}>
         {t('habits.no_habits')}
       </Text>
+      {!isChild && <>
+        <Text variant="bodyMedium" style={styles.emptyText}>
+          {t('tasks.push_to_add_task')}
+        </Text>
+        <Text variant="bodyMedium" style={styles.emptyText}>
+          {t('tasks.empty_habits_definition')}
+        </Text>
+        <Text variant="bodyMedium" style={styles.emptyText}>
+          {t('tasks.empty_tasks_definition')}
+        </Text>
+        <Text variant="bodyMedium" style={styles.emptyText}>
+          {t('tasks.empty_tasks_habits_difference')}
+        </Text>
+      </>}
+    </>
     ),
     [],
   );
