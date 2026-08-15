@@ -38,8 +38,17 @@ export const styles = StyleSheet.create({
     backgroundColor: FORM_FIELD.menuBackground,
     maxWidth: '100%',
   },
+  menuInner: {
+    backgroundColor: FORM_FIELD.menuBackground,
+  },
+  searchContainer: {
+    paddingHorizontal: 12,
+    paddingTop: 8,
+    paddingBottom: 4,
+    backgroundColor: FORM_FIELD.menuBackground,
+  },
   menuScroll: {
-    maxHeight: 320,
+    maxHeight: 280,
     backgroundColor: FORM_FIELD.menuBackground,
   },
   menuItem: {
@@ -65,5 +74,11 @@ export const styles = StyleSheet.create({
   menuItemTitle: {
     flex: 1,
     color: FORM_FIELD.menuText,
+  },
+  emptyText: {
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    color: FORM_FIELD.label,
+    textAlign: 'center',
   },
 });

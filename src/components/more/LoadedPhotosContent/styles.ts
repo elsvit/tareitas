@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-import { SCREEN_TEXT } from '~/constants/formField';
 import { spacing } from '~/styles';
 import { Colors } from '~/styles';
 
@@ -15,9 +14,6 @@ export const styles = StyleSheet.create({
   },
   section: {
     gap: spacing(3),
-  },
-  sectionTitle: {
-    color: SCREEN_TEXT.primary,
   },
   grid: {
     flexDirection: 'row',

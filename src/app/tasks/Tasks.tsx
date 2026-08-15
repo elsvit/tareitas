@@ -53,6 +53,8 @@ export default function Tasks() {
     format(new Date(), 'yyyy-MM-dd'),
   );
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const currentRole = useSelector(selectCurrentRole);
   const currentUserId = useSelector(selectCurrentUser);
@@ -91,6 +93,11 @@ export default function Tasks() {
     [filter, showChildrenFilter],
   );
 
+  const normalizedSearchQuery = useMemo(
+    () => searchQuery.trim().toLowerCase(),
+    [searchQuery],
+  );
+
   const filteredItems = useMemo(
     () =>
       scheduledItems
@@ -115,6 +122,13 @@ export default function Tasks() {
         );
 
         if (!taskView) {
+          return false;
+        }
+
+        if (
+          normalizedSearchQuery &&
+          !taskView.name.toLowerCase().includes(normalizedSearchQuery)
+        ) {
           return false;
         }
 
@@ -149,6 +163,7 @@ export default function Tasks() {
       taskBaseList,
       filter,
       showChildrenFilter,
+      normalizedSearchQuery,
     ],
   );
 
@@ -178,6 +193,10 @@ export default function Tasks() {
 
   const handleCloseFilter = useCallback(() => {
     setIsFilterModalVisible(false);
+  }, []);
+
+  const handleSearchPress = useCallback(() => {
+    setIsSearchVisible(current => !current);
   }, []);
 
   const handleAddTask = useCallback(() => {
@@ -246,6 +265,11 @@ export default function Tasks() {
           date={selectedDate}
           onPrevious={handlePreviousDay}
           onNext={handleNextDay}
+          showSearch
+          isSearchVisible={isSearchVisible}
+          onSearchPress={handleSearchPress}
+          searchQuery={searchQuery}
+          onSearchQueryChange={setSearchQuery}
           showFilter
           activeFilterCount={activeFilterCount}
           onFilterPress={handleOpenFilter}

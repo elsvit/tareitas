@@ -29,7 +29,11 @@ export const ScreenHeader: React.FC<IScreenHeader> = ({
       return (
         <TouchableOpacity
           key={`btn-${position}-${index}`}
-          style={position === 'left' ? styles.leftButton : styles.rightButton}
+          style={
+            position === 'left'
+              ? styles.leftButton
+              : [styles.circleIconButton, styles.rightButton]
+          }
           onPress={btn.onPress}
         >
           <IconComponent width={24} height={24} />
@@ -39,7 +43,11 @@ export const ScreenHeader: React.FC<IScreenHeader> = ({
       return (
         <TouchableOpacity
           key={`btn-${position}-${index}`}
-          style={position === 'left' ? styles.leftButton : styles.rightButton}
+          style={
+            position === 'left'
+              ? styles.leftButton
+              : [styles.circleIconButton, styles.rightButton]
+          }
           onPress={btn.onPress}
         >
           <Image source={btn.imageSource} style={{ width: 24, height: 24 }} />

@@ -21,6 +21,7 @@ import {
   selectUserImageUrls,
 } from '~/store/images';
 import type { ImageStoreKind } from '~/store/images/types';
+import { Colors } from '~/styles';
 
 import { styles } from './styles';
 
@@ -77,6 +78,7 @@ const ImageGrid: React.FC<ImageGridProps> = ({
 
 type PhotoSectionProps = {
   title: string;
+  titleColor: string;
   entries: [string, string][];
   usedIds: Set<string>;
   onRemovePress: (id: string, uri: string) => void;
@@ -84,12 +86,13 @@ type PhotoSectionProps = {
 
 const PhotoSection: React.FC<PhotoSectionProps> = ({
   title,
+  titleColor,
   entries,
   usedIds,
   onRemovePress,
 }) => (
   <View style={styles.section}>
-    <Text variant="titleMedium" weight="bold" style={styles.sectionTitle}>
+    <Text variant="titleMedium" weight="bold" style={{ color: titleColor }}>
       {title}
     </Text>
     <ImageGrid
@@ -147,6 +150,7 @@ export function LoadedPhotosContent() {
       <View style={styles.container}>
         <PhotoSection
           title={t('users.title')}
+          titleColor={Colors.blue500}
           entries={userEntries}
           usedIds={usedUserIds}
           onRemovePress={(id, uri) => handleRemovePress('user', id, uri)}
@@ -154,6 +158,7 @@ export function LoadedPhotosContent() {
 
         <PhotoSection
           title={t('tasks.title')}
+          titleColor={Colors.green500}
           entries={taskEntries}
           usedIds={usedTaskIds}
           onRemovePress={(id, uri) => handleRemovePress('task', id, uri)}
@@ -161,6 +166,7 @@ export function LoadedPhotosContent() {
 
         <PhotoSection
           title={t('rewards.title')}
+          titleColor={Colors.gold500}
           entries={rewardEntries}
           usedIds={usedRewardIds}
           onRemovePress={(id, uri) => handleRemovePress('reward', id, uri)}

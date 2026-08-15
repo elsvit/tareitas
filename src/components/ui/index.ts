@@ -10,5 +10,6 @@ export * from './Text';
 export * from './TextInput';
 export * from './Space';
 export * from './Card';
+export * from './Search';
 export * from './GesturePasswordIconButton';
 export * from './OTPInputIconButton';
