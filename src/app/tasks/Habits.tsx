@@ -40,6 +40,8 @@ import {
   mergeTaskCalendarFilterChildren,
   TaskCalendarFilter,
 } from '~/utils/tasks/taskCalendarFilter';
+import { getAssignmentFieldsForDate } from '~/utils/tasks/recurringTaskEdit';
+import { compareTaskTimes } from '~/utils/tasks/taskSort';
 
 export default function Habits() {
   const router = useRouter();
@@ -88,7 +90,8 @@ export default function Habits() {
 
   const filteredItems = useMemo(
     () =>
-      scheduledItems.filter(item => {
+      scheduledItems
+        .filter(item => {
         const assignment = assignments.find(
           assignmentItem => assignmentItem.id === item.assignmentId,
         );
@@ -118,7 +121,24 @@ export default function Habits() {
           filter,
           showChildrenFilter,
         );
-      }),
+      })
+        .sort((a, b) => {
+          const assignmentA = assignments.find(
+            assignmentItem => assignmentItem.id === a.assignmentId,
+          );
+          const assignmentB = assignments.find(
+            assignmentItem => assignmentItem.id === b.assignmentId,
+          );
+
+          if (!assignmentA || !assignmentB) {
+            return 0;
+          }
+
+          const timeA = getAssignmentFieldsForDate(assignmentA, a.date).time;
+          const timeB = getAssignmentFieldsForDate(assignmentB, b.date).time;
+
+          return compareTaskTimes(timeA, timeB);
+        }),
     [
       scheduledItems,
       assignments,
@@ -181,7 +201,7 @@ export default function Habits() {
   const handlePressHabit = useCallback(
     (item: ScheduledTaskItem) => {
       router.push(
-        `/${EScreens.TaskAssignmentEdit}?id=${item.assignmentId}&isHabit=true` as any,
+        `/${EScreens.TaskAssignmentEdit}?id=${item.assignmentId}&date=${item.date}&isHabit=true` as any,
       );
     },
     [router],
