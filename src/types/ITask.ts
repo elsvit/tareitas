@@ -37,19 +37,22 @@ export interface ITaskAssignment extends CreatedProps {
   // repeatWeekDays?: WeekDay[];
   // repeatType?: ETaskRepeatType; // e.g. day, week, month
   // repeatCount?: number; //for week or month: 1..., if undefined = 1, e.g.: repeat 2 times per week
-  // newTaskBonus?: number;
-  // newTaskDuration?: number; // in days or newTaskEndDate: string; // YYYY-MM-DD
+  newTaskBonus?: number;
+  newTaskDuration?: number; // in days or newTaskEndDate: string; // YYYY-MM-DD
   subtasks?: ISubtask[];
   changes?: {
-    [date: string]: { // YYYY-MM-DD
-      // date: string; // YYYY-MM-DD
-      time?: string; // HH:mm
-      name?: string;
-      description?: string;
-      reward?: number;
-      picture?: string;
-    };
-  }
+    [date: string]: ITaskAssignmentChange;
+  };
+}
+
+export interface ITaskAssignmentChange {
+  time?: string;
+  name?: string;
+  description?: string;
+  reward?: number;
+  picture?: string;
+  newTaskBonus?: number;
+  newTaskDuration?: number;
 }
 
 // for currently showing task in the calendar and completed tasks in task store

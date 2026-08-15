@@ -3,6 +3,12 @@ export enum EFormMode {
   Edit = 'edit',
 }
 
+export enum ERecurringEditScope {
+  OnlyThis = 'onlyThis',
+  ThisAndFollowing = 'thisAndFollowing',
+  All = 'all',
+}
+
 export enum WeekDay {
   Mon = 1,
   Tue = 2,

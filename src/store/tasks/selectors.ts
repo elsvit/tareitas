@@ -13,6 +13,13 @@ import {
   createTaskId,
   shouldShowAssignmentOnDate,
 } from '~/utils/tasks/taskGeneration';
+import {
+  getEffectiveTaskReward,
+  getTaskRewardDisplayText,
+  isNewTaskBonusActive,
+} from '~/utils/tasks/taskReward';
+import { getAssignmentFieldsForDate } from '~/utils/tasks/recurringTaskEdit';
+import { compareTaskTimes } from '~/utils/tasks/taskSort';
 
 import { tasksAdapter } from './slice';
 
@@ -55,6 +62,10 @@ export type TaskListItemView = {
   completedSubtasks: string[];
   isDone: boolean;
   status: ETaskStatus;
+  newTaskBonus?: number;
+  isNewTaskBonusActive: boolean;
+  effectiveReward?: number;
+  rewardDisplayText: string | null;
 };
 
 export const selectTasksByDate = (date: string, isHabit = false) =>
@@ -71,10 +82,14 @@ export const selectTasksByDate = (date: string, isHabit = false) =>
         .sort((a, b) => {
           const assignmentA = selectTaskAssignmentById(a.assignmentId)(state);
           const assignmentB = selectTaskAssignmentById(b.assignmentId)(state);
+          const timeA = assignmentA
+            ? getAssignmentFieldsForDate(assignmentA, a.date).time
+            : undefined;
+          const timeB = assignmentB
+            ? getAssignmentFieldsForDate(assignmentB, b.date).time
+            : undefined;
 
-          return (assignmentA?.time ?? '').localeCompare(
-            assignmentB?.time ?? '',
-          );
+          return compareTaskTimes(timeA, timeB);
         }),
   );
 
@@ -103,10 +118,14 @@ export const selectScheduledTasksForDate = (
         .sort((a, b) => {
           const assignmentA = assignments.find(item => item.id === a.assignmentId);
           const assignmentB = assignments.find(item => item.id === b.assignmentId);
+          const timeA = assignmentA
+            ? getAssignmentFieldsForDate(assignmentA, date).time
+            : undefined;
+          const timeB = assignmentB
+            ? getAssignmentFieldsForDate(assignmentB, date).time
+            : undefined;
 
-          return (assignmentA?.time ?? '').localeCompare(
-            assignmentB?.time ?? '',
-          );
+          return compareTaskTimes(timeA, timeB);
         }),
   );
 
@@ -127,6 +146,23 @@ export const buildTaskListItemViewFromParts = (
     ? taskBaseList.find(item => item.picture === assignment.picture)
     : undefined;
 
+  const fieldsForDate = getAssignmentFieldsForDate(
+    assignment,
+    date,
+    taskBase?.reward,
+  );
+
+  const effectiveAssignment = {
+    ...assignment,
+    title: fieldsForDate.title,
+    description: fieldsForDate.description,
+    reward: fieldsForDate.reward,
+    picture: fieldsForDate.picture,
+    time: fieldsForDate.time,
+    newTaskBonus: fieldsForDate.newTaskBonus,
+    newTaskDuration: fieldsForDate.newTaskDuration,
+  };
+
   const subtasks = assignment.subtasks ?? [];
   const completedSubtasks = task?.completedSubtasks ?? [];
   const allSubtasksDone =
@@ -145,23 +181,44 @@ export const buildTaskListItemViewFromParts = (
       : task?.status ?? ETaskStatus.Pending,
   );
 
+  const baseReward = fieldsForDate.reward;
+  const bonusActive = isNewTaskBonusActive(effectiveAssignment, date);
+  const activeBonus =
+    bonusActive &&
+    effectiveAssignment.newTaskBonus != null &&
+    effectiveAssignment.newTaskBonus > 0
+      ? effectiveAssignment.newTaskBonus
+      : undefined;
+
   return {
     id,
     task: task ?? null,
     assignmentId,
     date,
-    name: assignment.title || taskBase?.name || date,
-    description: assignment.description ?? taskBase?.description,
-    reward: assignment.reward ?? taskBase?.reward,
-    picture: assignment.picture ?? taskBase?.picture,
+    name: fieldsForDate.title || taskBase?.name || date,
+    description: fieldsForDate.description ?? taskBase?.description,
+    reward: baseReward,
+    picture: fieldsForDate.picture ?? taskBase?.picture,
     childName: child?.name ?? '',
     childColor: child?.color ?? '#5CD304',
     taskColor: assignment.color ?? child?.color ?? '#5CD304',
-    time: assignment.time,
+    time: fieldsForDate.time,
     subtasks,
     completedSubtasks,
     isDone,
     status,
+    newTaskBonus: activeBonus,
+    isNewTaskBonusActive: bonusActive,
+    effectiveReward: getEffectiveTaskReward(
+      effectiveAssignment,
+      date,
+      taskBase?.reward,
+    ),
+    rewardDisplayText: getTaskRewardDisplayText(
+      baseReward,
+      activeBonus,
+      bonusActive,
+    ),
   };
 };
 

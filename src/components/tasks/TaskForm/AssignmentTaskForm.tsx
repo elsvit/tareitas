@@ -11,7 +11,7 @@ import { z } from 'zod';
 import CrossIcon from '~/assets/svg/common/cross.svg';
 import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
-import { DeleteModal } from '~/components/modals';
+import { DeleteModal, EditRecurringTaskScopeModal } from '~/components/modals';
 import { ALL_WEEK_DAYS, WeekDaySelector } from '~/components/tasks/WeekDaySelector';
 import {
   Button,
@@ -36,11 +36,16 @@ import { selectCurrentRole } from '~/store/settings/selectors';
 import { removeTaskAssignment } from '~/store/taskAssignment/slice';
 import { selectAllTaskBase } from '~/store/taskBase/selectors';
 import { Colors, userColors } from '~/styles';
-import { EFormMode, WeekDay } from '~/types/ECommon';
+import { EFormMode, ERecurringEditScope, WeekDay } from '~/types/ECommon';
 import { ETaskRepeatType } from '~/types/ETask';
 import { ISubtask, ITaskAssignment, TaskAssignmentFormProps } from '~/types/ITask';
 import { capitalizeFirst } from '~/utils/string';
 import { validateTaskAssignmentDates } from '~/utils/tasks/taskAssignmentDateValidation';
+import { isNewTaskDurationWithinEndDate } from '~/utils/tasks/taskReward';
+import {
+  getAssignmentFieldsForDate,
+  shouldPromptRecurringEditScope,
+} from '~/utils/tasks/recurringTaskEdit';
 
 import { SelectDate } from '~/components/ui/SelectDate';
 import { SelectTime } from '~/components/ui/SelectTime';
@@ -51,8 +56,12 @@ type Props = {
   mode: EFormMode;
   assignment?: Partial<ITaskAssignment>;
   defaultDate?: string;
+  editDate?: string;
   isHabit?: boolean;
-  onSave?: (assignments: TaskAssignmentFormProps[]) => void;
+  onSave?: (
+    assignments: TaskAssignmentFormProps[],
+    scope?: ERecurringEditScope,
+  ) => string | null;
   onValidityChange?: (valid: boolean) => void;
   showScreenHeader?: boolean;
 };
@@ -72,6 +81,9 @@ type FormValues = {
   baseTaskId?: string;
   withSubtasks: boolean;
   subtasks: ISubtask[];
+  hasNewTaskBonus: boolean;
+  newTaskBonus?: number | null;
+  newTaskDuration?: number | null;
 };
 
 const COLOR_OPTIONS = Object.entries(userColors).map(([key, value]) => ({
@@ -128,6 +140,37 @@ const buildSchema = (repeats: boolean, isHabitForm = false) =>
           label: z.string(),
         }),
       ),
+      hasNewTaskBonus: z.boolean(),
+      newTaskBonus: z.preprocess(
+        value => {
+          if (
+            value === '' ||
+            value === undefined ||
+            value === null ||
+            (typeof value === 'number' && Number.isNaN(value))
+          ) {
+            return null;
+          }
+
+          return value;
+        },
+        z.number().nullable().optional(),
+      ),
+      newTaskDuration: z.preprocess(
+        value => {
+          if (
+            value === '' ||
+            value === undefined ||
+            value === null ||
+            (typeof value === 'number' && Number.isNaN(value))
+          ) {
+            return null;
+          }
+
+          return value;
+        },
+        z.number().nullable().optional(),
+      ),
     })
     .superRefine((values, ctx) => {
       if (values.withSubtasks) {
@@ -169,6 +212,49 @@ const buildSchema = (repeats: boolean, isHabitForm = false) =>
           });
         }
       }
+
+      if (repeats && values.hasNewTaskBonus) {
+        if (values.newTaskBonus == null || values.newTaskBonus <= 0) {
+          ctx.addIssue({
+            code: 'custom',
+            message:
+              t('tasks.new_task_bonus_positive') ||
+              'New task bonus must be greater than 0',
+            path: ['newTaskBonus'],
+          });
+        }
+
+        if (
+          values.newTaskDuration == null ||
+          values.newTaskDuration <= 0 ||
+          !Number.isInteger(values.newTaskDuration)
+        ) {
+          ctx.addIssue({
+            code: 'custom',
+            message:
+              t('tasks.new_task_duration_positive') ||
+              'Duration must be at least 1 day',
+            path: ['newTaskDuration'],
+          });
+        } else if (
+          values.endDate &&
+          DATE_PATTERN.test(values.endDate) &&
+          DATE_PATTERN.test(values.startDate) &&
+          !isNewTaskDurationWithinEndDate(
+            values.startDate,
+            values.endDate,
+            values.newTaskDuration,
+          )
+        ) {
+          ctx.addIssue({
+            code: 'custom',
+            message:
+              t('tasks.new_task_duration_after_end_date') ||
+              'Bonus duration cannot extend past end date',
+            path: ['newTaskDuration'],
+          });
+        }
+      }
     });
 
 export const AssignmentTaskForm: FC<Props> = ({
@@ -176,6 +262,7 @@ export const AssignmentTaskForm: FC<Props> = ({
   assignment,
   mode,
   defaultDate,
+  editDate,
   isHabit,
   onSave,
   onValidityChange,
@@ -194,6 +281,10 @@ export const AssignmentTaskForm: FC<Props> = ({
   const dispatch = useDispatch();
   const router = useRouter();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [isScopeModalVisible, setIsScopeModalVisible] = useState(false);
+  const [pendingPayload, setPendingPayload] = useState<
+    TaskAssignmentFormProps[] | null
+  >(null);
 
   const children = useSelector(selectAllChildren);
   const earnedRewardPeriods = useSelector(selectEarnedRewardPeriods);
@@ -212,6 +303,23 @@ export const AssignmentTaskForm: FC<Props> = ({
     !!assignment?.repeat &&
     assignment.repeat.type !== ETaskRepeatType.None;
 
+  const taskBaseForAssignment = useMemo(
+    () => baseTasks.find(item => item.picture === assignment?.picture),
+    [assignment?.picture, baseTasks],
+  );
+
+  const fieldsForEditDate = useMemo(() => {
+    if (!assignment?.id || !editDate) {
+      return null;
+    }
+
+    return getAssignmentFieldsForDate(
+      assignment as ITaskAssignment,
+      editDate,
+      taskBaseForAssignment?.reward,
+    );
+  }, [assignment, editDate, taskBaseForAssignment?.reward]);
+
   const {
     control,
     handleSubmit,
@@ -227,14 +335,14 @@ export const AssignmentTaskForm: FC<Props> = ({
         : singleChild?.id
           ? [singleChild.id]
           : [],
-      title: assignment?.title ?? '',
-      description: assignment?.description ?? '',
-      reward: assignment?.reward ?? null,
-      picture: assignment?.picture ?? '',
+      title: fieldsForEditDate?.title ?? assignment?.title ?? '',
+      description: fieldsForEditDate?.description ?? assignment?.description ?? '',
+      reward: fieldsForEditDate?.reward ?? assignment?.reward ?? null,
+      picture: fieldsForEditDate?.picture ?? assignment?.picture ?? '',
       color: assignment?.color ?? userColors.blue600,
-      startDate: initialDate,
+      startDate: assignment?.startDate ?? initialDate,
       endDate: assignment?.endDate ?? initialDate,
-      time: assignment?.time ?? '09:00',
+      time: fieldsForEditDate?.time ?? assignment?.time ?? '09:00',
       repeats: isHabit || isRepeating,
       weekDays: assignment?.repeat?.weekDays ?? (isHabit ? ALL_WEEK_DAYS : []),
       baseTaskId: '',
@@ -244,6 +352,14 @@ export const AssignmentTaskForm: FC<Props> = ({
           value: subtask.value,
           label: subtask.label,
         })) ?? [],
+      hasNewTaskBonus:
+        (isHabit || isRepeating) &&
+        (fieldsForEditDate?.newTaskBonus ?? assignment?.newTaskBonus) != null &&
+        (fieldsForEditDate?.newTaskBonus ?? assignment?.newTaskBonus)! > 0,
+      newTaskBonus:
+        fieldsForEditDate?.newTaskBonus ?? assignment?.newTaskBonus ?? null,
+      newTaskDuration:
+        fieldsForEditDate?.newTaskDuration ?? assignment?.newTaskDuration ?? null,
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -251,6 +367,7 @@ export const AssignmentTaskForm: FC<Props> = ({
 
   const repeats = watch('repeats');
   const withSubtasks = watch('withSubtasks');
+  const hasNewTaskBonus = watch('hasNewTaskBonus');
   const selectedColor = watch('color');
   const effectiveRepeats = isHabit || repeats;
 
@@ -270,6 +387,16 @@ export const AssignmentTaskForm: FC<Props> = ({
     setValue('repeats', true);
     setValue('weekDays', ALL_WEEK_DAYS);
   }, [isHabit, setValue]);
+
+  useEffect(() => {
+    if (effectiveRepeats) {
+      return;
+    }
+
+    setValue('hasNewTaskBonus', false, { shouldValidate: true });
+    setValue('newTaskBonus', null, { shouldValidate: true });
+    setValue('newTaskDuration', null, { shouldValidate: true });
+  }, [effectiveRepeats, setValue]);
 
   const { fields: subtaskFields, append, remove } = useFieldArray({
     control,
@@ -440,6 +567,15 @@ export const AssignmentTaskForm: FC<Props> = ({
             label: subtask.label.trim(),
           }))
         : undefined,
+      ...(repeatsForSave && parsed.data.hasNewTaskBonus
+        ? {
+          newTaskBonus: parsed.data.newTaskBonus ?? undefined,
+          newTaskDuration: parsed.data.newTaskDuration ?? undefined,
+        }
+        : {
+          newTaskBonus: undefined,
+          newTaskDuration: undefined,
+        }),
     };
 
     const payloads: TaskAssignmentFormProps[] = parsed.data.childIds.map(childId => ({
@@ -447,7 +583,46 @@ export const AssignmentTaskForm: FC<Props> = ({
       childId,
     }));
 
-    onSave?.(payloads);
+    if (
+      isEditMode &&
+      shouldPromptRecurringEditScope(assignment as ITaskAssignment, editDate)
+    ) {
+      setPendingPayload(payloads);
+      setIsScopeModalVisible(true);
+      return;
+    }
+
+    const saveError = onSave?.(payloads);
+
+    if (saveError) {
+      setError('startDate', {
+        type: 'manual',
+        message: saveError,
+      });
+    }
+  };
+
+  const handleScopeSelect = (scope: ERecurringEditScope) => {
+    setIsScopeModalVisible(false);
+
+    if (!pendingPayload) {
+      return;
+    }
+
+    const saveError = onSave?.(pendingPayload, scope);
+    setPendingPayload(null);
+
+    if (saveError) {
+      setError('startDate', {
+        type: 'manual',
+        message: saveError,
+      });
+    }
+  };
+
+  const handleScopeModalClose = () => {
+    setIsScopeModalVisible(false);
+    setPendingPayload(null);
   };
 
   const handleConfirmDelete = () => {
@@ -721,7 +896,20 @@ export const AssignmentTaskForm: FC<Props> = ({
                     control={control}
                     name="repeats"
                     render={({ field: { value, onChange } }) => (
-                      <Switch value={value} onValueChange={onChange} />
+                      <Switch
+                        value={value}
+                        onValueChange={nextValue => {
+                          onChange(nextValue);
+
+                          if (!nextValue) {
+                            setValue('hasNewTaskBonus', false, {
+                              shouldValidate: true,
+                            });
+                            setValue('newTaskBonus', null, { shouldValidate: true });
+                            setValue('newTaskDuration', null, { shouldValidate: true });
+                          }
+                        }}
+                      />
                     )}
                   />
                 </View>
@@ -771,6 +959,29 @@ export const AssignmentTaskForm: FC<Props> = ({
                     </>
                   )}
                 />
+
+                <Space size={4} />
+
+                <Controller
+                  control={control}
+                  name="weekDays"
+                  render={({ field: { value, onChange } }) => (
+                    <>
+                      <WeekDaySelector
+                        value={isHabit ? ALL_WEEK_DAYS : value}
+                        onChange={onChange}
+                        color={selectedColor}
+                        readOnly={isHabit}
+                      />
+                      {!isHabit && !!errors.weekDays && (
+                        <Text style={styles.errorText}>
+                          {errors.weekDays.message}
+                        </Text>
+                      )}
+                    </>
+                  )}
+                />
+
                 <Space size={12} />
               </>
             )}
@@ -795,25 +1006,117 @@ export const AssignmentTaskForm: FC<Props> = ({
             {effectiveRepeats && (
               <>
                 <Space size={12} />
-                <Controller
-                  control={control}
-                  name="weekDays"
-                  render={({ field: { value, onChange } }) => (
-                    <>
-                      <WeekDaySelector
-                        value={isHabit ? ALL_WEEK_DAYS : value}
-                        onChange={onChange}
-                        color={selectedColor}
-                        readOnly={isHabit}
+
+                <View style={styles.switchRow}>
+                  <Text style={styles.switchLabel}>
+                    {t('tasks.has_new_task_bonus')}
+                  </Text>
+                  <Controller
+                    control={control}
+                    name="hasNewTaskBonus"
+                    render={({ field: { value, onChange } }) => (
+                      <Switch
+                        value={value}
+                        onValueChange={nextValue => {
+                          onChange(nextValue);
+
+                          if (!nextValue) {
+                            setValue('newTaskBonus', null, { shouldValidate: true });
+                            setValue('newTaskDuration', null, { shouldValidate: true });
+                          }
+                        }}
                       />
-                      {!isHabit && !!errors.weekDays && (
-                        <Text style={styles.errorText}>
-                          {errors.weekDays.message}
-                        </Text>
+                    )}
+                  />
+                </View>
+
+                {hasNewTaskBonus && (
+                  <>
+                    <Space size={12} />
+
+                    <Controller
+                      control={control}
+                      name="newTaskBonus"
+                      render={({ field: { value, onChange } }) => (
+                        <>
+                          <TextInput
+                            label={t('tasks.new_task_bonus')}
+                            value={
+                              value != null && !Number.isNaN(value)
+                                ? String(value)
+                                : ''
+                            }
+                            onChangeText={text => {
+                              if (text.trim() === '') {
+                                onChange(null);
+                                return;
+                              }
+
+                              if (!/^\d+$/.test(text)) {
+                                return;
+                              }
+
+                              const parsedValue = Number(text);
+
+                              if (!Number.isNaN(parsedValue) && parsedValue > 0) {
+                                onChange(parsedValue);
+                              }
+                            }}
+                            keyboardType="numeric"
+                            mode="outlined"
+                          />
+                          {!!errors.newTaskBonus && (
+                            <Text style={styles.errorText}>
+                              {errors.newTaskBonus.message}
+                            </Text>
+                          )}
+                        </>
                       )}
-                    </>
-                  )}
-                />
+                    />
+
+                    <Space size={12} />
+
+                    <Controller
+                      control={control}
+                      name="newTaskDuration"
+                      render={({ field: { value, onChange } }) => (
+                        <>
+                          <TextInput
+                            label={t('tasks.new_task_duration')}
+                            value={
+                              value != null && !Number.isNaN(value)
+                                ? String(value)
+                                : ''
+                            }
+                            onChangeText={text => {
+                              if (text.trim() === '') {
+                                onChange(null);
+                                return;
+                              }
+
+                              if (!/^\d+$/.test(text)) {
+                                return;
+                              }
+
+                              const parsedValue = Number(text);
+
+                              if (!Number.isNaN(parsedValue) && parsedValue > 0) {
+                                onChange(parsedValue);
+                              }
+                            }}
+                            keyboardType="numeric"
+                            mode="outlined"
+                          />
+                          {!!errors.newTaskDuration && (
+                            <Text style={styles.errorText}>
+                              {errors.newTaskDuration.message}
+                            </Text>
+                          )}
+                        </>
+                      )}
+                    />
+                  </>
+                )}
               </>
             )}
 
@@ -859,6 +1162,12 @@ export const AssignmentTaskForm: FC<Props> = ({
         isVisible={isDeleteModalVisible}
         onRequestClose={() => setIsDeleteModalVisible(false)}
         onConfirm={handleConfirmDelete}
+      />
+
+      <EditRecurringTaskScopeModal
+        isVisible={isScopeModalVisible}
+        onRequestClose={handleScopeModalClose}
+        onSelectScope={handleScopeSelect}
       />
     </SafeAreaBgImage>
   );

@@ -7,3 +7,4 @@ export { ResetModal } from './ResetModal';
 export { SelectUsersModal } from './SelectUsersModal';
 export type { SelectedUser } from './SelectUsersModal';
 export { TaskFilterModal } from './TaskFilterModal';
+export { EditRecurringTaskScopeModal } from './EditRecurringTaskScopeModal';

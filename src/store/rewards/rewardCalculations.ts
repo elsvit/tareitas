@@ -21,6 +21,8 @@ import {
   IReward,
 } from '~/types/IReward';
 import { createTaskId, shouldShowAssignmentOnDate } from '~/utils/tasks/taskGeneration';
+import { getEffectiveTaskReward } from '~/utils/tasks/taskReward';
+import { getAssignmentFieldsForDate } from '~/utils/tasks/recurringTaskEdit';
 
 import { selectAllRewardAssignment } from '../rewardAssignment/selectors';
 import {
@@ -153,8 +155,23 @@ export const sumApprovedTaskRewardsForMonth = (
             const taskBase = assignment.picture
               ? taskBaseList.find(item => item.picture === assignment.picture)
               : undefined;
+            const fieldsForDate = getAssignmentFieldsForDate(
+              assignment,
+              date,
+              taskBase?.reward,
+            );
+            const effectiveAssignment = {
+              ...assignment,
+              reward: fieldsForDate.reward,
+              newTaskBonus: fieldsForDate.newTaskBonus,
+              newTaskDuration: fieldsForDate.newTaskDuration,
+              startDate: assignment.startDate,
+            };
 
-            return dayTotal + (assignment.reward ?? taskBase?.reward ?? 0);
+            return (
+              dayTotal +
+              getEffectiveTaskReward(effectiveAssignment, date, taskBase?.reward)
+            );
           }, 0)
       );
     },

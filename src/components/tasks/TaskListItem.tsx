@@ -78,6 +78,7 @@ export const TaskListItem: React.FC<Props> = ({
     description,
     picture,
     reward,
+    rewardDisplayText,
     taskColor,
     subtasks,
     completedSubtasks,
@@ -200,7 +201,7 @@ export const TaskListItem: React.FC<Props> = ({
     );
   };
 
-  const rewardText = reward != null ? String(reward) : '';
+  const rewardText = rewardDisplayText ?? (reward != null ? String(reward) : '');
   const isLongReward = rewardText.length > 3;
 
   const leftColumnContent = renderEditPressable(
@@ -233,7 +234,7 @@ export const TaskListItem: React.FC<Props> = ({
         )}
       </View>
 
-      {reward != null && (
+      {rewardText !== '' && (
         <View
           style={[
             styles.rewardBadge,
