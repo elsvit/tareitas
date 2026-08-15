@@ -21,7 +21,6 @@ import {
   removeReward,
   updateReward,
 } from '~/store/rewards/slice';
-import { Colors } from '~/styles';
 import { ERewardStatus } from '~/types/EReward';
 
 export default function Rewards() {
@@ -110,14 +109,6 @@ export default function Rewards() {
         <SelectUserPrompt />
       ) : isChild ? (
         <View style={styles.container}>
-          <View style={styles.balanceHeader}>
-            <Text variant="titleLarge" fontFamily="fredoka" weight="bold">
-              {t('rewards.current_rewards')}
-            </Text>
-            <Text variant="headlineSmall" style={styles.balanceValue}>
-              ⭐ {childBalance}
-            </Text>
-          </View>
           <FlatList
             data={childRewardItems}
             renderItem={renderChildItem}
@@ -126,14 +117,7 @@ export default function Rewards() {
             contentContainerStyle={styles.listContent}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
             ListEmptyComponent={
-              <>
-                <Text style={styles.emptyText}>{t('rewards.no_rewards')}</Text>
-                {!isChild && <>
-                  <Text variant="bodyMedium" style={styles.emptyText}>
-                    {t('rewards.push_to_add_reward')}
-                  </Text>
-                </>}
-              </>
+              <Text style={styles.emptyText}>{t('rewards.no_rewards')}</Text>
             }
           />
         </View>
@@ -149,17 +133,6 @@ export default function Rewards() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  balanceHeader: {
-    paddingHorizontal: 16,
-    paddingTop: 8,
-    paddingBottom: 12,
-    alignItems: 'center',
-    gap: 4,
-  },
-  balanceValue: {
-    color: Colors.orange500,
-    fontWeight: '700',
   },
   listContent: {
     flexGrow: 1,

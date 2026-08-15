@@ -11,9 +11,12 @@ import ChevronLeftIcon from '~/assets/svg/common/chevron-left.svg';
 import { Text } from '~/components/ui';
 import { SCREEN_TEXT } from '~/constants/formField';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
+import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
 import { useUserSwitch } from '~/hooks/useUserSwitch';
 import { t } from '~/services';
 import { selectUserImageUrls } from '~/store/images';
+import { selectChildRewardBalance } from '~/store/rewards/selectors';
+import { Colors } from '~/styles';
 import { resolvePictureSource } from '~/utils/pictureSource';
 import { styles } from './styles';
 import { IIconButton, IScreenHeaderWithLogo } from './types';
@@ -32,8 +35,13 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
   containerStyle,
 }) => {
   const router = useRouter();
-  const { user: currentUser } = useCurrentUser();
+  const { user: currentUser, isChild, currentUserId } = useCurrentUser();
   const { openSelectUsers, modals } = useUserSwitch();
+  const childId = isChild ? currentUserId ?? '' : '';
+  const childBalance = useSelector(selectChildRewardBalance(childId));
+
+  useSyncEarnedRewardPeriods();
+
   const userUrls = useSelector(selectUserImageUrls);
   const currentUserAvatarSource = useMemo(
     () =>
@@ -99,6 +107,28 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
     );
   };
 
+  const renderChildRewards = () => {
+    if (!isChild || !currentUser) {
+      return null;
+    }
+
+    return (
+      <View
+        style={styles.childRewards}
+        accessibilityLabel={t('rewards.current_rewards')}
+      >
+        <Text
+          variant="titleMedium"
+          fontFamily="fredoka"
+          weight="bold"
+          style={styles.childRewardsValue}
+        >
+          ⭐ {childBalance}
+        </Text>
+      </View>
+    );
+  };
+
   const renderUserSwitch = () => {
     const handlePress = openSelectUsers;
     const displayName = currentUser?.name ?? t('users.login');
@@ -161,6 +191,7 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
     <>
       <View style={[styles.container, containerStyle]}>
         <View style={styles.leftContainer}>
+          {renderChildRewards()}
           {renderBackButton()}
           {leftButton && renderButton(leftButton, 0, 'left')}
         </View>

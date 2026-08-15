@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { HEADER_HEIGHT } from '~/constants/sizes';
-import { palette } from '~/styles';
+import { Colors, palette } from '~/styles';
 
 const AVATAR_SIZE = 36;
 
@@ -21,6 +21,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     zIndex: 1,
+    gap: 8,
+  },
+  childRewards: {
+    flexShrink: 1,
+    maxWidth: 120,
+  },
+  childRewardsValue: {
+    color: Colors.orange500,
   },
   rightContainer: {
     flex: 1,
