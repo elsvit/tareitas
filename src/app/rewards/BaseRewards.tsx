@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   FlatList,
   ListRenderItem,
@@ -9,11 +9,13 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import PlusIcon from '~/assets/svg/common/plus.svg';
+import SearchCrossIcon from '~/assets/svg/common/search-cross.svg';
+import SearchIcon from '~/assets/svg/common/search.svg';
 import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { ResetModal } from '~/components/modals';
 import { RewardBaseListItem } from '~/components/rewards/RewardBaseListItem';
-import { Button, Text } from '~/components/ui';
+import { Button, Search, Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
 import { t } from '~/services';
 import { selectAllRewardBase } from '~/store/rewardBase/selectors';
@@ -28,10 +30,27 @@ export default function BaseRewards() {
   const dispatch = useDispatch();
   const router = useRouter();
   const [isResetModalVisible, setIsResetModalVisible] = useState(false);
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const rewardBaseList = useSelector(selectAllRewardBase);
   const currentRole = useSelector(selectCurrentRole);
   const isAdmin = currentRole === ERole.admin;
+
+  const normalizedSearchQuery = useMemo(
+    () => searchQuery.trim().toLowerCase(),
+    [searchQuery],
+  );
+
+  const filteredRewardBaseList = useMemo(
+    () =>
+      normalizedSearchQuery
+        ? rewardBaseList.filter(item =>
+            item.title.toLowerCase().includes(normalizedSearchQuery),
+          )
+        : rewardBaseList,
+    [rewardBaseList, normalizedSearchQuery],
+  );
 
   const handleAddReward = useCallback(() => {
     if (!isAdmin) {
@@ -47,6 +66,10 @@ export default function BaseRewards() {
 
   const handleOpenResetModal = useCallback(() => {
     setIsResetModalVisible(true);
+  }, []);
+
+  const handleSearchPress = useCallback(() => {
+    setIsSearchVisible(current => !current);
   }, []);
 
   const handlePressReward = useCallback((id: string) => {
@@ -100,8 +123,25 @@ export default function BaseRewards() {
         hasBackButton
         title={t('rewards.base_rewards')}
         containerStyle={styles.screenHeader}
+        rightButtons={[
+          {
+            icon: isSearchVisible ? SearchCrossIcon : SearchIcon,
+            onPress: handleSearchPress,
+          },
+        ]}
       />
       <View style={styles.container}>
+        {isSearchVisible && (
+          <View style={styles.searchContainer}>
+            <Search
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              placeholder={t('rewards.search_by_title')}
+              autoFocus
+            />
+          </View>
+        )}
+
         {isAdmin && (
           <View style={styles.header}>
             <Button mode="contained" onPress={handleOpenResetModal}>
@@ -111,7 +151,7 @@ export default function BaseRewards() {
         )}
 
         <FlatList
-          data={rewardBaseList}
+          data={filteredRewardBaseList}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
           ItemSeparatorComponent={renderSeparator}
@@ -157,6 +197,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
+    marginBottom: 8,
+  },
+
+  searchContainer: {
     marginBottom: 8,
   },
 

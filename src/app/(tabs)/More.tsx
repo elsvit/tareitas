@@ -150,11 +150,6 @@ export default function More() {
                       style={styles.icon}
                       width={24}
                       height={24}
-                      stroke={
-                        item.navigateTo === EScreens.LoadedPhotos
-                          ? SCREEN_TEXT.primary
-                          : undefined
-                      }
                     />
                   )}
                   onPress={() => handlePress(item.navigateTo)}

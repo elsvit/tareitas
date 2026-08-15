@@ -3,23 +3,29 @@ import { StyleSheet } from 'react-native';
 import { Colors } from '~/styles';
 
 export const styles = StyleSheet.create({
+  wrapper: {
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.grey200,
+  },
+
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 4,
     paddingTop: 8,
     paddingBottom: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.grey200,
   },
 
   sideSlot: {
-    width: 88,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    minWidth: 88,
     flexShrink: 0,
   },
 
   sideSlotRight: {
-    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
   },
 
   centerArea: {
@@ -47,7 +53,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  filterButton: {
+  iconButton: {
     width: 36,
     height: 36,
     borderRadius: 18,
@@ -56,6 +62,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: Colors.grey200,
+  },
+
+  iconButtonActive: {
+    borderColor: Colors.blue500,
+    backgroundColor: '#EFF6FF',
   },
 
   filterBadge: {
@@ -97,5 +108,10 @@ export const styles = StyleSheet.create({
 
   chevronPrevious: {
     transform: [{ rotate: '180deg' }],
+  },
+
+  searchContainer: {
+    paddingHorizontal: 4,
+    paddingBottom: 8,
   },
 });

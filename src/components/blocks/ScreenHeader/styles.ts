@@ -18,7 +18,9 @@ export const styles = StyleSheet.create({
   },
   rightContainer: {
     flexDirection: 'row',
-    width: 80, // reserve space for up to 3 icons
+    width: 80,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   leftButton: {
     marginRight: 12,
@@ -32,6 +34,14 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.35)',
     marginRight: 12,
   },
+  circleIconButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.35)',
+  },
   titleContainer: {
     flex: 1,
     alignItems: 'center',
@@ -41,7 +51,7 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
   },
   rightButton: {
-    paddingHorizontal: 8,
+    marginLeft: 8,
   },
   backText: {
     fontSize: 16,
