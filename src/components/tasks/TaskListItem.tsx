@@ -15,6 +15,7 @@ import { BASE_TASKS_IMAGES } from '~/assets/img/tasks/tasks';
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
 import { TaskStatusBadge } from '~/components/tasks/TaskStatusBadge';
+import { TaskRewardBadge } from '~/components/tasks/TaskRewardBadge';
 import { Text } from '~/components/ui';
 import { t } from '~/services';
 import { RootStateT } from '~/store';
@@ -201,9 +202,6 @@ export const TaskListItem: React.FC<Props> = ({
     );
   };
 
-  const rewardText = rewardDisplayText ?? (reward != null ? String(reward) : '');
-  const isLongReward = rewardText.length > 3;
-
   const leftColumnContent = renderEditPressable(
     <View style={styles.leftColumn}>
       {!!childName && !isChildView && (
@@ -234,27 +232,7 @@ export const TaskListItem: React.FC<Props> = ({
         )}
       </View>
 
-      {rewardText !== '' && (
-        <View
-          style={[
-            styles.rewardBadge,
-            isLongReward && styles.rewardBadgeCompact,
-          ]}
-        >
-          {isLongReward ? (
-            <>
-              <Text style={[styles.reward, styles.rewardCompact, styles.rewardLine]}>
-                ⭐ {rewardText.slice(0, 3)}
-              </Text>
-              <Text style={[styles.reward, styles.rewardCompact, styles.rewardLine]}>
-                {rewardText.slice(3)}
-              </Text>
-            </>
-          ) : (
-            <Text style={styles.reward}>⭐ {rewardText}</Text>
-          )}
-        </View>
-      )}
+      <TaskRewardBadge reward={reward} rewardDisplayText={rewardDisplayText} />
     </View>,
     styles.leftColumnPressable,
   );
@@ -559,36 +537,6 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     fontSize: 13,
     textAlign: 'left',
-  },
-
-  rewardBadge: {
-    marginTop: 6,
-    width: IMAGE_SIZE,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 10,
-    paddingHorizontal: 6,
-    paddingVertical: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  rewardBadgeCompact: {
-    paddingHorizontal: 2,
-  },
-
-  reward: {
-    fontWeight: '600',
-    fontSize: 13,
-    color: '#F59F00',
-  },
-
-  rewardCompact: {
-    fontSize: 10,
-  },
-
-  rewardLine: {
-    textAlign: 'center',
-    lineHeight: 12,
   },
 
   descriptionToggle: {

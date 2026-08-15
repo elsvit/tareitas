@@ -21,7 +21,7 @@ import { useColorScheme } from '~/hooks/use-color-scheme';
 import { selectIsRecurringTabSeparated } from '~/store/settings/selectors';
 import { EMainTabs } from '~/types/ENavigation';
 
-const TAB_BAR_PADDING_TOP = 20;
+const TAB_BAR_PADDING_TOP = 16;
 const TAB_BAR_MIN_PADDING_BOTTOM = 12;
 const TAB_BAR_CONTENT_HEIGHT = 60;
 const TAB_BAR_COLOR = '#016FE8';
@@ -99,7 +99,7 @@ export default function TabLayout() {
 
         tabBarActiveTintColor: ThemeColors[colorScheme ?? 'light'].tint,
 
-        tabBarInactiveTintColor: '#8e8e93',
+        tabBarInactiveTintColor: '#8e8e93', // #8e8e93
 
         tabBarStyle: {
           height: tabBarHeight,

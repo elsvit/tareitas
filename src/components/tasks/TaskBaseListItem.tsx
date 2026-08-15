@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 
 import { BASE_TASKS_IMAGES } from '~/assets/img/tasks/tasks';
 import { DEFAULT_BASE_TASK_COLOR } from '~/constants/tasks';
+import { TaskRewardBadge } from '~/components/tasks/TaskRewardBadge';
 import { Text } from '~/components/ui';
 import { selectTaskImageUrls } from '~/store/images';
 import { Colors } from '~/styles';
@@ -37,7 +38,6 @@ const RowContent: React.FC<{
   reward?: number;
   textColor: string;
   customUrls: Record<string, string>;
-  color?: string;
 }> = ({ name, description, picture, reward, textColor, customUrls }) => {
   const pictureSource = useMemo(
     () => resolvePictureSource(picture, customUrls, BASE_TASKS_IMAGES),
@@ -46,20 +46,24 @@ const RowContent: React.FC<{
 
   return (
     <View style={styles.row}>
-      <View style={styles.imageContainer}>
-        {pictureSource ? (
-          <Image
-            source={pictureSource}
-            style={styles.image}
-            contentFit="contain"
-          />
-        ) : (
-          <View style={styles.placeholder}>
-            <Text fontFamily="fredoka" weight="bold">
-              🎯
-            </Text>
-          </View>
-        )}
+      <View style={styles.leftColumn}>
+        <View style={styles.imageContainer}>
+          {pictureSource ? (
+            <Image
+              source={pictureSource}
+              style={styles.image}
+              contentFit="contain"
+            />
+          ) : (
+            <View style={styles.placeholder}>
+              <Text fontFamily="fredoka" weight="bold">
+                🎯
+              </Text>
+            </View>
+          )}
+        </View>
+
+        <TaskRewardBadge reward={reward} />
       </View>
 
       <View style={styles.texts} collapsable={false}>
@@ -82,12 +86,6 @@ const RowContent: React.FC<{
             style={[styles.description]}
           >
             {description}
-          </Text>
-        )}
-
-        {reward != null && (
-          <Text style={styles.reward}>
-            ⭐ {reward}
           </Text>
         )}
       </View>
@@ -183,9 +181,16 @@ const styles = StyleSheet.create({
 
   row: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     paddingVertical: 8,
     paddingHorizontal: 8,
+  },
+
+  leftColumn: {
+    width: IMAGE_SIZE,
+    maxWidth: IMAGE_SIZE,
+    flexShrink: 0,
+    alignItems: 'flex-start',
   },
 
   imageContainer: {
@@ -220,12 +225,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
     color: Colors.grey700,
     fontSize: 16,
-  },
-
-  reward: {
-    marginTop: 6,
-    fontWeight: '600',
-    color: '#F59F00',
   },
 });
 
