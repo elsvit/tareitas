@@ -67,11 +67,29 @@ export const taskBaseSlice = createSlice({
         const existing = state.entities[defaultTask.id];
 
         if (!existing) {
+          entityReducers.addEntity(
+            state,
+            {
+              payload: { entity: defaultTask, isUpsert: false },
+            } as PayloadAction<{ entity: ITaskBase; isUpsert?: boolean }>,
+          );
           return;
         }
 
         existing.name = defaultTask.name;
         existing.description = defaultTask.description;
+
+        if (defaultTask.color !== undefined) {
+          existing.color = defaultTask.color;
+        }
+
+        if (defaultTask.reward != null) {
+          existing.reward = defaultTask.reward;
+        }
+
+        if (defaultTask.time !== undefined) {
+          existing.time = defaultTask.time;
+        }
       });
     },
   },

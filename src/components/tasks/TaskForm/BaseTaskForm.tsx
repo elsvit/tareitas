@@ -17,11 +17,17 @@ import {
   TextInput,
 } from '~/components/ui';
 import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWithCustom';
-import { getTaskImageOptions } from '~/constants/tasks';
+import { SelectColor } from '~/components/ui/SelectColor';
+import {
+  DEFAULT_BASE_TASK_COLOR,
+  getTaskImageOptions,
+} from '~/constants/tasks';
 import { t } from '~/services';
 import { removeTaskBase } from '~/store/taskBase/slice';
+import { userColors } from '~/styles';
 import { EFormMode } from '~/types/ECommon';
 import { ITaskBase, TaskBaseFormProps } from '~/types/ITask';
+import { capitalizeFirst } from '~/utils/string';
 
 import { ERole } from '~/store/settings/enums';
 import { selectCurrentRole } from '~/store/settings/selectors';
@@ -38,15 +44,36 @@ type Props = {
 
 type FormValues = TaskBaseFormProps;
 
+const COLOR_OPTIONS = Object.entries(userColors).map(([key, value]) => ({
+  label: capitalizeFirst(key),
+  value,
+}));
+
 const requiredMessage = t('common.required') || 'Required';
 
 const schema = z.object({
   name: z.string().trim().min(1, requiredMessage),
   description: z.string().optional(),
-  reward: z.coerce
-    .number()
-    .min(0, t('tasks.reward_positive') || 'Reward must be ≥ 0'),
+  reward: z.preprocess(
+    value => {
+      if (
+        value === '' ||
+        value === undefined ||
+        value === null ||
+        (typeof value === 'number' && Number.isNaN(value))
+      ) {
+        return undefined;
+      }
+
+      return value;
+    },
+    z
+      .number()
+      .min(0, t('tasks.reward_positive') || 'Reward must be ≥ 0')
+      .optional(),
+  ),
   picture: z.string().trim().min(1, requiredMessage),
+  color: z.string().trim().min(1, requiredMessage),
 });
 
 export const BaseTaskForm: FC<Props> = ({
@@ -76,8 +103,9 @@ export const BaseTaskForm: FC<Props> = ({
     defaultValues: {
       name: task?.name ?? '',
       description: task?.description ?? '',
-      reward: task?.reward ?? 0,
+      reward: task?.reward,
       picture: task?.picture ?? '',
+      color: task?.color ?? DEFAULT_BASE_TASK_COLOR,
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -118,6 +146,10 @@ export const BaseTaskForm: FC<Props> = ({
     }
 
     onSave?.(parsed.data);
+
+    if (router.canGoBack()) {
+      router.back();
+    }
   };
 
   const handleDelete = () => {
@@ -206,8 +238,15 @@ export const BaseTaskForm: FC<Props> = ({
                 <>
                   <TextInput
                     label={t('tasks.reward')}
-                    value={String(value)}
-                    onChangeText={text => onChange(Number(text))}
+                    value={value == null ? '' : String(value)}
+                    onChangeText={text => {
+                      if (text.trim() === '') {
+                        onChange(undefined);
+                        return;
+                      }
+
+                      onChange(Number(text));
+                    }}
                     keyboardType="numeric"
                     mode="outlined"
                   />
@@ -216,6 +255,23 @@ export const BaseTaskForm: FC<Props> = ({
                       {errors.reward.message}
                     </Text>
                   )}
+                </>
+              )}
+            />
+
+            <Space size={12} />
+
+            <Controller
+              control={control}
+              name="color"
+              render={({ field: { value, onChange } }) => (
+                <>
+                  <SelectColor
+                    options={COLOR_OPTIONS}
+                    value={value ?? DEFAULT_BASE_TASK_COLOR}
+                    onChange={onChange}
+                    errorMessage={errors.color?.message}
+                  />
                 </>
               )}
             />

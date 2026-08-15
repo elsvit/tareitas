@@ -1,5 +1,6 @@
 import { BASE_TASKS_IMAGES } from '~/assets/img/tasks/tasks';
 import { t } from '~/services';
+import { Colors } from '~/styles';
 import { IImageOption } from '~/types';
 import { ITaskBase } from '~/types/ITask';
 
@@ -7,24 +8,48 @@ export {
   getNextParentStatus,
   normalizeTaskStatus,
   PARENT_STATUS_CYCLE,
-  TASK_STATUS_COLORS,
+  TASK_STATUS_COLORS
 } from './tasks/taskStatus';
+
+export const DEFAULT_BASE_TASK_COLOR = Colors.green500;
+export const DEFAULT_TASK_ASSIGNMENT_COLOR = Colors.blue600;
+export const DEFAULT_HABIT_ASSIGNMENT_COLOR = Colors.green500;
 
 export const getBaseTasks = (): ITaskBase[] => {
   // LocalizationService.initSync();
 
   return [
   {
+    id: 'complete_all_day_tasks',
+    name: t('tasks.baseTasks.completeAllDayTasks'),
+    description: t('tasks.baseTasks.completeAllDayTasksDescription'),
+    picture: 'tasks_done',
+    time: '23:59',
+    color: Colors.gold500,
+    reward: 5,
+  },
+  {
+    id: 'complete_all_week_tasks',
+    name: t('tasks.baseTasks.completeAllWeekTasks'),
+    description: t('tasks.baseTasks.completeAllWeekTasksDescription'),
+    picture: 'tasks_done',
+    time: '23:59',
+    color: Colors.gold500,
+    reward: 20,
+  },
+  {
     id: 'brush_teeth_evening',
     name: t('tasks.baseTasks.brushTeethEvening'),
     description: t('tasks.baseTasks.brushTeethEveningDescription'),
     picture: 'brush_teeth',
+    time: '18:00',
   },
   {
     id: 'brush_teeth_morning',
     name: t('tasks.baseTasks.brushTeethMorning'),
     description: t('tasks.baseTasks.brushTeethMorningDescription'),
     picture: 'brush_teeth',
+    time: '08:00',
   },
   {
     id: 'clean_desk',
