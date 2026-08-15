@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { format } from 'date-fns';
@@ -30,6 +30,7 @@ import { SelectMulti } from '~/components/ui/SelectMulti';
 import { getTaskImageOptions } from '~/constants/tasks';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
+import { selectEarnedRewardPeriods } from '~/store/rewards/selectors';
 import { ERole } from '~/store/settings/enums';
 import { selectCurrentRole } from '~/store/settings/selectors';
 import { removeTaskAssignment } from '~/store/taskAssignment/slice';
@@ -39,6 +40,7 @@ import { EFormMode, WeekDay } from '~/types/ECommon';
 import { ETaskRepeatType } from '~/types/ETask';
 import { ISubtask, ITaskAssignment, TaskAssignmentFormProps } from '~/types/ITask';
 import { capitalizeFirst } from '~/utils/string';
+import { validateTaskAssignmentDates } from '~/utils/tasks/taskAssignmentDateValidation';
 
 import { SelectDate } from '~/components/ui/SelectDate';
 import { SelectTime } from '~/components/ui/SelectTime';
@@ -194,9 +196,11 @@ export const AssignmentTaskForm: FC<Props> = ({
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   const children = useSelector(selectAllChildren);
+  const earnedRewardPeriods = useSelector(selectEarnedRewardPeriods);
   const baseTasks = useSelector(selectAllTaskBase);
   const currentRole = useSelector(selectCurrentRole);
   const isAdmin = currentRole === ERole.admin;
+  const isParentView = currentRole !== ERole.child;
   const isEditMode = mode === EFormMode.Edit;
   const hasMultipleChildren = children.length > 1;
   const singleChild = children.length === 1 ? children[0] : undefined;
@@ -281,6 +285,43 @@ export const AssignmentTaskForm: FC<Props> = ({
     [children],
   );
 
+  const childNamesById = useMemo(
+    () =>
+      Object.fromEntries(children.map(child => [child.id, child.name] as const)),
+    [children],
+  );
+
+  const validateClosedPeriodDates = useCallback(
+    (values: FormValues) => {
+      if (!isParentView) {
+        return null;
+      }
+
+      const repeatsForValidation = isHabit || values.repeats;
+
+      return validateTaskAssignmentDates({
+        periods: earnedRewardPeriods,
+        childIds: values.childIds,
+        childNamesById,
+        startDate: values.startDate,
+        endDate: repeatsForValidation ? values.endDate : undefined,
+        repeats: repeatsForValidation,
+        isEditMode,
+        originalStartDate: assignment?.startDate,
+        originalEndDate: assignment?.endDate,
+      });
+    },
+    [
+      assignment?.endDate,
+      assignment?.startDate,
+      childNamesById,
+      earnedRewardPeriods,
+      isEditMode,
+      isHabit,
+      isParentView,
+    ],
+  );
+
   const baseTaskOptions = useMemo(
     () =>
       baseTasks.map(task => ({
@@ -293,19 +334,25 @@ export const AssignmentTaskForm: FC<Props> = ({
   const taskImageOptions = getTaskImageOptions();
 
   useEffect(() => {
-    const sub = watch(() => {
-      const valid = buildSchema(isHabit || getValues().repeats, !!isHabit).safeParse(
-        getValues(),
+    const sub = watch(values => {
+      const repeatsForSchema = Boolean(isHabit || values.repeats);
+      const schemaValid = buildSchema(repeatsForSchema, !!isHabit).safeParse(
+        values,
       ).success;
-      onValidityChange?.(valid);
+      const dateError = validateClosedPeriodDates(values as FormValues);
+      onValidityChange?.(schemaValid && !dateError);
     });
 
-    onValidityChange?.(
-      buildSchema(isHabit || getValues().repeats, !!isHabit).safeParse(getValues()).success,
-    );
+    const initialValues = getValues();
+    const initialRepeatsForSchema = Boolean(isHabit || initialValues.repeats);
+    const schemaValid = buildSchema(initialRepeatsForSchema, !!isHabit).safeParse(
+      initialValues,
+    ).success;
+    const dateError = validateClosedPeriodDates(initialValues);
+    onValidityChange?.(schemaValid && !dateError);
 
     return () => sub.unsubscribe();
-  }, [watch, getValues, onValidityChange, isHabit]);
+  }, [watch, getValues, onValidityChange, isHabit, validateClosedPeriodDates]);
 
   const handleBaseTaskChange = (baseTaskId: string) => {
     setValue('baseTaskId', baseTaskId);
@@ -339,6 +386,17 @@ export const AssignmentTaskForm: FC<Props> = ({
           type: 'manual',
           message: issue.message,
         });
+      });
+
+      return;
+    }
+
+    const dateError = validateClosedPeriodDates(parsed.data);
+
+    if (dateError) {
+      setError('startDate', {
+        type: 'manual',
+        message: dateError,
       });
 
       return;
