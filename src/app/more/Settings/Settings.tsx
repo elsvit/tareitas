@@ -7,9 +7,8 @@ import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { SettingsSection, SettingsSections } from '~/components/settings';
 import { LocalizationService, t } from '~/services/localization/localization';
-import { ERole } from '~/store/settings/enums';
 import {
-  selectCurrentRole,
+  selectIsAdmin,
   selectIsChildPasswordObligatory,
   selectLang,
 } from '~/store/settings/selectors';
@@ -33,9 +32,8 @@ export default function Settings() {
   const [styles] = useStyle(themedStyles);
 
   const currentLang = useSelector(selectLang);
-  const currentRole = useSelector(selectCurrentRole);
+  const isAdmin = useSelector(selectIsAdmin);
   const isChildPasswordObligatory = useSelector(selectIsChildPasswordObligatory);
-  const isAdmin = currentRole === ERole.admin;
 
   const handleLanguageChange = useCallback(
     async (selectedLang: ELang) => {

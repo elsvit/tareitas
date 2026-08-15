@@ -21,16 +21,12 @@ import {
   removeReward,
   updateReward,
 } from '~/store/rewards/slice';
-import { ERole } from '~/store/settings/enums';
-import { selectCurrentRole } from '~/store/settings/selectors';
 import { Colors } from '~/styles';
 import { ERewardStatus } from '~/types/EReward';
 
 export default function Rewards() {
   const dispatch = useDispatch();
-  const { user: currentUser } = useCurrentUser();
-  const currentRole = useSelector(selectCurrentRole);
-  const isChild = currentRole === ERole.child;
+  const { user: currentUser, isChild } = useCurrentUser();
   const childId = isChild ? currentUser?.id ?? '' : '';
 
   useSyncEarnedRewardPeriods();

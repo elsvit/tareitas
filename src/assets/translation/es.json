@@ -207,8 +207,8 @@
     "recurring_edit_all_desc": "Aplicar cambios a toda la serie",
     "cannot_edit_approved_period_fields": "No se puede cambiar la fecha de inicio, recompensa o bonus en meses aprobados",
     "empty_tasks_definition": "Las tareas son misiones específicas y puntuales con un plazo determinado, como ordenar la habitación por la tarde o aprender un poema.",
-    "empty_habits_definition": "La rutina son tareas diarias obligatorias que se repiten todos los días para crear hábitos saludables, como cepillarse los dientes o hacer ejercicio.",
-    "empty_tasks_habits_difference": "La diferencia principal para el niño es que la rutina automatiza acciones diarias útiles, mientras que las tareas enseñan a alcanzar nuevas metas únicas.",
+    "empty_habits_definition": "Las rutinas son tareas diarias obligatorias que se repiten todos los días para crear hábitos saludables, como cepillarse los dientes o hacer ejercicio.",
+    "empty_tasks_habits_difference": "La diferencia principal para el niño es que las rutinas automatizan acciones diarias útiles, mientras que las tareas enseñan a alcanzar nuevas metas únicas.",
     "baseTasks": {
       "completeAllDayTasks": "Completar todas las tareas del día",
       "completeAllDayTasksDescription": "Completar todas las tareas del día",
@@ -290,6 +290,7 @@
   "habits": {
     "title": "Hábitos",
     "no_habits": "No hay rutinas todavía",
+    "push_to_add_habit": "Pulsa el botón para añadir una rutina",
     "add_habit": "Añadir Hábito",
     "edit_habit": "Editar Hábito",
     "completed_history": "Hábitos completados"
