@@ -5,14 +5,14 @@ import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
-import RoutinesIcon from '~/assets/img/tabs/tab_habits.png';
-import RoutinesActiveIcon from '~/assets/img/tabs/tab_habits_active.png';
-import MoreIcon from '~/assets/img/tabs/tab_more.png';
-import MoreActiveIcon from '~/assets/img/tabs/tab_more_active.png';
-import RewardsIcon from '~/assets/img/tabs/tab_rewards.png';
-import RewardsActiveIcon from '~/assets/img/tabs/tab_rewards_active.png';
-import TasksIcon from '~/assets/img/tabs/tab_tasks.png';
-import TasksActiveIcon from '~/assets/img/tabs/tab_tasks_active.png';
+import RoutinesIcon from '~/assets/img/tabs/tab_habits.webp';
+import RoutinesActiveIcon from '~/assets/img/tabs/tab_habits_active.webp';
+import MoreIcon from '~/assets/img/tabs/tab_more.webp';
+import MoreActiveIcon from '~/assets/img/tabs/tab_more_active.webp';
+import RewardsIcon from '~/assets/img/tabs/tab_rewards.webp';
+import RewardsActiveIcon from '~/assets/img/tabs/tab_rewards_active.webp';
+import TasksIcon from '~/assets/img/tabs/tab_tasks.webp';
+import TasksActiveIcon from '~/assets/img/tabs/tab_tasks_active.webp';
 import { HapticTab } from '~/components/haptic-tab';
 import { BottomTab } from '~/components/ui/BottomTab/BottomTab';
 import { IS_ANDROID } from '~/constants/settings';
@@ -33,11 +33,16 @@ function TabBarBackground({
   bottomInset: number;
 }) {
   if (!IS_ANDROID) {
-    return <View style={{ flex: 1, backgroundColor: TAB_BAR_COLOR }} />;
+    return (
+      <View
+        pointerEvents="none"
+        style={{ flex: 1, backgroundColor: TAB_BAR_COLOR }}
+      />
+    );
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View pointerEvents="none" style={{ flex: 1 }}>
       <View style={{ flex: 1, backgroundColor: TAB_BAR_COLOR }} />
       <View
         style={{
@@ -85,9 +90,6 @@ export default function TabLayout() {
     },
   ];
 
-  // Do not filter out routes: expo-router auto-registers all files under this layout.
-  // Instead, conditionally hide a specific tab by setting `options.href = null`.
-
   return (
     <Tabs
       screenOptions={{
@@ -129,7 +131,6 @@ export default function TabLayout() {
           name={name}
           options={{
             title,
-            // Hide the Habits tab when it isn't separated
             href: hideThisTab ? null : undefined,
             tabBarIcon: ({ focused }) => (
               <BottomTab
@@ -137,8 +138,6 @@ export default function TabLayout() {
                 ActiveIcon={ActiveIcon}
                 focused={focused}
                 label={title}
-                // badge={1}
-                // size={56}
               />
             ),
           }}

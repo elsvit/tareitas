@@ -21,7 +21,11 @@ export type BottomTabProps = {
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const ICON_SIZE = SCREEN_WIDTH * 0.28;
+// WEBP assets fill the frame more than old PNGs — ~0.20 matches old PNG look at 0.28.
+const ICON_SIZE = SCREEN_WIDTH * 0.17;
+// Keep tap area stable — change this, not ICON_SIZE, to preserve clicks.
+const TAB_HIT_WIDTH = SCREEN_WIDTH * 0.28;
+const TAB_HIT_HEIGHT = 72;
 
 const ACTIVE_COLOR = '#FEF30C';
 const INACTIVE_COLOR = '#4FB3FF';
@@ -37,43 +41,45 @@ export const BottomTab: React.FC<BottomTabProps> = ({
 }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.iconWrapper}>
-        {/* ICON */}
-        <Image
-          source={focused ? ActiveIcon : Icon}
-          style={{ width: ICON_SIZE, height: ICON_SIZE }}
-          resizeMode="contain"
-        />
+      <View
+        style={[
+          styles.hitArea,
+          { width: TAB_HIT_WIDTH, height: TAB_HIT_HEIGHT },
+        ]}
+      >
+        <View style={styles.iconWrapper}>
+          <Image
+            source={focused ? ActiveIcon : Icon}
+            style={{ width: ICON_SIZE, height: ICON_SIZE }}
+            resizeMode="contain"
+          />
 
-        {/* LABEL OVERLAY (BOTTOM INSIDE IMAGE) */}
-        {label ? (
-          <View style={styles.labelOverlay}>
-            <Text
-              fontFamily="fredoka"
-              // fontFamily="rubik"
-              // fontFamily="roboto"
-              weight="bold"
-              style={[
-                styles.labelText,
-                { color: focused ? ACTIVE_COLOR : INACTIVE_COLOR },
-              ]}
-              numberOfLines={1}
+          {label ? (
+            <View style={styles.labelOverlay}>
+              <Text
+                fontFamily="fredoka"
+                weight="bold"
+                style={[
+                  styles.labelText,
+                  { color: focused ? ACTIVE_COLOR : INACTIVE_COLOR },
+                ]}
+                numberOfLines={1}
+              >
+                {label}
+              </Text>
+            </View>
+          ) : null}
+
+          {badge ? (
+            <View
+              style={[styles.badge, { backgroundColor: badgeBackgroundColor }]}
             >
-              {label}
-            </Text>
-          </View>
-        ) : null}
-
-        {/* BADGE */}
-        {badge ? (
-          <View
-            style={[styles.badge, { backgroundColor: badgeBackgroundColor }]}
-          >
-            <Text style={[styles.badgeText, { color: badgeTextColor }]}>
-              {String(badge)}
-            </Text>
-          </View>
-        ) : null}
+              <Text style={[styles.badgeText, { color: badgeTextColor }]}>
+                {String(badge)}
+              </Text>
+            </View>
+          ) : null}
+        </View>
       </View>
     </View>
   );
@@ -86,24 +92,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  hitArea: {
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   iconWrapper: {
     position: 'relative',
+    width: TAB_HIT_WIDTH,
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   labelOverlay: {
     position: 'absolute',
-    bottom: -8,
+    bottom: -14,
     left: 0,
-    right: 0,
+    width: TAB_HIT_WIDTH,
     alignItems: 'center',
-    zIndex: 10,
-    elevation: 10,
   },
 
   labelText: {
     fontSize: 16,
+    lineHeight: 18,
     textAlign: 'center',
   },
 

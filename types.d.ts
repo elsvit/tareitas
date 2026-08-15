@@ -8,6 +8,7 @@ declare module '*.svg' {
 declare module '*.png';
 declare module '*.jpg';
 declare module '*.gif';
+declare module '*.webp';
 
 type PrimitiveType = string | number | boolean;
 type Maybe<T> = T | null | undefined;
