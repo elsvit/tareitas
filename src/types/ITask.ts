@@ -7,6 +7,7 @@ export interface ITaskBase extends Partial<CreatedProps> {
   description?: string;
   reward?: number;
   picture?: string;
+  time?: string;
 }
 
 export type TaskBaseFormProps = OmitCreatedKeys<ITaskBase>;

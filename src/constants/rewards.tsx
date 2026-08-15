@@ -76,6 +76,48 @@ export const getBaseRewards = (): IRewardBase[] => {
     picture: 'ice_cream',
     reward: 120,
   },
+  {
+    id: 'pizza_night',
+    title: t('baseRewards.pizza_night'),
+    picture: 'pizza_night',
+    reward: 150,
+  },
+  {
+    id: 'visit_favourite_cafe',
+    title: t('baseRewards.visit_favourite_cafe'),
+    picture: 'visit_favourite_cafe',
+    reward: 180,
+  },
+  {
+    id: 'small_toy',
+    title: t('baseRewards.small_toy'),
+    picture: 'small_toy',
+    reward: 250,
+  },
+  {
+    id: 'new_book',
+    title: t('baseRewards.new_book'),
+    picture: 'new_book',
+    reward: 250,
+  },
+  {
+    id: 'new_sports_equipment',
+    title: t('baseRewards.new_sports_equipment'),
+    picture: 'new_sports_equipment',
+    reward: 800,
+  },
+  {
+    id: 'camping_movie_night_at_home',
+    title: t('baseRewards.camping_movie_night_at_home'),
+    picture: 'camping_movie_night_at_home',
+    reward: 350,
+  },
+  {
+    id: 'playstation_30_min',
+    title: t('baseRewards.playstation_30_min'),
+    picture: 'playstation_30_min',
+    reward: 200,
+  },
   ];
 };
 

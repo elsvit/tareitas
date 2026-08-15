@@ -1,5 +1,4 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { useRouter } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
@@ -11,7 +10,6 @@ import { ITaskBase, TaskBaseFormProps } from '~/types/ITask';
 
 export default function BaseTaskEdit() {
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const {
     params,
@@ -30,10 +28,6 @@ export default function BaseTaskEdit() {
         } as ITaskBase,
       }),
     );
-
-    if (router.canGoBack()) {
-      router.back();
-    }
   };
 
   return (

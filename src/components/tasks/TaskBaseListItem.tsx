@@ -12,6 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector } from 'react-redux';
 
 import { BASE_TASKS_IMAGES } from '~/assets/img/tasks/tasks';
+import { DEFAULT_BASE_TASK_COLOR } from '~/constants/tasks';
 import { Text } from '~/components/ui';
 import { selectTaskImageUrls } from '~/store/images';
 import { Colors } from '~/styles';
@@ -36,6 +37,7 @@ const RowContent: React.FC<{
   reward?: number;
   textColor: string;
   customUrls: Record<string, string>;
+  color?: string;
 }> = ({ name, description, picture, reward, textColor, customUrls }) => {
   const pictureSource = useMemo(
     () => resolvePictureSource(picture, customUrls, BASE_TASKS_IMAGES),
@@ -98,7 +100,7 @@ export const TaskBaseListItem: React.FC<Props> = ({
   description,
   picture,
   reward,
-  color = '#5CD304',
+  color = DEFAULT_BASE_TASK_COLOR,
   onPress,
 }) => {
   const customUrls = useSelector(selectTaskImageUrls);

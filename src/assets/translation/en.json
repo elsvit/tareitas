@@ -206,6 +206,10 @@
     "recurring_edit_all_desc": "Apply changes to the whole series",
     "cannot_edit_approved_period_fields": "Cannot change start date, reward, or bonus for tasks in approved months",
     "baseTasks": {
+      "completeAllDayTasks": "Complete all today's tasks",
+      "completeAllDayTasksDescription": "Complete all today's tasks",
+      "completeAllWeekTasks": "Complete all tasks for the week",
+      "completeAllWeekTasksDescription": "Complete all tasks for the week",
       "brushTeethEvening": "Brush teeth in the evening",
       "brushTeethEveningDescription": "Brush teeth in the evening",
       "brushTeethMorning": "Brush teeth in the morning",
@@ -352,7 +356,14 @@
     "choose_what_for_dinner": "Choose what’s for dinner",
     "special_time_with_parents": "Special one-on-one time with parents",
     "trip_to_playground": "Trip to the playground",
-    "ice_cream": "Go for ice cream"
+    "ice_cream": "Go for ice cream",
+    "pizza_night": "Pizza night",
+    "visit_favourite_cafe": "Visit favourite cafe",
+    "small_toy": "Small toy",
+    "new_book": "New book",
+    "new_sports_equipment": "New sports equipment",
+    "camping_movie_night_at_home": "Camping movie night at home",
+    "playstation_30_min": "Playstation 30 min"
   },
   "onboarding": {
     "header": "Welcome to Tareitas",

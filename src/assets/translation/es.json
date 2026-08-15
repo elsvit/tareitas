@@ -206,6 +206,10 @@
     "recurring_edit_all_desc": "Aplicar cambios a toda la serie",
     "cannot_edit_approved_period_fields": "No se puede cambiar la fecha de inicio, recompensa o bonus en meses aprobados",
     "baseTasks": {
+      "completeAllDayTasks": "Completar todas las tareas del día",
+      "completeAllDayTasksDescription": "Completar todas las tareas del día",
+      "completeAllWeekTasks": "Completar todas las tareas de la semana",
+      "completeAllWeekTasksDescription": "Completar todas las tareas de la semana",
       "brushTeethEvening": "Cepillarse los dientes en la tarde",
       "brushTeethEveningDescription": "Cepillarse los dientes en la tarde",
       "brushTeethMorning": "Cepillarse los dientes en la mañana",
@@ -352,7 +356,14 @@
     "choose_what_for_dinner": "Elegir lo que hay para cenar",
     "special_time_with_parents": "Tiempo especial uno a uno con un padre",
     "trip_to_playground": "Viajar al parque",
-    "ice_cream": "Ir a la heladería"
+    "ice_cream": "Ir a la heladería",
+    "pizza_night": "Cena de pizza",
+    "visit_favourite_cafe": "Visitar el café favorito",
+    "small_toy": "Juguete pequeño",
+    "new_book": "Libro nuevo",
+    "new_sports_equipment": "Equipo deportivo nuevo",
+    "camping_movie_night_at_home": "Cena de película en el camping",
+    "playstation_30_min": "30 minutos de Playstation"
   },
   "onboarding": {
     "header": "Bienvenido a Tareitas",

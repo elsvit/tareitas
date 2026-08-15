@@ -27,14 +27,19 @@ import { Select } from '~/components/ui/Select/Select';
 import { SelectColor } from '~/components/ui/SelectColor';
 import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWithCustom';
 import { SelectMulti } from '~/components/ui/SelectMulti';
-import { getTaskImageOptions } from '~/constants/tasks';
+import {
+  DEFAULT_BASE_TASK_COLOR,
+  DEFAULT_HABIT_ASSIGNMENT_COLOR,
+  DEFAULT_TASK_ASSIGNMENT_COLOR,
+  getTaskImageOptions,
+} from '~/constants/tasks';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectEarnedRewardPeriods } from '~/store/rewards/selectors';
 import { ERole } from '~/store/settings/enums';
 import { selectCurrentRole } from '~/store/settings/selectors';
 import { removeTaskAssignment } from '~/store/taskAssignment/slice';
-import { selectAllTaskBase } from '~/store/taskBase/selectors';
+import { selectAllTaskBaseInDefaultOrder } from '~/store/taskBase/selectors';
 import { Colors, userColors } from '~/styles';
 import { EFormMode, ERecurringEditScope, WeekDay } from '~/types/ECommon';
 import { ETaskRepeatType } from '~/types/ETask';
@@ -288,7 +293,7 @@ export const AssignmentTaskForm: FC<Props> = ({
 
   const children = useSelector(selectAllChildren);
   const earnedRewardPeriods = useSelector(selectEarnedRewardPeriods);
-  const baseTasks = useSelector(selectAllTaskBase);
+  const baseTasks = useSelector(selectAllTaskBaseInDefaultOrder);
   const currentRole = useSelector(selectCurrentRole);
   const isAdmin = currentRole === ERole.admin;
   const isParentView = currentRole !== ERole.child;
@@ -297,6 +302,9 @@ export const AssignmentTaskForm: FC<Props> = ({
   const singleChild = children.length === 1 ? children[0] : undefined;
 
   const today = format(new Date(), 'yyyy-MM-dd');
+  const defaultAssignmentColor = isHabit
+    ? DEFAULT_HABIT_ASSIGNMENT_COLOR
+    : DEFAULT_TASK_ASSIGNMENT_COLOR;
   const initialDate = defaultDate ?? assignment?.startDate ?? today;
 
   const isRepeating =
@@ -339,7 +347,7 @@ export const AssignmentTaskForm: FC<Props> = ({
       description: fieldsForEditDate?.description ?? assignment?.description ?? '',
       reward: fieldsForEditDate?.reward ?? assignment?.reward ?? null,
       picture: fieldsForEditDate?.picture ?? assignment?.picture ?? '',
-      color: assignment?.color ?? userColors.blue600,
+      color: assignment?.color ?? defaultAssignmentColor,
       startDate: assignment?.startDate ?? initialDate,
       endDate: assignment?.endDate ?? initialDate,
       time: fieldsForEditDate?.time ?? assignment?.time ?? '09:00',
@@ -494,8 +502,18 @@ export const AssignmentTaskForm: FC<Props> = ({
     setValue('description', baseTask.description ?? '', {
       shouldValidate: true,
     });
-    setValue('reward', baseTask.reward ?? null, { shouldValidate: true });
     setValue('picture', baseTask.picture ?? '', { shouldValidate: true });
+    setValue('color', baseTask.color ?? DEFAULT_BASE_TASK_COLOR, {
+      shouldValidate: true,
+    });
+
+    if (baseTask.reward != null) {
+      setValue('reward', baseTask.reward, { shouldValidate: true });
+    }
+
+    if (baseTask.time) {
+      setValue('time', baseTask.time, { shouldValidate: true });
+    }
   };
 
   const onSubmit = (values: FormValues) => {

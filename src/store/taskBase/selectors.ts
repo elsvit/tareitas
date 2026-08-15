@@ -1,4 +1,7 @@
 import { RootStateT } from '~/store';
+import { createSelector } from '@reduxjs/toolkit';
+
+import { sortTaskBaseList } from './sortTaskBaseList';
 import { taskBaseAdapter } from './slice';
 
 // Base selectors
@@ -15,3 +18,8 @@ export const {
 
 export const selectTaskBaseById = (id: string) => (state: RootStateT) =>
   selectById(state, id);
+
+export const selectAllTaskBaseInDefaultOrder = createSelector(
+  [selectAllTaskBase],
+  tasks => sortTaskBaseList(tasks),
+);

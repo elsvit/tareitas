@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   FlatList,
   ListRenderItem,
@@ -20,8 +20,8 @@ import { IconButton } from '~/components/ui/IconButton';
 import { t } from '~/services';
 import { ERole } from '~/store/settings/enums';
 import { selectCurrentRole } from '~/store/settings/selectors';
-import { selectAllTaskBase } from '~/store/taskBase/selectors';
-import { resetTaskBase } from '~/store/taskBase/slice';
+import { selectAllTaskBaseInDefaultOrder } from '~/store/taskBase/selectors';
+import { resetTaskBase, syncTaskBaseTranslations } from '~/store/taskBase/slice';
 import { Colors } from '~/styles';
 import { EScreens } from '~/types';
 import { ITaskBase } from '~/types/ITask';
@@ -33,9 +33,13 @@ export default function BaseTasks() {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const taskBaseList = useSelector(selectAllTaskBase);
+  const taskBaseList = useSelector(selectAllTaskBaseInDefaultOrder);
   const currentRole = useSelector(selectCurrentRole);
   const isAdmin = currentRole === ERole.admin;
+
+  useEffect(() => {
+    dispatch(syncTaskBaseTranslations());
+  }, [dispatch]);
 
   const normalizedSearchQuery = useMemo(
     () => searchQuery.trim().toLowerCase(),
@@ -92,6 +96,7 @@ export default function BaseTasks() {
           description={item.description}
           picture={item.picture}
           reward={item.reward}
+          color={item.color}
           onPress={isAdmin ? handlePress : undefined}
         />
       );

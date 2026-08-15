@@ -17,6 +17,7 @@ import prepare_clothes from '~/assets/img/tasks/prepare_clothes.jpg';
 import put_away_toys from '~/assets/img/tasks/put_away_toys.jpg';
 import sweep_floor from '~/assets/img/tasks/sweep_floor.jpg';
 import take_shower from '~/assets/img/tasks/take_shower.jpg';
+import tasks_done from '~/assets/img/tasks/tasks_done.jpg';
 import tidy_up_pencil_case from '~/assets/img/tasks/tidy_up_pencil_case.jpg';
 import tidy_up_room from '~/assets/img/tasks/tidy_up_room.jpg';
 // import trash from '~/assets/img/tasks/trash.jpg';
@@ -44,6 +45,7 @@ export const BASE_TASKS_IMAGES = {
   put_away_toys,
   sweep_floor,
   take_shower,
+  tasks_done,
   tidy_up_pencil_case,
   tidy_up_room,
   walk_the_dog,
