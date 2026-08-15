@@ -205,6 +205,21 @@ export const hasCompletedTasksInMonth = (
   });
 };
 
+const allMonthsWithoutCompletedTasks = (
+  state: IState,
+  childId: string,
+  fromYearMonth: string,
+  toYearMonth: string,
+): boolean => {
+  if (fromYearMonth > toYearMonth) {
+    return true;
+  }
+
+  return getMonthsBetweenInclusive(fromYearMonth, toYearMonth).every(
+    month => !hasCompletedTasksInMonth(state, childId, month),
+  );
+};
+
 export const buildPeriodApprovalUpdates = (
   state: IState,
   childId: string,
@@ -292,32 +307,47 @@ export const findApprovableMonthPeriod = (
     currentYearMonth,
   );
 
+  let latestCleanOpenMonth: string | null = null;
+  let latestCleanOpenMonthWithReward: string | null = null;
+
   for (const yearMonth of monthsToScan) {
-    if (!hasCompletedTasksInMonth(state, childId, yearMonth)) {
+    if (hasCompletedTasksInMonth(state, childId, yearMonth)) {
+      const monthBefore = formatYearMonth(
+        addMonths(parseYearMonth(yearMonth), -1),
+      );
+
+      if (
+        allMonthsWithoutCompletedTasks(
+          state,
+          childId,
+          firstTaskMonth,
+          monthBefore,
+        )
+      ) {
+        return yearMonth;
+      }
+
+      break;
+    }
+
+    const period = findEarnedPeriod(periods, childId, yearMonth);
+
+    if ((period?.remainingRewardFromPreviousMonths ?? null) !== null) {
       continue;
     }
 
-    const monthBefore = formatYearMonth(
-      addMonths(parseYearMonth(yearMonth), -1),
-    );
-    const betweenStart = scanStartMonth;
-    const betweenEnd = monthBefore;
+    if (
+      allMonthsWithoutCompletedTasks(state, childId, firstTaskMonth, yearMonth)
+    ) {
+      latestCleanOpenMonth = yearMonth;
 
-    if (betweenStart > betweenEnd) {
-      return yearMonth;
-    }
-
-    const betweenMonths = getMonthsBetweenInclusive(betweenStart, betweenEnd);
-    const allBetweenWithoutCompleted = betweenMonths.every(
-      month => !hasCompletedTasksInMonth(state, childId, month),
-    );
-
-    if (allBetweenWithoutCompleted) {
-      return yearMonth;
+      if ((period?.monthReward ?? 0) > 0) {
+        latestCleanOpenMonthWithReward = yearMonth;
+      }
     }
   }
 
-  return null;
+  return latestCleanOpenMonthWithReward ?? latestCleanOpenMonth;
 };
 
 export const syncEarnedRewardPeriodsFromState = (
