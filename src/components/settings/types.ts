@@ -19,6 +19,8 @@ export type SettingsItem = SettingsSelectItem | SettingsSwitchItem;
 export type SettingsSection = {
   id: string;
   title: string;
+  description?: string;
+  defaultExpanded?: boolean;
   visible?: boolean;
   items: SettingsItem[];
 };

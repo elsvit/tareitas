@@ -1,3 +1,4 @@
+import { SCREEN_TEXT } from '~/constants/formField';
 import { spacing, styleSheetFactory } from '~/styles';
 import { Colors } from '~/styles/colors';
 
@@ -31,8 +32,15 @@ export const settingsSectionStyles = styleSheetFactory(() => ({
     fontSize: 16,
     lineHeight: 20,
     letterSpacing: 0.2,
-    fontWeight: '700',
     color: Colors.black,
+  },
+  itemTitleSelected: {
+    fontWeight: '700',
+    color: SCREEN_TEXT.primary,
+  },
+  itemTitleUnselected: {
+    fontWeight: '500',
+    color: SCREEN_TEXT.secondary,
   },
   checkboxStyle: {
     width: 24,

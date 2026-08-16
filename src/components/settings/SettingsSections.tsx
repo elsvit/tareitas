@@ -7,7 +7,6 @@ import CheckIcon from '~/assets/svg/common/check.svg';
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
 import { Switch } from '~/components/ui';
-import { SCREEN_TEXT } from '~/constants/formField';
 import { useStyle } from '~/styles';
 
 import settingsSectionStyles, { SETTINGS_LIST_THEME } from './styles';
@@ -28,7 +27,7 @@ export function SettingsSectionItem({ item }: SettingsSectionItemProps) {
         theme={SETTINGS_LIST_THEME}
         titleStyle={{
           ...styles.itemTitle,
-          color: item.selected ? SCREEN_TEXT.primary : SCREEN_TEXT.secondary,
+          ...(item.selected ? styles.itemTitleSelected : styles.itemTitleUnselected),
         }}
         onPress={item.onPress}
         left={() => (
@@ -55,6 +54,7 @@ export function SettingsSectionItem({ item }: SettingsSectionItemProps) {
 
 type SettingsCollapsibleSectionProps = {
   title: string;
+  description?: string;
   expanded: boolean;
   onPress: () => void;
   children: React.ReactNode;
@@ -62,6 +62,7 @@ type SettingsCollapsibleSectionProps = {
 
 export function SettingsCollapsibleSection({
   title,
+  description,
   expanded,
   onPress,
   children,
@@ -72,6 +73,7 @@ export function SettingsCollapsibleSection({
     <List.Section style={styles.section}>
       <List.Accordion
         title={title}
+        description={description}
         expanded={expanded}
         onPress={onPress}
         right={({ isExpanded }) =>
@@ -91,13 +93,18 @@ type SettingsSectionsProps = {
   sections: Array<{
     id: string;
     title: string;
+    description?: string;
+    defaultExpanded?: boolean;
     items: SettingsItem[];
   }>;
 };
 
 export function SettingsSections({ sections }: SettingsSectionsProps) {
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(
-    () => Object.fromEntries(sections.map(section => [section.id, true])),
+    () =>
+      Object.fromEntries(
+        sections.map(section => [section.id, section.defaultExpanded ?? false]),
+      ),
   );
 
   useEffect(() => {
@@ -106,7 +113,7 @@ export function SettingsSections({ sections }: SettingsSectionsProps) {
 
       sections.forEach(section => {
         if (next[section.id] === undefined) {
-          next[section.id] = true;
+          next[section.id] = section.defaultExpanded ?? false;
         }
       });
 
@@ -127,11 +134,12 @@ export function SettingsSections({ sections }: SettingsSectionsProps) {
         <SettingsCollapsibleSection
           key={section.id}
           title={section.title}
-          expanded={expandedSections[section.id] ?? true}
+          description={section.description}
+          expanded={expandedSections[section.id] ?? false}
           onPress={() => handleSectionPress(section.id)}
         >
           {section.items.map(item => (
-            <SettingsSectionItem key={item.id} item={item} />
+            <SettingsSectionItem key={`${section.id}-${item.id}`} item={item} />
           ))}
         </SettingsCollapsibleSection>
       ))}
