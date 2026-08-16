@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   Platform,
   Pressable,
@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
+import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -16,6 +17,7 @@ import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
 import { TaskStatusBadge } from '~/components/tasks/TaskStatusBadge';
 import { TaskRewardBadge } from '~/components/tasks/TaskRewardBadge';
+import { TaskRewardStarsAnimation } from '~/components/tasks/TaskRewardStarsAnimation';
 import { Text } from '~/components/ui';
 import { t } from '~/services';
 import { RootStateT } from '~/store';
@@ -52,6 +54,7 @@ export const TaskListItem: React.FC<Props> = ({
   );
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [areSubtasksExpanded, setAreSubtasksExpanded] = useState(false);
+  const [rewardAnimationTrigger, setRewardAnimationTrigger] = useState(0);
 
   const gradientColors = useMemo(
     () =>
@@ -63,6 +66,19 @@ export const TaskListItem: React.FC<Props> = ({
         : undefined,
     [taskView],
   );
+
+  const rewardText =
+    taskView?.rewardDisplayText ??
+    (taskView?.reward != null ? String(taskView.reward) : '');
+
+  const triggerCompletionAnimation = useCallback(() => {
+    if (!isChildView || rewardText === '') {
+      return;
+    }
+
+    setRewardAnimationTrigger(current => current + 1);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+  }, [isChildView, rewardText]);
 
   if (!taskView || !gradientColors) {
     return null;
@@ -115,6 +131,11 @@ export const TaskListItem: React.FC<Props> = ({
     upsertTask(entity);
   };
 
+  const completeTask = (nextCompletedSubtasks?: string[]) => {
+    setStatus(ETaskStatus.Completed, nextCompletedSubtasks);
+    triggerCompletionAnimation();
+  };
+
   const handleChildStatusPress = () => {
     if (status === ETaskStatus.Rejected) {
       setStatus(ETaskStatus.Pending, []);
@@ -133,7 +154,7 @@ export const TaskListItem: React.FC<Props> = ({
         }
       }
 
-      setStatus(ETaskStatus.Completed);
+      completeTask();
       return;
     }
 
@@ -161,6 +182,12 @@ export const TaskListItem: React.FC<Props> = ({
       subtasks.every(subtask => nextCompleted.includes(subtask.value));
 
     const nextStatus = allDone ? ETaskStatus.Completed : ETaskStatus.Pending;
+
+    if (allDone && isChildView && status === ETaskStatus.Pending) {
+      setStatus(nextStatus, nextCompleted);
+      triggerCompletionAnimation();
+      return;
+    }
 
     setStatus(nextStatus, nextCompleted);
   };
@@ -421,21 +448,35 @@ export const TaskListItem: React.FC<Props> = ({
   );
 
   return (
-    <View style={[styles.container, { borderColor: taskColor }]}>
-      <LinearGradient
-        colors={gradientColors}
-        start={{ x: 0.5, y: 1 }}
-        end={{ x: 0.5, y: 0 }}
-        locations={[0.4, 0.8]}
-        style={styles.gradient}
-      >
-        {row}
-      </LinearGradient>
+    <View style={styles.wrapper}>
+      <View style={[styles.container, { borderColor: taskColor }]}>
+        <LinearGradient
+          colors={gradientColors}
+          start={{ x: 0.5, y: 1 }}
+          end={{ x: 0.5, y: 0 }}
+          locations={[0.4, 0.8]}
+          style={styles.gradient}
+        >
+          {row}
+        </LinearGradient>
+      </View>
+
+      {isChildView && (
+        <TaskRewardStarsAnimation
+          trigger={rewardAnimationTrigger}
+          rewardText={rewardText}
+        />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    position: 'relative',
+    overflow: 'visible',
+  },
+
   container: {
     borderRadius: 16,
     overflow: 'hidden',
