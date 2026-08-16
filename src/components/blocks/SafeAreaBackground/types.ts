@@ -13,4 +13,5 @@ export interface ISafeAreaBackground {
   children?: ReactNode;
   statusBarContent?: StatusBarContent;
   hasTopInsets?: boolean;
+  includeBottomInset?: boolean;
 }

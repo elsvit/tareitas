@@ -11,7 +11,16 @@ export const SafeAreaBackground: React.FC<ISafeAreaBackground> = ({
   bgColor,
   statusBarContent = StatusBarContent.DEFAULT,
   hasTopInsets = false,
+  includeBottomInset = true,
 }) => {
+  const edges = hasTopInsets
+    ? includeBottomInset
+      ? (['top', 'bottom', 'left', 'right'] as const)
+      : (['top', 'left', 'right'] as const)
+    : includeBottomInset
+      ? (['bottom', 'left', 'right'] as const)
+      : (['left', 'right'] as const);
+
   return (
     <View style={[styles.wrapper, { backgroundColor: bgColor }]}>
       <StatusBar
@@ -28,10 +37,7 @@ export const SafeAreaBackground: React.FC<ISafeAreaBackground> = ({
         />
       )}
 
-      <SafeAreaView
-        edges={hasTopInsets ? ['top', 'bottom', 'left', 'right'] : ['bottom', 'left', 'right']}
-        style={styles.wrapperSafe}
-      >
+      <SafeAreaView edges={edges} style={styles.wrapperSafe}>
         {children}
       </SafeAreaView>
     </View>

@@ -82,7 +82,7 @@ export default function More() {
     `${item.title}-${index}`;
 
   return (
-    <SafeAreaBgImage>
+    <SafeAreaBgImage includeBottomInset={false}>
       <ScreenHeaderWithLogo containerStyle={{backgroundColor: 'transparent'}} />
       {!currentUser ? (
         <SelectUserPrompt />
