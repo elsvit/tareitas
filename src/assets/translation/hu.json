@@ -272,7 +272,38 @@
       "washYourOwnPlate": "Mossa ki saját tányérját",
       "washYourOwnPlateDescription": "Mossa ki saját tányérját",
       "waterPlants": "Öntözze meg a szobanövényeket",
-      "waterPlantsDescription": "Öntözze meg a szobanövényeket"
+      "waterPlantsDescription": "Öntözze meg a szobanövényeket",
+      "morningRoutine": {
+        "title": "Reggeli rutin",
+        "description": "Reggeli rutin",
+        "subtask1": "Felébred",
+        "subtask2": "Moss fogat",
+        "subtask3": "Mosogat",
+        "subtask4": "Beágyaz",
+        "subtask5": "Öltözz fel"
+      },
+      "eveningRoutine": {
+        "title": "Esti rutin",
+        "description": "Esti rutin",
+        "subtask1": "Moss fogat",
+        "subtask2": "Mosogat"
+      },
+      "afterSchool": {
+        "title": "Iskola után",
+        "description": "Iskola után",
+        "subtask1": "Csinálj házi feladatot",
+        "subtask2": "Ellenőrizze a menetrendet",
+        "subtask3": "Csomagolja be a hátizsákot"
+      },
+      "creativeWork": {
+        "title": "Kreatív munka",
+        "description": "Kreatív munka",
+        "subtask1": "Készítse elő az anyagokat",
+        "subtask2": "Végezze el a kreatív feladatot",
+        "subtask3": "Tegye rendbe a munkaterületet",
+        "subtask4": "Mosson kezet",
+        "subtask5": "Mutasd meg az eredményt"
+      }
     },
     "taskStatus": {
       "approve": "Jóváhagyni",

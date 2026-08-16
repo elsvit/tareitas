@@ -97,6 +97,7 @@ export default function BaseTasks() {
           picture={item.picture}
           reward={item.reward}
           color={item.color}
+          subtasks={item.subtasks}
           onPress={isAdmin ? handlePress : undefined}
         />
       );

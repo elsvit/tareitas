@@ -315,6 +315,14 @@ export const AssignmentTaskForm: FC<Props> = ({
     [assignment?.picture, baseTasks],
   );
 
+  const initialSubtasks = useMemo(() => {
+    if (assignment?.subtasks?.length) {
+      return assignment.subtasks;
+    }
+
+    return taskBaseForAssignment?.subtasks ?? [];
+  }, [assignment?.subtasks, taskBaseForAssignment?.subtasks]);
+
   const fieldsForEditDate = useMemo(() => {
     if (!assignment?.id || !editDate) {
       return null;
@@ -352,13 +360,12 @@ export const AssignmentTaskForm: FC<Props> = ({
       time: fieldsForEditDate?.time ?? assignment?.time ?? '09:00',
       repeats: isHabit || isRepeating,
       weekDays: assignment?.repeat?.weekDays ?? (isHabit ? ALL_WEEK_DAYS : []),
-      baseTaskId: '',
-      withSubtasks: (assignment?.subtasks?.length ?? 0) > 0,
-      subtasks:
-        assignment?.subtasks?.map(subtask => ({
-          value: subtask.value,
-          label: subtask.label,
-        })) ?? [],
+      baseTaskId: taskBaseForAssignment?.id ?? '',
+      withSubtasks: initialSubtasks.length > 0,
+      subtasks: initialSubtasks.map(subtask => ({
+        value: subtask.value,
+        label: subtask.label,
+      })),
       hasNewTaskBonus:
         (isHabit || isRepeating) &&
         (fieldsForEditDate?.newTaskBonus ?? assignment?.newTaskBonus) != null &&
@@ -405,10 +412,28 @@ export const AssignmentTaskForm: FC<Props> = ({
     setValue('newTaskDuration', null, { shouldValidate: true });
   }, [effectiveRepeats, setValue]);
 
-  const { fields: subtaskFields, append, remove } = useFieldArray({
+  const { fields: subtaskFields, append, remove, replace } = useFieldArray({
     control,
     name: 'subtasks',
   });
+
+  const applySubtasksFromBaseTask = useCallback(
+    (baseTask: (typeof baseTasks)[number] | undefined) => {
+      const subtasks = baseTask?.subtasks ?? [];
+      const hasSubtasks = subtasks.length > 0;
+
+      setValue('withSubtasks', hasSubtasks, { shouldValidate: true });
+      replace(
+        hasSubtasks
+          ? subtasks.map(subtask => ({
+              value: subtask.value,
+              label: subtask.label,
+            }))
+          : [],
+      );
+    },
+    [replace, setValue],
+  );
 
   const childOptions = useMemo(
     () =>
@@ -513,6 +538,8 @@ export const AssignmentTaskForm: FC<Props> = ({
     if (baseTask.time) {
       setValue('time', baseTask.time, { shouldValidate: true });
     }
+
+    applySubtasksFromBaseTask(baseTask);
   };
 
   const onSubmit = (values: FormValues) => {

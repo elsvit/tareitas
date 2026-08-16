@@ -272,7 +272,38 @@
       "washYourOwnPlate": "Pomij svoj krožnik",
       "washYourOwnPlateDescription": "Pomij svoj krožnik",
       "waterPlants": "Zalijte sobne rastline",
-      "waterPlantsDescription": "Zalijte sobne rastline"
+      "waterPlantsDescription": "Zalijte sobne rastline",
+      "morningRoutine": {
+        "title": "Jutranja rutina",
+        "description": "Jutranja rutina",
+        "subtask1": "Zbudi se",
+        "subtask2": "Ščetkati zobe",
+        "subtask3": "Umijte se",
+        "subtask4": "Pospravi posteljo",
+        "subtask5": "oblecite se"
+      },
+      "eveningRoutine": {
+        "title": "Večerna rutina",
+        "description": "Večerna rutina",
+        "subtask1": "Ščetkati zobe",
+        "subtask2": "Umijte se"
+      },
+      "afterSchool": {
+        "title": "Po šoli",
+        "description": "Po šoli",
+        "subtask1": "Naredi domačo nalogo",
+        "subtask2": "Preverite urnik",
+        "subtask3": "Spakirajte nahrbtnik"
+      },
+      "creativeWork": {
+        "title": "Ustvarjalno delo",
+        "description": "Ustvarjalno delo",
+        "subtask1": "Pripravite materiale",
+        "subtask2": "Dokončaj ustvarjalno nalogo",
+        "subtask3": "Pospravite delovni prostor",
+        "subtask4": "Umijte si roke",
+        "subtask5": "Pokažite rezultat"
+      }
     },
     "taskStatus": {
       "approve": "odobri",

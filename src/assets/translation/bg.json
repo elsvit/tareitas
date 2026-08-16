@@ -272,7 +272,38 @@
       "washYourOwnPlate": "Измийте собствената си чиния",
       "washYourOwnPlateDescription": "Измийте собствената си чиния",
       "waterPlants": "Поливайте стайните растения",
-      "waterPlantsDescription": "Поливайте стайните растения"
+      "waterPlantsDescription": "Поливайте стайните растения",
+      "morningRoutine": {
+        "title": "Сутрешна рутина",
+        "description": "Сутрешна рутина",
+        "subtask1": "събуди се",
+        "subtask2": "Мийте зъбите",
+        "subtask3": "Измийте се",
+        "subtask4": "Оправи леглото",
+        "subtask5": "Обличай се"
+      },
+      "eveningRoutine": {
+        "title": "Вечерна рутина",
+        "description": "Вечерна рутина",
+        "subtask1": "Мийте зъбите",
+        "subtask2": "Измийте се"
+      },
+      "afterSchool": {
+        "title": "След училище",
+        "description": "След училище",
+        "subtask1": "Направете домашното",
+        "subtask2": "Проверете графика",
+        "subtask3": "Опаковайте раницата"
+      },
+      "creativeWork": {
+        "title": "Творческа работа",
+        "description": "Творческа работа",
+        "subtask1": "Подгответе материали",
+        "subtask2": "Изпълнете творческата задача",
+        "subtask3": "Подредете работното пространство",
+        "subtask4": "Измийте ръцете",
+        "subtask5": "Покажете резултата"
+      }
     },
     "taskStatus": {
       "approve": "Одобряване",

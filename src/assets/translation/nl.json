@@ -272,7 +272,38 @@
       "washYourOwnPlate": "Was je eigen bord af",
       "washYourOwnPlateDescription": "Was je eigen bord af",
       "waterPlants": "Geef de kamerplanten water",
-      "waterPlantsDescription": "Geef de kamerplanten water"
+      "waterPlantsDescription": "Geef de kamerplanten water",
+      "morningRoutine": {
+        "title": "Ochtendroutine",
+        "description": "Ochtendroutine",
+        "subtask1": "Wakker worden",
+        "subtask2": "Poets tanden",
+        "subtask3": "Afwassen",
+        "subtask4": "Maak het bed op",
+        "subtask5": "Kleed je aan"
+      },
+      "eveningRoutine": {
+        "title": "Avondroutine",
+        "description": "Avondroutine",
+        "subtask1": "Poets tanden",
+        "subtask2": "Afwassen"
+      },
+      "afterSchool": {
+        "title": "Na schooltijd",
+        "description": "Na schooltijd",
+        "subtask1": "Huiswerk maken",
+        "subtask2": "Controleer het schema",
+        "subtask3": "Pak de rugzak in"
+      },
+      "creativeWork": {
+        "title": "Creatief werk",
+        "description": "Creatief werk",
+        "subtask1": "Materialen voorbereiden",
+        "subtask2": "Voltooi de creatieve taak",
+        "subtask3": "Ruim de werkruimte op",
+        "subtask4": "Handen wassen",
+        "subtask5": "Laat het resultaat zien"
+      }
     },
     "taskStatus": {
       "approve": "Goedkeuren",

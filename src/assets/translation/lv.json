@@ -272,7 +272,38 @@
       "washYourOwnPlate": "Nomazgājiet savu šķīvi",
       "washYourOwnPlateDescription": "Nomazgājiet savu šķīvi",
       "waterPlants": "Laistiet istabas augus",
-      "waterPlantsDescription": "Laistiet istabas augus"
+      "waterPlantsDescription": "Laistiet istabas augus",
+      "morningRoutine": {
+        "title": "Rīta rutīna",
+        "description": "Rīta rutīna",
+        "subtask1": "mosties",
+        "subtask2": "Tīriet zobus",
+        "subtask3": "Nomazgājies",
+        "subtask4": "Saklāj gultu",
+        "subtask5": "Saģērbies"
+      },
+      "eveningRoutine": {
+        "title": "Vakara rutīna",
+        "description": "Vakara rutīna",
+        "subtask1": "Tīriet zobus",
+        "subtask2": "Nomazgājies"
+      },
+      "afterSchool": {
+        "title": "Pēc skolas",
+        "description": "Pēc skolas",
+        "subtask1": "Izpildi mājasdarbus",
+        "subtask2": "Pārbaudiet grafiku",
+        "subtask3": "Iepakojiet mugursomu"
+      },
+      "creativeWork": {
+        "title": "Radošs darbs",
+        "description": "Radošs darbs",
+        "subtask1": "Sagatavojiet materiālus",
+        "subtask2": "Izpildi radošo uzdevumu",
+        "subtask3": "Sakārtojiet darba vietu",
+        "subtask4": "Nomazgājiet rokas",
+        "subtask5": "Parādiet rezultātu"
+      }
     },
     "taskStatus": {
       "approve": "Apstiprināt",

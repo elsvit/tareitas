@@ -272,7 +272,38 @@
       "washYourOwnPlate": "Spălați-vă propria farfurie",
       "washYourOwnPlateDescription": "Spălați-vă propria farfurie",
       "waterPlants": "Udați plantele de interior",
-      "waterPlantsDescription": "Udați plantele de interior"
+      "waterPlantsDescription": "Udați plantele de interior",
+      "morningRoutine": {
+        "title": "Rutina de dimineață",
+        "description": "Rutina de dimineață",
+        "subtask1": "Trezeşte-te",
+        "subtask2": "Periați dinții",
+        "subtask3": "Spălați-vă",
+        "subtask4": "Faceți patul",
+        "subtask5": "Îmbracă-te"
+      },
+      "eveningRoutine": {
+        "title": "Rutina de seară",
+        "description": "Rutina de seară",
+        "subtask1": "Periați dinții",
+        "subtask2": "Spălați-vă"
+      },
+      "afterSchool": {
+        "title": "După școală",
+        "description": "După școală",
+        "subtask1": "Fa temele",
+        "subtask2": "Verificați programul",
+        "subtask3": "Împachetează rucsacul"
+      },
+      "creativeWork": {
+        "title": "Munca creativă",
+        "description": "Munca creativă",
+        "subtask1": "Pregătiți materialele",
+        "subtask2": "Finalizați sarcina creativă",
+        "subtask3": "Faceți ordine în spațiul de lucru",
+        "subtask4": "Spălați-vă mâinile",
+        "subtask5": "Arată rezultatul"
+      }
     },
     "taskStatus": {
       "approve": "Aproba",

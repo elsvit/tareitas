@@ -272,7 +272,38 @@
       "washYourOwnPlate": "Pese oma lautasesi",
       "washYourOwnPlateDescription": "Pese oma lautasesi",
       "waterPlants": "Kastele sisäkasvit",
-      "waterPlantsDescription": "Kastele sisäkasvit"
+      "waterPlantsDescription": "Kastele sisäkasvit",
+      "morningRoutine": {
+        "title": "Aamun rutiini",
+        "description": "Aamun rutiini",
+        "subtask1": "Herää",
+        "subtask2": "Harjaa hampaat",
+        "subtask3": "Peseytyä",
+        "subtask4": "Peitä sänky",
+        "subtask5": "Pukeutua"
+      },
+      "eveningRoutine": {
+        "title": "Iltarutiinia",
+        "description": "Iltarutiinia",
+        "subtask1": "Harjaa hampaat",
+        "subtask2": "Peseytyä"
+      },
+      "afterSchool": {
+        "title": "Koulun jälkeen",
+        "description": "Koulun jälkeen",
+        "subtask1": "Tee läksyt",
+        "subtask2": "Tarkista aikataulu",
+        "subtask3": "Pakkaa reppu"
+      },
+      "creativeWork": {
+        "title": "Luovaa työtä",
+        "description": "Luovaa työtä",
+        "subtask1": "Valmistele materiaalit",
+        "subtask2": "Suorita luova tehtävä",
+        "subtask3": "Siivoa työtila",
+        "subtask4": "Pese kädet",
+        "subtask5": "Näytä tulos"
+      }
     },
     "taskStatus": {
       "approve": "Hyväksyä",

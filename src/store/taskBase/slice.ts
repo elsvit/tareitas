@@ -90,6 +90,12 @@ export const taskBaseSlice = createSlice({
         if (defaultTask.time !== undefined) {
           existing.time = defaultTask.time;
         }
+
+        if (defaultTask.subtasks !== undefined) {
+          existing.subtasks = defaultTask.subtasks.map(subtask => ({ ...subtask }));
+        } else {
+          delete existing.subtasks;
+        }
       });
     },
   },

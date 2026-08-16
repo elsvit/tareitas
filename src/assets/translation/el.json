@@ -272,7 +272,38 @@
       "washYourOwnPlate": "Πλύνετε το δικό σας πιάτο",
       "washYourOwnPlateDescription": "Πλύνετε το δικό σας πιάτο",
       "waterPlants": "Ποτίστε τα φυτά εσωτερικού χώρου",
-      "waterPlantsDescription": "Ποτίστε τα φυτά εσωτερικού χώρου"
+      "waterPlantsDescription": "Ποτίστε τα φυτά εσωτερικού χώρου",
+      "morningRoutine": {
+        "title": "Πρωινή ρουτίνα",
+        "description": "Πρωινή ρουτίνα",
+        "subtask1": "Ξύπνα",
+        "subtask2": "Βουρτσίστε τα δόντια",
+        "subtask3": "Πλένω",
+        "subtask4": "Φτιάχνω το χωράφι",
+        "subtask5": "Ντύσου"
+      },
+      "eveningRoutine": {
+        "title": "Βραδινή ρουτίνα",
+        "description": "Βραδινή ρουτίνα",
+        "subtask1": "Βουρτσίστε τα δόντια",
+        "subtask2": "Πλένω"
+      },
+      "afterSchool": {
+        "title": "Μετά το σχολείο",
+        "description": "Μετά το σχολείο",
+        "subtask1": "Κάντε την εργασία για το σπίτι",
+        "subtask2": "Ελέγξτε το πρόγραμμα",
+        "subtask3": "Συσκευάστε το σακίδιο"
+      },
+      "creativeWork": {
+        "title": "Δημιουργική εργασία",
+        "description": "Δημιουργική εργασία",
+        "subtask1": "Προετοιμάστε υλικά",
+        "subtask2": "Ολοκληρώστε τη δημιουργική εργασία",
+        "subtask3": "Τακτοποιήστε το χώρο εργασίας",
+        "subtask4": "Πλύνετε τα χέρια",
+        "subtask5": "Δείξτε το αποτέλεσμα"
+      }
     },
     "taskStatus": {
       "approve": "Εγκρίνω",

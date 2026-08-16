@@ -272,7 +272,38 @@
       "washYourOwnPlate": "Umyjte si vlastní talíř",
       "washYourOwnPlateDescription": "Umyjte si vlastní talíř",
       "waterPlants": "Zalévejte pokojové rostliny",
-      "waterPlantsDescription": "Zalévejte pokojové rostliny"
+      "waterPlantsDescription": "Zalévejte pokojové rostliny",
+      "morningRoutine": {
+        "title": "Ranní rutina",
+        "description": "Ranní rutina",
+        "subtask1": "Probuď se",
+        "subtask2": "Čistit zuby",
+        "subtask3": "Umyjte se",
+        "subtask4": "Ustlat",
+        "subtask5": "Oblékněte se"
+      },
+      "eveningRoutine": {
+        "title": "Večerní rutina",
+        "description": "Večerní rutina",
+        "subtask1": "Čistit zuby",
+        "subtask2": "Umyjte se"
+      },
+      "afterSchool": {
+        "title": "Po škole",
+        "description": "Po škole",
+        "subtask1": "Dělejte domácí úkoly",
+        "subtask2": "Zkontrolujte rozvrh",
+        "subtask3": "Zabalte batoh"
+      },
+      "creativeWork": {
+        "title": "Kreativní práce",
+        "description": "Kreativní práce",
+        "subtask1": "Připravte materiály",
+        "subtask2": "Dokončete kreativní úkol",
+        "subtask3": "Ukliďte si pracovní prostor",
+        "subtask4": "Umyjte si ruce",
+        "subtask5": "Ukaž výsledek"
+      }
     },
     "taskStatus": {
       "approve": "Schvalovat",

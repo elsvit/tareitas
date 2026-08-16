@@ -272,7 +272,38 @@
       "washYourOwnPlate": "Umyj swój własny talerz",
       "washYourOwnPlateDescription": "Umyj swój własny talerz",
       "waterPlants": "Podlewaj rośliny domowe",
-      "waterPlantsDescription": "Podlewaj rośliny domowe"
+      "waterPlantsDescription": "Podlewaj rośliny domowe",
+      "morningRoutine": {
+        "title": "Poranna rutyna",
+        "description": "Poranna rutyna",
+        "subtask1": "Budzić się",
+        "subtask2": "Myj zęby",
+        "subtask3": "Zmyć naczynia",
+        "subtask4": "Posłać",
+        "subtask5": "Ubierz się"
+      },
+      "eveningRoutine": {
+        "title": "Wieczorna rutyna",
+        "description": "Wieczorna rutyna",
+        "subtask1": "Myj zęby",
+        "subtask2": "Zmyć naczynia"
+      },
+      "afterSchool": {
+        "title": "Po szkole",
+        "description": "Po szkole",
+        "subtask1": "Odrób pracę domową",
+        "subtask2": "Sprawdź harmonogram",
+        "subtask3": "Spakuj plecak"
+      },
+      "creativeWork": {
+        "title": "Twórcza praca",
+        "description": "Twórcza praca",
+        "subtask1": "Przygotuj materiały",
+        "subtask2": "Wykonaj zadanie twórcze",
+        "subtask3": "Uporządkuj miejsce pracy",
+        "subtask4": "Umyj ręce",
+        "subtask5": "Pokaż wynik"
+      }
     },
     "taskStatus": {
       "approve": "Zatwierdzić",

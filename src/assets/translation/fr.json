@@ -272,7 +272,38 @@
       "washYourOwnPlate": "Lavez votre propre assiette",
       "washYourOwnPlateDescription": "Lavez votre propre assiette",
       "waterPlants": "Arrosez les plantes d'intérieur",
-      "waterPlantsDescription": "Arrosez les plantes d'intérieur"
+      "waterPlantsDescription": "Arrosez les plantes d'intérieur",
+      "morningRoutine": {
+        "title": "Routine matinale",
+        "description": "Routine matinale",
+        "subtask1": "Réveillez-vous",
+        "subtask2": "Se brosser les dents",
+        "subtask3": "Se laver",
+        "subtask4": "Faire le lit",
+        "subtask5": "S'habiller"
+      },
+      "eveningRoutine": {
+        "title": "Routine du soir",
+        "description": "Routine du soir",
+        "subtask1": "Se brosser les dents",
+        "subtask2": "Se laver"
+      },
+      "afterSchool": {
+        "title": "Après l'école",
+        "description": "Après l'école",
+        "subtask1": "Faire ses devoirs",
+        "subtask2": "Consultez l'horaire",
+        "subtask3": "Préparez le sac à dos"
+      },
+      "creativeWork": {
+        "title": "Travail créatif",
+        "description": "Travail créatif",
+        "subtask1": "Préparer le matériel",
+        "subtask2": "Terminez la tâche créative",
+        "subtask3": "Ranger l'espace de travail",
+        "subtask4": "Se laver les mains",
+        "subtask5": "Afficher le résultat"
+      }
     },
     "taskStatus": {
       "approve": "Approuver",

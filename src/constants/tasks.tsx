@@ -38,11 +38,108 @@ export const getBaseTasks = (): ITaskBase[] => {
     reward: 20,
   },
   {
-    id: 'brush_teeth_evening',
-    name: t('tasks.baseTasks.brushTeethEvening'),
-    description: t('tasks.baseTasks.brushTeethEveningDescription'),
+    id: 'morningRoutine',
+    name: t('tasks.baseTasks.morningRoutine.title'),
+    description: t('tasks.baseTasks.morningRoutine.description'),
+    picture: 'brush_teeth',
+    time: '08:00',
+    color: Colors.green400,
+    reward: 10,
+    subtasks: [
+      {
+        value: 'morningRoutineSubtask1',
+        label: t('tasks.baseTasks.morningRoutine.subtask1'),
+      },
+      {
+        value: 'morningRoutineSubtask2',
+        label: t('tasks.baseTasks.morningRoutine.subtask2'),
+      },
+      {
+        value: 'morningRoutineSubtask3',
+        label: t('tasks.baseTasks.morningRoutine.subtask3'),
+      },
+      {
+        value: 'morningRoutineSubtask4',
+        label: t('tasks.baseTasks.morningRoutine.subtask4'),
+      },
+      {
+        value: 'morningRoutineSubtask5',
+        label: t('tasks.baseTasks.morningRoutine.subtask5'),
+      },
+    ],
+  },
+  {
+    id: 'eveningRoutine',
+    name: t('tasks.baseTasks.eveningRoutine.title'),
+    description: t('tasks.baseTasks.eveningRoutine.description'),
     picture: 'brush_teeth',
     time: '18:00',
+    color: Colors.green400,
+    reward: 7,
+    subtasks: [
+      {
+        value: 'eveningRoutineSubtask1',
+        label: t('tasks.baseTasks.eveningRoutine.subtask1'),
+      },
+      {
+        value: 'eveningRoutineSubtask2',
+        label: t('tasks.baseTasks.eveningRoutine.subtask2'),
+      },
+    ],
+  },
+  {
+    id: 'afterSchool',
+    name: t('tasks.baseTasks.afterSchool.title'),
+    description: t('tasks.baseTasks.afterSchool.description'),
+    picture: 'tasks_done',
+    time: '15:00',
+    color: Colors.blue400,
+    reward: 10,
+    subtasks: [
+      {
+        value: 'afterSchoolSubtask1',
+        label: t('tasks.baseTasks.afterSchool.subtask1'),
+      },
+      {
+        value: 'afterSchoolSubtask2',
+        label: t('tasks.baseTasks.afterSchool.subtask2'),
+      },
+      {
+        value: 'afterSchoolSubtask3',
+        label: t('tasks.baseTasks.afterSchool.subtask3'),
+      },
+    ],
+  },
+  {
+    id: 'creativeWork',
+    name: t('tasks.baseTasks.creativeWork.title'),
+    description: t('tasks.baseTasks.creativeWork.description'),
+    picture: 'tasks_done',
+    time: '15:00',
+    color: Colors.blue400,
+    reward: 10,
+    subtasks: [
+      {
+        value: 'creativeWorkSubtask1',
+        label: t('tasks.baseTasks.creativeWork.subtask1'),
+      },
+      {
+        value: 'creativeWorkSubtask2',
+        label: t('tasks.baseTasks.creativeWork.subtask2'),
+      },
+      {
+        value: 'creativeWorkSubtask3',
+        label: t('tasks.baseTasks.creativeWork.subtask3'),
+      },
+      {
+        value: 'creativeWorkSubtask4',
+        label: t('tasks.baseTasks.creativeWork.subtask4'),
+      },
+      {
+        value: 'creativeWorkSubtask5',
+        label: t('tasks.baseTasks.creativeWork.subtask5'),
+      },
+    ],
   },
   {
     id: 'brush_teeth_morning',
@@ -50,6 +147,13 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.brushTeethMorningDescription'),
     picture: 'brush_teeth',
     time: '08:00',
+  },
+  {
+    id: 'brush_teeth_evening',
+    name: t('tasks.baseTasks.brushTeethEvening'),
+    description: t('tasks.baseTasks.brushTeethEveningDescription'),
+    picture: 'brush_teeth',
+    time: '18:00',
   },
   {
     id: 'clean_desk',
