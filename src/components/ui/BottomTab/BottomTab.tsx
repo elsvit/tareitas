@@ -22,10 +22,13 @@ export type BottomTabProps = {
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // WEBP assets fill the frame more than old PNGs — ~0.20 matches old PNG look at 0.28.
-const ICON_SIZE = SCREEN_WIDTH * 0.17;
+const ICON_SIZE = 60;
+// const ICON_SIZE = SCREEN_WIDTH * 0.17;
 // Keep tap area stable — change this, not ICON_SIZE, to preserve clicks.
-const TAB_HIT_WIDTH = SCREEN_WIDTH * 0.28;
-const TAB_HIT_HEIGHT = 72;
+
+// const TAB_HIT_WIDTH = SCREEN_WIDTH * 0.28;
+const TAB_HIT_WIDTH = SCREEN_WIDTH * 0.24;
+const TAB_HIT_HEIGHT = 80;
 
 const ACTIVE_COLOR = '#FEF30C';
 const INACTIVE_COLOR = '#4FB3FF';
@@ -51,7 +54,7 @@ export const BottomTab: React.FC<BottomTabProps> = ({
           <Image
             source={focused ? ActiveIcon : Icon}
             style={{ width: ICON_SIZE, height: ICON_SIZE }}
-            // resizeMode="contain"
+            resizeMode="contain"
           />
 
           {label ? (
@@ -108,7 +111,7 @@ const styles = StyleSheet.create({
 
   labelOverlay: {
     position: 'absolute',
-    bottom: -14,
+    bottom: -16,
     left: 0,
     width: TAB_HIT_WIDTH,
     alignItems: 'center',
