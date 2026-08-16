@@ -272,7 +272,38 @@
       "washYourOwnPlate": "Vask din egen tallerken",
       "washYourOwnPlateDescription": "Vask din egen tallerken",
       "waterPlants": "Vand de indendørs planter",
-      "waterPlantsDescription": "Vand de indendørs planter"
+      "waterPlantsDescription": "Vand de indendørs planter",
+      "morningRoutine": {
+        "title": "Morgen rutine",
+        "description": "Morgen rutine",
+        "subtask1": "Vågn op",
+        "subtask2": "Børst tænder",
+        "subtask3": "Vask op",
+        "subtask4": "Red sengen",
+        "subtask5": "Tag tøj på"
+      },
+      "eveningRoutine": {
+        "title": "Aften rutine",
+        "description": "Aften rutine",
+        "subtask1": "Børst tænder",
+        "subtask2": "Vask op"
+      },
+      "afterSchool": {
+        "title": "Efter skole",
+        "description": "Efter skole",
+        "subtask1": "Lav lektier",
+        "subtask2": "Tjek tidsplanen",
+        "subtask3": "Pak rygsækken"
+      },
+      "creativeWork": {
+        "title": "Kreativt arbejde",
+        "description": "Kreativt arbejde",
+        "subtask1": "Forbered materialer",
+        "subtask2": "Fuldfør den kreative opgave",
+        "subtask3": "Ryd op i arbejdsområdet",
+        "subtask4": "Vask hænder",
+        "subtask5": "Vis resultatet"
+      }
     },
     "taskStatus": {
       "approve": "Godkende",

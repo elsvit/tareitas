@@ -271,7 +271,38 @@
       "washYourOwnPlate": "Lavar el plato",
       "washYourOwnPlateDescription": "Lavar el plato",
       "waterPlants": "Regar las plantas",
-      "waterPlantsDescription": "Regar las plantas"
+      "waterPlantsDescription": "Regar las plantas",
+      "morningRoutine": {
+        "title": "Rutina matutina",
+        "description": "Rutina matutina",
+        "subtask1": "Levantarse",
+        "subtask2": "Cepillarse los dientes",
+        "subtask3": "Asearse",
+        "subtask4": "Hacer la cama",
+        "subtask5": "Vestirse"
+      },
+      "eveningRoutine": {
+        "title": "Rutina vespertina",
+        "description": "Rutina vespertina",
+        "subtask1": "Cepillarse los dientes",
+        "subtask2": "Vestirse"
+      },
+      "afterSchool": {
+        "title": "Después de la escuela",
+        "description": "Después de la escuela",
+        "subtask1": "Hacer los deberes",
+        "subtask2": "Pasear al perro",
+        "subtask3": "Lavar las manos"
+      },
+      "creativeWork": {
+        "title": "Trabajo creativo",
+        "description": "Trabajo creativo",
+        "subtask1": "Preparar los materiales",
+        "subtask2": "Hacer el trabajo creativo",
+        "subtask3": "Ordenar el lugar de trabajo",
+        "subtask4": "Lavarse las manos",
+        "subtask5": "Mostrar el resultado"
+      }
     },
     "taskStatus": {
       "approve": "Aprobar",

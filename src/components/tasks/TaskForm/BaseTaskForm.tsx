@@ -2,10 +2,12 @@ import React, { FC, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
+import CrossIcon from '~/assets/svg/common/cross.svg';
 import { ScreenHeader } from '~/components/blocks';
 import { DeleteModal } from '~/components/modals';
 import {
@@ -13,9 +15,11 @@ import {
   ButtonColors,
   Card,
   Space,
+  Switch,
   Text,
   TextInput,
 } from '~/components/ui';
+import { IconButton } from '~/components/ui/IconButton';
 import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWithCustom';
 import { SelectColor } from '~/components/ui/SelectColor';
 import {
@@ -24,9 +28,9 @@ import {
 } from '~/constants/tasks';
 import { t } from '~/services';
 import { removeTaskBase } from '~/store/taskBase/slice';
-import { userColors } from '~/styles';
+import { userColors, Colors } from '~/styles';
 import { EFormMode } from '~/types/ECommon';
-import { ITaskBase, TaskBaseFormProps } from '~/types/ITask';
+import { ISubtask, ITaskBase, TaskBaseFormProps } from '~/types/ITask';
 import { capitalizeFirst } from '~/utils/string';
 
 import { ERole } from '~/store/settings/enums';
@@ -42,7 +46,10 @@ type Props = {
   showScreenHeader?: boolean;
 };
 
-type FormValues = TaskBaseFormProps;
+type FormValues = TaskBaseFormProps & {
+  withSubtasks: boolean;
+  subtasks: ISubtask[];
+};
 
 const COLOR_OPTIONS = Object.entries(userColors).map(([key, value]) => ({
   label: capitalizeFirst(key),
@@ -51,30 +58,55 @@ const COLOR_OPTIONS = Object.entries(userColors).map(([key, value]) => ({
 
 const requiredMessage = t('common.required') || 'Required';
 
-const schema = z.object({
-  name: z.string().trim().min(1, requiredMessage),
-  description: z.string().optional(),
-  reward: z.preprocess(
-    value => {
-      if (
-        value === '' ||
-        value === undefined ||
-        value === null ||
-        (typeof value === 'number' && Number.isNaN(value))
-      ) {
-        return undefined;
-      }
+const schema = z
+  .object({
+    name: z.string().trim().min(1, requiredMessage),
+    description: z.string().optional(),
+    reward: z.preprocess(
+      value => {
+        if (
+          value === '' ||
+          value === undefined ||
+          value === null ||
+          (typeof value === 'number' && Number.isNaN(value))
+        ) {
+          return undefined;
+        }
 
-      return value;
-    },
-    z
-      .number()
-      .min(0, t('tasks.reward_positive') || 'Reward must be ≥ 0')
-      .optional(),
-  ),
-  picture: z.string().trim().min(1, requiredMessage),
-  color: z.string().trim().min(1, requiredMessage),
-});
+        return value;
+      },
+      z
+        .number()
+        .min(0, t('tasks.reward_positive') || 'Reward must be ≥ 0')
+        .optional(),
+    ),
+    picture: z.string().trim().min(1, requiredMessage),
+    color: z.string().trim().min(1, requiredMessage),
+    withSubtasks: z.boolean(),
+    subtasks: z.array(
+      z.object({
+        value: z.string(),
+        label: z.string(),
+      }),
+    ),
+  })
+  .superRefine((values, ctx) => {
+    if (!values.withSubtasks) {
+      return;
+    }
+
+    const hasValidSubtask = values.subtasks.some(
+      subtask => subtask.label.trim().length > 0,
+    );
+
+    if (!hasValidSubtask) {
+      ctx.addIssue({
+        code: 'custom',
+        message: t('tasks.subtasks_required') || 'Add at least one subtask',
+        path: ['subtasks'],
+      });
+    }
+  });
 
 export const BaseTaskForm: FC<Props> = ({
   title,
@@ -106,11 +138,23 @@ export const BaseTaskForm: FC<Props> = ({
       reward: task?.reward,
       picture: task?.picture ?? '',
       color: task?.color ?? DEFAULT_BASE_TASK_COLOR,
+      withSubtasks: (task?.subtasks?.length ?? 0) > 0,
+      subtasks:
+        task?.subtasks?.map(subtask => ({
+          value: subtask.value,
+          label: subtask.label,
+        })) ?? [],
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
 
+
+  const withSubtasks = watch('withSubtasks');
+  const { fields: subtaskFields, append, remove } = useFieldArray({
+    control,
+    name: 'subtasks',
+  });
 
   const taskImageOptions = getTaskImageOptions();
   const isEditMode = mode === EFormMode.Edit;
@@ -145,7 +189,21 @@ export const BaseTaskForm: FC<Props> = ({
       return;
     }
 
-    onSave?.(parsed.data);
+    onSave?.({
+      name: parsed.data.name,
+      description: parsed.data.description,
+      reward: parsed.data.reward,
+      picture: parsed.data.picture,
+      color: parsed.data.color,
+      subtasks: parsed.data.withSubtasks
+        ? parsed.data.subtasks
+            .filter(subtask => subtask.label.trim().length > 0)
+            .map(subtask => ({
+              value: subtask.value || uuidv4(),
+              label: subtask.label.trim(),
+            }))
+        : undefined,
+    });
 
     if (router.canGoBack()) {
       router.back();
@@ -258,6 +316,84 @@ export const BaseTaskForm: FC<Props> = ({
                 </>
               )}
             />
+
+            <Space size={16} />
+
+            <View style={styles.switchRow}>
+              <Text style={styles.switchLabel}>{t('tasks.subtasks')}</Text>
+              <Controller
+                control={control}
+                name="withSubtasks"
+                render={({ field: { value, onChange } }) => (
+                  <Switch
+                    value={value}
+                    onValueChange={nextValue => {
+                      onChange(nextValue);
+
+                      if (nextValue && subtaskFields.length === 0) {
+                        append({ value: uuidv4(), label: '' });
+                      }
+                    }}
+                  />
+                )}
+              />
+            </View>
+
+            {withSubtasks && (
+              <>
+                <Space size={4} />
+                <View style={styles.subtasksContainer}>
+                  {subtaskFields.map((field, index) => (
+                    <View key={field.id} style={styles.subtaskFieldRow}>
+                      <Controller
+                        control={control}
+                        name={`subtasks.${index}.label`}
+                        render={({ field: { value, onChange } }) => (
+                          <TextInput
+                            label={`${t('tasks.subtask_label')} ${index + 1}`}
+                            value={value}
+                            onChangeText={onChange}
+                            mode="outlined"
+                            multiline
+                            numberOfLines={2}
+                            style={styles.subtaskInput}
+                          />
+                        )}
+                      />
+                      <View style={styles.subtaskRemoveWrap}>
+                        <IconButton
+                          onPress={() => remove(index)}
+                          disabled={subtaskFields.length === 1}
+                          accessibilityLabel={t('button.delete')}
+                          size={56}
+                          borderRadius={12}
+                          style={styles.subtaskRemoveButton}
+                          Icon={
+                            <CrossIcon
+                              width={22}
+                              height={22}
+                              fill={Colors.grey700}
+                            />
+                          }
+                        />
+                      </View>
+                    </View>
+                  ))}
+                  <Space size={8} />
+                  <Button
+                    mode="contained"
+                    onPress={() => append({ value: uuidv4(), label: '' })}
+                  >
+                    {t('tasks.add_subtask')}
+                  </Button>
+                  {!!errors.subtasks && (
+                    <Text style={styles.errorText}>
+                      {errors.subtasks.message as string}
+                    </Text>
+                  )}
+                </View>
+              </>
+            )}
 
             <Space size={12} />
 

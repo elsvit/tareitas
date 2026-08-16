@@ -272,7 +272,38 @@
       "washYourOwnPlate": "Tvätta din egen tallrik",
       "washYourOwnPlateDescription": "Tvätta din egen tallrik",
       "waterPlants": "Vattna inomhusväxterna",
-      "waterPlantsDescription": "Vattna inomhusväxterna"
+      "waterPlantsDescription": "Vattna inomhusväxterna",
+      "morningRoutine": {
+        "title": "Morgonrutin",
+        "description": "Morgonrutin",
+        "subtask1": "Vakna",
+        "subtask2": "Borsta tänderna",
+        "subtask3": "Diska",
+        "subtask4": "Bädda sängen",
+        "subtask5": "Klä på sig"
+      },
+      "eveningRoutine": {
+        "title": "Kvällsrutin",
+        "description": "Kvällsrutin",
+        "subtask1": "Borsta tänderna",
+        "subtask2": "Diska"
+      },
+      "afterSchool": {
+        "title": "Efter skolan",
+        "description": "Efter skolan",
+        "subtask1": "Gör läxor",
+        "subtask2": "Kontrollera schemat",
+        "subtask3": "Packa ryggsäcken"
+      },
+      "creativeWork": {
+        "title": "Kreativt arbete",
+        "description": "Kreativt arbete",
+        "subtask1": "Förbered material",
+        "subtask2": "Slutför den kreativa uppgiften",
+        "subtask3": "Städa i arbetsytan",
+        "subtask4": "Tvätta händerna",
+        "subtask5": "Visa resultatet"
+      }
     },
     "taskStatus": {
       "approve": "Godkänna",

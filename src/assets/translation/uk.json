@@ -271,7 +271,38 @@
       "washYourOwnPlate": "Помити власну тарелку",
       "washYourOwnPlateDescription": "Помити власну тарелку",
       "waterPlants": "Поповнити воду для рослин",
-      "waterPlantsDescription": "Поповнити воду для рослин"
+      "waterPlantsDescription": "Поповнити воду для рослин",
+      "morningRoutine": {
+        "title": "Ранкова рутина",
+        "description": "Ранкова рутина",
+        "subtask1": "Прокинутися",
+        "subtask2": "Покопочистити зуби",
+        "subtask3": "Вмитися",
+        "subtask4": "Заправити ліжко ",
+        "subtask5": "Одягнутися"
+      },
+      "eveningRoutine": {
+        "title": "Вечірня рутина",
+        "description": "Вечірня рутина",
+        "subtask1": "Покопочистити зуби",
+        "subtask2": "Вмитися"
+      },
+      "afterSchool": {
+        "title": "Після школи",
+        "description": "Після школи",
+        "subtask1": "Зробити домашнє завдання",
+        "subtask2": "Перевірити розклад",
+        "subtask3": "Підготувати рюкзак"
+      },
+      "creativeWork": {
+        "title": "Творча робота",
+        "description": "Творча робота",
+        "subtask1": "Підготувати матеріали",
+        "subtask2": "Виконати творче завдання",
+        "subtask3": "Прибрати робоче місце",
+        "subtask4": "Помити руки",
+        "subtask5": "Показати результат"
+      }
     },
     "taskStatus": {
       "approve": "Затвердити",

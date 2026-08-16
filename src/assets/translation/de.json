@@ -272,7 +272,38 @@
       "washYourOwnPlate": "Waschen Sie Ihren eigenen Teller",
       "washYourOwnPlateDescription": "Waschen Sie Ihren eigenen Teller",
       "waterPlants": "Bewässern Sie die Zimmerpflanzen",
-      "waterPlantsDescription": "Bewässern Sie die Zimmerpflanzen"
+      "waterPlantsDescription": "Bewässern Sie die Zimmerpflanzen",
+      "morningRoutine": {
+        "title": "Morgenroutine",
+        "description": "Morgenroutine",
+        "subtask1": "Aufwachen",
+        "subtask2": "Zähne putzen",
+        "subtask3": "Abwaschen",
+        "subtask4": "Mach das Bett",
+        "subtask5": "Zieh dich an"
+      },
+      "eveningRoutine": {
+        "title": "Abendroutine",
+        "description": "Abendroutine",
+        "subtask1": "Zähne putzen",
+        "subtask2": "Abwaschen"
+      },
+      "afterSchool": {
+        "title": "Nach der Schule",
+        "description": "Nach der Schule",
+        "subtask1": "Machen Sie Hausaufgaben",
+        "subtask2": "Überprüfen Sie den Zeitplan",
+        "subtask3": "Pack den Rucksack"
+      },
+      "creativeWork": {
+        "title": "Kreative Arbeit",
+        "description": "Kreative Arbeit",
+        "subtask1": "Bereiten Sie Materialien vor",
+        "subtask2": "Schließe die kreative Aufgabe ab",
+        "subtask3": "Räumen Sie den Arbeitsplatz auf",
+        "subtask4": "Hände waschen",
+        "subtask5": "Zeigen Sie das Ergebnis an"
+      }
     },
     "taskStatus": {
       "approve": "Genehmigen",

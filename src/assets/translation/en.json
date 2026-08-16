@@ -271,7 +271,38 @@
       "washYourOwnPlate": "Wash your own plate",
       "washYourOwnPlateDescription": "Wash your own plate",
       "waterPlants": "Water the indoor plants",
-      "waterPlantsDescription": "Water the indoor plants"
+      "waterPlantsDescription": "Water the indoor plants",
+      "morningRoutine": {
+        "title": "Morning routine",
+        "description": "Morning routine",
+        "subtask1": "Wake up",
+        "subtask2": "Brush teeth",
+        "subtask3": "Wash up",
+        "subtask4": "Make the bed",
+        "subtask5": "Get dressed"
+      },
+      "eveningRoutine": {
+        "title": "Evening routine",
+        "description": "Evening routine",
+        "subtask1": "Brush teeth",
+        "subtask2": "Wash up"
+      },
+      "afterSchool": {
+        "title": "After school",
+        "description": "After school",
+        "subtask1": "Do homework",
+        "subtask2": "Check the schedule",
+        "subtask3": "Pack the backpack"
+      },
+      "creativeWork": {
+        "title": "Creative work",
+        "description": "Creative work",
+        "subtask1": "Prepare materials",
+        "subtask2": "Complete the creative task",
+        "subtask3": "Tidy up the workspace",
+        "subtask4": "Wash hands",
+        "subtask5": "Show the result"
+      }
     },
     "taskStatus": {
       "approve": "Approve",

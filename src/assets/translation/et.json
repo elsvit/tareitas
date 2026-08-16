@@ -271,7 +271,38 @@
       "washYourOwnPlate": "Pese oma taldrik ise",
       "washYourOwnPlateDescription": "Pese oma taldrik ise",
       "waterPlants": "Kastke toataimi",
-      "waterPlantsDescription": "Kastke toataimi"
+      "waterPlantsDescription": "Kastke toataimi",
+      "morningRoutine": {
+        "title": "Hommikune rutiin",
+        "description": "Hommikune rutiin",
+        "subtask1": "Ärka üles",
+        "subtask2": "Harja hambaid",
+        "subtask3": "Pese ära",
+        "subtask4": "Tee voodi ära",
+        "subtask5": "Pane riidesse"
+      },
+      "eveningRoutine": {
+        "title": "Õhtune rutiin",
+        "description": "Õhtune rutiin",
+        "subtask1": "Harja hambaid",
+        "subtask2": "Pese ära"
+      },
+      "afterSchool": {
+        "title": "Peale kooli",
+        "description": "Peale kooli",
+        "subtask1": "Tee kodutööd",
+        "subtask2": "Kontrolli ajakava",
+        "subtask3": "Pakkige seljakott"
+      },
+      "creativeWork": {
+        "title": "Loominguline töö",
+        "description": "Loominguline töö",
+        "subtask1": "Valmistage ette materjalid",
+        "subtask2": "Täitke loominguline ülesanne",
+        "subtask3": "Tehke tööruum korda",
+        "subtask4": "Pese käed",
+        "subtask5": "Näita tulemust"
+      }
     },
     "taskStatus": {
       "approve": "Kinnita",

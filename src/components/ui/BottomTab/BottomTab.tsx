@@ -51,7 +51,7 @@ export const BottomTab: React.FC<BottomTabProps> = ({
           <Image
             source={focused ? ActiveIcon : Icon}
             style={{ width: ICON_SIZE, height: ICON_SIZE }}
-            resizeMode="contain"
+            // resizeMode="contain"
           />
 
           {label ? (

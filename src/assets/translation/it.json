@@ -271,7 +271,38 @@
       "washYourOwnPlate": "Lavarsi la propria piattina",
       "washYourOwnPlateDescription": "Lavarsi la propria piattina dopo aver mangiato",
       "waterPlants": "Irrigare le piante interne",
-      "waterPlantsDescription": "Irrigare le piante interne"
+      "waterPlantsDescription": "Irrigare le piante interne",
+      "morningRoutine": {
+        "title": "Routine mattutina",
+        "description": "Routine mattutina",
+        "subtask1": "Svegliati",
+        "subtask2": "Lavarsi i denti",
+        "subtask3": "Lavati",
+        "subtask4": "Rifai il letto",
+        "subtask5": "Vestiti"
+      },
+      "eveningRoutine": {
+        "title": "Routine serale",
+        "description": "Routine serale",
+        "subtask1": "Lavarsi i denti",
+        "subtask2": "Lavati"
+      },
+      "afterSchool": {
+        "title": "Dopo la scuola",
+        "description": "Dopo la scuola",
+        "subtask1": "Fai i compiti",
+        "subtask2": "Controlla il programma",
+        "subtask3": "Prepara lo zaino"
+      },
+      "creativeWork": {
+        "title": "Lavoro creativo",
+        "description": "Lavoro creativo",
+        "subtask1": "Preparare i materiali",
+        "subtask2": "Completa l'attività creativa",
+        "subtask3": "Metti in ordine lo spazio di lavoro",
+        "subtask4": "Lavarsi le mani",
+        "subtask5": "Mostra il risultato"
+      }
     },
     "taskStatus": {
       "approve": "Approvare",
