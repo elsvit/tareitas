@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { SettingsSection, SettingsSections } from '~/components/settings';
-import { LocalizationService, t } from '~/services/localization/localization';
+import { DEFAULT_LANG } from '~/constants/settings';
+import { AvailableLanguages, LocalizationService, t } from '~/services/localization/localization';
 import {
   selectIsAdmin,
   selectIsChildPasswordObligatory,
@@ -22,34 +23,44 @@ import { ELang } from '~/types/ELang';
 
 import themedStyles from './styles';
 
-const LANGUAGES = [
-  { code: ELang.es, name: 'Español' },
-  { code: ELang.en, name: 'English' },
-] as const;
-
 export default function Settings() {
   const dispatch = useDispatch();
   const [styles] = useStyle(themedStyles);
 
-  const currentLang = useSelector(selectLang);
+  const storedLang = useSelector(selectLang);
   const isAdmin = useSelector(selectIsAdmin);
   const isChildPasswordObligatory = useSelector(selectIsChildPasswordObligatory);
 
+  const activeLang = useMemo((): ELang => {
+    if (storedLang && AvailableLanguages.some(language => language.code === storedLang)) {
+      return storedLang;
+    }
+
+    return DEFAULT_LANG;
+  }, [storedLang]);
+
+  const activeLanguageName = useMemo(
+    () =>
+      AvailableLanguages.find(language => language.code === activeLang)?.name ??
+      activeLang,
+    [activeLang],
+  );
+
   const handleLanguageChange = useCallback(
     async (selectedLang: ELang) => {
-      if (selectedLang === currentLang) {
+      if (selectedLang === activeLang) {
         return;
       }
 
       try {
-        await LocalizationService.changeLanguage(selectedLang);
-        dispatch(setLanguage(selectedLang));
+        const resolvedLang = await LocalizationService.changeLanguage(selectedLang);
+        dispatch(setLanguage(resolvedLang));
         dispatch(syncTaskBaseTranslations());
       } catch (error) {
         console.error('Language change failed:', error);
       }
     },
-    [currentLang, dispatch],
+    [activeLang, dispatch],
   );
 
   const handleChildPasswordObligatoryChange = useCallback(
@@ -64,11 +75,13 @@ export default function Settings() {
       {
         id: 'language',
         title: t('settings.language'),
-        items: LANGUAGES.map(language => ({
-          type: 'select',
+        description: activeLanguageName,
+        defaultExpanded: false,
+        items: AvailableLanguages.map(language => ({
+          type: 'select' as const,
           id: language.code,
           title: language.name,
-          selected: currentLang === language.code,
+          selected: activeLang === language.code,
           onPress: () => {
             void handleLanguageChange(language.code);
           },
@@ -77,6 +90,7 @@ export default function Settings() {
       {
         id: 'children',
         title: t('settings.children'),
+        defaultExpanded: false,
         visible: isAdmin,
         items: [
           {
@@ -92,7 +106,8 @@ export default function Settings() {
 
     return allSections.filter(section => section.visible !== false);
   }, [
-    currentLang,
+    activeLang,
+    activeLanguageName,
     handleChildPasswordObligatoryChange,
     handleLanguageChange,
     isAdmin,
