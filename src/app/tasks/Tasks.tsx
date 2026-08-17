@@ -252,7 +252,7 @@ export default function Tasks() {
   );
 
   return (
-    <SafeAreaBgImage>
+    <SafeAreaBgImage includeBottomInset={false}>
       <ScreenHeaderWithLogo containerStyle={{ backgroundColor: 'transparent' }} />
       {!currentUser ? (
         <SelectUserPrompt />
