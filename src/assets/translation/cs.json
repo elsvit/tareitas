@@ -448,6 +448,7 @@
     "flow_step_6": "Odměnu schvaluje rodič",
     "flow_step_7": "Dítě dostane odměnu a rodič označí odměnu za splněnou",
     "write_us": "Napište nám",
-    "write_us_hint": "Klepnutím nám pošlete e-mail"
+    "write_us_hint": "Klepnutím nám pošlete e-mail",
+    "change_user": "Změnit uživatele"
   }
 }

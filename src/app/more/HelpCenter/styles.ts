@@ -58,6 +58,16 @@ export const themedStyles = styleSheetFactory(() => ({
     lineHeight: 22,
     color: SCREEN_TEXT.primary,
   },
+  flowExtra: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: spacing(2),
+    marginTop: spacing(2),
+    paddingTop: spacing(2),
+    borderTopWidth: 1,
+    borderTopColor: Colors.grey200,
+  },
   writeUsContent: {
     paddingHorizontal: spacing(4),
     paddingBottom: spacing(3),

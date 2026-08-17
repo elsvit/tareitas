@@ -448,6 +448,7 @@
     "flow_step_6": "Rodzic zatwierdza nagrodę",
     "flow_step_7": "Dziecko otrzymuje nagrodę, a rodzic oznacza ją jako wykonaną",
     "write_us": "Napisz do nas",
-    "write_us_hint": "Kliknij, aby wysłać nam e-mail"
+    "write_us_hint": "Kliknij, aby wysłać nam e-mail",
+    "change_user": "Zmień użytkownika"
   }
 }

@@ -496,6 +496,7 @@
     "flow_step_6": "Eltern genehmigen die Belohnung",
     "flow_step_7": "Das Kind erhält die Belohnung und der Elternteil markiert die Belohnung als abgeschlossen",
     "write_us": "Schreiben Sie uns",
-    "write_us_hint": "Tippen Sie hier, um uns eine E-Mail zu senden"
+    "write_us_hint": "Tippen Sie hier, um uns eine E-Mail zu senden",
+    "change_user": "Benutzer wechseln"
   }
 }

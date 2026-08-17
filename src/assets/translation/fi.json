@@ -496,6 +496,7 @@
     "flow_step_6": "Vanhempi hyväksyy palkinnon",
     "flow_step_7": "Lapsi saa palkinnon ja vanhempi merkitsee palkinnon suoritetuksi",
     "write_us": "Kirjoita meille",
-    "write_us_hint": "Napauta lähettääksesi meille sähköpostia"
+    "write_us_hint": "Napauta lähettääksesi meille sähköpostia",
+    "change_user": "Vaihda käyttäjää"
   }
 }

@@ -448,6 +448,7 @@
     "flow_step_6": "Odmenu schvaľuje rodič",
     "flow_step_7": "Dieťa dostane odmenu a rodič označí odmenu ako dokončenú",
     "write_us": "Napíšte nám",
-    "write_us_hint": "Klepnutím nám pošlite e-mail"
+    "write_us_hint": "Klepnutím nám pošlite e-mail",
+    "change_user": "Zmeniť používateľa"
   }
 }

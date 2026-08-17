@@ -111,7 +111,8 @@
     "flow_step_6": "Parent approves the reward",
     "flow_step_7": "Child receives the reward and the parent marks the reward as completed",
     "write_us": "Write us",
-    "write_us_hint": "Tap to send us an email"
+    "write_us_hint": "Tap to send us an email",
+    "change_user": "Change user"
   },
   "settings": {
     "title": "Settings",

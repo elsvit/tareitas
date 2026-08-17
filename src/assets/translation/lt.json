@@ -448,6 +448,7 @@
     "flow_step_6": "Tėvai patvirtina atlygį",
     "flow_step_7": "Vaikas gauna atlygį, o vienas iš tėvų pažymi atlygį kaip atliktą",
     "write_us": "Parašykite mums",
-    "write_us_hint": "Bakstelėkite, kad atsiųstumėte mums el. laišką"
+    "write_us_hint": "Bakstelėkite, kad atsiųstumėte mums el. laišką",
+    "change_user": "Keisti vartotoją"
   }
 }
