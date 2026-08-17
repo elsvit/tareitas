@@ -1,4 +1,5 @@
 import active_game from '~/assets/img/tasks/active_game.jpg';
+import alarm_evening from '~/assets/img/tasks/alarm_evening.jpg';
 import alarm_morning from '~/assets/img/tasks/alarm_morning.jpg';
 import bike from '~/assets/img/tasks/bike.jpg';
 import brush_hair from '~/assets/img/tasks/brush_hair.jpg';
@@ -7,6 +8,7 @@ import change_clothes from '~/assets/img/tasks/change_clothes.jpg';
 import clean_cage from '~/assets/img/tasks/clean_cage.jpg';
 import clean_desk from '~/assets/img/tasks/clean_desk.jpg';
 import clean_floor from '~/assets/img/tasks/clean_floor.jpg';
+import clean_house from '~/assets/img/tasks/clean_house.jpg';
 import clean_pet_toilet from '~/assets/img/tasks/clean_pet_toilet.jpg';
 import clean_shoes from '~/assets/img/tasks/clean_shoes.jpg';
 import clothes_tomorrow from '~/assets/img/tasks/clothes_tomorrow.jpg';
@@ -60,15 +62,18 @@ import wash_hands from '~/assets/img/tasks/wash_hands.jpg';
 import water_for_pet from '~/assets/img/tasks/water_for_pet.jpg';
 import water_plants from '~/assets/img/tasks/water_plants.jpg';
 
+
 export const BASE_TASKS_IMAGES = {
   active_game,
   alarm_morning,
+  alarm_evening,
   bike,
   brush_teeth,
   brush_hair,
   change_clothes,
   clean_cage,
   clean_desk,
+  clean_house,
   clean_pet_toilet,
   clothes_tomorrow,
   clean_shoes,
