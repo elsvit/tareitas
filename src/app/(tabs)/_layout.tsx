@@ -2,6 +2,7 @@ import { Tabs } from 'expo-router';
 import { t } from 'i18next';
 import React from 'react';
 import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
 import RoutinesIcon from '~/assets/img/tabs/tab_habits.webp';
@@ -14,29 +15,48 @@ import TasksIcon from '~/assets/img/tabs/tab_tasks.webp';
 import TasksActiveIcon from '~/assets/img/tabs/tab_tasks_active.webp';
 import { HapticTab } from '~/components/haptic-tab';
 import { BottomTab } from '~/components/ui/BottomTab/BottomTab';
+import { IS_ANDROID } from '~/constants/settings';
 import { ThemeColors } from '~/constants/theme';
 import { useColorScheme } from '~/hooks/use-color-scheme';
-import { useTabBarBottomInset } from '~/hooks/useTabBarBottomInset';
 import { selectIsRecurringTabSeparated } from '~/store/settings/selectors';
 import { EMainTabs } from '~/types/ENavigation';
 
 const TAB_BAR_PADDING_TOP = 16;
 const TAB_BAR_MIN_PADDING_BOTTOM = 12;
-const TAB_BAR_CONTENT_HEIGHT = 64;
+const TAB_BAR_CONTENT_HEIGHT = 60;
 const TAB_BAR_COLOR = '#016FE8';
 
-function TabBarBackground() {
+function TabBarBackground({
+  bottomInset,
+}: {
+  bottomInset: number;
+}) {
+  if (!IS_ANDROID) {
+    return (
+      <View
+        pointerEvents="none"
+        style={{ flex: 1, backgroundColor: TAB_BAR_COLOR }}
+      />
+    );
+  }
+
   return (
-    <View
-      pointerEvents="none"
-      style={{ flex: 1, backgroundColor: TAB_BAR_COLOR }}
-    />
+    <View pointerEvents="none" style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: TAB_BAR_COLOR }} />
+      <View
+        style={{
+          height: bottomInset,
+          backgroundColor: TAB_BAR_COLOR,
+        }}
+      />
+    </View>
   );
 }
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const tabBarPaddingBottom = useTabBarBottomInset(TAB_BAR_MIN_PADDING_BOTTOM);
+  const insets = useSafeAreaInsets();
+  const tabBarPaddingBottom = Math.max(insets.bottom, TAB_BAR_MIN_PADDING_BOTTOM);
   const tabBarHeight =
     TAB_BAR_PADDING_TOP + TAB_BAR_CONTENT_HEIGHT + tabBarPaddingBottom;
 
@@ -78,18 +98,20 @@ export default function TabLayout() {
 
         tabBarActiveTintColor: ThemeColors[colorScheme ?? 'light'].tint,
 
-        tabBarInactiveTintColor: '#8e8e93', // #8e8e93
+        tabBarInactiveTintColor: '#8e8e93',
 
         tabBarStyle: {
           height: tabBarHeight,
           paddingTop: TAB_BAR_PADDING_TOP,
           paddingBottom: tabBarPaddingBottom,
           paddingHorizontal: 8,
-          backgroundColor: TAB_BAR_COLOR,
+          backgroundColor: IS_ANDROID ? 'transparent' : TAB_BAR_COLOR,
           borderTopWidth: 0,
         },
 
-        tabBarBackground: () => <TabBarBackground />,
+        tabBarBackground: () => (
+          <TabBarBackground bottomInset={tabBarPaddingBottom} />
+        ),
 
         tabBarItemStyle: {
           flex: 1,
@@ -103,22 +125,22 @@ export default function TabLayout() {
       {MAIN_TABS.map(({ name, Icon, ActiveIcon, title }) => {
         const hideThisTab = !isRoutinesTabSeparated && name === EMainTabs.Habits;
         return (
-        <Tabs.Screen
-          key={name}
-          name={name}
-          options={{
-            title,
-            href: hideThisTab ? null : undefined,
-            tabBarIcon: ({ focused }) => (
-              <BottomTab
-                Icon={Icon}
-                ActiveIcon={ActiveIcon}
-                focused={focused}
-                label={title}
-              />
-            ),
-          }}
-        />
+          <Tabs.Screen
+            key={name}
+            name={name}
+            options={{
+              title,
+              href: hideThisTab ? null : undefined,
+              tabBarIcon: ({ focused }) => (
+                <BottomTab
+                  Icon={Icon}
+                  ActiveIcon={ActiveIcon}
+                  focused={focused}
+                  label={title}
+                />
+              ),
+            }}
+          />
         );
       })}
     </Tabs>

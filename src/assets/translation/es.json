@@ -97,7 +97,21 @@
     "loaded_images_empty": "No hay fotos cargadas",
     "remove_loaded_image": "Eliminar foto",
     "remove_loaded_image_title": "¿Eliminar foto?",
-    "remove_loaded_image_message": "Esta foto se eliminará del teléfono y no se puede deshacer."
+    "remove_loaded_image_message": "Esta foto se eliminará del teléfono y no se puede deshacer.",
+    "help_center": "Centro de ayuda"
+  },
+  "helpCenter": {
+    "title": "Centro de ayuda",
+    "flow": "Fluir",
+    "flow_step_1": "El padre crea una tarea",
+    "flow_step_2": "El niño completa la tarea.",
+    "flow_step_3": "El padre aprueba la tarea completada",
+    "flow_step_4": "El niño recibe estrellas",
+    "flow_step_5": "El niño selecciona una recompensa",
+    "flow_step_6": "El padre aprueba la recompensa",
+    "flow_step_7": "El niño recibe la recompensa y el padre marca la recompensa como completada.",
+    "write_us": "Escríbenos",
+    "write_us_hint": "Toque para enviarnos un correo electrónico"
   },
   "settings": {
     "title": "Ajustes",

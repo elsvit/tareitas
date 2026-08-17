@@ -27,8 +27,6 @@ import {
   Fredoka_700Bold,
 } from '@expo-google-fonts/fredoka';
 
-import { IS_ANDROID } from '~/constants/settings';
-
 
 
 // export const unstable_settings = {
@@ -37,9 +35,7 @@ import { IS_ANDROID } from '~/constants/settings';
 
 export default function RootLayout() {
   return (
-    <SafeAreaProvider
-      initialMetrics={IS_ANDROID ? undefined : initialWindowMetrics}
-    >
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <Provider store={store}>
         {persistor ? (
           <PersistGate loading={null} persistor={persistor}>

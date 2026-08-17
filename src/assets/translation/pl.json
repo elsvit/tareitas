@@ -97,7 +97,8 @@
     "loaded_images_empty": "Brak załadowanych zdjęć",
     "remove_loaded_image": "Usuń zdjęcie",
     "remove_loaded_image_title": "Usunąć zdjęcie?",
-    "remove_loaded_image_message": "To zdjęcie zostanie usunięte z Twojego telefonu i nie można go cofnąć."
+    "remove_loaded_image_message": "To zdjęcie zostanie usunięte z Twojego telefonu i nie można go cofnąć.",
+    "help_center": "Centrum pomocy"
   },
   "settings": {
     "title": "Ustawienia",
@@ -435,5 +436,18 @@
       "subtitle": "Dodaj swoje pierwsze dziecko. Możesz później dodać więcej dzieci w Ustawieniach.",
       "step_indicator": "Krok 2 z 2"
     }
+  },
+  "helpCenter": {
+    "title": "Centrum pomocy",
+    "flow": "Przepływ",
+    "flow_step_1": "Rodzic tworzy zadanie",
+    "flow_step_2": "Dziecko wykonuje zadanie",
+    "flow_step_3": "Rodzic zatwierdza wykonane zadanie",
+    "flow_step_4": "Dziecko otrzymuje gwiazdki",
+    "flow_step_5": "Dziecko wybiera nagrodę",
+    "flow_step_6": "Rodzic zatwierdza nagrodę",
+    "flow_step_7": "Dziecko otrzymuje nagrodę, a rodzic oznacza ją jako wykonaną",
+    "write_us": "Napisz do nas",
+    "write_us_hint": "Kliknij, aby wysłać nam e-mail"
   }
 }

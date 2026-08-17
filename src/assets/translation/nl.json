@@ -97,7 +97,8 @@
     "loaded_images_empty": "Geen geladen foto's",
     "remove_loaded_image": "Foto verwijderen",
     "remove_loaded_image_title": "Foto verwijderen?",
-    "remove_loaded_image_message": "Deze foto wordt van uw telefoon verwijderd en kan niet ongedaan worden gemaakt."
+    "remove_loaded_image_message": "Deze foto wordt van uw telefoon verwijderd en kan niet ongedaan worden gemaakt.",
+    "help_center": "Helpcentrum"
   },
   "settings": {
     "title": "Instellingen",
@@ -435,5 +436,18 @@
       "subtitle": "Voeg uw eerste kind toe. Je kunt later meer kinderen toevoegen via Instellingen.",
       "step_indicator": "Stap 2 van 2"
     }
+  },
+  "helpCenter": {
+    "title": "Helpcentrum",
+    "flow": "Stroom",
+    "flow_step_1": "Ouder maakt een taak aan",
+    "flow_step_2": "Het kind voltooit de taak",
+    "flow_step_3": "De ouder keurt de voltooide taak goed",
+    "flow_step_4": "Kind krijgt sterren",
+    "flow_step_5": "Kind selecteert een beloning",
+    "flow_step_6": "Ouder keurt de beloning goed",
+    "flow_step_7": "Het kind ontvangt de beloning en de ouder markeert de beloning als voltooid",
+    "write_us": "Schrijf ons",
+    "write_us_hint": "Tik om ons een e-mail te sturen"
   }
 }

@@ -97,7 +97,8 @@
     "loaded_images_empty": "Laaditud fotosid pole",
     "remove_loaded_image": "Eemalda foto",
     "remove_loaded_image_title": "Kas eemaldada foto?",
-    "remove_loaded_image_message": "See foto kustutatakse teie telefonist ja seda ei saa tagasi võtta."
+    "remove_loaded_image_message": "See foto kustutatakse teie telefonist ja seda ei saa tagasi võtta.",
+    "help_center": "Abikeskus"
   },
   "settings": {
     "title": "Seaded",
@@ -482,5 +483,18 @@
     "subtitle": "Täitke oma profiil",
     "welcome_to_tareitas": "Tere tulemast Taritasesse",
     "welcome_steps": "Seadistame teie profiili mõne kiire sammuga."
+  },
+  "helpCenter": {
+    "title": "Abikeskus",
+    "flow": "Voolu",
+    "flow_step_1": "Lapsevanem koostab ülesande",
+    "flow_step_2": "Laps täidab ülesande",
+    "flow_step_3": "Lapsevanem kiidab tehtud ülesande heaks",
+    "flow_step_4": "Laps saab tähed",
+    "flow_step_5": "Laps valib preemia",
+    "flow_step_6": "Lapsevanem kiidab preemia heaks",
+    "flow_step_7": "Laps saab preemia ja vanem märgib preemia sooritatuks",
+    "write_us": "Kirjuta meile",
+    "write_us_hint": "Puudutage meile e-kirja saatmiseks"
   }
 }

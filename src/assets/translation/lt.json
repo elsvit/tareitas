@@ -97,7 +97,8 @@
     "loaded_images_empty": "Nėra įkeltų nuotraukų",
     "remove_loaded_image": "Pašalinti nuotrauką",
     "remove_loaded_image_title": "Pašalinti nuotrauką?",
-    "remove_loaded_image_message": "Ši nuotrauka bus ištrinta iš telefono ir jos anuliuoti negalima."
+    "remove_loaded_image_message": "Ši nuotrauka bus ištrinta iš telefono ir jos anuliuoti negalima.",
+    "help_center": "Pagalbos centras"
   },
   "settings": {
     "title": "Nustatymai",
@@ -435,5 +436,18 @@
       "subtitle": "Pridėkite savo pirmąjį vaiką. Vėliau nustatymuose galėsite pridėti daugiau vaikų.",
       "step_indicator": "2 veiksmas iš 2"
     }
+  },
+  "helpCenter": {
+    "title": "Pagalbos centras",
+    "flow": "Srautas",
+    "flow_step_1": "Tėvai sukuria užduotį",
+    "flow_step_2": "Vaikas atlieka užduotį",
+    "flow_step_3": "Tėvai patvirtina atliktą užduotį",
+    "flow_step_4": "Vaikas gauna žvaigždutes",
+    "flow_step_5": "Vaikas pasirenka atlygį",
+    "flow_step_6": "Tėvai patvirtina atlygį",
+    "flow_step_7": "Vaikas gauna atlygį, o vienas iš tėvų pažymi atlygį kaip atliktą",
+    "write_us": "Parašykite mums",
+    "write_us_hint": "Bakstelėkite, kad atsiųstumėte mums el. laišką"
   }
 }

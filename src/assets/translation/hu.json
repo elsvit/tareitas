@@ -97,7 +97,8 @@
     "loaded_images_empty": "Nincsenek feltöltött képek",
     "remove_loaded_image": "Fotó eltávolítása",
     "remove_loaded_image_title": "Eltávolítja a fotót?",
-    "remove_loaded_image_message": "Ez a fotó törlődik a telefonjáról, és nem vonható vissza."
+    "remove_loaded_image_message": "Ez a fotó törlődik a telefonjáról, és nem vonható vissza.",
+    "help_center": "Súgó"
   },
   "settings": {
     "title": "Beállítások elemre",
@@ -435,5 +436,18 @@
       "subtitle": "Adja hozzá első gyermekét. Később további gyerekeket is hozzáadhat a Beállításokban.",
       "step_indicator": "2/2. lépés"
     }
+  },
+  "helpCenter": {
+    "title": "Súgó",
+    "flow": "Folyik",
+    "flow_step_1": "A szülő létrehoz egy feladatot",
+    "flow_step_2": "A gyermek teljesíti a feladatot",
+    "flow_step_3": "A szülő jóváhagyja az elvégzett feladatot",
+    "flow_step_4": "A gyermek csillagokat kap",
+    "flow_step_5": "A gyermek kiválaszt egy jutalmat",
+    "flow_step_6": "A szülő jóváhagyja a jutalmat",
+    "flow_step_7": "A gyermek megkapja a jutalmat, a szülő pedig teljesítettként jelöli meg a jutalmat",
+    "write_us": "Írj nekünk",
+    "write_us_hint": "Érintse meg, ha e-mailt szeretne küldeni nekünk"
   }
 }

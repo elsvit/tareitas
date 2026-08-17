@@ -97,7 +97,8 @@
     "loaded_images_empty": "Nicio fotografie încărcată",
     "remove_loaded_image": "Eliminați fotografia",
     "remove_loaded_image_title": "Eliminați fotografia?",
-    "remove_loaded_image_message": "Această fotografie va fi ștearsă de pe telefon și nu poate fi anulată."
+    "remove_loaded_image_message": "Această fotografie va fi ștearsă de pe telefon și nu poate fi anulată.",
+    "help_center": "Centrul de ajutor"
   },
   "settings": {
     "title": "Setări",
@@ -435,5 +436,18 @@
       "subtitle": "Adaugă primul tău copil. Puteți adăuga mai mulți copii ulterior din Setări.",
       "step_indicator": "Pasul 2 din 2"
     }
+  },
+  "helpCenter": {
+    "title": "Centrul de ajutor",
+    "flow": "Flux",
+    "flow_step_1": "Părintele creează o sarcină",
+    "flow_step_2": "Copilul finalizează sarcina",
+    "flow_step_3": "Părintele aprobă sarcina finalizată",
+    "flow_step_4": "Copilul primește stele",
+    "flow_step_5": "Copilul selectează o recompensă",
+    "flow_step_6": "Părintele aprobă recompensa",
+    "flow_step_7": "Copilul primește recompensa, iar părintele marchează recompensa ca fiind finalizată",
+    "write_us": "Scrie-ne",
+    "write_us_hint": "Atingeți pentru a ne trimite un e-mail"
   }
 }

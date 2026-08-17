@@ -118,6 +118,11 @@ export default function RootStack() {
           />
 
           <Stack.Screen
+            name="more/HelpCenter/HelpCenter"
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
             name="users/ParentAdd"
             options={{ headerShown: false }}
           />

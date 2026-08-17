@@ -97,7 +97,8 @@
     "loaded_images_empty": "Ei ladattuja kuvia",
     "remove_loaded_image": "Poista valokuva",
     "remove_loaded_image_title": "Poistetaanko valokuva?",
-    "remove_loaded_image_message": "Tämä kuva poistetaan puhelimestasi, eikä sitä voi kumota."
+    "remove_loaded_image_message": "Tämä kuva poistetaan puhelimestasi, eikä sitä voi kumota.",
+    "help_center": "Ohjekeskus"
   },
   "settings": {
     "title": "Asetukset",
@@ -483,5 +484,18 @@
     "subtitle": "Täytä profiilisi",
     "welcome_to_tareitas": "Tervetuloa Taritaan",
     "welcome_steps": "Perustetaan profiilisi muutamassa nopeassa vaiheessa."
+  },
+  "helpCenter": {
+    "title": "Ohjekeskus",
+    "flow": "Virtaus",
+    "flow_step_1": "Vanhempi luo tehtävän",
+    "flow_step_2": "Lapsi suorittaa tehtävän",
+    "flow_step_3": "Vanhempi hyväksyy suoritetun tehtävän",
+    "flow_step_4": "Lapsi saa tähdet",
+    "flow_step_5": "Lapsi valitsee palkinnon",
+    "flow_step_6": "Vanhempi hyväksyy palkinnon",
+    "flow_step_7": "Lapsi saa palkinnon ja vanhempi merkitsee palkinnon suoritetuksi",
+    "write_us": "Kirjoita meille",
+    "write_us_hint": "Napauta lähettääksesi meille sähköpostia"
   }
 }
