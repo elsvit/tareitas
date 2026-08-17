@@ -38,7 +38,7 @@ export const translations: Record<ELang, TranslationJson> = {
   es: esJson,
   bg: withFallback(bgJson),
   cs: withFallback(csJson),
-  da: withFallback(daJson),
+  da: withFallback(daJson), 
   de: withFallback(deJson),
   el: withFallback(elJson),
   et: withFallback(etJson),

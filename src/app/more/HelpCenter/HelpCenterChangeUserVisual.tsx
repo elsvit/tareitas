@@ -8,7 +8,7 @@ import Woman1 from '~/assets/img/users/woman1_320.jpg';
 import ChevronRightIcon from '~/assets/svg/common/chevron-right.svg';
 import { Text } from '~/components/ui';
 import { t } from '~/services';
-import { Colors, spacing } from '~/styles';
+import { Colors } from '~/styles';
 
 const AVATAR_SIZE = 32;
 
@@ -52,9 +52,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    // gap: 6,
+    gap: 6,
     maxWidth: '100%',
-    marginBottom: spacing(4),
   },
   userChip: {
     flexDirection: 'row',
