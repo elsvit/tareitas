@@ -103,7 +103,7 @@ export default function Rewards() {
   );
 
   return (
-    <SafeAreaBgImage>
+    <SafeAreaBgImage includeBottomInset={false}>
       <ScreenHeaderWithLogo containerStyle={{ backgroundColor: 'transparent' }} />
       {!currentUser ? (
         <SelectUserPrompt />

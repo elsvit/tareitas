@@ -18,6 +18,7 @@ import { BottomTab } from '~/components/ui/BottomTab/BottomTab';
 import { IS_ANDROID } from '~/constants/settings';
 import { ThemeColors } from '~/constants/theme';
 import { useColorScheme } from '~/hooks/use-color-scheme';
+import { useTabBarBottomInset } from '~/hooks/useTabBarBottomInset';
 import { selectIsRecurringTabSeparated } from '~/store/settings/selectors';
 import { EMainTabs } from '~/types/ENavigation';
 
@@ -56,7 +57,12 @@ function TabBarBackground({
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const insets = useSafeAreaInsets();
-  const tabBarPaddingBottom = Math.max(insets.bottom, TAB_BAR_MIN_PADDING_BOTTOM);
+  const androidTabBarPaddingBottom = useTabBarBottomInset(
+    TAB_BAR_MIN_PADDING_BOTTOM,
+  );
+  const tabBarPaddingBottom = IS_ANDROID
+    ? androidTabBarPaddingBottom
+    : Math.max(insets.bottom, TAB_BAR_MIN_PADDING_BOTTOM);
   const tabBarHeight =
     TAB_BAR_PADDING_TOP + TAB_BAR_CONTENT_HEIGHT + tabBarPaddingBottom;
 

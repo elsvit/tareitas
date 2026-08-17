@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
-  Dimensions,
   Image,
   type ImageSourcePropType,
   StyleSheet,
+  useWindowDimensions,
   View,
 } from 'react-native';
 
@@ -19,16 +19,30 @@ export type BottomTabProps = {
   badgeTextColor?: string;
 };
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
-// WEBP assets fill the frame more than old PNGs — ~0.20 matches old PNG look at 0.28.
-const ICON_SIZE = SCREEN_WIDTH * 0.17;
-// Keep tap area stable — change this, not ICON_SIZE, to preserve clicks.
-const TAB_HIT_WIDTH = SCREEN_WIDTH * 0.28;
-const TAB_HIT_HEIGHT = 72;
+const TABLET_MIN_WIDTH = 600;
 
 const ACTIVE_COLOR = '#FEF30C';
 const INACTIVE_COLOR = '#4FB3FF';
+
+const getTabMetrics = (screenWidth: number) => {
+  if (screenWidth >= TABLET_MIN_WIDTH) {
+    return {
+      iconSize: 76,
+      hitWidth: 116,
+      hitHeight: 84,
+      labelBottom: -14,
+      labelFontSize: 15,
+    };
+  }
+
+  return {
+    iconSize: screenWidth * 0.17,
+    hitWidth: screenWidth * 0.28,
+    hitHeight: 72,
+    labelBottom: -14,
+    labelFontSize: 16,
+  };
+};
 
 export const BottomTab: React.FC<BottomTabProps> = ({
   Icon,
@@ -39,29 +53,47 @@ export const BottomTab: React.FC<BottomTabProps> = ({
   badgeBackgroundColor = '#FF3B30',
   badgeTextColor = '#fff',
 }) => {
+  const { width: screenWidth } = useWindowDimensions();
+  const metrics = useMemo(() => getTabMetrics(screenWidth), [screenWidth]);
+
   return (
     <View style={styles.container}>
       <View
         style={[
           styles.hitArea,
-          { width: TAB_HIT_WIDTH, height: TAB_HIT_HEIGHT },
+          {
+            width: metrics.hitWidth,
+            height: metrics.hitHeight,
+          },
         ]}
       >
-        <View style={styles.iconWrapper}>
+        <View style={[styles.iconWrapper, { width: metrics.hitWidth }]}>
           <Image
             source={focused ? ActiveIcon : Icon}
-            style={{ width: ICON_SIZE, height: ICON_SIZE }}
+            style={{ width: metrics.iconSize, height: metrics.iconSize }}
             resizeMode="contain"
           />
 
           {label ? (
-            <View style={styles.labelOverlay}>
+            <View
+              style={[
+                styles.labelOverlay,
+                {
+                  bottom: metrics.labelBottom,
+                  width: metrics.hitWidth,
+                },
+              ]}
+            >
               <Text
                 fontFamily="fredoka"
                 weight="bold"
                 style={[
                   styles.labelText,
-                  { color: focused ? ACTIVE_COLOR : INACTIVE_COLOR },
+                  {
+                    color: focused ? ACTIVE_COLOR : INACTIVE_COLOR,
+                    fontSize: metrics.labelFontSize,
+                    lineHeight: metrics.labelFontSize + 2,
+                  },
                 ]}
                 numberOfLines={1}
               >
@@ -101,22 +133,17 @@ const styles = StyleSheet.create({
 
   iconWrapper: {
     position: 'relative',
-    width: TAB_HIT_WIDTH,
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   labelOverlay: {
     position: 'absolute',
-    bottom: -14,
     left: 0,
-    width: TAB_HIT_WIDTH,
     alignItems: 'center',
   },
 
   labelText: {
-    fontSize: 16,
-    lineHeight: 18,
     textAlign: 'center',
   },
 
