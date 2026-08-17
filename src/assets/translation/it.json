@@ -447,6 +447,7 @@
     "flow_step_6": "Il genitore approva la ricompensa",
     "flow_step_7": "Il bambino riceve la ricompensa e il genitore contrassegna la ricompensa come completata",
     "write_us": "Scrivici",
-    "write_us_hint": "Tocca per inviarci un'e-mail"
+    "write_us_hint": "Tocca per inviarci un'e-mail",
+    "change_user": "Cambia utente"
   }
 }

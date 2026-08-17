@@ -496,6 +496,7 @@
     "flow_step_6": "Forælderen godkender belønningen",
     "flow_step_7": "Barnet modtager belønningen, og forælderen markerer belønningen som afsluttet",
     "write_us": "Skriv til os",
-    "write_us_hint": "Tryk for at sende os en e-mail"
+    "write_us_hint": "Tryk for at sende os en e-mail",
+    "change_user": "Skift bruger"
   }
 }

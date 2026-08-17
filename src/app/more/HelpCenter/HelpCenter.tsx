@@ -11,8 +11,9 @@ import { Text } from '~/components/ui';
 import { t } from '~/services';
 import { useStyle } from '~/styles';
 
-import themedStyles, { HELP_CENTER_LIST_THEME } from './styles';
+import { HelpCenterChangeUserVisual } from './HelpCenterChangeUserVisual';
 import { HelpCenterFlowStepVisual } from './HelpCenterFlowStepVisual';
+import themedStyles, { HELP_CENTER_LIST_THEME } from './styles';
 
 const HELP_EMAIL = 'tarecitas@gmail.com';
 
@@ -94,6 +95,11 @@ export default function HelpCenter() {
                   <HelpCenterFlowStepVisual stepIndex={index} />
                 </View>
               ))}
+
+              <View style={styles.flowExtra}>
+                <Text style={styles.flowStepText}>{t('helpCenter.change_user')}</Text>
+                <HelpCenterChangeUserVisual />
+              </View>
             </View>
           </List.Accordion>
         </List.Section>

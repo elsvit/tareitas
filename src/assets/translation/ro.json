@@ -448,6 +448,7 @@
     "flow_step_6": "Părintele aprobă recompensa",
     "flow_step_7": "Copilul primește recompensa, iar părintele marchează recompensa ca fiind finalizată",
     "write_us": "Scrie-ne",
-    "write_us_hint": "Atingeți pentru a ne trimite un e-mail"
+    "write_us_hint": "Atingeți pentru a ne trimite un e-mail",
+    "change_user": "Schimbă utilizatorul"
   }
 }

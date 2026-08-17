@@ -111,7 +111,8 @@
     "flow_step_6": "El padre aprueba la recompensa",
     "flow_step_7": "El niño recibe la recompensa y el padre marca la recompensa como completada.",
     "write_us": "Escríbenos",
-    "write_us_hint": "Toque para enviarnos un correo electrónico"
+    "write_us_hint": "Toque para enviarnos un correo electrónico",
+    "change_user": "Cambiar usuario"
   },
   "settings": {
     "title": "Ajustes",

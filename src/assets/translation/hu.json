@@ -448,6 +448,7 @@
     "flow_step_6": "A szülő jóváhagyja a jutalmat",
     "flow_step_7": "A gyermek megkapja a jutalmat, a szülő pedig teljesítettként jelöli meg a jutalmat",
     "write_us": "Írj nekünk",
-    "write_us_hint": "Érintse meg, ha e-mailt szeretne küldeni nekünk"
+    "write_us_hint": "Érintse meg, ha e-mailt szeretne küldeni nekünk",
+    "change_user": "Felhasználó váltása"
   }
 }

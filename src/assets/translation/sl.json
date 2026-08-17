@@ -448,6 +448,7 @@
     "flow_step_6": "Starš odobri nagrado",
     "flow_step_7": "Otrok prejme nagrado, starš pa nagrado označi kot opravljeno",
     "write_us": "Pišite nam",
-    "write_us_hint": "Tapnite, da nam pošljete e-pošto"
+    "write_us_hint": "Tapnite, da nam pošljete e-pošto",
+    "change_user": "Spremeni uporabnika"
   }
 }

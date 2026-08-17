@@ -495,6 +495,7 @@
     "flow_step_6": "Lapsevanem kiidab preemia heaks",
     "flow_step_7": "Laps saab preemia ja vanem märgib preemia sooritatuks",
     "write_us": "Kirjuta meile",
-    "write_us_hint": "Puudutage meile e-kirja saatmiseks"
+    "write_us_hint": "Puudutage meile e-kirja saatmiseks",
+    "change_user": "Vaheta kasutajat"
   }
 }

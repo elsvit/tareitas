@@ -448,6 +448,7 @@
     "flow_step_6": "Föräldern godkänner belöningen",
     "flow_step_7": "Barnet får belöningen och föräldern markerar belöningen som avslutad",
     "write_us": "Skriv till oss",
-    "write_us_hint": "Tryck för att skicka ett e-postmeddelande till oss"
+    "write_us_hint": "Tryck för att skicka ett e-postmeddelande till oss",
+    "change_user": "Byt användare"
   }
 }

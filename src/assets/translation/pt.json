@@ -442,6 +442,7 @@
     "flow_step_6": "Os pais aprovam a recompensa",
     "flow_step_7": "A criança recebe a recompensa e os pais marcam a recompensa como concluída",
     "write_us": "Escreva-nos",
-    "write_us_hint": "Toque para nos enviar um e-mail"
+    "write_us_hint": "Toque para nos enviar um e-mail",
+    "change_user": "Mudar usuário"
   }
 }

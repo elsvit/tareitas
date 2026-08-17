@@ -448,6 +448,7 @@
     "flow_step_6": "Roditelj odobrava nagradu",
     "flow_step_7": "Dijete prima nagradu, a roditelj označava nagradu kao završenu",
     "write_us": "Pišite nam",
-    "write_us_hint": "Dodirnite da biste nam poslali e-poštu"
+    "write_us_hint": "Dodirnite da biste nam poslali e-poštu",
+    "change_user": "Promijeni korisnika"
   }
 }

@@ -496,6 +496,7 @@
     "flow_step_6": "Le parent approuve la récompense",
     "flow_step_7": "L'enfant reçoit la récompense et le parent marque la récompense comme terminée",
     "write_us": "Écrivez-nous",
-    "write_us_hint": "Appuyez pour nous envoyer un e-mail"
+    "write_us_hint": "Appuyez pour nous envoyer un e-mail",
+    "change_user": "Changer d'utilisateur"
   }
 }
