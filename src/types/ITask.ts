@@ -1,6 +1,11 @@
 import { WeekDay } from './ECommon';
 import { ETaskRepeatType, ETaskStatus } from './ETask';
 
+export interface ISubtask {
+  value: string;
+  label: string;
+}
+
 export interface ITaskBase extends Partial<CreatedProps> {
   id: string;
   name: string;
@@ -8,16 +13,14 @@ export interface ITaskBase extends Partial<CreatedProps> {
   reward?: number;
   picture?: string;
   time?: string;
+  color?: string;
+  subtasks?: ISubtask[];
 }
 
 export type TaskBaseFormProps = OmitCreatedKeys<ITaskBase>;
 
 export type TaskAssignmentFormProps = OmitCreatedKeys<ITaskAssignment>;
 
-export interface ISubtask {
-  value: string;
-  label: string;
-}
 export interface ITaskAssignment extends CreatedProps {
   id: string;
   childId: string;
