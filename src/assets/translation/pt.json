@@ -92,7 +92,8 @@
     "loaded_images_empty": "Nenhuma foto carregada",
     "remove_loaded_image": "Remover foto",
     "remove_loaded_image_title": "Remover foto?",
-    "remove_loaded_image_message": "Esta foto será deletada do seu telefone e não poderá ser desfeita."
+    "remove_loaded_image_message": "Esta foto será deletada do seu telefone e não poderá ser desfeita.",
+    "help_center": "Central de Ajuda"
   },
   "settings": {
     "title": "Configurações",
@@ -429,5 +430,18 @@
       "subtitle": "Adicione seu primeiro filho. Você pode adicionar mais filhos posteriormente nas configurações.",
       "step_indicator": "2° passo de 2"
     }
+  },
+  "helpCenter": {
+    "title": "Central de Ajuda",
+    "flow": "Fluxo",
+    "flow_step_1": "Pai cria uma tarefa",
+    "flow_step_2": "A criança completa a tarefa",
+    "flow_step_3": "O pai aprova a tarefa concluída",
+    "flow_step_4": "Criança recebe estrelas",
+    "flow_step_5": "A criança seleciona uma recompensa",
+    "flow_step_6": "Os pais aprovam a recompensa",
+    "flow_step_7": "A criança recebe a recompensa e os pais marcam a recompensa como concluída",
+    "write_us": "Escreva-nos",
+    "write_us_hint": "Toque para nos enviar um e-mail"
   }
 }

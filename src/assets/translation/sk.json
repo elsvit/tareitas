@@ -97,7 +97,8 @@
     "loaded_images_empty": "Žiadne načítané fotografie",
     "remove_loaded_image": "Odstrániť fotografiu",
     "remove_loaded_image_title": "Odstrániť fotku?",
-    "remove_loaded_image_message": "Táto fotografia bude odstránená z vášho telefónu a nebude možné ju vrátiť späť."
+    "remove_loaded_image_message": "Táto fotografia bude odstránená z vášho telefónu a nebude možné ju vrátiť späť.",
+    "help_center": "Centrum pomoci"
   },
   "settings": {
     "title": "Nastavenia",
@@ -435,5 +436,18 @@
       "subtitle": "Pridajte svoje prvé dieťa. Ďalšie deti môžete pridať neskôr v Nastaveniach.",
       "step_indicator": "Krok 2 z 2"
     }
+  },
+  "helpCenter": {
+    "title": "Centrum pomoci",
+    "flow": "Prietok",
+    "flow_step_1": "Rodič vytvorí úlohu",
+    "flow_step_2": "Dieťa dokončí úlohu",
+    "flow_step_3": "Rodič schvaľuje dokončenú úlohu",
+    "flow_step_4": "Dieťa dostáva hviezdy",
+    "flow_step_5": "Dieťa si vyberie odmenu",
+    "flow_step_6": "Odmenu schvaľuje rodič",
+    "flow_step_7": "Dieťa dostane odmenu a rodič označí odmenu ako dokončenú",
+    "write_us": "Napíšte nám",
+    "write_us_hint": "Klepnutím nám pošlite e-mail"
   }
 }

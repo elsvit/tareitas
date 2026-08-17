@@ -97,7 +97,8 @@
     "loaded_images_empty": "Keine geladenen Fotos",
     "remove_loaded_image": "Foto entfernen",
     "remove_loaded_image_title": "Foto entfernen?",
-    "remove_loaded_image_message": "Dieses Foto wird von Ihrem Telefon gelöscht und kann nicht rückgängig gemacht werden."
+    "remove_loaded_image_message": "Dieses Foto wird von Ihrem Telefon gelöscht und kann nicht rückgängig gemacht werden.",
+    "help_center": "Hilfecenter"
   },
   "settings": {
     "title": "Einstellungen",
@@ -483,5 +484,18 @@
     "subtitle": "Vervollständigen Sie Ihr Profil",
     "welcome_to_tareitas": "Willkommen bei Tareitas",
     "welcome_steps": "Lassen Sie uns Ihr Profil in wenigen Schritten einrichten."
+  },
+  "helpCenter": {
+    "title": "Hilfecenter",
+    "flow": "Fließen",
+    "flow_step_1": "Elternteil erstellt eine Aufgabe",
+    "flow_step_2": "Das Kind erledigt die Aufgabe",
+    "flow_step_3": "Der Elternteil genehmigt die abgeschlossene Aufgabe",
+    "flow_step_4": "Kind erhält Sterne",
+    "flow_step_5": "Kind wählt eine Belohnung aus",
+    "flow_step_6": "Eltern genehmigen die Belohnung",
+    "flow_step_7": "Das Kind erhält die Belohnung und der Elternteil markiert die Belohnung als abgeschlossen",
+    "write_us": "Schreiben Sie uns",
+    "write_us_hint": "Tippen Sie hier, um uns eine E-Mail zu senden"
   }
 }

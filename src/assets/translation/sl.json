@@ -97,7 +97,8 @@
     "loaded_images_empty": "Ni naloženih fotografij",
     "remove_loaded_image": "Odstrani fotografijo",
     "remove_loaded_image_title": "Odstraniti fotografijo?",
-    "remove_loaded_image_message": "Ta fotografija bo izbrisana iz vašega telefona in je ni mogoče razveljaviti."
+    "remove_loaded_image_message": "Ta fotografija bo izbrisana iz vašega telefona in je ni mogoče razveljaviti.",
+    "help_center": "Center za pomoč"
   },
   "settings": {
     "title": "nastavitve",
@@ -435,5 +436,18 @@
       "subtitle": "Dodajte svojega prvega otroka. Več otrok lahko dodate pozneje v nastavitvah.",
       "step_indicator": "2. korak od 2"
     }
+  },
+  "helpCenter": {
+    "title": "Center za pomoč",
+    "flow": "Tok",
+    "flow_step_1": "Starš ustvari nalogo",
+    "flow_step_2": "Otrok dokonča nalogo",
+    "flow_step_3": "Starš potrdi opravljeno nalogo",
+    "flow_step_4": "Otrok prejme zvezdice",
+    "flow_step_5": "Otrok izbere nagrado",
+    "flow_step_6": "Starš odobri nagrado",
+    "flow_step_7": "Otrok prejme nagrado, starš pa nagrado označi kot opravljeno",
+    "write_us": "Pišite nam",
+    "write_us_hint": "Tapnite, da nam pošljete e-pošto"
   }
 }

@@ -97,7 +97,8 @@
     "loaded_images_empty": "Nessuna foto caricata",
     "remove_loaded_image": "Rimuovi foto",
     "remove_loaded_image_title": "Rimuovere foto?",
-    "remove_loaded_image_message": "Questa foto verrà eliminata dal tuo telefono e non può essere annullata."
+    "remove_loaded_image_message": "Questa foto verrà eliminata dal tuo telefono e non può essere annullata.",
+    "help_center": "Centro assistenza"
   },
   "settings": {
     "title": "Impostazioni",
@@ -434,5 +435,18 @@
       "subtitle": "Aggiungere il primo figlio. Puoi aggiungere più figli in seguito dalle impostazioni.",
       "step_indicator": "2° step di 2"
     }
+  },
+  "helpCenter": {
+    "title": "Centro assistenza",
+    "flow": "Fluire",
+    "flow_step_1": "Il genitore crea un'attività",
+    "flow_step_2": "Il bambino completa l'attività",
+    "flow_step_3": "Il genitore approva l'attività completata",
+    "flow_step_4": "Il bambino riceve le stelle",
+    "flow_step_5": "Il bambino seleziona una ricompensa",
+    "flow_step_6": "Il genitore approva la ricompensa",
+    "flow_step_7": "Il bambino riceve la ricompensa e il genitore contrassegna la ricompensa come completata",
+    "write_us": "Scrivici",
+    "write_us_hint": "Tocca per inviarci un'e-mail"
   }
 }

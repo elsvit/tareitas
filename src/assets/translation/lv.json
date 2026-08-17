@@ -97,7 +97,8 @@
     "loaded_images_empty": "Nav ielādētu fotoattēlu",
     "remove_loaded_image": "Noņemt fotoattēlu",
     "remove_loaded_image_title": "Vai noņemt fotoattēlu?",
-    "remove_loaded_image_message": "Šis fotoattēls tiks izdzēsts no jūsu tālruņa, un to nevarēs atsaukt."
+    "remove_loaded_image_message": "Šis fotoattēls tiks izdzēsts no jūsu tālruņa, un to nevarēs atsaukt.",
+    "help_center": "Palīdzības centrs"
   },
   "settings": {
     "title": "Iestatījumi",
@@ -435,5 +436,18 @@
       "subtitle": "Pievienojiet savu pirmo bērnu. Vēlāk varat pievienot citus bērnus sadaļā Iestatījumi.",
       "step_indicator": "2. darbība no 2"
     }
+  },
+  "helpCenter": {
+    "title": "Palīdzības centrs",
+    "flow": "Plūsma",
+    "flow_step_1": "Vecāks izveido uzdevumu",
+    "flow_step_2": "Bērns pabeidz uzdevumu",
+    "flow_step_3": "Vecāki apstiprina izpildīto uzdevumu",
+    "flow_step_4": "Bērns saņem zvaigznes",
+    "flow_step_5": "Bērns izvēlas balvu",
+    "flow_step_6": "Vecāki apstiprina atlīdzību",
+    "flow_step_7": "Bērns saņem atlīdzību, un vecāks atzīmē atlīdzību kā pabeigtu",
+    "write_us": "Uzrakstiet mums",
+    "write_us_hint": "Pieskarieties, lai nosūtītu mums e-pastu"
   }
 }

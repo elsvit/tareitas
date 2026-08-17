@@ -8,9 +8,11 @@ import { SvgProps } from 'react-native-svg';
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
 import ImageXIcon from '~/assets/svg/more/image-x.svg';
+import InfoIcon from '~/assets/svg/common/info.svg';
 import SettingsIcon from '~/assets/svg/more/settings.svg';
 import RewardsIcon from '~/assets/svg/rewards/rewards.svg';
 import TasksIcon from '~/assets/svg/tasks/tasks-open.svg';
+import HelpQuestionIcon from '~/assets/svg/more/help-question.svg';
 import UsersIcon from '~/assets/svg/users/users.svg';
 import { ScreenHeaderWithLogo, SelectUserPrompt } from "~/components/blocks";
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
@@ -63,6 +65,11 @@ export default function More() {
       Icon: ImageXIcon,
       navigateTo: EScreens.LoadedPhotos,
     },
+    {
+      title: t('more.help_center'),
+      Icon: InfoIcon,
+      navigateTo: EScreens.HelpCenter,
+    },
   ];
 
   const title = t('more.title');
@@ -82,7 +89,7 @@ export default function More() {
     `${item.title}-${index}`;
 
   return (
-    <SafeAreaBgImage includeBottomInset={false}>
+    <SafeAreaBgImage>
       <ScreenHeaderWithLogo containerStyle={{backgroundColor: 'transparent'}} />
       {!currentUser ? (
         <SelectUserPrompt />

@@ -97,7 +97,8 @@
     "loaded_images_empty": "Aucune photo chargée",
     "remove_loaded_image": "Supprimer la photo",
     "remove_loaded_image_title": "Supprimer la photo ?",
-    "remove_loaded_image_message": "Cette photo sera supprimée de votre téléphone et ne pourra pas être annulée."
+    "remove_loaded_image_message": "Cette photo sera supprimée de votre téléphone et ne pourra pas être annulée.",
+    "help_center": "Centre d'aide"
   },
   "settings": {
     "title": "Paramètres",
@@ -483,5 +484,18 @@
     "subtitle": "Complétez votre profil",
     "welcome_to_tareitas": "Bienvenue chez Tareitas",
     "welcome_steps": "Configureons votre profil en quelques étapes rapides."
+  },
+  "helpCenter": {
+    "title": "Centre d'aide",
+    "flow": "Couler",
+    "flow_step_1": "Le parent crée une tâche",
+    "flow_step_2": "L'enfant termine la tâche",
+    "flow_step_3": "Le parent approuve la tâche terminée",
+    "flow_step_4": "L'enfant reçoit des étoiles",
+    "flow_step_5": "L'enfant sélectionne une récompense",
+    "flow_step_6": "Le parent approuve la récompense",
+    "flow_step_7": "L'enfant reçoit la récompense et le parent marque la récompense comme terminée",
+    "write_us": "Écrivez-nous",
+    "write_us_hint": "Appuyez pour nous envoyer un e-mail"
   }
 }

@@ -97,7 +97,8 @@
     "loaded_images_empty": "Žádné načtené fotografie",
     "remove_loaded_image": "Odebrat fotku",
     "remove_loaded_image_title": "Odebrat fotku?",
-    "remove_loaded_image_message": "Tato fotografie bude smazána z vašeho telefonu a nelze ji vrátit zpět."
+    "remove_loaded_image_message": "Tato fotografie bude smazána z vašeho telefonu a nelze ji vrátit zpět.",
+    "help_center": "Centrum nápovědy"
   },
   "settings": {
     "title": "Nastavení",
@@ -435,5 +436,18 @@
       "subtitle": "Přidejte své první dítě. Další děti můžete přidat později v Nastavení.",
       "step_indicator": "Krok 2 ze 2"
     }
+  },
+  "helpCenter": {
+    "title": "Centrum nápovědy",
+    "flow": "Tok",
+    "flow_step_1": "Rodič vytvoří úkol",
+    "flow_step_2": "Dítě dokončí úkol",
+    "flow_step_3": "Rodič schvaluje dokončený úkol",
+    "flow_step_4": "Dítě dostává hvězdy",
+    "flow_step_5": "Dítě si vybere odměnu",
+    "flow_step_6": "Odměnu schvaluje rodič",
+    "flow_step_7": "Dítě dostane odměnu a rodič označí odměnu za splněnou",
+    "write_us": "Napište nám",
+    "write_us_hint": "Klepnutím nám pošlete e-mail"
   }
 }

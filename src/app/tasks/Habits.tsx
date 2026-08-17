@@ -251,7 +251,7 @@ export default function Habits() {
   );
 
   return (
-    <SafeAreaBgImage includeBottomInset={false}>
+    <SafeAreaBgImage>
       <ScreenHeaderWithLogo containerStyle={{ backgroundColor: 'transparent' }} />
       {!currentUser ? (
         <SelectUserPrompt />

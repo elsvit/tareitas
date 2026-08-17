@@ -97,7 +97,8 @@
     "loaded_images_empty": "Inga inlästa foton",
     "remove_loaded_image": "Ta bort foto",
     "remove_loaded_image_title": "Ta bort fotot?",
-    "remove_loaded_image_message": "Det här fotot kommer att raderas från din telefon och kan inte ångras."
+    "remove_loaded_image_message": "Det här fotot kommer att raderas från din telefon och kan inte ångras.",
+    "help_center": "Hjälpcenter"
   },
   "settings": {
     "title": "Inställningar",
@@ -435,5 +436,18 @@
       "subtitle": "Lägg till ditt första barn. Du kan lägga till fler barn senare från Inställningar.",
       "step_indicator": "Steg 2 av 2"
     }
+  },
+  "helpCenter": {
+    "title": "Hjälpcenter",
+    "flow": "Flöde",
+    "flow_step_1": "Förälder skapar en uppgift",
+    "flow_step_2": "Barnet slutför uppgiften",
+    "flow_step_3": "Föräldern godkänner den slutförda uppgiften",
+    "flow_step_4": "Barn får stjärnor",
+    "flow_step_5": "Barn väljer en belöning",
+    "flow_step_6": "Föräldern godkänner belöningen",
+    "flow_step_7": "Barnet får belöningen och föräldern markerar belöningen som avslutad",
+    "write_us": "Skriv till oss",
+    "write_us_hint": "Tryck för att skicka ett e-postmeddelande till oss"
   }
 }

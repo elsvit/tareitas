@@ -97,7 +97,8 @@
     "loaded_images_empty": "Ingen indlæste billeder",
     "remove_loaded_image": "Fjern foto",
     "remove_loaded_image_title": "Vil du fjerne billedet?",
-    "remove_loaded_image_message": "Dette billede slettes fra din telefon og kan ikke fortrydes."
+    "remove_loaded_image_message": "Dette billede slettes fra din telefon og kan ikke fortrydes.",
+    "help_center": "Hjælpecenter"
   },
   "settings": {
     "title": "Indstillinger",
@@ -483,5 +484,18 @@
     "subtitle": "Udfyld din profil",
     "welcome_to_tareitas": "Velkommen til Tareitas",
     "welcome_steps": "Lad os få din profil opsat med et par hurtige trin."
+  },
+  "helpCenter": {
+    "title": "Hjælpecenter",
+    "flow": "Flyde",
+    "flow_step_1": "Forælder opretter en opgave",
+    "flow_step_2": "Barn fuldfører opgaven",
+    "flow_step_3": "Forælderen godkender den udførte opgave",
+    "flow_step_4": "Barnet modtager stjerner",
+    "flow_step_5": "Barn vælger en belønning",
+    "flow_step_6": "Forælderen godkender belønningen",
+    "flow_step_7": "Barnet modtager belønningen, og forælderen markerer belønningen som afsluttet",
+    "write_us": "Skriv til os",
+    "write_us_hint": "Tryk for at sende os en e-mail"
   }
 }
