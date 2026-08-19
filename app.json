@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.tareitas"
+      "bundleIdentifier": "net.tareitas"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,7 +21,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.tareitas",
+      "package": "net.tareitas",
       "permissions": [
         "android.permission.RECORD_AUDIO"
       ]
