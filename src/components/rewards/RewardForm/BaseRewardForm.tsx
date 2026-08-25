@@ -154,7 +154,7 @@ export const BaseRewardForm: FC<Props> = ({
           )}
 
           <Card.Content>
-            <Space size={8} />
+            <Space size={3} />
 
             <Controller
               control={control}
@@ -178,7 +178,7 @@ export const BaseRewardForm: FC<Props> = ({
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             <Controller
               control={control}
@@ -201,7 +201,7 @@ export const BaseRewardForm: FC<Props> = ({
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             <Controller
               control={control}
@@ -216,7 +216,7 @@ export const BaseRewardForm: FC<Props> = ({
               )}
             />
 
-            <Space size={24} />
+            <Space size={5} />
 
             <Button mode="contained" onPress={handleSubmit(onSubmit)}>
               {t('button.save')}
@@ -224,7 +224,7 @@ export const BaseRewardForm: FC<Props> = ({
 
             {isEditMode && isAdmin && (
               <>
-                <Space size={12} />
+                <Space size={3} />
                 <Button
                   mode="contained"
                   bgColor={ButtonColors.Red}
@@ -235,7 +235,7 @@ export const BaseRewardForm: FC<Props> = ({
               </>
             )}
 
-            <Space size={20} />
+            <Space size={4} />
           </Card.Content>
         </Card>
       </ScrollView>

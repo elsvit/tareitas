@@ -31,6 +31,7 @@ import { Loading } from '~/components/ui/Loading';
 import { SCREEN_TEXT } from '~/constants/formField';
 import { useColorScheme } from '~/hooks/use-color-scheme';
 import { usePruneOrphanedTaskAssignments } from '~/hooks/usePruneOrphanedTaskAssignments';
+import { useCatalogForegroundSync } from '~/hooks/useCatalogForegroundSync';
 import { AppDispatch } from '~/store';
 import { initLanguage } from '~/store/settings';
 import { selectIsLangInitiating, selectLang } from '~/store/settings/selectors';
@@ -43,6 +44,7 @@ export default function RootStack() {
   const dispatch = useDispatch<AppDispatch>();
 
   usePruneOrphanedTaskAssignments();
+  useCatalogForegroundSync();
 
   const lang = useSelector(selectLang) ?? ELang.es;
 
@@ -109,6 +111,11 @@ export default function RootStack() {
 
           <Stack.Screen
             name="more/Settings/Settings"
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="more/Settings/AccountLogin"
             options={{ headerShown: false }}
           />
 

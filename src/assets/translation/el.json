@@ -105,7 +105,16 @@
     "language": "Γλώσσα",
     "system_language": "Γλώσσα συστήματος",
     "children": "Παιδιά",
-    "child_password_obligatory": "Απαιτείται παιδικός κωδικός πρόσβασης"
+    "child_password_obligatory": "Απαιτείται παιδικός κωδικός πρόσβασης",
+    "account": {
+      "title": "Συγχρονισμός cloud",
+      "signed_in": "Συνδεδεμένος",
+      "sign_in": "Σύνδεση",
+      "sign_out": "Αποσύνδεση",
+      "session_expired": "Η συνεδρία σας έληξε. Συνδεθείτε ξανά για συγχρονισμό.",
+      "login_screen_title": "Σύνδεση",
+      "login_screen_subtitle": "Συνδεθείτε για να συγχρονίσετε την οικογένειά σας μεταξύ συσκευών."
+    }
   },
   "users": {
     "title": "Χρήστες",
@@ -131,6 +140,7 @@
     "login": "Σύνδεση",
     "logout": "Αποσύνδεση",
     "name": "Ονομα",
+    "unique_username": "Μοναδικό όνομα χρήστη",
     "no_children": "Δεν υπάρχουν ακόμη παιδιά",
     "no_parents": "Χωρίς γονείς ακόμα",
     "parent": "Μητρική εταιρεία",
@@ -152,7 +162,8 @@
       "reviewer": "Κριτής",
       "sister": "Αδελφή",
       "uncle": "Θείος"
-    }
+    },
+    "change_group": "Αλλαγή ομάδας"
   },
   "tasks": {
     "title": "Καθήκοντα",
@@ -548,7 +559,78 @@
     },
     "child": {
       "subtitle": "Προσθέστε το πρώτο σας παιδί. Μπορείτε να προσθέσετε περισσότερα παιδιά αργότερα από τις Ρυθμίσεις.",
-      "step_indicator": "Βήμα 2 από 2"
+      "step_indicator": "Βήμα 2 από 2",
+      "skip_for_now": "Παράλειψη προς το παρόν"
+    },
+    "sync_mode": {
+      "header": "Πώς θέλετε να χρησιμοποιήσετε το Tareitas;",
+      "title": "Επιλέξτε τη ρύθμιση",
+      "subtitle": "Μπορείτε να χρησιμοποιήσετε το Tareitas μόνο σε αυτή τη συσκευή ή να συγχρονίσετε την οικογένειά σας σε τηλέφωνα και tablets.",
+      "multidevice": {
+        "title": "Πολλές συσκευές",
+        "description": "Συγχρονίστε εργασίες, ανταμοιβές και οικογενειακά δεδομένα μέσω cloud. Απαιτεί λογαριασμό."
+      },
+      "device_only": {
+        "title": "Μόνο αυτή η συσκευή",
+        "description": "Όλα παραμένουν σε αυτό το τηλέφωνο ή tablet. Δεν χρειάζεται λογαριασμός."
+      },
+      "create_section_title": "Δημιουργία νέας ομάδας/οικογένειας",
+      "connect_section_title": "Σύνδεση σε υπάρχουσα ομάδα/οικογένεια"
+    },
+    "account": {
+      "header": "Λογαριασμός",
+      "title": "Δημιουργήστε λογαριασμό",
+      "subtitle": "Εγγραφείτε για να συγχρονίσετε την οικογένειά σας σε συσκευές ή συνδεθείτε αν έχετε ήδη λογαριασμό.",
+      "tab_register": "Εγγραφή",
+      "tab_login": "Σύνδεση",
+      "email": "Email",
+      "username_optional": "Όνομα χρήστη (προαιρετικό)",
+      "pin": "PIN 4 ψηφίων",
+      "pin_confirm": "Επιβεβαίωση PIN",
+      "family_name": "Όνομα οικογένειας",
+      "family_name_default": "Οικογένεια του {{name}}",
+      "family_name_fallback": "Η οικογένειά μου",
+      "submit_register": "Δημιουργία λογαριασμού",
+      "submit_login": "Σύνδεση",
+      "error_email_required": "Το email είναι υποχρεωτικό",
+      "error_pin_required": "Εισαγάγετε PIN 4 ψηφίων",
+      "error_pin_mismatch": "Τα PIN δεν ταιριάζουν",
+      "error_generic": "Κάτι πήγε στραβά. Δοκιμάστε ξανά."
+    },
+    "login": {
+      "header": "Σύνδεση",
+      "title": "Καλώς ήρθατε πίσω",
+      "subtitle": "Συνδεθείτε με email διαχειριστή ή το μοναδικό σας όνομα χρήστη.",
+      "admin": "Admin",
+      "not_admin": "Όχι admin",
+      "email": "Email",
+      "username": "Όνομα χρήστη",
+      "pin": "PIN 4 ψηφίων",
+      "submit": "Σύνδεση",
+      "sign_up": "Εγγραφή",
+      "error_email_required": "Το email είναι υποχρεωτικό",
+      "error_username_required": "Το όνομα χρήστη είναι υποχρεωτικό",
+      "error_pin_required": "Εισαγάγετε PIN 4 ψηφίων",
+      "error_generic": "Αποτυχία σύνδεσης. Ελέγξτε τα στοιχεία και δοκιμάστε ξανά."
+    },
+    "sign_up": {
+      "admin_header": "Δημιουργία admin",
+      "admin_title": "Δημιουργήστε προφίλ admin",
+      "admin_subtitle": "Ο admin συνδέεται με email και διαχειρίζεται την οικογένεια.",
+      "admin_email": "Email admin",
+      "admin_pin": "PIN admin (4 ψηφία)",
+      "child_header": "Προσθήκη πρώτου παιδιού",
+      "child_title": "Δημιουργήστε το πρώτο παιδί",
+      "child_subtitle": "Τα παιδιά συνδέονται με όνομα χρήστη.",
+      "child_username": "Όνομα χρήστη παιδιού",
+      "child_pin": "PIN παιδιού (4 ψηφία)",
+      "error_email_required": "Το email admin είναι υποχρεωτικό",
+      "error_username_required": "Το όνομα χρήστη παιδιού είναι υποχρεωτικό",
+      "error_admin_pin_required": "Εισαγάγετε PIN admin 4 ψηφίων",
+      "error_child_pin_required": "Εισαγάγετε PIN παιδιού 4 ψηφίων",
+      "error_admin_incomplete": "Ολοκληρώστε πρώτα το προφίλ admin",
+      "error_generic": "Αποτυχία δημιουργίας οικογένειας. Δοκιμάστε ξανά.",
+      "error_family_name_required": "Το όνομα της οικογένειας είναι υποχρεωτικό"
     }
   },
   "welcome": {

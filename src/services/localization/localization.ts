@@ -30,6 +30,7 @@ import { I18nManager, NativeModules } from 'react-native';
 import { ELang } from '~/types/ELang';
 import { esJson, translations } from '~/assets/translation';
 import { DEFAULT_DATE_LOCALE, DEFAULT_LANG, FALLBACK_LANG, IS_IOS } from '~/constants/settings';
+import { setApiLang } from '~/services/api/lang';
 import { IAvailableLanguages, KeyOfJson } from '~/types/ILang';
 
 const defineLanguage = (
@@ -145,6 +146,7 @@ class LocalizationServiceClass {
     await i18next.init(i18nextOptions);
     this.isInitialized = true;
 
+    setApiLang(lang);
     setDefaultOptions({ locale: this.getDateLocale(lang) });
 
     return lang;
@@ -171,6 +173,7 @@ class LocalizationServiceClass {
 
     setDefaultOptions({ locale: DEFAULT_DATE_LOCALE });
 
+    setApiLang(lang);
     this.isInitialized = true;
   }
 
@@ -181,6 +184,7 @@ class LocalizationServiceClass {
     i18next.addResourceBundle(resolvedLang, 'translation', langJSON, true, true);
     await i18next.changeLanguage(resolvedLang);
 
+    setApiLang(resolvedLang);
     setDefaultOptions({ locale: this.getDateLocale(resolvedLang) });
 
     return resolvedLang;

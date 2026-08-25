@@ -105,7 +105,16 @@
     "language": "Valoda",
     "system_language": "Sistēmas valoda",
     "children": "Bērni",
-    "child_password_obligatory": "Nepieciešama bērna parole"
+    "child_password_obligatory": "Nepieciešama bērna parole",
+    "account": {
+      "title": "Mākoņa sinhronizācija",
+      "signed_in": "Pieteicies",
+      "sign_in": "Pieteikties",
+      "sign_out": "Iziet",
+      "session_expired": "Jūsu sesija ir beigusies. Pierakstieties vēlreiz, lai sinhronizētu.",
+      "login_screen_title": "Pieteikties",
+      "login_screen_subtitle": "Pierakstieties, lai sinhronizētu ģimeni starp ierīcēm."
+    }
   },
   "users": {
     "title": "Lietotāji",
@@ -131,6 +140,7 @@
     "login": "Pieteikties",
     "logout": "Atteikties",
     "name": "Vārds",
+    "unique_username": "Unikāls lietotājvārds",
     "no_children": "Bērnu vēl nav",
     "no_parents": "Vecāku vēl nav",
     "parent": "Vecāks",
@@ -152,7 +162,8 @@
       "reviewer": "Recenzents",
       "sister": "Māsa",
       "uncle": "Tēvocis"
-    }
+    },
+    "change_group": "Mainīt grupu"
   },
   "tasks": {
     "title": "Uzdevumi",
@@ -548,7 +559,78 @@
     },
     "child": {
       "subtitle": "Pievienojiet savu pirmo bērnu. Vēlāk varat pievienot citus bērnus sadaļā Iestatījumi.",
-      "step_indicator": "2. darbība no 2"
+      "step_indicator": "2. darbība no 2",
+      "skip_for_now": "Pagaidām izlaist"
+    },
+    "sync_mode": {
+      "header": "Kā vēlaties izmantot Tareitas?",
+      "title": "Izvēlieties iestatījumu",
+      "subtitle": "Varat izmantot Tareitas tikai šajā ierīcē vai sinhronizēt ģimeni starp tālruņiem un planšetdatoriem.",
+      "multidevice": {
+        "title": "Vairākas ierīces",
+        "description": "Sinhronizējiet uzdevumus, balvas un ģimenes datus caur mākoni. Nepieciešams konts."
+      },
+      "device_only": {
+        "title": "Tikai šī ierīce",
+        "description": "Viss paliek šajā tālrunī vai planšetdatorā. Konts nav nepieciešams."
+      },
+      "create_section_title": "Izveidot jaunu grupu/ģimeni",
+      "connect_section_title": "Savienoties ar esošu grupu/ģimeni"
+    },
+    "account": {
+      "header": "Konts",
+      "title": "Izveidojiet kontu",
+      "subtitle": "Reģistrējieties, lai sinhronizētu ģimeni starp ierīcēm, vai piesakieties, ja jums jau ir konts.",
+      "tab_register": "Reģistrēties",
+      "tab_login": "Pieteikties",
+      "email": "E-pasts",
+      "username_optional": "Lietotājvārds (pēc izvēles)",
+      "pin": "4 ciparu PIN",
+      "pin_confirm": "Apstiprināt PIN",
+      "family_name": "Ģimenes nosaukums",
+      "family_name_default": "{{name}} ģimene",
+      "family_name_fallback": "Mana ģimene",
+      "submit_register": "Izveidot kontu",
+      "submit_login": "Pieteikties",
+      "error_email_required": "E-pasts ir obligāts",
+      "error_pin_required": "Ievadiet 4 ciparu PIN",
+      "error_pin_mismatch": "PIN kodi nesakrīt",
+      "error_generic": "Kaut kas nogāja greizi. Mēģiniet vēlreiz."
+    },
+    "login": {
+      "header": "Pieteikties",
+      "title": "Laipni lūdzam atpakaļ",
+      "subtitle": "Piesakieties ar admin e-pastu vai savu unikālo lietotājvārdu.",
+      "admin": "Admin",
+      "not_admin": "Nav admin",
+      "email": "E-pasts",
+      "username": "Lietotājvārds",
+      "pin": "4 ciparu PIN",
+      "submit": "Pieteikties",
+      "sign_up": "Reģistrēties",
+      "error_email_required": "E-pasts ir obligāts",
+      "error_username_required": "Lietotājvārds ir obligāts",
+      "error_pin_required": "Ievadiet 4 ciparu PIN",
+      "error_generic": "Neizdevās pieteikties. Pārbaudiet datus un mēģiniet vēlreiz."
+    },
+    "sign_up": {
+      "admin_header": "Izveidot admin",
+      "admin_title": "Izveidojiet admin profilu",
+      "admin_subtitle": "Admin piesakās ar e-pastu un pārvalda ģimeni.",
+      "admin_email": "Admin e-pasts",
+      "admin_pin": "Admin PIN (4 cipari)",
+      "child_header": "Pievienot pirmo bērnu",
+      "child_title": "Izveidojiet pirmo bērnu",
+      "child_subtitle": "Bērni piesakās ar lietotājvārdu.",
+      "child_username": "Bērna lietotājvārds",
+      "child_pin": "Bērna PIN (4 cipari)",
+      "error_email_required": "Admin e-pasts ir obligāts",
+      "error_username_required": "Bērna lietotājvārds ir obligāts",
+      "error_admin_pin_required": "Ievadiet 4 ciparu admin PIN",
+      "error_child_pin_required": "Ievadiet 4 ciparu bērna PIN",
+      "error_admin_incomplete": "Vispirms aizpildiet admin profilu",
+      "error_generic": "Neizdevās izveidot ģimeni. Mēģiniet vēlreiz.",
+      "error_family_name_required": "Ģimenes nosaukums ir obligāts"
     }
   },
   "helpCenter": {

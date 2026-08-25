@@ -1,11 +1,15 @@
 import { getISODay, isAfter, isBefore, isEqual, parseISO } from 'date-fns';
+import { v5 as uuidv5 } from 'uuid';
 
+import { TASK_ID_NAMESPACE } from '~/constants/catalog';
 import { WeekDay } from '~/types/ECommon';
 import { ETaskRepeatType, ETaskStatus } from '~/types/ETask';
 import { ITask, ITaskAssignment } from '~/types/ITask';
 
+export { TASK_ID_NAMESPACE } from '~/constants/catalog';
+
 export const createTaskId = (assignmentId: string, date: string) =>
-  `${assignmentId}_${date}`;
+  uuidv5(`${assignmentId}:${date.slice(0, 10)}`, TASK_ID_NAMESPACE);
 
 export const isRepeatingAssignment = (assignment: ITaskAssignment) =>
   !!assignment.repeat &&

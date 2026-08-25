@@ -105,7 +105,16 @@
     "language": "Taal",
     "system_language": "Systeem taal",
     "children": "Kinderen",
-    "child_password_obligatory": "Kinderwachtwoord vereist"
+    "child_password_obligatory": "Kinderwachtwoord vereist",
+    "account": {
+      "title": "Cloud-synchronisatie",
+      "signed_in": "Ingelogd",
+      "sign_in": "Inloggen",
+      "sign_out": "Uitloggen",
+      "session_expired": "Je sessie is verlopen. Log opnieuw in om te synchroniseren.",
+      "login_screen_title": "Inloggen",
+      "login_screen_subtitle": "Log in om je gezin tussen apparaten te synchroniseren."
+    }
   },
   "users": {
     "title": "Gebruikers",
@@ -131,6 +140,7 @@
     "login": "Login",
     "logout": "Uitloggen",
     "name": "Naam",
+    "unique_username": "Unieke gebruikersnaam",
     "no_children": "Nog geen kinderen",
     "no_parents": "Nog geen ouders",
     "parent": "Ouder",
@@ -152,7 +162,8 @@
       "reviewer": "Recensent",
       "sister": "Zus",
       "uncle": "Oom"
-    }
+    },
+    "change_group": "Groep wijzigen"
   },
   "tasks": {
     "title": "Taken",
@@ -548,7 +559,78 @@
     },
     "child": {
       "subtitle": "Voeg uw eerste kind toe. Je kunt later meer kinderen toevoegen via Instellingen.",
-      "step_indicator": "Stap 2 van 2"
+      "step_indicator": "Stap 2 van 2",
+      "skip_for_now": "Nu overslaan"
+    },
+    "sync_mode": {
+      "header": "Hoe wilt u Tareitas gebruiken?",
+      "title": "Kies uw instelling",
+      "subtitle": "U kunt Tareitas alleen op dit apparaat gebruiken of uw gezin synchroniseren tussen telefoons en tablets.",
+      "multidevice": {
+        "title": "Meerdere apparaten",
+        "description": "Synchroniseer taken, beloningen en gezinsgegevens via de cloud. Account vereist."
+      },
+      "device_only": {
+        "title": "Alleen dit apparaat",
+        "description": "Alles blijft op deze telefoon of tablet. Geen account nodig."
+      },
+      "create_section_title": "Nieuwe groep/familie maken",
+      "connect_section_title": "Verbinden met bestaande groep/familie"
+    },
+    "account": {
+      "header": "Account",
+      "title": "Maak uw account aan",
+      "subtitle": "Registreer om uw gezin tussen apparaten te synchroniseren, of log in als u al een account heeft.",
+      "tab_register": "Registreren",
+      "tab_login": "Inloggen",
+      "email": "E-mail",
+      "username_optional": "Gebruikersnaam (optioneel)",
+      "pin": "4-cijferige PIN",
+      "pin_confirm": "Bevestig PIN",
+      "family_name": "Gezinsnaam",
+      "family_name_default": "Gezin van {{name}}",
+      "family_name_fallback": "Mijn gezin",
+      "submit_register": "Account aanmaken",
+      "submit_login": "Inloggen",
+      "error_email_required": "E-mail is verplicht",
+      "error_pin_required": "Voer een 4-cijferige PIN in",
+      "error_pin_mismatch": "PIN-codes komen niet overeen",
+      "error_generic": "Er is iets misgegaan. Probeer het opnieuw."
+    },
+    "login": {
+      "header": "Inloggen",
+      "title": "Welkom terug",
+      "subtitle": "Log in met het admin-e-mailadres of je unieke gebruikersnaam.",
+      "admin": "Admin",
+      "not_admin": "Geen admin",
+      "email": "E-mail",
+      "username": "Gebruikersnaam",
+      "pin": "4-cijferige PIN",
+      "submit": "Inloggen",
+      "sign_up": "Registreren",
+      "error_email_required": "E-mail is verplicht",
+      "error_username_required": "Gebruikersnaam is verplicht",
+      "error_pin_required": "Voer een 4-cijferige PIN in",
+      "error_generic": "Inloggen mislukt. Controleer je gegevens en probeer opnieuw."
+    },
+    "sign_up": {
+      "admin_header": "Admin aanmaken",
+      "admin_title": "Maak je adminprofiel",
+      "admin_subtitle": "De admin logt in met e-mail en beheert het gezin.",
+      "admin_email": "Admin-e-mail",
+      "admin_pin": "Admin-PIN (4 cijfers)",
+      "child_header": "Eerste kind toevoegen",
+      "child_title": "Maak je eerste kind",
+      "child_subtitle": "Kinderen loggen in met een gebruikersnaam.",
+      "child_username": "Gebruikersnaam kind",
+      "child_pin": "PIN kind (4 cijfers)",
+      "error_email_required": "Admin-e-mail is verplicht",
+      "error_username_required": "Gebruikersnaam kind is verplicht",
+      "error_admin_pin_required": "Voer een 4-cijferige admin-PIN in",
+      "error_child_pin_required": "Voer een 4-cijferige kind-PIN in",
+      "error_admin_incomplete": "Vul eerst het adminprofiel in",
+      "error_generic": "Gezin kon niet worden aangemaakt. Probeer opnieuw.",
+      "error_family_name_required": "Familienaam is verplicht"
     }
   },
   "helpCenter": {

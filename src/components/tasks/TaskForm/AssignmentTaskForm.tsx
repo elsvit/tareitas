@@ -702,7 +702,7 @@ export const AssignmentTaskForm: FC<Props> = ({
           )}
 
           <Card.Content>
-            <Space size={8} />
+            <Space size={3} />
             {childOptions.length > 0 && (
               <>
                 {hasMultipleChildren ? (
@@ -740,7 +740,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                     <Text variant="bodyLarge">{singleChild?.name}</Text>
                   </>
                 )}
-                <Space size={12} />
+                <Space size={3} />
               </>
             )}
 
@@ -758,7 +758,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                     />
                   )}
                 />
-                <Space size={12} />
+                <Space size={3} />
               </>
             )}
 
@@ -780,7 +780,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             <Controller
               control={control}
@@ -797,7 +797,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             <Controller
               control={control}
@@ -837,7 +837,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             <Controller
               control={control}
@@ -852,7 +852,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               )}
             />
 
-            <Space size={16} />
+            <Space size={4} />
 
             <View style={styles.switchRow}>
               <Text style={styles.switchLabel}>{t('tasks.subtasks')}</Text>
@@ -914,7 +914,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                       </View>
                     </View>
                   ))}
-                  <Space size={8} />
+                  <Space size={3} />
                   <Button
                     mode="contained"
                     onPress={() => append({ value: uuidv4(), label: '' })}
@@ -930,7 +930,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               </>
             )}
 
-            <Space size={16} />
+            <Space size={4} />
 
             {!isHabit && (
               <>
@@ -958,7 +958,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                   />
                 </View>
 
-                <Space size={12} />
+                <Space size={3} />
               </>
             )}
 
@@ -981,7 +981,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             {effectiveRepeats && (
               <>
@@ -1026,7 +1026,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                   )}
                 />
 
-                <Space size={12} />
+                <Space size={3} />
               </>
             )}
 
@@ -1049,7 +1049,7 @@ export const AssignmentTaskForm: FC<Props> = ({
 
             {effectiveRepeats && (
               <>
-                <Space size={12} />
+                <Space size={3} />
 
                 <View style={styles.switchRow}>
                   <Text style={styles.switchLabel}>
@@ -1076,7 +1076,7 @@ export const AssignmentTaskForm: FC<Props> = ({
 
                 {hasNewTaskBonus && (
                   <>
-                    <Space size={12} />
+                    <Space size={3} />
 
                     <Controller
                       control={control}
@@ -1118,7 +1118,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                       )}
                     />
 
-                    <Space size={12} />
+                    <Space size={3} />
 
                     <Controller
                       control={control}
@@ -1164,7 +1164,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               </>
             )}
 
-            <Space size={12} />
+            <Space size={3} />
 
             <Controller
               control={control}
@@ -1178,7 +1178,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               )}
             />
 
-            <Space size={24} />
+            <Space size={5} />
 
             <Button mode="contained" onPress={handleSubmit(onSubmit)}>
               {t('button.save')}
@@ -1186,7 +1186,7 @@ export const AssignmentTaskForm: FC<Props> = ({
 
             {isEditMode && isAdmin && (
               <>
-                <Space size={12} />
+                <Space size={3} />
                 <Button
                   mode="contained"
                   bgColor={ButtonColors.Red}
@@ -1197,7 +1197,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               </>
             )}
 
-            <Space size={20} />
+            <Space size={4} />
           </Card.Content>
         </Card>
       </ScrollView>

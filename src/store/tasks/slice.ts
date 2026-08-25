@@ -6,6 +6,7 @@ import {
   createGenericEntityAdapter,
   createEntityReducers,
 } from '~/store/helpers';
+import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
 import { AddTasksPayload, UpdateTasksPayload } from './types';
 import { generateTasksForDate as buildTasksForDate } from '~/utils/tasks/taskGeneration';
 
@@ -21,24 +22,18 @@ export const tasksSlice = createSlice({
   name: EStateName.tasks,
   initialState,
   reducers: {
-    addTask: (state, action: PayloadAction<AddTasksPayload>) => {
-      entityReducers.addEntity(state, action);
-    },
+    addTask: noopEntityRequestReducer,
     addTaskSuccess: (state, action: PayloadAction<ITask>) => {
       entityReducers.addEntity(state, {
         ...action,
         payload: { entity: action.payload },
       });
     },
-    updateTask: (state, action: PayloadAction<UpdateTasksPayload>) => {
-      entityReducers.upsertEntity(state, { ...action, payload: action.payload.entity });
-    },
+    updateTask: noopEntityRequestReducer,
     updateTaskSuccess: (state, action: PayloadAction<ITask>) => {
       entityReducers.upsertEntity(state, action as unknown as PayloadAction<ITask>);
     },
-    removeTask: (state, action: PayloadAction<RemoveTasksPayload>) => {
-      entityReducers.removeEntity(state, { ...action, payload: action.payload.entity });
-    },
+    removeTask: noopEntityRequestReducer,
     removeTaskSuccess: (state, action: PayloadAction<string>) => {
       entityReducers.removeEntity(state, action as unknown as PayloadAction<string>);
     },

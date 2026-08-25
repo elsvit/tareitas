@@ -10,25 +10,35 @@ import { all } from 'redux-saga/effects';
 import { IS_WEB } from '~/constants';
 import { getStorage } from '~/services/storage/storage';
 import { childrenSlice, IStateChildren } from './children';
+import childrenSagas from './children/sagas';
 import { commonSlice } from './common/slice';
 import { EStateName } from './enums';
 import { IStateParents, parentsSlice } from './parents';
+import parentsSagas from './parents/sagas';
 import { IStateSettings, settingsSagas, settingsSlice } from './settings';
+import { catalogSagas } from './catalog';
+import rewardBaseSagas from './rewardBase/sagas';
 import { IStateRewardBase, rewardBaseSlice } from './rewardBase';
 import { IStateRewardAssignment, rewardAssignmentSlice } from './rewardAssignment';
 import { IStateRewards, rewardsSlice } from './rewards';
 import { normalizeEarnedRewardPeriods } from './rewards/rewardCalculations';
 import { IStateTaskAssignment, taskAssignmentSlice } from './taskAssignment';
+import taskBaseSagas from './taskBase/sagas';
 import { IStateTaskBase, taskBaseSlice } from './taskBase';
+import tasksSagas from './tasks/sagas';
 import { IStateImages, imagesSlice } from './images';
 import { IStateTasks, tasksSlice } from './tasks';
 
 // Root saga
 function* rootSaga() {
   yield all([
-    // ...parentsSagas,
-    // ...childrenSagas,
+    ...parentsSagas,
+    ...childrenSagas,
+    ...tasksSagas,
+    ...taskBaseSagas,
+    ...rewardBaseSagas,
     ...settingsSagas,
+    ...catalogSagas,
   ]);
 }
 
@@ -198,6 +208,7 @@ export const store = configureStore({
           'persist/PURGE',
           'persist/REGISTER',
         ],
+        ignoredActionPaths: ['payload.onSuccess'],
       },
     }).concat(__DEV__ ? [sagaMiddleware, logger] : [sagaMiddleware]),
   devTools: __DEV__,

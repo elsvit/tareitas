@@ -118,7 +118,16 @@
     "title": "Ajustes",
     "language": "Idioma",
     "children": "Hijos",
-    "child_password_obligatory": "Contraseña del hijo obligatoria"
+    "child_password_obligatory": "Contraseña del hijo obligatoria",
+    "account": {
+      "title": "Sincronización en la nube",
+      "signed_in": "Sesión iniciada",
+      "sign_in": "Iniciar sesión",
+      "sign_out": "Cerrar sesión",
+      "session_expired": "Tu sesión ha expirado. Inicia sesión de nuevo para sincronizar.",
+      "login_screen_title": "Iniciar sesión",
+      "login_screen_subtitle": "Inicia sesión para sincronizar tu familia entre dispositivos."
+    }
   },
   "users": {
     "title": "Usuarios",
@@ -143,7 +152,9 @@
     "family_role": "Rol de la Familia",
     "login": "Iniciar sesión",
     "logout": "Cerrar sesión",
+    "change_group": "Cambiar grupo",
     "name": "Nombre",
+    "unique_username": "Nombre de usuario único",
     "no_children": "No hay hijos todavía",
     "no_parents": "No hay padres todavía",
     "parent": "Padre",
@@ -561,7 +572,79 @@
     },
     "child": {
       "subtitle": "Añade tu primer hijo. Podrás añadir más hijos más tarde desde Ajustes.",
-      "step_indicator": "Paso 2 de 2"
+      "step_indicator": "Paso 2 de 2",
+      "skip_for_now": "Omitir por ahora"
+    },
+    "sync_mode": {
+      "header": "¿Cómo quieres usar Tareitas?",
+      "title": "Elige tu configuración",
+      "subtitle": "Puedes usar Tareitas solo en este dispositivo o sincronizar tu familia entre teléfonos y tabletas.",
+      "multidevice": {
+        "title": "Varios dispositivos",
+        "description": "Sincroniza tareas, recompensas y datos familiares en la nube. Requiere una cuenta."
+      },
+      "device_only": {
+        "title": "Solo este dispositivo",
+        "description": "Todo permanece en este teléfono o tableta. No necesitas cuenta."
+      },
+      "create_section_title": "Crear nuevo grupo/familia",
+      "connect_section_title": "Conectar a un grupo/familia existente"
+    },
+    "account": {
+      "header": "Cuenta",
+      "title": "Crea tu cuenta",
+      "subtitle": "Regístrate para sincronizar tu familia entre dispositivos, o inicia sesión si ya tienes una cuenta.",
+      "tab_register": "Registrarse",
+      "tab_login": "Iniciar sesión",
+      "email": "Correo electrónico",
+      "username_optional": "Nombre de usuario (opcional)",
+      "pin": "PIN de 4 dígitos",
+      "pin_confirm": "Confirmar PIN",
+      "family_name": "Nombre de la familia",
+      "family_name_default": "Familia de {{name}}",
+      "family_name_fallback": "Mi familia",
+      "submit_register": "Crear cuenta",
+      "submit_login": "Iniciar sesión",
+      "error_email_required": "El correo electrónico es obligatorio",
+      "error_pin_required": "Introduce un PIN de 4 dígitos",
+      "error_pin_mismatch": "Los PIN no coinciden",
+      "error_generic": "Algo salió mal. Inténtalo de nuevo."
+    },
+    "login": {
+      "header": "Iniciar sesión",
+      "title": "Bienvenido de nuevo",
+      "subtitle": "Inicia sesión con el email del admin o tu nombre de usuario único.",
+      "admin": "Admin",
+      "not_admin": "No admin",
+      "email": "Correo electrónico",
+      "username": "Nombre de usuario",
+      "pin": "PIN de 4 dígitos",
+      "submit": "Iniciar sesión",
+      "sign_up": "Registrarse",
+      "error_email_required": "El correo electrónico es obligatorio",
+      "error_username_required": "El nombre de usuario es obligatorio",
+      "error_pin_required": "Introduce un PIN de 4 dígitos",
+      "error_generic": "No se pudo iniciar sesión. Comprueba tus datos e inténtalo de nuevo.",
+      "error_empty_family": "Sesión iniciada, pero no se encontraron miembros de la familia. Inténtalo de nuevo."
+    },
+    "sign_up": {
+      "admin_header": "Crear admin",
+      "admin_title": "Crea tu perfil de administrador",
+      "admin_subtitle": "El admin inicia sesión con email y gestiona la familia.",
+      "admin_email": "Email del admin",
+      "admin_pin": "PIN del admin (4 dígitos)",
+      "child_header": "Añadir primer hijo",
+      "child_title": "Crea tu primer hijo",
+      "child_subtitle": "Los niños inician sesión con un nombre de usuario.",
+      "child_username": "Nombre de usuario del hijo",
+      "child_pin": "PIN del hijo (4 dígitos)",
+      "error_email_required": "El email del admin es obligatorio",
+      "error_username_required": "El nombre de usuario del hijo es obligatorio",
+      "error_admin_pin_required": "Introduce un PIN de admin de 4 dígitos",
+      "error_child_pin_required": "Introduce un PIN del hijo de 4 dígitos",
+      "error_admin_incomplete": "Completa primero el perfil del admin",
+      "error_generic": "No se pudo crear la familia. Inténtalo de nuevo.",
+      "error_family_name_required": "El nombre de la familia es obligatorio"
     }
   }
 }

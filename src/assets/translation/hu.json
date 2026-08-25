@@ -105,7 +105,16 @@
     "language": "Nyelv",
     "system_language": "Rendszer nyelve",
     "children": "Gyermekek",
-    "child_password_obligatory": "Gyermek jelszó szükséges"
+    "child_password_obligatory": "Gyermek jelszó szükséges",
+    "account": {
+      "title": "Felhőszinkronizálás",
+      "signed_in": "Bejelentkezve",
+      "sign_in": "Bejelentkezés",
+      "sign_out": "Kijelentkezés",
+      "session_expired": "A munkamenet lejárt. Jelentkezzen be újra a szinkronizáláshoz.",
+      "login_screen_title": "Bejelentkezés",
+      "login_screen_subtitle": "Jelentkezzen be a család eszközök közötti szinkronizálásához."
+    }
   },
   "users": {
     "title": "Felhasználók",
@@ -131,6 +140,7 @@
     "login": "Bejelentkezés",
     "logout": "Kijelentkezés",
     "name": "Név",
+    "unique_username": "Egyedi felhasználónév",
     "no_children": "Még nincs gyerek",
     "no_parents": "Még nincsenek szülők",
     "parent": "Szülő",
@@ -152,7 +162,8 @@
       "reviewer": "Bíráló",
       "sister": "nővér",
       "uncle": "Nagybácsi"
-    }
+    },
+    "change_group": "Csoport váltása"
   },
   "tasks": {
     "title": "Feladatok",
@@ -548,7 +559,78 @@
     },
     "child": {
       "subtitle": "Adja hozzá első gyermekét. Később további gyerekeket is hozzáadhat a Beállításokban.",
-      "step_indicator": "2/2. lépés"
+      "step_indicator": "2/2. lépés",
+      "skip_for_now": "Kihagyás most"
+    },
+    "sync_mode": {
+      "header": "Hogyan szeretné használni a Tareitast?",
+      "title": "Válassza ki a beállítást",
+      "subtitle": "Használhatja a Tareitast csak ezen az eszközön, vagy szinkronizálhatja családját telefonok és tabletek között.",
+      "multidevice": {
+        "title": "Több eszköz",
+        "description": "Feladatok, jutalmak és családi adatok szinkronizálása a felhőn keresztül. Fiók szükséges."
+      },
+      "device_only": {
+        "title": "Csak ez az eszköz",
+        "description": "Minden ezen a telefonon vagy tableten marad. Nincs szükség fiókra."
+      },
+      "create_section_title": "Új csoport/család létrehozása",
+      "connect_section_title": "Csatlakozás meglévő csoporthoz/családhoz"
+    },
+    "account": {
+      "header": "Fiók",
+      "title": "Fiók létrehozása",
+      "subtitle": "Regisztráljon a család eszközök közötti szinkronizálásához, vagy jelentkezzen be, ha már van fiókja.",
+      "tab_register": "Regisztráció",
+      "tab_login": "Bejelentkezés",
+      "email": "E-mail",
+      "username_optional": "Felhasználónév (opcionális)",
+      "pin": "4 számjegyű PIN",
+      "pin_confirm": "PIN megerősítése",
+      "family_name": "Család neve",
+      "family_name_default": "{{name}} családja",
+      "family_name_fallback": "Családom",
+      "submit_register": "Fiók létrehozása",
+      "submit_login": "Bejelentkezés",
+      "error_email_required": "Az e-mail kötelező",
+      "error_pin_required": "Adjon meg 4 számjegyű PIN-t",
+      "error_pin_mismatch": "A PIN-ek nem egyeznek",
+      "error_generic": "Valami hiba történt. Próbálja újra."
+    },
+    "login": {
+      "header": "Bejelentkezés",
+      "title": "Üdv újra",
+      "subtitle": "Jelentkezzen be admin e-maillel vagy egyedi felhasználónevével.",
+      "admin": "Admin",
+      "not_admin": "Nem admin",
+      "email": "E-mail",
+      "username": "Felhasználónév",
+      "pin": "4 számjegyű PIN",
+      "submit": "Bejelentkezés",
+      "sign_up": "Regisztráció",
+      "error_email_required": "Az e-mail kötelező",
+      "error_username_required": "A felhasználónév kötelező",
+      "error_pin_required": "Adjon meg 4 számjegyű PIN-t",
+      "error_generic": "Bejelentkezés sikertelen. Ellenőrizze az adatokat és próbálja újra."
+    },
+    "sign_up": {
+      "admin_header": "Admin létrehozása",
+      "admin_title": "Admin profil létrehozása",
+      "admin_subtitle": "Az admin e-maillel jelentkezik be és kezeli a családot.",
+      "admin_email": "Admin e-mail",
+      "admin_pin": "Admin PIN (4 számjegy)",
+      "child_header": "Első gyermek hozzáadása",
+      "child_title": "Első gyermek létrehozása",
+      "child_subtitle": "A gyerekek felhasználónévvel jelentkeznek be.",
+      "child_username": "Gyermek felhasználóneve",
+      "child_pin": "Gyermek PIN (4 számjegy)",
+      "error_email_required": "Az admin e-mail kötelező",
+      "error_username_required": "A gyermek felhasználóneve kötelező",
+      "error_admin_pin_required": "Adjon meg 4 számjegyű admin PIN-t",
+      "error_child_pin_required": "Adjon meg 4 számjegyű gyermek PIN-t",
+      "error_admin_incomplete": "Először töltse ki az admin profilt",
+      "error_generic": "A család létrehozása sikertelen. Próbálja újra.",
+      "error_family_name_required": "A családnév kötelező"
     }
   },
   "helpCenter": {

@@ -27,6 +27,7 @@ import { ERole } from '~/store/settings/enums';
 import {
   selectCurrentRole,
   selectIsChildPasswordObligatory,
+  selectIsMultidevice,
 } from '~/store/settings/selectors';
 import { userColors } from '~/styles';
 import { ChildFormProps, IChild } from '~/types';
@@ -62,10 +63,14 @@ type Props = {
   showScreenHeader?: boolean;
   embedded?: boolean;
   showSubmitButton?: boolean;
+  fieldsBeforeName?: React.ReactNode;
+  showUniqueUsername?: boolean;
+  submitError?: string | null;
 };
 
 type FormValues = {
   name: string;
+  username?: string;
   color: string;
   role: ERole;
   avatar: string;
@@ -87,6 +92,9 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
     showScreenHeader = true,
     embedded = false,
     showSubmitButton = true,
+    fieldsBeforeName,
+    showUniqueUsername = false,
+    submitError = null,
   },
   ref,
 ) {
@@ -95,9 +103,14 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   const currentRole = useSelector(selectCurrentRole);
+  const isMultidevice = useSelector(selectIsMultidevice);
   const isChildPasswordObligatory = useSelector(selectIsChildPasswordObligatory);
   const isAdmin = currentRole === ERole.admin;
   const isEditMode = mode === EFormMode.Edit;
+  const childUsername = child?.username?.trim() ?? '';
+  const showUsernameField =
+    showUniqueUsername ||
+    (isEditMode && (isMultidevice || childUsername.length > 0));
 
   const headerTitle =
     title ??
@@ -108,6 +121,11 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
   const schema = useMemo(
     () =>
       z.object({
+        ...(showUsernameField
+          ? {
+              username: z.string().trim().min(1, requiredMessage),
+            }
+          : {}),
         name: z.string().trim().min(1, requiredMessage),
         color: z.string().trim().min(1, requiredMessage),
         role: z.nativeEnum(ERole),
@@ -116,7 +134,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
           ? z.string().trim().min(4, requiredMessage)
           : z.string().trim().optional(),
       }),
-    [isChildPasswordObligatory, requiredMessage],
+    [isChildPasswordObligatory, requiredMessage, showUsernameField],
   );
 
   const {
@@ -125,9 +143,11 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
     setError,
     watch,
     getValues,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
+      username: child?.username ?? '',
       name: child?.name ?? '',
       color: child?.color ?? userColors.blue600,
       role: ERole.child,
@@ -137,6 +157,25 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
+
+  React.useEffect(() => {
+    reset({
+      username: child?.username ?? '',
+      name: child?.name ?? '',
+      color: child?.color ?? userColors.blue600,
+      role: ERole.child,
+      avatar: child?.avatar ?? '',
+      passwordPattern: child?.passwordPattern ?? '',
+    });
+  }, [
+    child?.id,
+    child?.username,
+    child?.name,
+    child?.color,
+    child?.avatar,
+    child?.passwordPattern,
+    reset,
+  ]);
 
   React.useEffect(() => {
     const sub = watch(() => {
@@ -175,6 +214,11 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
       // role: ERole.child,
       avatar: data.avatar,
       passwordPattern: data.passwordPattern,
+      ...(showUsernameField && typeof data.username === 'string'
+        ? { username: data.username.trim() }
+        : childUsername
+          ? { username: childUsername }
+          : {}),
     };
 
     onSave?.(newChild);
@@ -195,11 +239,16 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
       return;
     }
 
-    dispatch(removeChild({ id: child.id }));
-
-    if (router.canGoBack()) {
-      router.back();
-    }
+    dispatch(
+      removeChild({
+        id: child.id,
+        onSuccess: () => {
+          if (router.canGoBack()) {
+            router.back();
+          }
+        },
+      }),
+    );
   };
 
   const formBody = (
@@ -210,7 +259,38 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
         </View>
       )}
       <Card.Content>
-      <Space size={8} />
+      <Space size={3} />
+            {fieldsBeforeName ? (
+              <>
+                {fieldsBeforeName}
+                <Space size={3} />
+              </>
+            ) : null}
+            {showUsernameField ? (
+              <>
+                <Controller
+                  control={control}
+                  name="username"
+                  render={({ field: { value, onChange } }) => (
+                    <>
+                      <TextInput
+                        label={t('users.unique_username')}
+                        value={value ?? ''}
+                        onChangeText={onChange}
+                        autoCapitalize="none"
+                        mode="outlined"
+                      />
+                      {!!errors.username && (
+                        <Text style={styles.errorText}>
+                          {errors.username.message}
+                        </Text>
+                      )}
+                    </>
+                  )}
+                />
+                <Space size={3} />
+              </>
+            ) : null}
             {/* Name */}
             <Controller
               control={control}
@@ -230,7 +310,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             <Controller
               control={control}
@@ -263,7 +343,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             <Controller
               control={control}
@@ -280,7 +360,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             {/* Color */}
             <Controller
@@ -296,7 +376,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
               )}
             />
 
-            <Space size={20} />
+            <Space size={4} />
 
             {showSubmitButton && (
               <Button mode="contained" onPress={handleSubmit(onSubmit)}>
@@ -304,9 +384,16 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
               </Button>
             )}
 
+            {submitError ? (
+              <>
+                <Space size={2} />
+                <Text style={styles.errorText}>{submitError}</Text>
+              </>
+            ) : null}
+
             {isEditMode && isAdmin && (
               <>
-                <Space size={12} />
+                <Space size={3} />
                 <Button
                   mode="contained"
                   bgColor={ButtonColors.Red}
@@ -317,7 +404,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
               </>
             )}
 
-            <Space size={20} />
+            <Space size={4} />
           </Card.Content>
         </Card>
   );

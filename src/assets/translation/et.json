@@ -104,7 +104,16 @@
     "title": "Seaded",
     "language": "Keel",
     "children": "Lapsed",
-    "child_password_obligatory": "Vajalik lapse parool"
+    "child_password_obligatory": "Vajalik lapse parool",
+    "account": {
+      "title": "Pilvesünkroniseerimine",
+      "signed_in": "Sisse logitud",
+      "sign_in": "Logi sisse",
+      "sign_out": "Logi välja",
+      "session_expired": "Teie seanss on aegunud. Sünkroniseerimiseks logige uuesti sisse.",
+      "login_screen_title": "Logi sisse",
+      "login_screen_subtitle": "Logige sisse, et sünkroniseerida pere seadmete vahel."
+    }
   },
   "users": {
     "title": "Kasutajad",
@@ -130,6 +139,7 @@
     "login": "Logi sisse",
     "logout": "Väljalogimine",
     "name": "Nimi",
+    "unique_username": "Unikaalne kasutajanimi",
     "no_children": "Lapsi veel pole",
     "no_parents": "Vanemaid veel pole",
     "parent": "Lapsevanem",
@@ -151,7 +161,8 @@
       "reviewer": "Ülevaataja",
       "sister": "õde",
       "uncle": "Onu"
-    }
+    },
+    "change_group": "Vaheta gruppi"
   },
   "tasks": {
     "title": "Ülesanded",
@@ -547,7 +558,78 @@
     },
     "child": {
       "subtitle": "Lisage oma esimene laps. Saate hiljem rohkem lapsi lisada menüüs Seaded.",
-      "step_indicator": "2. samm 2-st"
+      "step_indicator": "2. samm 2-st",
+      "skip_for_now": "Jäta praegu vahele"
+    },
+    "sync_mode": {
+      "header": "Kuidas soovite Tareitast kasutada?",
+      "title": "Valige seadistus",
+      "subtitle": "Saate kasutada Tareitast ainult selles seadmes või sünkroniseerida pere telefonide ja tahvelarvutite vahel.",
+      "multidevice": {
+        "title": "Mitu seadet",
+        "description": "Sünkroniseerige ülesandeid, preemiaid ja peredate pilve kaudu. Nõuab kontot."
+      },
+      "device_only": {
+        "title": "Ainult see seade",
+        "description": "Kõik jääb sellesse telefoni või tahvelarvutisse. Kontot pole vaja."
+      },
+      "create_section_title": "Loo uus grupp/pere",
+      "connect_section_title": "Ühenda olemasoleva grupi/perega"
+    },
+    "account": {
+      "header": "Konto",
+      "title": "Looge konto",
+      "subtitle": "Registreeruge, et sünkroniseerida pere seadmete vahel, või logige sisse, kui teil juba konto on.",
+      "tab_register": "Registreeru",
+      "tab_login": "Logi sisse",
+      "email": "E-post",
+      "username_optional": "Kasutajanimi (valikuline)",
+      "pin": "4-kohaline PIN",
+      "pin_confirm": "Kinnita PIN",
+      "family_name": "Perekonna nimi",
+      "family_name_default": "{{name}} pere",
+      "family_name_fallback": "Minu pere",
+      "submit_register": "Loo konto",
+      "submit_login": "Logi sisse",
+      "error_email_required": "E-post on kohustuslik",
+      "error_pin_required": "Sisestage 4-kohaline PIN",
+      "error_pin_mismatch": "PIN-id ei ühti",
+      "error_generic": "Midagi läks valesti. Proovige uuesti."
+    },
+    "login": {
+      "header": "Logi sisse",
+      "title": "Tere tulemast tagasi",
+      "subtitle": "Logi sisse admini e-posti või oma unikaalse kasutajanimega.",
+      "admin": "Admin",
+      "not_admin": "Mitte admin",
+      "email": "E-post",
+      "username": "Kasutajanimi",
+      "pin": "4-kohaline PIN",
+      "submit": "Logi sisse",
+      "sign_up": "Registreeru",
+      "error_email_required": "E-post on kohustuslik",
+      "error_username_required": "Kasutajanimi on kohustuslik",
+      "error_pin_required": "Sisestage 4-kohaline PIN",
+      "error_generic": "Sisselogimine ebaõnnestus. Kontrollige andmeid ja proovige uuesti."
+    },
+    "sign_up": {
+      "admin_header": "Loo admin",
+      "admin_title": "Loo admini profiil",
+      "admin_subtitle": "Admin logib sisse e-postiga ja haldab peret.",
+      "admin_email": "Admini e-post",
+      "admin_pin": "Admini PIN (4 numbrit)",
+      "child_header": "Lisa esimene laps",
+      "child_title": "Loo esimene laps",
+      "child_subtitle": "Lapsed logivad sisse kasutajanimega.",
+      "child_username": "Lapse kasutajanimi",
+      "child_pin": "Lapse PIN (4 numbrit)",
+      "error_email_required": "Admini e-post on kohustuslik",
+      "error_username_required": "Lapse kasutajanimi on kohustuslik",
+      "error_admin_pin_required": "Sisestage 4-kohaline admini PIN",
+      "error_child_pin_required": "Sisestage 4-kohaline lapse PIN",
+      "error_admin_incomplete": "Täitke esmalt admini profiil",
+      "error_generic": "Pere loomine ebaõnnestus. Proovige uuesti.",
+      "error_family_name_required": "Perekonnanimi on kohustuslik"
     }
   },
   "welcome": {

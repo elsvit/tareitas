@@ -118,7 +118,16 @@
     "title": "Settings",
     "language": "Language",
     "children": "Children",
-    "child_password_obligatory": "Child password required"
+    "child_password_obligatory": "Child password required",
+    "account": {
+      "title": "Cloud sync",
+      "signed_in": "Signed in",
+      "sign_in": "Sign in",
+      "sign_out": "Sign out",
+      "session_expired": "Your session expired. Sign in again to sync.",
+      "login_screen_title": "Sign in",
+      "login_screen_subtitle": "Sign in to sync your family across devices."
+    }
   },
   "users": {
     "title": "Users",
@@ -143,7 +152,9 @@
     "family_role": "Family Role",
     "login": "Login",
     "logout": "Logout",
+    "change_group": "Change group",
     "name": "Name",
+    "unique_username": "Unique username",
     "no_children": "No children yet",
     "no_parents": "No parents yet",
     "parent": "Parent",
@@ -561,7 +572,79 @@
     },
     "child": {
       "subtitle": "Add your first child. You can add more children later from Settings.",
-      "step_indicator": "Step 2 of 2"
+      "step_indicator": "Step 2 of 2",
+      "skip_for_now": "Skip for now"
+    },
+    "sync_mode": {
+      "header": "How do you want to use Tareitas?",
+      "title": "Choose your setup",
+      "subtitle": "You can use Tareitas on this device only, or sync your family across phones and tablets.",
+      "multidevice": {
+        "title": "Several devices",
+        "description": "Sync tasks, rewards, and family data through the cloud. Requires an account."
+      },
+      "device_only": {
+        "title": "This device only",
+        "description": "Everything stays on this phone or tablet. No account needed."
+      },
+      "create_section_title": "Create new group/family",
+      "connect_section_title": "Connect to existing group/family"
+    },
+    "account": {
+      "header": "Account",
+      "title": "Create your account",
+      "subtitle": "Sign up to sync your family across devices, or log in if you already have an account.",
+      "tab_register": "Sign up",
+      "tab_login": "Log in",
+      "email": "Email",
+      "username_optional": "Username (optional)",
+      "pin": "4-digit PIN",
+      "pin_confirm": "Confirm PIN",
+      "family_name": "Family name",
+      "family_name_default": "{{name}}'s family",
+      "family_name_fallback": "My family",
+      "submit_register": "Create account",
+      "submit_login": "Log in",
+      "error_email_required": "Email is required",
+      "error_pin_required": "Enter a 4-digit PIN",
+      "error_pin_mismatch": "PINs do not match",
+      "error_generic": "Something went wrong. Please try again."
+    },
+    "login": {
+      "header": "Sign in",
+      "title": "Welcome back",
+      "subtitle": "Sign in with your admin email or your unique username.",
+      "admin": "Admin",
+      "not_admin": "Not admin",
+      "email": "Email",
+      "username": "Username",
+      "pin": "4-digit PIN",
+      "submit": "Sign in",
+      "sign_up": "Sign up",
+      "error_email_required": "Email is required",
+      "error_username_required": "Username is required",
+      "error_pin_required": "Enter a 4-digit PIN",
+      "error_generic": "Could not sign in. Check your details and try again.",
+      "error_empty_family": "Signed in, but no family members were found. Try again or contact support."
+    },
+    "sign_up": {
+      "admin_header": "Create admin",
+      "admin_title": "Create your admin profile",
+      "admin_subtitle": "The admin uses email to sign in and manages the family.",
+      "admin_email": "Admin email",
+      "admin_pin": "Admin PIN (4 digits)",
+      "child_header": "Add first child",
+      "child_title": "Create your first child",
+      "child_subtitle": "Children sign in with a username.",
+      "child_username": "Child username",
+      "child_pin": "Child PIN (4 digits)",
+      "error_email_required": "Admin email is required",
+      "error_username_required": "Child username is required",
+      "error_admin_pin_required": "Enter a 4-digit admin PIN",
+      "error_child_pin_required": "Enter a 4-digit child PIN",
+      "error_admin_incomplete": "Complete the admin profile first",
+      "error_generic": "Could not create the family. Please try again.",
+      "error_family_name_required": "Family name is required"
     }
   }
 }

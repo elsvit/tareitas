@@ -105,7 +105,16 @@
     "language": "Jazyk",
     "system_language": "Jazyk systému",
     "children": "Děti",
-    "child_password_obligatory": "Je vyžadováno heslo dítěte"
+    "child_password_obligatory": "Je vyžadováno heslo dítěte",
+    "account": {
+      "title": "Cloud synchronizace",
+      "signed_in": "Přihlášen",
+      "sign_in": "Přihlásit se",
+      "sign_out": "Odhlásit se",
+      "session_expired": "Vaše relace vypršela. Přihlaste se znovu pro synchronizaci.",
+      "login_screen_title": "Přihlášení",
+      "login_screen_subtitle": "Přihlaste se pro synchronizaci rodiny mezi zařízeními."
+    }
   },
   "users": {
     "title": "Uživatelé",
@@ -131,6 +140,7 @@
     "login": "Přihlášení",
     "logout": "Odhlášení",
     "name": "Jméno",
+    "unique_username": "Unikátní uživatelské jméno",
     "no_children": "Zatím žádné děti",
     "no_parents": "Zatím bez rodičů",
     "parent": "Rodič",
@@ -152,7 +162,8 @@
       "reviewer": "Recenzent",
       "sister": "Sestra",
       "uncle": "Strýc"
-    }
+    },
+    "change_group": "Změnit skupinu"
   },
   "tasks": {
     "title": "Úkoly",
@@ -548,7 +559,78 @@
     },
     "child": {
       "subtitle": "Přidejte své první dítě. Další děti můžete přidat později v Nastavení.",
-      "step_indicator": "Krok 2 ze 2"
+      "step_indicator": "Krok 2 ze 2",
+      "skip_for_now": "Přeskočit prozatím"
+    },
+    "sync_mode": {
+      "header": "Jak chcete používat Tareitas?",
+      "title": "Vyberte nastavení",
+      "subtitle": "Můžete používat Tareitas pouze na tomto zařízení nebo synchronizovat rodinu mezi telefony a tablety.",
+      "multidevice": {
+        "title": "Více zařízení",
+        "description": "Synchronizujte úkoly, odměny a rodinná data přes cloud. Vyžaduje účet."
+      },
+      "device_only": {
+        "title": "Pouze toto zařízení",
+        "description": "Vše zůstane v tomto telefonu nebo tabletu. Účet není potřeba."
+      },
+      "create_section_title": "Vytvořit novou skupinu/rodinu",
+      "connect_section_title": "Připojit se k existující skupině/rodině"
+    },
+    "account": {
+      "header": "Účet",
+      "title": "Vytvořte si účet",
+      "subtitle": "Zaregistrujte se pro synchronizaci rodiny mezi zařízeními, nebo se přihlaste, pokud už účet máte.",
+      "tab_register": "Registrace",
+      "tab_login": "Přihlášení",
+      "email": "E-mail",
+      "username_optional": "Uživatelské jméno (volitelné)",
+      "pin": "4místný PIN",
+      "pin_confirm": "Potvrdit PIN",
+      "family_name": "Název rodiny",
+      "family_name_default": "Rodina {{name}}",
+      "family_name_fallback": "Moje rodina",
+      "submit_register": "Vytvořit účet",
+      "submit_login": "Přihlásit se",
+      "error_email_required": "E-mail je povinný",
+      "error_pin_required": "Zadejte 4místný PIN",
+      "error_pin_mismatch": "PINy se neshodují",
+      "error_generic": "Něco se pokazilo. Zkuste to znovu."
+    },
+    "login": {
+      "header": "Přihlášení",
+      "title": "Vítejte zpět",
+      "subtitle": "Přihlaste se e-mailem admina nebo svým jedinečným uživatelským jménem.",
+      "admin": "Admin",
+      "not_admin": "Ne admin",
+      "email": "E-mail",
+      "username": "Uživatelské jméno",
+      "pin": "4místný PIN",
+      "submit": "Přihlásit se",
+      "sign_up": "Registrace",
+      "error_email_required": "E-mail je povinný",
+      "error_username_required": "Uživatelské jméno je povinné",
+      "error_pin_required": "Zadejte 4místný PIN",
+      "error_generic": "Přihlášení se nezdařilo. Zkontrolujte údaje a zkuste to znovu."
+    },
+    "sign_up": {
+      "admin_header": "Vytvořit admina",
+      "admin_title": "Vytvořte admin profil",
+      "admin_subtitle": "Admin se přihlašuje e-mailem a spravuje rodinu.",
+      "admin_email": "E-mail admina",
+      "admin_pin": "PIN admina (4 číslice)",
+      "child_header": "Přidat první dítě",
+      "child_title": "Vytvořte první dítě",
+      "child_subtitle": "Děti se přihlašují uživatelským jménem.",
+      "child_username": "Uživatelské jméno dítěte",
+      "child_pin": "PIN dítěte (4 číslice)",
+      "error_email_required": "E-mail admina je povinný",
+      "error_username_required": "Uživatelské jméno dítěte je povinné",
+      "error_admin_pin_required": "Zadejte 4místný PIN admina",
+      "error_child_pin_required": "Zadejte 4místný PIN dítěte",
+      "error_admin_incomplete": "Nejprve dokončete profil admina",
+      "error_generic": "Rodinu se nepodařilo vytvořit. Zkuste to znovu.",
+      "error_family_name_required": "Název rodiny je povinný"
     }
   },
   "helpCenter": {

@@ -6,6 +6,7 @@ import {
   createGenericEntityAdapter,
   createEntityReducers,
 } from '~/store/helpers';
+import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
 import { AddChildrenPayload, UpdateChildrenPayload } from './types';
 
 // Create entity adapter for dishes
@@ -22,9 +23,7 @@ export const childrenSlice = createSlice({
   name: EStateName.children,
   initialState,
   reducers: {
-    addChild: (state, action: PayloadAction<AddChildrenPayload>) => {
-      entityReducers.addEntity(state, action);
-    },
+    addChild: noopEntityRequestReducer,
     addChildSuccess: (state, action: PayloadAction<IChild>) => {
       entityReducers.addEntity(state, {
         ...action,
@@ -32,16 +31,12 @@ export const childrenSlice = createSlice({
         payload: { entity: action.payload },
       });
     },
-    updateChild: (state, action: PayloadAction<UpdateChildrenPayload>) => {
-      entityReducers.upsertEntity(state, { ...action, payload: action.payload.entity, });
-    },
+    updateChild: noopEntityRequestReducer,
     updateChildSuccess: (state, action: PayloadAction<IChild>) => {
       // entityReducers.upsertEntity expects payload to be the entity itself
       entityReducers.upsertEntity(state, action as unknown as PayloadAction<IChild>);
     },
-    removeChild: (state, action: PayloadAction<RemoveChildrenPayload>) => {
-      entityReducers.removeEntity(state, { ...action, payload: action.payload.id, });
-    },
+    removeChild: noopEntityRequestReducer,
     removeChildSuccess: (state, action: PayloadAction<string>) => {
       // entityReducers.removeEntity expects payload to be the entity id (string)
       entityReducers.removeEntity(state, action as unknown as PayloadAction<string>);

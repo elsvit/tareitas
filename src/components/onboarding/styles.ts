@@ -79,6 +79,67 @@ export const onboardingStyles = StyleSheet.create({
     backgroundColor: Colors.blue600,
     width: 24,
   },
+  syncModeSection: {
+    gap: spacing(2),
+  },
+  syncModeSectionHeader: {
+    borderWidth: 2,
+    borderColor: Colors.blue200,
+    borderRadius: 16,
+    padding: spacing(2.5),
+    backgroundColor: 'rgba(255, 255, 255, 0.45)',
+  },
+  syncModeSectionHeaderSelected: {
+    borderColor: Colors.blue600,
+    backgroundColor: 'rgba(255, 255, 255, 0.72)',
+  },
+  syncModeOptions: {
+    gap: spacing(2),
+  },
+  syncModeOption: {
+    borderWidth: 2,
+    borderColor: Colors.blue200,
+    borderRadius: 16,
+    padding: spacing(3),
+    backgroundColor: 'rgba(255, 255, 255, 0.45)',
+    gap: spacing(1),
+  },
+  syncModeOptionDescription: {
+    opacity: 0.85,
+  },
+  skipChildButton: {
+    alignSelf: 'center',
+    marginTop: spacing(2),
+    paddingVertical: spacing(1),
+  },
+  accountModeRow: {
+    flexDirection: 'row',
+    gap: spacing(2),
+    marginBottom: spacing(2),
+  },
+  accountModeButton: {
+    flex: 1,
+  },
+  loginModeOptions: {
+    gap: spacing(1),
+    marginBottom: spacing(1),
+  },
+  loginModeOption: {
+    paddingVertical: 0,
+    paddingHorizontal: spacing(2),
+    backgroundColor: 'rgba(255, 255, 255, 0.45)',
+    borderRadius: 12,
+  },
+  loginModeOptionLabel: {
+    fontFamily: 'Fredoka_500Medium',
+  },
+  loginFormCard: {
+    padding: spacing(2),
+  },
+  signUpLink: {
+    alignItems: 'center',
+    paddingVertical: spacing(1),
+  },
   visualStage: {
     width: '100%',
     minHeight: 260,

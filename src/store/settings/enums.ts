@@ -1,3 +1,8 @@
+export enum ESyncMode {
+  deviceOnly = 'deviceOnly',
+  multidevice = 'multidevice',
+}
+
 export enum ERole {
   admin = 'admin',
   parent = 'parent',

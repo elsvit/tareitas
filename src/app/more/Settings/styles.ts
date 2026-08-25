@@ -12,6 +12,9 @@ export const themedStyles = styleSheetFactory(() => ({
     flexGrow: 1,
     paddingBottom: spacing(4),
   },
+  subtitle: {
+    marginBottom: spacing(3),
+  },
 }));
 
 export default themedStyles;

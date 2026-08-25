@@ -105,7 +105,16 @@
     "language": "Språk",
     "system_language": "Systemspråk",
     "children": "Barn",
-    "child_password_obligatory": "Barnlösenord krävs"
+    "child_password_obligatory": "Barnlösenord krävs",
+    "account": {
+      "title": "Molnsynkronisering",
+      "signed_in": "Inloggad",
+      "sign_in": "Logga in",
+      "sign_out": "Logga ut",
+      "session_expired": "Din session har gått ut. Logga in igen för att synka.",
+      "login_screen_title": "Logga in",
+      "login_screen_subtitle": "Logga in för att synka din familj mellan enheter."
+    }
   },
   "users": {
     "title": "Användare",
@@ -131,6 +140,7 @@
     "login": "Inloggning",
     "logout": "Utloggning",
     "name": "Namn",
+    "unique_username": "Unikt användarnamn",
     "no_children": "Inga barn än",
     "no_parents": "Inga föräldrar än",
     "parent": "Förälder",
@@ -152,7 +162,8 @@
       "reviewer": "Recensent",
       "sister": "Syster",
       "uncle": "Farbror"
-    }
+    },
+    "change_group": "Byt grupp"
   },
   "tasks": {
     "title": "Uppgifter",
@@ -548,7 +559,78 @@
     },
     "child": {
       "subtitle": "Lägg till ditt första barn. Du kan lägga till fler barn senare från Inställningar.",
-      "step_indicator": "Steg 2 av 2"
+      "step_indicator": "Steg 2 av 2",
+      "skip_for_now": "Hoppa över för nu"
+    },
+    "sync_mode": {
+      "header": "Hur vill du använda Tareitas?",
+      "title": "Välj din inställning",
+      "subtitle": "Du kan använda Tareitas endast på den här enheten eller synka din familj mellan telefoner och surfplattor.",
+      "multidevice": {
+        "title": "Flera enheter",
+        "description": "Synka uppgifter, belöningar och familjedata via molnet. Kräver ett konto."
+      },
+      "device_only": {
+        "title": "Endast den här enheten",
+        "description": "Allt stannar på den här telefonen eller surfplattan. Inget konto behövs."
+      },
+      "create_section_title": "Skapa ny grupp/familj",
+      "connect_section_title": "Anslut till befintlig grupp/familj"
+    },
+    "account": {
+      "header": "Konto",
+      "title": "Skapa ditt konto",
+      "subtitle": "Registrera dig för att synka din familj mellan enheter, eller logga in om du redan har ett konto.",
+      "tab_register": "Registrera",
+      "tab_login": "Logga in",
+      "email": "E-post",
+      "username_optional": "Användarnamn (valfritt)",
+      "pin": "4-siffrig PIN",
+      "pin_confirm": "Bekräfta PIN",
+      "family_name": "Familjenamn",
+      "family_name_default": "{{name}}s familj",
+      "family_name_fallback": "Min familj",
+      "submit_register": "Skapa konto",
+      "submit_login": "Logga in",
+      "error_email_required": "E-post krävs",
+      "error_pin_required": "Ange en 4-siffrig PIN",
+      "error_pin_mismatch": "PIN-koderna matchar inte",
+      "error_generic": "Något gick fel. Försök igen."
+    },
+    "login": {
+      "header": "Logga in",
+      "title": "Välkommen tillbaka",
+      "subtitle": "Logga in med admin-e-post eller ditt unika användarnamn.",
+      "admin": "Admin",
+      "not_admin": "Inte admin",
+      "email": "E-post",
+      "username": "Användarnamn",
+      "pin": "4-siffrig PIN",
+      "submit": "Logga in",
+      "sign_up": "Registrera",
+      "error_email_required": "E-post krävs",
+      "error_username_required": "Användarnamn krävs",
+      "error_pin_required": "Ange en 4-siffrig PIN",
+      "error_generic": "Inloggningen misslyckades. Kontrollera uppgifterna och försök igen."
+    },
+    "sign_up": {
+      "admin_header": "Skapa admin",
+      "admin_title": "Skapa din adminprofil",
+      "admin_subtitle": "Admin loggar in med e-post och hanterar familjen.",
+      "admin_email": "Admin-e-post",
+      "admin_pin": "Admin-PIN (4 siffror)",
+      "child_header": "Lägg till första barnet",
+      "child_title": "Skapa ditt första barn",
+      "child_subtitle": "Barn loggar in med användarnamn.",
+      "child_username": "Barnets användarnamn",
+      "child_pin": "Barnets PIN (4 siffror)",
+      "error_email_required": "Admin-e-post krävs",
+      "error_username_required": "Barnets användarnamn krävs",
+      "error_admin_pin_required": "Ange en 4-siffrig admin-PIN",
+      "error_child_pin_required": "Ange en 4-siffrig barn-PIN",
+      "error_admin_incomplete": "Fyll i adminprofilen först",
+      "error_generic": "Familjen kunde inte skapas. Försök igen.",
+      "error_family_name_required": "Familjenamn krävs"
     }
   },
   "helpCenter": {

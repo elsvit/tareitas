@@ -7,8 +7,8 @@ export interface IParent extends CreatedProps {
   role?: ERole;
   color?: string;
   avatar?: string;
-  email?: string; // not for now
-  passwordHash?: string; // not for now
+  email?: string;
+  username?: string;
   passwordPattern?: string;
 }
 

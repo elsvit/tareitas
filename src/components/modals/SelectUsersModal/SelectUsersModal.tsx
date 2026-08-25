@@ -33,6 +33,8 @@ type Props = {
   onRequestClose: () => void;
   onSelectUser: (user: SelectedUser) => void;
   onLogout: () => void;
+  onChangeGroup?: () => void;
+  showChangeGroup?: boolean;
 };
 
 const toParentUser = (parent: IParent): SelectedUser => ({
@@ -54,6 +56,8 @@ export const SelectUsersModal: React.FC<Props> = ({
   onRequestClose,
   onSelectUser,
   onLogout,
+  onChangeGroup,
+  showChangeGroup = false,
 }) => {
   const parents = useSelector(selectAllParents);
   const children = useSelector(selectAllChildren);
@@ -143,6 +147,25 @@ export const SelectUsersModal: React.FC<Props> = ({
                 {t('users.logout')}
               </Text>
             </Pressable>
+
+            {showChangeGroup && onChangeGroup ? (
+              <Pressable
+                accessibilityRole="button"
+                onPress={onChangeGroup}
+                style={({ pressed }) => [
+                  styles.logoutRow,
+                  pressed && styles.logoutRowPressed,
+                ]}
+              >
+                <Text
+                  variant="titleMedium"
+                  weight="bold"
+                  style={styles.changeGroupText}
+                >
+                  {t('users.change_group')}
+                </Text>
+              </Pressable>
+            ) : null}
           </ScrollView>
         </View>
       </SafeAreaView>
@@ -202,5 +225,8 @@ const styles = StyleSheet.create({
   },
   logoutText: {
     color: Colors.red500,
+  },
+  changeGroupText: {
+    color: Colors.blue600,
   },
 });

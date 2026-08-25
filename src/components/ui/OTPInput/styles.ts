@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
   container: {
     width: '100%',
     alignItems: 'stretch',
-    gap: 20,
+    gap: spacing(2),
   },
 
   // OTP boxes in ONE horizontal row

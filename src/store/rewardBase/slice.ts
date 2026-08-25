@@ -6,6 +6,7 @@ import {
   createEntityReducers,
   createGenericEntityAdapter,
 } from '~/store/helpers';
+import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
 import { IRewardBase } from '~/types/IReward';
 
 import {
@@ -28,33 +29,18 @@ export const rewardBaseSlice = createSlice({
   name: EStateName.rewardBase,
   initialState,
   reducers: {
-    addRewardBase: (state, action: PayloadAction<AddRewardBasePayload>) => {
-      entityReducers.addEntity(
-        state,
-        action as unknown as PayloadAction<{ entity: IRewardBase; isUpsert?: boolean }>,
-      );
-    },
+    addRewardBase: noopEntityRequestReducer,
     addRewardBaseSuccess: (state, action: PayloadAction<IRewardBase>) => {
       entityReducers.addEntity(state, {
         ...action,
         payload: { entity: action.payload },
       } as unknown as PayloadAction<{ entity: IRewardBase; isUpsert?: boolean }>);
     },
-    updateRewardBase: (state, action: PayloadAction<UpdateRewardBasePayload>) => {
-      entityReducers.upsertEntity(
-        state,
-        { ...action, payload: action.payload.entity } as unknown as PayloadAction<IRewardBase>,
-      );
-    },
+    updateRewardBase: noopEntityRequestReducer,
     updateRewardBaseSuccess: (state, action: PayloadAction<IRewardBase>) => {
       entityReducers.upsertEntity(state, action as unknown as PayloadAction<IRewardBase>);
     },
-    removeRewardBase: (state, action: PayloadAction<RemoveRewardBasePayload>) => {
-      entityReducers.removeEntity(
-        state,
-        { ...action, payload: action.payload.id } as unknown as PayloadAction<string>,
-      );
-    },
+    removeRewardBase: noopEntityRequestReducer,
     removeRewardBaseSuccess: (state, action: PayloadAction<string>) => {
       entityReducers.removeEntity(state, action as unknown as PayloadAction<string>);
     },
@@ -72,11 +58,23 @@ export const rewardBaseSlice = createSlice({
         const existing = state.entities[defaultReward.id];
 
         if (!existing) {
+          entityReducers.addEntity(
+            state,
+            {
+              payload: { entity: defaultReward, isUpsert: false },
+            } as PayloadAction<{ entity: IRewardBase; isUpsert?: boolean }>,
+          );
           return;
         }
 
         existing.title = defaultReward.title;
       });
+    },
+    replaceRewardBaseCatalog: (
+      state,
+      action: PayloadAction<IRewardBase[]>,
+    ) => {
+      rewardBaseAdapter.setAll(state, action.payload);
     },
   },
 });
@@ -91,4 +89,5 @@ export const {
   clearRewardBase,
   resetRewardBase,
   syncRewardBaseTranslations,
+  replaceRewardBaseCatalog,
 } = rewardBaseSlice.actions;

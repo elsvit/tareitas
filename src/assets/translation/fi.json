@@ -105,7 +105,16 @@
     "language": "Kieli",
     "system_language": "Järjestelmän kieli",
     "children": "Lapset",
-    "child_password_obligatory": "Lapsen salasana vaaditaan"
+    "child_password_obligatory": "Lapsen salasana vaaditaan",
+    "account": {
+      "title": "Pilvisynkronointi",
+      "signed_in": "Kirjautunut",
+      "sign_in": "Kirjaudu",
+      "sign_out": "Kirjaudu ulos",
+      "session_expired": "Istuntosi on vanhentunut. Kirjaudu uudelleen synkronoidaksesi.",
+      "login_screen_title": "Kirjaudu",
+      "login_screen_subtitle": "Kirjaudu synkronoidaksesi perheesi laitteiden välillä."
+    }
   },
   "users": {
     "title": "Käyttäjät",
@@ -131,6 +140,7 @@
     "login": "Kirjaudu sisään",
     "logout": "Kirjaudu ulos",
     "name": "Nimi",
+    "unique_username": "Yksilöllinen käyttäjänimi",
     "no_children": "Ei vielä lapsia",
     "no_parents": "Ei vielä vanhempia",
     "parent": "Vanhempi",
@@ -152,7 +162,8 @@
       "reviewer": "Arvostelija",
       "sister": "Sisko",
       "uncle": "Setä"
-    }
+    },
+    "change_group": "Vaihda ryhmää"
   },
   "tasks": {
     "title": "Tehtävät",
@@ -548,7 +559,78 @@
     },
     "child": {
       "subtitle": "Lisää ensimmäinen lapsesi. Voit lisätä lapsia myöhemmin asetuksista.",
-      "step_indicator": "Vaihe 2/2"
+      "step_indicator": "Vaihe 2/2",
+      "skip_for_now": "Ohita toistaiseksi"
+    },
+    "sync_mode": {
+      "header": "Miten haluat käyttää Tareitasta?",
+      "title": "Valitse asetukset",
+      "subtitle": "Voit käyttää Tareitasta vain tällä laitteella tai synkronoida perheesi puhelimien ja tablettien välillä.",
+      "multidevice": {
+        "title": "Useita laitteita",
+        "description": "Synkronoi tehtävät, palkinnot ja perhetiedot pilven kautta. Vaatii tilin."
+      },
+      "device_only": {
+        "title": "Vain tämä laite",
+        "description": "Kaikki pysyy tässä puhelimessa tai tabletissa. Tiliä ei tarvita."
+      },
+      "create_section_title": "Luo uusi ryhmä/perhe",
+      "connect_section_title": "Yhdistä olemassa olevaan ryhmään/perheeseen"
+    },
+    "account": {
+      "header": "Tili",
+      "title": "Luo tili",
+      "subtitle": "Rekisteröidy synkronoidaksesi perheesi laitteiden välillä tai kirjaudu sisään, jos sinulla on jo tili.",
+      "tab_register": "Rekisteröidy",
+      "tab_login": "Kirjaudu",
+      "email": "Sähköposti",
+      "username_optional": "Käyttäjänimi (valinnainen)",
+      "pin": "4-numeroinen PIN",
+      "pin_confirm": "Vahvista PIN",
+      "family_name": "Perheen nimi",
+      "family_name_default": "{{name}}n perhe",
+      "family_name_fallback": "Oma perheeni",
+      "submit_register": "Luo tili",
+      "submit_login": "Kirjaudu",
+      "error_email_required": "Sähköposti on pakollinen",
+      "error_pin_required": "Syötä 4-numeroinen PIN",
+      "error_pin_mismatch": "PIN-koodit eivät täsmää",
+      "error_generic": "Jokin meni pieleen. Yritä uudelleen."
+    },
+    "login": {
+      "header": "Kirjaudu",
+      "title": "Tervetuloa takaisin",
+      "subtitle": "Kirjaudu admin-sähköpostilla tai ainutlaatuisella käyttäjänimelläsi.",
+      "admin": "Admin",
+      "not_admin": "Ei admin",
+      "email": "Sähköposti",
+      "username": "Käyttäjänimi",
+      "pin": "4-numeroinen PIN",
+      "submit": "Kirjaudu",
+      "sign_up": "Rekisteröidy",
+      "error_email_required": "Sähköposti on pakollinen",
+      "error_username_required": "Käyttäjänimi on pakollinen",
+      "error_pin_required": "Syötä 4-numeroinen PIN",
+      "error_generic": "Kirjautuminen epäonnistui. Tarkista tiedot ja yritä uudelleen."
+    },
+    "sign_up": {
+      "admin_header": "Luo admin",
+      "admin_title": "Luo admin-profiili",
+      "admin_subtitle": "Admin kirjautuu sähköpostilla ja hallitsee perhettä.",
+      "admin_email": "Admin-sähköposti",
+      "admin_pin": "Admin-PIN (4 numeroa)",
+      "child_header": "Lisää ensimmäinen lapsi",
+      "child_title": "Luo ensimmäinen lapsi",
+      "child_subtitle": "Lapset kirjautuvat käyttäjänimellä.",
+      "child_username": "Lapsen käyttäjänimi",
+      "child_pin": "Lapsen PIN (4 numeroa)",
+      "error_email_required": "Admin-sähköposti on pakollinen",
+      "error_username_required": "Lapsen käyttäjänimi on pakollinen",
+      "error_admin_pin_required": "Syötä 4-numeroinen admin-PIN",
+      "error_child_pin_required": "Syötä 4-numeroinen lapsen PIN",
+      "error_admin_incomplete": "Täytä admin-profiili ensin",
+      "error_generic": "Perheen luominen epäonnistui. Yritä uudelleen.",
+      "error_family_name_required": "Perheen nimi on pakollinen"
     }
   },
   "welcome": {

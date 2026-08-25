@@ -6,7 +6,7 @@ import { selectChildById } from '~/store/children/selectors';
 import { selectParentById } from '~/store/parents/selectors';
 import { getTodayDateString } from '~/utils/date';
 
-import { ERole } from './enums';
+import { ERole, ESyncMode } from './enums';
 import type { IStateSettings } from './types';
 
 export const getSettingsState = (state: RootStateT) => state[EStateName.settings];
@@ -69,3 +69,64 @@ export const selectIsAdmin = createSelector(
 export const selectTaskCalendarDate = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>).taskCalendarDate ??
   getTodayDateString();
+
+export const selectSyncMode = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>).syncMode;
+
+export const selectIsMultidevice = createSelector(
+  [selectSyncMode],
+  syncMode => syncMode === ESyncMode.multidevice,
+);
+
+export const selectFamilyId = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>).familyId;
+
+export const selectAuthToken = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>).authToken;
+
+export const selectRefreshToken = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>).refreshToken;
+
+export const selectHasAuthSession = createSelector(
+  [selectAuthToken, selectRefreshToken, selectFamilyId],
+  (authToken, refreshToken, familyId) =>
+    Boolean(authToken && refreshToken && familyId),
+);
+
+export const selectNeedsAuthLogin = createSelector(
+  [selectIsMultidevice, selectHasAuthSession],
+  (isMultidevice, hasAuthSession) =>
+    isMultidevice && !hasAuthSession,
+);
+
+export const selectRequireLogin = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .requireLogin ?? false;
+
+export const selectLastSyncedTaskBaseRevision = (
+  state: RootStateT,
+) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .lastSyncedTaskBaseRevision ?? 0;
+
+export const selectLastSyncedRewardBaseRevision = (
+  state: RootStateT,
+) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .lastSyncedRewardBaseRevision ?? 0;
+
+export const selectCatalogDirty = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .catalogDirty ?? false;
+
+export const selectPendingRemovedTaskBaseIds = (
+  state: RootStateT,
+) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .pendingRemovedTaskBaseIds ?? [];
+
+export const selectPendingRemovedRewardBaseIds = (
+  state: RootStateT,
+) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .pendingRemovedRewardBaseIds ?? [];

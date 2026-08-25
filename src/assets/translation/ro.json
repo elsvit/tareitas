@@ -105,7 +105,16 @@
     "language": "Limbă",
     "system_language": "Limba sistemului",
     "children": "Copii",
-    "child_password_obligatory": "Este necesară parola pentru copii"
+    "child_password_obligatory": "Este necesară parola pentru copii",
+    "account": {
+      "title": "Sincronizare cloud",
+      "signed_in": "Autentificat",
+      "sign_in": "Autentificare",
+      "sign_out": "Deconectare",
+      "session_expired": "Sesiunea a expirat. Autentifică-te din nou pentru sincronizare.",
+      "login_screen_title": "Autentificare",
+      "login_screen_subtitle": "Autentifică-te pentru a sincroniza familia între dispozitive."
+    }
   },
   "users": {
     "title": "Utilizatori",
@@ -131,6 +140,7 @@
     "login": "Log in",
     "logout": "Deconectare",
     "name": "Nume",
+    "unique_username": "Nume de utilizator unic",
     "no_children": "Încă nu există copii",
     "no_parents": "Încă nu există părinți",
     "parent": "Mamă",
@@ -152,7 +162,8 @@
       "reviewer": "Referent",
       "sister": "soră",
       "uncle": "unchiule"
-    }
+    },
+    "change_group": "Schimbă grupul"
   },
   "tasks": {
     "title": "Sarcini",
@@ -548,7 +559,78 @@
     },
     "child": {
       "subtitle": "Adaugă primul tău copil. Puteți adăuga mai mulți copii ulterior din Setări.",
-      "step_indicator": "Pasul 2 din 2"
+      "step_indicator": "Pasul 2 din 2",
+      "skip_for_now": "Omite deocamdată"
+    },
+    "sync_mode": {
+      "header": "Cum vrei să folosești Tareitas?",
+      "title": "Alege configurarea",
+      "subtitle": "Poți folosi Tareitas doar pe acest dispozitiv sau poți sincroniza familia între telefoane și tablete.",
+      "multidevice": {
+        "title": "Mai multe dispozitive",
+        "description": "Sincronizează sarcini, recompense și date de familie prin cloud. Necesită cont."
+      },
+      "device_only": {
+        "title": "Doar acest dispozitiv",
+        "description": "Totul rămâne pe acest telefon sau tabletă. Nu este necesar cont."
+      },
+      "create_section_title": "Creează grup/familie nouă",
+      "connect_section_title": "Conectează-te la un grup/familie existent"
+    },
+    "account": {
+      "header": "Cont",
+      "title": "Creează-ți contul",
+      "subtitle": "Înregistrează-te pentru a sincroniza familia între dispozitive sau autentifică-te dacă ai deja cont.",
+      "tab_register": "Înregistrare",
+      "tab_login": "Autentificare",
+      "email": "E-mail",
+      "username_optional": "Nume de utilizator (opțional)",
+      "pin": "PIN din 4 cifre",
+      "pin_confirm": "Confirmă PIN",
+      "family_name": "Numele familiei",
+      "family_name_default": "Familia lui {{name}}",
+      "family_name_fallback": "Familia mea",
+      "submit_register": "Creează cont",
+      "submit_login": "Autentificare",
+      "error_email_required": "E-mailul este obligatoriu",
+      "error_pin_required": "Introdu un PIN din 4 cifre",
+      "error_pin_mismatch": "PIN-urile nu se potrivesc",
+      "error_generic": "Ceva nu a mers bine. Încearcă din nou."
+    },
+    "login": {
+      "header": "Autentificare",
+      "title": "Bine ai revenit",
+      "subtitle": "Autentifică-te cu emailul adminului sau numele tău unic de utilizator.",
+      "admin": "Admin",
+      "not_admin": "Nu admin",
+      "email": "E-mail",
+      "username": "Nume de utilizator",
+      "pin": "PIN din 4 cifre",
+      "submit": "Autentificare",
+      "sign_up": "Înregistrare",
+      "error_email_required": "E-mailul este obligatoriu",
+      "error_username_required": "Numele de utilizator este obligatoriu",
+      "error_pin_required": "Introdu un PIN din 4 cifre",
+      "error_generic": "Autentificarea a eșuat. Verifică datele și încearcă din nou."
+    },
+    "sign_up": {
+      "admin_header": "Creează admin",
+      "admin_title": "Creează profilul de admin",
+      "admin_subtitle": "Adminul se autentifică cu email și gestionează familia.",
+      "admin_email": "Email admin",
+      "admin_pin": "PIN admin (4 cifre)",
+      "child_header": "Adaugă primul copil",
+      "child_title": "Creează primul copil",
+      "child_subtitle": "Copiii se autentifică cu nume de utilizator.",
+      "child_username": "Nume de utilizator copil",
+      "child_pin": "PIN copil (4 cifre)",
+      "error_email_required": "Emailul admin este obligatoriu",
+      "error_username_required": "Numele de utilizator al copilului este obligatoriu",
+      "error_admin_pin_required": "Introdu un PIN admin din 4 cifre",
+      "error_child_pin_required": "Introdu un PIN copil din 4 cifre",
+      "error_admin_incomplete": "Completează mai întâi profilul admin",
+      "error_generic": "Nu s-a putut crea familia. Încearcă din nou.",
+      "error_family_name_required": "Numele familiei este obligatoriu"
     }
   },
   "helpCenter": {
