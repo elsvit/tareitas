@@ -20,8 +20,7 @@ import { IconButton } from '~/components/ui/IconButton';
 import { t } from '~/services';
 import { selectAllRewardBase } from '~/store/rewardBase/selectors';
 import { resetRewardBase } from '~/store/rewardBase/slice';
-import { ERole } from '~/store/settings/enums';
-import { selectCurrentRole } from '~/store/settings/selectors';
+import { selectIsAdmin, selectIsParent } from '~/store/settings/selectors';
 import { Colors } from '~/styles';
 import { EScreens } from '~/types';
 import { IRewardBase } from '~/types/IReward';
@@ -34,8 +33,8 @@ export default function BaseRewards() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const rewardBaseList = useSelector(selectAllRewardBase);
-  const currentRole = useSelector(selectCurrentRole);
-  const isAdmin = currentRole === ERole.admin;
+  const canManageBaseRewards = useSelector(selectIsParent);
+  const isAdmin = useSelector(selectIsAdmin);
 
   const normalizedSearchQuery = useMemo(
     () => searchQuery.trim().toLowerCase(),
@@ -53,12 +52,12 @@ export default function BaseRewards() {
   );
 
   const handleAddReward = useCallback(() => {
-    if (!isAdmin) {
+    if (!canManageBaseRewards) {
       return;
     }
 
     router.push(`/${EScreens.BaseRewardAdd}` as any);
-  }, [isAdmin, router]);
+  }, [canManageBaseRewards, router]);
 
   const handleResetRewards = useCallback(() => {
     dispatch(resetRewardBase());
@@ -73,12 +72,12 @@ export default function BaseRewards() {
   }, []);
 
   const handlePressReward = useCallback((id: string) => {
-    if (!isAdmin) {
+    if (!canManageBaseRewards) {
       return;
     }
 
     router.push(`/${EScreens.BaseRewardEdit}?id=${id}` as any);
-  }, [isAdmin, router]);
+  }, [canManageBaseRewards, router]);
 
   const renderItem = useCallback<ListRenderItem<IRewardBase>>(
     ({ item }) => {
@@ -91,11 +90,11 @@ export default function BaseRewards() {
           title={item.title}
           picture={item.picture}
           reward={item.reward}
-          onPress={isAdmin ? handlePress : undefined}
+          onPress={canManageBaseRewards ? handlePress : undefined}
         />
       );
     },
-    [handlePressReward, isAdmin],
+    [canManageBaseRewards, handlePressReward],
   );
 
   const keyExtractor = useCallback(
@@ -160,7 +159,7 @@ export default function BaseRewards() {
           showsVerticalScrollIndicator={false}
         />
 
-        {isAdmin && (
+        {canManageBaseRewards && (
           <View style={styles.fab}>
             <IconButton
               Icon={<PlusIcon width={32} height={32} fill="#FFFFFF" />}

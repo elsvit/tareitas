@@ -18,8 +18,7 @@ import { TaskBaseListItem } from '~/components/tasks/TaskBaseListItem';
 import { Button, Search, Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
 import { t } from '~/services';
-import { ERole } from '~/store/settings/enums';
-import { selectCurrentRole } from '~/store/settings/selectors';
+import { selectIsAdmin, selectIsParent } from '~/store/settings/selectors';
 import { selectAllTaskBaseInDefaultOrder } from '~/store/taskBase/selectors';
 import { resetTaskBase, syncTaskBaseTranslations } from '~/store/taskBase/slice';
 import { Colors } from '~/styles';
@@ -34,8 +33,8 @@ export default function BaseTasks() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const taskBaseList = useSelector(selectAllTaskBaseInDefaultOrder);
-  const currentRole = useSelector(selectCurrentRole);
-  const isAdmin = currentRole === ERole.admin;
+  const canManageBaseTasks = useSelector(selectIsParent);
+  const isAdmin = useSelector(selectIsAdmin);
 
   useEffect(() => {
     dispatch(syncTaskBaseTranslations());
@@ -57,12 +56,12 @@ export default function BaseTasks() {
   );
 
   const handleAddTask = useCallback(() => {
-    if (!isAdmin) {
+    if (!canManageBaseTasks) {
       return;
     }
 
     router.push(`/${EScreens.BaseTaskAdd}`);
-  }, [isAdmin, router]);
+  }, [canManageBaseTasks, router]);
 
   const handleResetTasks = useCallback(() => {
     dispatch(resetTaskBase());
@@ -77,12 +76,12 @@ export default function BaseTasks() {
   }, []);
 
   const handlePressTask = useCallback((id: string) => {
-    if (!isAdmin) {
+    if (!canManageBaseTasks) {
       return;
     }
 
     router.push(`/${EScreens.BaseTaskEdit}?id=${id}`);
-  }, [isAdmin, router]);
+  }, [canManageBaseTasks, router]);
 
   const renderItem = useCallback<ListRenderItem<ITaskBase>>(
     ({ item }) => {
@@ -98,10 +97,10 @@ export default function BaseTasks() {
           reward={item.reward}
           color={item.color}
           subtasks={item.subtasks}
-          onPress={isAdmin ? handlePress : undefined}
+          onPress={canManageBaseTasks ? handlePress : undefined}
         />
       );
-    }, [handlePressTask, isAdmin],
+    }, [canManageBaseTasks, handlePressTask],
   );
 
   const keyExtractor = useCallback(
@@ -165,7 +164,7 @@ export default function BaseTasks() {
           showsVerticalScrollIndicator={false}
         />
 
-        {isAdmin && (
+        {canManageBaseTasks && (
           <View style={styles.fab}>
             <IconButton
               Icon={<PlusIcon width={32} height={32} fill="#FFFFFF" />}

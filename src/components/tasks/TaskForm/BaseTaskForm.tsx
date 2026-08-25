@@ -33,8 +33,7 @@ import { EFormMode } from '~/types/ECommon';
 import { ISubtask, ITaskBase, TaskBaseFormProps } from '~/types/ITask';
 import { capitalizeFirst } from '~/utils/string';
 
-import { ERole } from '~/store/settings/enums';
-import { selectCurrentRole } from '~/store/settings/selectors';
+import { selectIsParent } from '~/store/settings/selectors';
 import { styles } from './styles';
 
 type Props = {
@@ -159,8 +158,7 @@ export const BaseTaskForm: FC<Props> = ({
   const taskImageOptions = getTaskImageOptions();
   const isEditMode = mode === EFormMode.Edit;
 
-  const currentRole = useSelector(selectCurrentRole);
-  const isAdmin = currentRole === ERole.admin;
+  const canManageBaseTasks = useSelector(selectIsParent);
 
   useEffect(() => {
     const sub = watch(() => {
@@ -435,7 +433,7 @@ export const BaseTaskForm: FC<Props> = ({
             >
               {t('button.save')}
             </Button>
-            {isEditMode && isAdmin && (
+            {isEditMode && canManageBaseTasks && (
               <>
                 <Space size={3} />
                 <Button

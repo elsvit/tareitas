@@ -9,9 +9,12 @@ import {
 } from '~/components/modals';
 import type { SelectedUser } from '~/components/modals';
 import { t } from '~/services';
-import { clearFamilyStore } from '~/services/familySync';
+import { resetFamilyForOnboarding } from '~/services/familySync';
 import type { AppDispatch } from '~/store';
-import { selectIsMultidevice } from '~/store/settings/selectors';
+import {
+  selectIsChildPasswordObligatory,
+  selectIsMultidevice,
+} from '~/store/settings/selectors';
 import {
   setCurrentRole,
   setCurrentUser,
@@ -21,19 +24,26 @@ import { getTodayDateString } from '~/utils/date';
 import {
   isPinPassword,
   patternToString,
-  verifyPassword,
 } from '~/utils/users/passwordPattern';
+import {
+  userRequiresPasswordOnSwitch,
+  verifyUserSwitchPassword,
+} from '~/utils/users/userSwitchAuth';
 
 export function useUserSwitch() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const isMultidevice = useSelector(selectIsMultidevice);
-
+  const isChildPasswordObligatory = useSelector(
+    selectIsChildPasswordObligatory,
+  );
   const [isSelectUsersVisible, setIsSelectUsersVisible] = useState(false);
   const [pendingUser, setPendingUser] = useState<SelectedUser | null>(null);
   const [isPinModalVisible, setIsPinModalVisible] = useState(false);
   const [isGestureModalVisible, setIsGestureModalVisible] = useState(false);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [pinAttempt, setPinAttempt] = useState(0);
+  const [isVerifyingPassword, setIsVerifyingPassword] = useState(false);
 
   const openSelectUsers = useCallback(() => {
     setIsSelectUsersVisible(true);
@@ -50,6 +60,8 @@ export function useUserSwitch() {
     setIsPinModalVisible(false);
     setIsGestureModalVisible(false);
     setPasswordError(null);
+    setPinAttempt(0);
+    setIsVerifyingPassword(false);
   }, [dispatch]);
 
   const completeLogin = useCallback(
@@ -61,9 +73,24 @@ export function useUserSwitch() {
       setIsPinModalVisible(false);
       setIsGestureModalVisible(false);
       setPasswordError(null);
+      setPinAttempt(0);
+      setIsVerifyingPassword(false);
     },
     [dispatch],
   );
+
+  const promptForPassword = useCallback((user: SelectedUser) => {
+    setPendingUser(user);
+    setPasswordError(null);
+    setPinAttempt(0);
+
+    if (user.passwordPattern && !isPinPassword(user.passwordPattern)) {
+      setIsGestureModalVisible(true);
+      return;
+    }
+
+    setIsPinModalVisible(true);
+  }, []);
 
   const handleLogout = useCallback(() => {
     setIsSelectUsersVisible(false);
@@ -72,7 +99,7 @@ export function useUserSwitch() {
 
   const handleChangeGroup = useCallback(() => {
     setIsSelectUsersVisible(false);
-    clearFamilyStore(dispatch);
+    resetFamilyForOnboarding(dispatch);
     router.replace('/(onboarding)');
   }, [dispatch, router]);
 
@@ -81,66 +108,88 @@ export function useUserSwitch() {
       setIsSelectUsersVisible(false);
       logoutUser();
 
-      if (!user.passwordPattern) {
+      const requiresPassword = userRequiresPasswordOnSwitch(
+        user,
+        isMultidevice,
+        isChildPasswordObligatory,
+      );
+
+      if (!requiresPassword) {
         completeLogin(user);
         return;
       }
 
-      setPendingUser(user);
+      promptForPassword(user);
+    },
+    [
+      completeLogin,
+      isChildPasswordObligatory,
+      isMultidevice,
+      logoutUser,
+      promptForPassword,
+    ],
+  );
 
-      if (isPinPassword(user.passwordPattern)) {
-        setIsPinModalVisible(true);
-      } else {
-        setIsGestureModalVisible(true);
+  const verifyAndComplete = useCallback(
+    async (user: SelectedUser, input: string) => {
+      setIsVerifyingPassword(true);
+      setPasswordError(null);
+
+      try {
+        const isValid = await verifyUserSwitchPassword(user, input);
+
+        if (isValid) {
+          completeLogin(user);
+          return;
+        }
+
+        setPasswordError(t('users.wrong_password'));
+        setPinAttempt(current => current + 1);
+      } finally {
+        setIsVerifyingPassword(false);
       }
     },
-    [completeLogin, logoutUser],
+    [completeLogin],
   );
 
   const handlePinComplete = useCallback(
     (input: string) => {
-      if (!pendingUser?.passwordPattern) {
+      if (!pendingUser || isVerifyingPassword) {
         return;
       }
 
-      if (verifyPassword(pendingUser.passwordPattern, input)) {
-        completeLogin(pendingUser);
-        return;
-      }
-
-      setPasswordError(t('users.wrong_password'));
+      void verifyAndComplete(pendingUser, input);
     },
-    [completeLogin, pendingUser],
+    [isVerifyingPassword, pendingUser, verifyAndComplete],
   );
 
   const handleGestureComplete = useCallback(
     (pattern: number[]) => {
-      if (!pendingUser?.passwordPattern) {
+      if (!pendingUser?.passwordPattern || isVerifyingPassword) {
         return;
       }
 
-      const input = patternToString(pattern);
-
-      if (verifyPassword(pendingUser.passwordPattern, input)) {
-        completeLogin(pendingUser);
-        return;
-      }
-
-      setPasswordError(t('users.wrong_password'));
+      void verifyAndComplete(
+        pendingUser,
+        patternToString(pattern),
+      );
     },
-    [completeLogin, pendingUser],
+    [isVerifyingPassword, pendingUser, verifyAndComplete],
   );
 
   const closePinModal = useCallback(() => {
     setIsPinModalVisible(false);
     setPendingUser(null);
     setPasswordError(null);
+    setPinAttempt(0);
+    setIsVerifyingPassword(false);
   }, []);
 
   const closeGestureModal = useCallback(() => {
     setIsGestureModalVisible(false);
     setPendingUser(null);
     setPasswordError(null);
+    setIsVerifyingPassword(false);
   }, []);
 
   const passwordTitle = pendingUser
@@ -155,10 +204,11 @@ export function useUserSwitch() {
         onSelectUser={handleSelectUser}
         onLogout={handleLogout}
         onChangeGroup={handleChangeGroup}
-        showChangeGroup={isMultidevice}
+        showChangeGroup
       />
 
       <OTPInputModal
+        key={`pin-${pendingUser?.id ?? 'none'}-${pinAttempt}`}
         isVisible={isPinModalVisible}
         onRequestClose={closePinModal}
         onComplete={handlePinComplete}

@@ -9,11 +9,14 @@ import type { RootStateT } from '~/store';
 import { selectChildById } from '~/store/children/selectors';
 import { updateChild } from '~/store/children/slice';
 import {
+  selectCurrentUser,
+  selectIsAdmin,
   selectIsMultidevice,
 } from '~/store/settings/selectors';
 import { syncFamilyMembers } from '~/store/settings/slice';
 import { EFormMode } from '~/types/ECommon';
 import { ChildFormProps, IChild } from '~/types/IChild';
+import { canEditUserProfile } from '~/utils/users/profilePermissions';
 
 export default function ChildEdit() {
   const dispatch = useDispatch();
@@ -21,10 +24,26 @@ export default function ChildEdit() {
   const route = useRoute<RouteProp<Record<string, { id: string }>, string>>();
   const userId = route.params?.id;
   const isMultidevice = useSelector(selectIsMultidevice);
+  const isAdmin = useSelector(selectIsAdmin);
+  const currentUserId = useSelector(selectCurrentUser);
 
   const child = useSelector((state: RootStateT) =>
     userId ? selectChildById(state, userId) : undefined,
   );
+
+  const canEdit = userId
+    ? canEditUserProfile(isAdmin, currentUserId, userId)
+    : false;
+
+  useEffect(() => {
+    if (!userId || !canEdit) {
+      if (router.canGoBack()) {
+        router.back();
+      } else {
+        router.replace('/users/Users');
+      }
+    }
+  }, [canEdit, router, userId]);
 
   useEffect(() => {
     if (!child || !isMultidevice || child.username?.trim()) {
@@ -53,6 +72,10 @@ export default function ChildEdit() {
       }),
     );
   };
+
+  if (!userId || !canEdit || !child) {
+    return null;
+  }
 
   return (
     <SafeAreaBgImage>

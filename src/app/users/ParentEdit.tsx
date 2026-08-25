@@ -10,8 +10,10 @@ import { ECommonActions } from '~/store/common/types';
 import { EStateName } from '~/store/enums';
 import { updateParent } from '~/store/parents';
 import { selectParentById } from '~/store/parents/selectors';
+import { selectCurrentUser, selectIsAdmin } from '~/store/settings/selectors';
 import { EFormMode } from '~/types/ECommon';
 import { IParent, ParentFormProps } from '~/types/IParent';
+import { canEditUserProfile } from '~/utils/users/profilePermissions';
 
 export default function ParentEdit() {
   const dispatch = useDispatch();
@@ -19,10 +21,26 @@ export default function ParentEdit() {
   const route = useRoute<RouteProp<Record<string, { id: string }>, string>>();
   const userId = route.params?.id;
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const isAdmin = useSelector(selectIsAdmin);
+  const currentUserId = useSelector(selectCurrentUser);
 
   const parent = useSelector((state: RootStateT) =>
     userId ? selectParentById(state, userId) : undefined,
   );
+
+  const canEdit = userId
+    ? canEditUserProfile(isAdmin, currentUserId, userId)
+    : false;
+
+  useEffect(() => {
+    if (!userId || !canEdit) {
+      if (router.canGoBack()) {
+        router.back();
+      } else {
+        router.replace('/users/Users');
+      }
+    }
+  }, [canEdit, router, userId]);
 
   const saveError = useSelector((state: RootStateT) => {
     const common = state[EStateName.common];
@@ -63,6 +81,10 @@ export default function ParentEdit() {
       }),
     );
   };
+
+  if (!userId || !canEdit || !parent) {
+    return null;
+  }
 
   return (
     <SafeAreaBgImage>

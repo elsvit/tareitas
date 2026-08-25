@@ -3,9 +3,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { selectParentById } from '~/store/parents/selectors';
-import { ERole } from '~/store/settings/enums';
-import { selectCurrentRole } from '~/store/settings/selectors';
+import { selectCurrentUser, selectIsAdmin } from '~/store/settings/selectors';
 import { EScreens } from '~/types/ENavigation';
+import { canEditUserProfile } from '~/utils/users/profilePermissions';
 import { UserListItem } from './UserListItem';
 
 type ParentListItemProps = {
@@ -17,20 +17,22 @@ export const ParentListItem: React.FC<ParentListItemProps> = ({
   id,
   onPress,
 }) => {
-  const currentRole = useSelector(selectCurrentRole);
-  const isAdmin = currentRole === ERole.admin;
+  const isAdmin = useSelector(selectIsAdmin);
+  const currentUserId = useSelector(selectCurrentUser);
   const router = useRouter();
 
   const parent = useSelector(state => selectParentById(state as any, id));
 
+  const canEdit = canEditUserProfile(isAdmin, currentUserId, id);
+
   const handlePress = React.useCallback(() => {
-    if (!isAdmin) {
+    if (!canEdit) {
       onPress?.();
       return;
     }
 
     router.push({ pathname: EScreens.ParentEdit as any, params: { id } });
-  }, [id, isAdmin, onPress, router]);
+  }, [canEdit, id, onPress, router]);
 
   if (!parent) return null;
 
@@ -40,7 +42,7 @@ export const ParentListItem: React.FC<ParentListItemProps> = ({
       familyRole={parent.familyRole}
       avatar={parent.avatar}
       color={parent.color}
-      onPress={isAdmin || onPress ? handlePress : undefined}
+      onPress={canEdit || onPress ? handlePress : undefined}
     />
   );
 };
