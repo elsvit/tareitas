@@ -114,7 +114,9 @@
       "session_expired": "Din session har gått ut. Logga in igen för att synka.",
       "login_screen_title": "Logga in",
       "login_screen_subtitle": "Logga in för att synka din familj mellan enheter."
-    }
+    },
+    "show_login_name": "Visa inloggningsnamn",
+    "parents": "Föräldrar"
   },
   "users": {
     "title": "Användare",

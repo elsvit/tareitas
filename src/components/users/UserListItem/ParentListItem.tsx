@@ -3,7 +3,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { selectParentById } from '~/store/parents/selectors';
-import { selectCurrentUser, selectIsAdmin } from '~/store/settings/selectors';
+import {
+  selectCurrentUser,
+  selectIsAdmin,
+  selectShowParentLoginName,
+} from '~/store/settings/selectors';
 import { EScreens } from '~/types/ENavigation';
 import { canEditUserProfile } from '~/utils/users/profilePermissions';
 import { UserListItem } from './UserListItem';
@@ -22,6 +26,7 @@ export const ParentListItem: React.FC<ParentListItemProps> = ({
   const router = useRouter();
 
   const parent = useSelector(state => selectParentById(state as any, id));
+  const showLoginName = useSelector(selectShowParentLoginName);
 
   const canEdit = canEditUserProfile(isAdmin, currentUserId, id);
 
@@ -39,7 +44,8 @@ export const ParentListItem: React.FC<ParentListItemProps> = ({
   return (
     <UserListItem
       name={parent.name}
-      // username={parent.username}
+      username={parent.username}
+      showLoginName={showLoginName}
       familyRole={parent.familyRole}
       avatar={parent.avatar}
       color={parent.color}

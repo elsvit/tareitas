@@ -114,7 +114,9 @@
       "session_expired": "Twoja sesja wygasła. Zaloguj się ponownie, aby synchronizować.",
       "login_screen_title": "Logowanie",
       "login_screen_subtitle": "Zaloguj się, aby synchronizować rodzinę między urządzeniami."
-    }
+    },
+    "show_login_name": "Pokaż nazwę logowania",
+    "parents": "Rodzice"
   },
   "users": {
     "title": "Użytkownicy",

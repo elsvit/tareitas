@@ -114,7 +114,9 @@
       "session_expired": "Istuntosi on vanhentunut. Kirjaudu uudelleen synkronoidaksesi.",
       "login_screen_title": "Kirjaudu",
       "login_screen_subtitle": "Kirjaudu synkronoidaksesi perheesi laitteiden välillä."
-    }
+    },
+    "show_login_name": "Näytä kirjautumisnimi",
+    "parents": "Vanhemmat"
   },
   "users": {
     "title": "Käyttäjät",

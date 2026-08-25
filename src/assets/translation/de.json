@@ -103,7 +103,9 @@
     "title": "Einstellungen",
     "language": "Sprache",
     "children": "Kinder",
-    "child_password_obligatory": "Kinderpasswort erforderlich"
+    "child_password_obligatory": "Kinderpasswort erforderlich",
+    "show_login_name": "Anmeldename anzeigen",
+    "parents": "Eltern"
   },
   "users": {
     "title": "Benutzer",

@@ -17,6 +17,10 @@ import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectAllParents } from '~/store/parents/selectors';
 import { ERole } from '~/store/settings/enums';
+import {
+  selectShowLoginName,
+  selectShowParentLoginName,
+} from '~/store/settings/selectors';
 import { Colors } from '~/styles';
 import { IChild } from '~/types/IChild';
 import { IParent } from '~/types/IParent';
@@ -66,6 +70,8 @@ export const SelectUsersModal: React.FC<Props> = ({
 }) => {
   const parents = useSelector(selectAllParents);
   const children = useSelector(selectAllChildren);
+  const showParentLoginName = useSelector(selectShowParentLoginName);
+  const showChildLoginName = useSelector(selectShowLoginName);
 
   return (
     <Modal
@@ -106,6 +112,7 @@ export const SelectUsersModal: React.FC<Props> = ({
                     key={parent.id}
                     name={parent.name}
                     username={parent.username}
+                    showLoginName={showParentLoginName}
                     familyRole={parent.familyRole}
                     avatar={parent.avatar}
                     color={parent.color}
@@ -134,6 +141,7 @@ export const SelectUsersModal: React.FC<Props> = ({
                     key={child.id}
                     name={child.name}
                     username={child.username}
+                    showLoginName={showChildLoginName}
                     avatar={child.avatar}
                     color={child.color}
                     onPress={() => onSelectUser(toChildUser(child))}

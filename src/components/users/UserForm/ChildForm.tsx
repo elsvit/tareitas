@@ -107,6 +107,8 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
   const currentRole = useSelector(selectCurrentRole);
   const isMultidevice = useSelector(selectIsMultidevice);
   const isChildPasswordObligatory = useSelector(selectIsChildPasswordObligatory);
+  const isChildPasswordRequired =
+    isMultidevice || isChildPasswordObligatory;
   const isAdmin = currentRole === ERole.admin;
   const isEditMode = mode === EFormMode.Edit;
   const childUsername = child?.username?.trim() ?? '';
@@ -132,11 +134,11 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
         color: z.string().trim().min(1, requiredMessage),
         role: z.nativeEnum(ERole),
         avatar: z.string().trim().min(1, requiredMessage),
-        passwordPattern: isChildPasswordObligatory
+        passwordPattern: isChildPasswordRequired
           ? z.string().trim().min(4, requiredMessage)
           : z.string().trim().optional(),
       }),
-    [isChildPasswordObligatory, requiredMessage, showUsernameField],
+    [isChildPasswordRequired, requiredMessage, showUsernameField],
   );
 
   const {
@@ -321,7 +323,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
                 <>
                   <Text style={styles.label}>
                     {t('users.password')}
-                    {isChildPasswordObligatory ? ' *' : ''}
+                    {isChildPasswordRequired ? ' *' : ''}
                   </Text>
                   <View style={styles.row}>
                     <OTPInputIconButton

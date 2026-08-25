@@ -24,6 +24,7 @@ type Props = {
   avatar?: string;
   name: string;
   username?: string;
+  showLoginName?: boolean;
   familyRole?: string;
   color?: string;
   onPress?: () => void;
@@ -33,6 +34,7 @@ export const UserListItem: React.FC<Props> = ({
   avatar,
   name,
   username,
+  showLoginName = false,
   familyRole,
   color,
   onPress,
@@ -53,6 +55,7 @@ export const UserListItem: React.FC<Props> = ({
       userUrls={userUrls}
       name={name}
       username={username}
+      showLoginName={showLoginName}
       familyRole={familyRole}
       textColor={color}
     />
@@ -120,6 +123,7 @@ type RowProps = {
   userUrls: Record<string, string>;
   name: string;
   username?: string;
+  showLoginName?: boolean;
   familyRole?: string;
   textColor?: string;
 };
@@ -129,6 +133,7 @@ const RowContent: React.FC<RowProps> = ({
   userUrls,
   name,
   username,
+  showLoginName = false,
   familyRole,
   textColor,
 }) => {
@@ -169,7 +174,7 @@ const RowContent: React.FC<RowProps> = ({
   }, [familyRole]);
 
   const subtitle = React.useMemo(() => {
-    const loginName = username?.trim();
+    const loginName = showLoginName ? username?.trim() : '';
     if (familyRoleText && loginName) {
       return `${familyRoleText} (${loginName})`;
     }
@@ -180,7 +185,7 @@ const RowContent: React.FC<RowProps> = ({
       return `(${loginName})`;
     }
     return '';
-  }, [familyRoleText, username]);
+  }, [familyRoleText, showLoginName, username]);
 
   return (
     <View style={styles.row}>

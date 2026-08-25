@@ -113,7 +113,9 @@
       "session_expired": "La sessione è scaduta. Accedi di nuovo per sincronizzare.",
       "login_screen_title": "Accedi",
       "login_screen_subtitle": "Accedi per sincronizzare la famiglia tra dispositivi."
-    }
+    },
+    "show_login_name": "Mostra nome di accesso",
+    "parents": "Genitori"
   },
   "users": {
     "title": "Utenti",

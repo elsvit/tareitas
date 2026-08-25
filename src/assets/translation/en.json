@@ -128,7 +128,9 @@
       "sync_try_later": "Could not sync right now. Please try again in a moment.",
       "login_screen_title": "Sign in",
       "login_screen_subtitle": "Sign in to sync your family across devices."
-    }
+    },
+    "show_login_name": "Show login name",
+    "parents": "Parents"
   },
   "users": {
     "title": "Users",

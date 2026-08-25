@@ -114,7 +114,9 @@
       "session_expired": "Sesiunea a expirat. Autentifică-te din nou pentru sincronizare.",
       "login_screen_title": "Autentificare",
       "login_screen_subtitle": "Autentifică-te pentru a sincroniza familia între dispozitive."
-    }
+    },
+    "show_login_name": "Afișează numele de autentificare",
+    "parents": "Părinți"
   },
   "users": {
     "title": "Utilizatori",

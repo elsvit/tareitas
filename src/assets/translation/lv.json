@@ -114,7 +114,9 @@
       "session_expired": "Jūsu sesija ir beigusies. Pierakstieties vēlreiz, lai sinhronizētu.",
       "login_screen_title": "Pieteikties",
       "login_screen_subtitle": "Pierakstieties, lai sinhronizētu ģimeni starp ierīcēm."
-    }
+    },
+    "show_login_name": "Rādīt pieteikšanās vārdu",
+    "parents": "Vecāki"
   },
   "users": {
     "title": "Lietotāji",

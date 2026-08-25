@@ -103,7 +103,9 @@
     "title": "Indstillinger",
     "language": "Sprog",
     "children": "Børn",
-    "child_password_obligatory": "Børnekodeord påkrævet"
+    "child_password_obligatory": "Børnekodeord påkrævet",
+    "show_login_name": "Vis login-navn",
+    "parents": "Forældre"
   },
   "users": {
     "title": "Brugere",

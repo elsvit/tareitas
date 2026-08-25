@@ -114,7 +114,9 @@
       "session_expired": "Votre session a expiré. Connectez-vous à nouveau pour synchroniser.",
       "login_screen_title": "Connexion",
       "login_screen_subtitle": "Connectez-vous pour synchroniser votre famille entre appareils."
-    }
+    },
+    "show_login_name": "Afficher le nom de connexion",
+    "parents": "Parents"
   },
   "users": {
     "title": "Utilisateurs",

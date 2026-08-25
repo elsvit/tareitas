@@ -113,7 +113,9 @@
       "session_expired": "Teie seanss on aegunud. Sünkroniseerimiseks logige uuesti sisse.",
       "login_screen_title": "Logi sisse",
       "login_screen_subtitle": "Logige sisse, et sünkroniseerida pere seadmete vahel."
-    }
+    },
+    "show_login_name": "Kuva sisselogimisnimi",
+    "parents": "Lapsevanemad"
   },
   "users": {
     "title": "Kasutajad",

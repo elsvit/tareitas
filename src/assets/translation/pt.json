@@ -108,7 +108,9 @@
       "session_expired": "A sua sessão expirou. Inicie sessão novamente para sincronizar.",
       "login_screen_title": "Iniciar sessão",
       "login_screen_subtitle": "Inicie sessão para sincronizar a família entre dispositivos."
-    }
+    },
+    "show_login_name": "Mostrar nome de acesso",
+    "parents": "Pais"
   },
   "users": {
     "title": "Usuários",

@@ -114,7 +114,9 @@
       "session_expired": "Vaša sesija je istekla. Prijavite se ponovno za sinkronizaciju.",
       "login_screen_title": "Prijava",
       "login_screen_subtitle": "Prijavite se za sinkronizaciju obitelji između uređaja."
-    }
+    },
+    "show_login_name": "Prikaži ime za prijavu",
+    "parents": "Roditelji"
   },
   "users": {
     "title": "Korisnici",

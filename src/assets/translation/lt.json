@@ -114,7 +114,9 @@
       "session_expired": "Jūsų sesija baigėsi. Prisijunkite iš naujo, kad sinchronizuotumėte.",
       "login_screen_title": "Prisijungti",
       "login_screen_subtitle": "Prisijunkite, kad sinchronizuotumėte šeimą tarp įrenginių."
-    }
+    },
+    "show_login_name": "Rodyti prisijungimo vardą",
+    "parents": "Tėvai"
   },
   "users": {
     "title": "Vartotojai",

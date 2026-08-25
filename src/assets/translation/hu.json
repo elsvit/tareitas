@@ -114,7 +114,9 @@
       "session_expired": "A munkamenet lejárt. Jelentkezzen be újra a szinkronizáláshoz.",
       "login_screen_title": "Bejelentkezés",
       "login_screen_subtitle": "Jelentkezzen be a család eszközök közötti szinkronizálásához."
-    }
+    },
+    "show_login_name": "Bejelentkezési név megjelenítése",
+    "parents": "Szülők"
   },
   "users": {
     "title": "Felhasználók",

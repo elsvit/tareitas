@@ -114,7 +114,9 @@
       "session_expired": "Vaša relácia vypršala. Prihláste sa znova na synchronizáciu.",
       "login_screen_title": "Prihlásenie",
       "login_screen_subtitle": "Prihláste sa na synchronizáciu rodiny medzi zariadeniami."
-    }
+    },
+    "show_login_name": "Zobraziť prihlasovacie meno",
+    "parents": "Rodičia"
   },
   "users": {
     "title": "Používatelia",

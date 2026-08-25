@@ -128,7 +128,9 @@
       "sync_try_later": "No se pudo sincronizar ahora. Inténtalo de nuevo en un momento.",
       "login_screen_title": "Iniciar sesión",
       "login_screen_subtitle": "Inicia sesión para sincronizar tu familia entre dispositivos."
-    }
+    },
+    "show_login_name": "Mostrar nombre de acceso",
+    "parents": "Padres"
   },
   "users": {
     "title": "Usuarios",

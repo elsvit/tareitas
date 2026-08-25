@@ -114,7 +114,9 @@
       "session_expired": "Je sessie is verlopen. Log opnieuw in om te synchroniseren.",
       "login_screen_title": "Inloggen",
       "login_screen_subtitle": "Log in om je gezin tussen apparaten te synchroniseren."
-    }
+    },
+    "show_login_name": "Inlognaam tonen",
+    "parents": "Ouders"
   },
   "users": {
     "title": "Gebruikers",
