@@ -11,11 +11,13 @@ export default function Index() {
   const parentIds = useSelector(selectParentIds);
   const requireLogin = useSelector(selectRequireLogin);
 
-  if (parentIds.length === 0 || requireLogin) {
+  if (parentIds.length === 0) {
     return <Redirect href="/(onboarding)" />;
   }
 
-  // return <Redirect href="/(onboarding)" />; // TODO remove later after testing
+  if (requireLogin) {
+    return <Redirect href="/(onboarding)?setup=1" />;
+  }
 
   return <Redirect href="/(tabs)/Tasks" />;
 }

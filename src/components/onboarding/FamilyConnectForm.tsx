@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import {
   Button,
   ButtonColors,
-  Card,
   Space,
   Text,
   TextInput,
@@ -21,41 +20,50 @@ import {
 } from '~/services/familySync';
 import { loginAndLoadFamily } from '~/services/multideviceSetup';
 import type { AppDispatch } from '~/store';
+import { ESyncMode } from '~/store/settings/enums';
+import {
+  setRequireLogin,
+  setSyncMode,
+} from '~/store/settings/slice';
 import { Colors } from '~/styles';
 
-import { OnboardingStepHeader } from './OnboardingStepHeader';
 import { onboardingStyles as styles } from './styles';
 
-type LoginMode = 'admin' | 'member';
+type ConnectLoginMode = 'admin' | 'member';
 
-type OnboardingLoginStepProps = {
-  onSignUpPress: () => void;
+type FamilyConnectFormProps = {
   onSuccess: () => void;
+  showSignUpLink?: boolean;
+  onSignUpPress?: () => void;
 };
 
-export function OnboardingLoginStep({
-  onSignUpPress,
+export function FamilyConnectForm({
   onSuccess,
-}: OnboardingLoginStepProps) {
+  showSignUpLink = false,
+  onSignUpPress,
+}: FamilyConnectFormProps) {
   const dispatch = useDispatch<AppDispatch>();
-  const [mode, setMode] = useState<LoginMode>('admin');
+  const [loginMode, setLoginMode] =
+    useState<ConnectLoginMode>('admin');
   const [identifier, setIdentifier] = useState('');
   const [pin, setPin] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [loginError, setLoginError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleModeChange = (nextMode: LoginMode) => {
-    setMode(nextMode);
+  const handleLoginModeChange = (
+    nextMode: ConnectLoginMode,
+  ) => {
+    setLoginMode(nextMode);
     setIdentifier('');
-    setError(null);
+    setLoginError(null);
   };
 
   const handleLogin = async () => {
-    setError(null);
+    setLoginError(null);
 
     if (!identifier.trim()) {
-      setError(
-        mode === 'admin'
+      setLoginError(
+        loginMode === 'admin'
           ? t('onboarding.login.error_email_required')
           : t('onboarding.login.error_username_required'),
       );
@@ -63,7 +71,7 @@ export function OnboardingLoginStep({
     }
 
     if (pin.length !== 4) {
-      setError(t('onboarding.login.error_pin_required'));
+      setLoginError(t('onboarding.login.error_pin_required'));
       return;
     }
 
@@ -71,7 +79,7 @@ export function OnboardingLoginStep({
 
     try {
       const result = await loginAndLoadFamily(
-        mode === 'admin'
+        loginMode === 'admin'
           ? {
               email: identifier.trim(),
               pin,
@@ -81,6 +89,9 @@ export function OnboardingLoginStep({
               pin,
             },
       );
+
+      dispatch(setSyncMode(ESyncMode.multidevice));
+      dispatch(setRequireLogin(false));
 
       try {
         hydrateFamilyStore(
@@ -99,7 +110,7 @@ export function OnboardingLoginStep({
 
       onSuccess();
     } catch (caught) {
-      setError(
+      setLoginError(
         caught instanceof ApiError
           ? caught.message
           : caught instanceof Error
@@ -113,15 +124,11 @@ export function OnboardingLoginStep({
 
   return (
     <View>
-      <OnboardingStepHeader
-        title={t('onboarding.login.title')}
-        description={t('onboarding.login.subtitle')}
-        accentColor={Colors.blue600}
-      />
-
       <RadioButton.Group
-        onValueChange={value => handleModeChange(value as LoginMode)}
-        value={mode}
+        onValueChange={value =>
+          handleLoginModeChange(value as ConnectLoginMode)
+        }
+        value={loginMode}
       >
         <View style={styles.loginModeOptions}>
           <RadioButton.Item
@@ -139,65 +146,63 @@ export function OnboardingLoginStep({
         </View>
       </RadioButton.Group>
 
+      <TextInput
+        label={
+          loginMode === 'admin'
+            ? t('onboarding.login.email')
+            : t('onboarding.login.username')
+        }
+        value={identifier}
+        onChangeText={setIdentifier}
+        autoCapitalize="none"
+        keyboardType={
+          loginMode === 'admin' ? 'email-address' : 'default'
+        }
+      />
+      <Space size={2} />
+      <Text variant="bodyMedium">{t('onboarding.login.pin')}</Text>
       <Space size={1} />
-
-      <Card style={styles.loginFormCard}>
-        <TextInput
-          label={
-            mode === 'admin'
-              ? t('onboarding.login.email')
-              : t('onboarding.login.username')
-          }
-          value={identifier}
-          onChangeText={setIdentifier}
-          autoCapitalize="none"
-          keyboardType={
-            mode === 'admin' ? 'email-address' : 'default'
-          }
-        />
-        <Space size={2} />
-        <Text variant="bodyMedium">
-          {t('onboarding.login.pin')}
-        </Text>
-        <Space size={1} />
-        <OTPInput
-          maxLength={4}
-          value={pin}
-          onChange={setPin}
-          onComplete={handleLogin}
-        />
-        {error ? (
-          <>
-            <Space size={2} />
-            <Text variant="bodyMedium" color={Colors.red500}>
-              {error}
-            </Text>
-          </>
-        ) : null}
-        <Space size={2} />
-        <Button
-          mode="contained"
-          bgColor={ButtonColors.Green}
-          loading={isSubmitting}
-          disabled={isSubmitting}
-          onPress={handleLogin}
-        >
-          {t('onboarding.login.submit')}
-        </Button>
-        <Space size={2} />
-        <Pressable
-          onPress={onSignUpPress}
-          style={styles.signUpLink}
-        >
-          <Text
-            variant="bodyMedium"
-            color={Colors.blue600}
-            weight="bold"
-          >
-            {t('onboarding.login.sign_up')}
+      <OTPInput
+        maxLength={4}
+        value={pin}
+        onChange={setPin}
+        onComplete={handleLogin}
+      />
+      {loginError ? (
+        <>
+          <Space size={2} />
+          <Text variant="bodyMedium" color={Colors.red500}>
+            {loginError}
           </Text>
-        </Pressable>
-      </Card>
+        </>
+      ) : null}
+      <Space size={2} />
+      <Button
+        mode="contained"
+        bgColor={ButtonColors.Green}
+        loading={isSubmitting}
+        disabled={isSubmitting}
+        onPress={handleLogin}
+      >
+        {t('onboarding.login.submit')}
+      </Button>
+      {showSignUpLink && onSignUpPress ? (
+        <>
+          <Space size={2} />
+          <Pressable
+            onPress={onSignUpPress}
+            style={styles.signUpLink}
+          >
+            <Text
+              variant="bodyMedium"
+              color={Colors.blue600}
+              weight="bold"
+            >
+              {t('onboarding.login.sign_up')}
+            </Text>
+          </Pressable>
+        </>
+      ) : null}
     </View>
   );
 }

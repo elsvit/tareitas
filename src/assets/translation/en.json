@@ -125,6 +125,7 @@
       "sign_in": "Sign in",
       "sign_out": "Sign out",
       "session_expired": "Your session expired. Sign in again to sync.",
+      "sync_try_later": "Could not sync right now. Please try again in a moment.",
       "login_screen_title": "Sign in",
       "login_screen_subtitle": "Sign in to sync your family across devices."
     }

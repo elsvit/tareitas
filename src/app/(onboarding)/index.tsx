@@ -1,4 +1,4 @@
-import { Redirect } from 'expo-router';
+import { Redirect, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -9,10 +9,13 @@ import { selectRequireLogin } from '~/store/settings/selectors';
 export default function OnboardingScreen() {
   const parentIds = useSelector(selectParentIds);
   const requireLogin = useSelector(selectRequireLogin);
+  const { setup } = useLocalSearchParams<{ setup?: string }>();
 
-  if (parentIds.length > 0 && !requireLogin) {
+  if (parentIds.length > 0 && !requireLogin && setup !== '1') {
     return <Redirect href="/(tabs)/Tasks" />;
   }
 
-  return <OnboardingFlow />;
+  const skipIntro = requireLogin || setup === '1';
+
+  return <OnboardingFlow skipIntro={skipIntro} />;
 }

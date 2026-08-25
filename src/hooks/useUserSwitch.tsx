@@ -100,7 +100,7 @@ export function useUserSwitch() {
   const handleChangeGroup = useCallback(() => {
     setIsSelectUsersVisible(false);
     resetFamilyForOnboarding(dispatch);
-    router.replace('/(onboarding)');
+    router.replace('/(onboarding)?setup=1');
   }, [dispatch, router]);
 
   const handleSelectUser = useCallback(

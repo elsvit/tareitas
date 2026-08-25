@@ -28,3 +28,7 @@ export {
   createTaskInstance,
   updateTaskInstance,
 } from './tasksApi';
+export {
+  toAbsoluteUploadUrl,
+  uploadFamilyImage,
+} from './uploadsApi';

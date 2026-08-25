@@ -125,6 +125,7 @@
       "sign_in": "Iniciar sesión",
       "sign_out": "Cerrar sesión",
       "session_expired": "Tu sesión ha expirado. Inicia sesión de nuevo para sincronizar.",
+      "sync_try_later": "No se pudo sincronizar ahora. Inténtalo de nuevo en un momento.",
       "login_screen_title": "Iniciar sesión",
       "login_screen_subtitle": "Inicia sesión para sincronizar tu familia entre dispositivos."
     }

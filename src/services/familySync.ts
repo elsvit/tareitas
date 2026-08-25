@@ -15,6 +15,7 @@ import {
   clearParents,
   updateParent,
 } from '~/store/parents/slice';
+import { clearAllImageUrls } from '~/store/images/slice';
 import { ERole } from '~/store/settings/enums';
 import {
   clearAuthSession,
@@ -70,6 +71,7 @@ export function hydrateFamilyStore(
 
   dispatch(clearParents());
   dispatch(clearChildren());
+  dispatch(clearAllImageUrls());
 
   dispatch(
     setMultideviceSession({
@@ -288,6 +290,7 @@ export async function mergeFamilyMemberCredentials(
 export function clearFamilyStore(dispatch: AppDispatch) {
   dispatch(clearParents());
   dispatch(clearChildren());
+  dispatch(clearAllImageUrls());
   dispatch(clearAuthSession());
   dispatch(setCurrentUser(null));
   dispatch(setCurrentRole(null));
@@ -298,6 +301,7 @@ export function clearFamilyStore(dispatch: AppDispatch) {
 export function resetFamilyForOnboarding(dispatch: AppDispatch) {
   dispatch(clearParents());
   dispatch(clearChildren());
+  dispatch(clearAllImageUrls());
   dispatch(clearMultideviceSession());
   dispatch(setCurrentUser(null));
   dispatch(setCurrentRole(null));

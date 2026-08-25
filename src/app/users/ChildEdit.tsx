@@ -1,6 +1,6 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
@@ -8,6 +8,8 @@ import { ChildForm } from '~/components/users/UserForm/ChildForm';
 import type { RootStateT } from '~/store';
 import { selectChildById } from '~/store/children/selectors';
 import { updateChild } from '~/store/children/slice';
+import { ECommonActions } from '~/store/common/types';
+import { EStateName } from '~/store/enums';
 import {
   selectCurrentUser,
   selectIsAdmin,
@@ -30,6 +32,25 @@ export default function ChildEdit() {
   const child = useSelector((state: RootStateT) =>
     userId ? selectChildById(state, userId) : undefined,
   );
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const saveError = useSelector((state: RootStateT) => {
+    const common = state[EStateName.common];
+
+    return common[ECommonActions.ERROR][updateChild.type]?.message ?? null;
+  });
+
+  const isSaving = useSelector((state: RootStateT) => {
+    const common = state[EStateName.common];
+
+    return common[ECommonActions.LOADING][updateChild.type] ?? false;
+  });
+
+  useEffect(() => {
+    if (saveError) {
+      setSubmitError(saveError);
+    }
+  }, [saveError]);
 
   const canEdit = userId
     ? canEditUserProfile(isAdmin, currentUserId, userId)
@@ -54,6 +75,8 @@ export default function ChildEdit() {
   }, [child?.id, child?.username, dispatch, isMultidevice]);
 
   const handleSave = (user: ChildFormProps) => {
+    setSubmitError(null);
+
     const newUser: IChild = {
       ...child,
       id: userId as string,
@@ -79,7 +102,13 @@ export default function ChildEdit() {
 
   return (
     <SafeAreaBgImage>
-      <ChildForm mode={EFormMode.Edit} child={child} onSave={handleSave} />
+      <ChildForm
+        mode={EFormMode.Edit}
+        child={child}
+        onSave={handleSave}
+        submitError={submitError}
+        isSubmitting={isSaving}
+      />
     </SafeAreaBgImage>
   );
 }

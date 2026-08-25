@@ -41,6 +41,11 @@ export const imagesSlice = createSlice({
     removeUserImageUrl: (state, action: PayloadAction<string>) => {
       delete state.userUrls[action.payload];
     },
+    clearAllImageUrls: state => {
+      state.taskUrls = {};
+      state.rewardUrls = {};
+      state.userUrls = {};
+    },
   },
 });
 
@@ -51,4 +56,5 @@ export const {
   removeRewardImageUrl,
   setUserImageUrl,
   removeUserImageUrl,
+  clearAllImageUrls,
 } = imagesSlice.actions;

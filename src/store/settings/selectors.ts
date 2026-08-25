@@ -103,6 +103,29 @@ export const selectRequireLogin = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>)
     .requireLogin ?? false;
 
+export const selectLastSessionActivityAt = (
+  state: RootStateT,
+) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .lastSessionActivityAt ?? null;
+
+export const selectPendingReturnRoute = (
+  state: RootStateT,
+) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .pendingReturnRoute ?? null;
+
+export const selectSessionPauseCount = (
+  state: RootStateT,
+) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .sessionPauseCount ?? 0;
+
+export const selectIsSessionPaused = createSelector(
+  [selectSessionPauseCount],
+  pauseCount => pauseCount > 0,
+);
+
 export const selectLastSyncedTaskBaseRevision = (
   state: RootStateT,
 ) =>

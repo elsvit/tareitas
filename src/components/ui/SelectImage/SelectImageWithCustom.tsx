@@ -16,16 +16,26 @@ import { v4 as uuidv4 } from 'uuid';
 import { Button, ButtonColors, Text } from '~/components/ui';
 import { saveImageToDevice } from '~/components/ui/ImageLoader/ImageLoader.utils';
 import { SCREEN_TEXT } from '~/constants/formField';
+import { useMediaSessionPause } from '~/hooks/useSessionPause';
 import { t } from '~/services';
+import { uploadFamilyImageWithSession } from '~/services/api/uploadFamilyImageWithSession';
 import {
-  selectRewardImageUrls,
-  selectTaskImageUrls,
-  selectUserImageUrls,
+  selectFamilyId,
+  selectIsMultidevice,
+} from '~/store/settings/selectors';
+import {
+  selectFamilyScopedRewardImageEntries,
+  selectFamilyScopedTaskImageEntries,
+  selectFamilyScopedUserImageEntries,
+  selectUsedRewardImageIds,
+  selectUsedTaskImageIds,
+  selectUsedUserImageIds,
   setRewardImageUrl,
   setTaskImageUrl,
   setUserImageUrl,
 } from '~/store/images';
 import type { ImageStoreKind } from '~/store/images/types';
+import { filterFamilyImageEntries } from '~/utils/imageScope';
 import { IImageOption } from '~/types';
 
 import { styles } from './SelectImageWithCustom.styles';
@@ -49,12 +59,20 @@ export function SelectImageWithCustom({
   label,
 }: Props) {
   const dispatch = useDispatch();
-  const taskUrls = useSelector(selectTaskImageUrls);
-  const rewardUrls = useSelector(selectRewardImageUrls);
-  const userUrls = useSelector(selectUserImageUrls);
-
-  const customUrls =
-    kind === 'task' ? taskUrls : kind === 'reward' ? rewardUrls : userUrls;
+  const isMultidevice = useSelector(selectIsMultidevice);
+  const familyId = useSelector(selectFamilyId);
+  const scopedUserEntries = useSelector(
+    selectFamilyScopedUserImageEntries,
+  );
+  const scopedTaskEntries = useSelector(
+    selectFamilyScopedTaskImageEntries,
+  );
+  const scopedRewardEntries = useSelector(
+    selectFamilyScopedRewardImageEntries,
+  );
+  const usedUserIds = useSelector(selectUsedUserImageIds);
+  const usedTaskIds = useSelector(selectUsedTaskImageIds);
+  const usedRewardIds = useSelector(selectUsedRewardImageIds);
 
   const [isPickModalOpen, setIsPickModalOpen] = useState(false);
   const [isManipulatorOpen, setIsManipulatorOpen] = useState(false);
@@ -62,6 +80,16 @@ export function SelectImageWithCustom({
   const [isSaving, setIsSaving] = useState(false);
   const [isPicking, setIsPicking] = useState(false);
   const [isCropping, setIsCropping] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const isMediaFlowActive =
+    isPickModalOpen ||
+    isManipulatorOpen ||
+    isPicking ||
+    isCropping ||
+    isSaving;
+
+  useMediaSessionPause(isMediaFlowActive);
 
   const pickAndCropFromGallery = useCallback(async () => {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -84,10 +112,36 @@ export function SelectImageWithCustom({
     return result.assets[0].uri;
   }, []);
 
-  const customEntries = useMemo(
-    () => Object.entries(customUrls),
-    [customUrls],
-  );
+  const customEntries = useMemo(() => {
+    const baseEntries =
+      kind === 'task'
+        ? scopedTaskEntries
+        : kind === 'reward'
+          ? scopedRewardEntries
+          : scopedUserEntries;
+    const usedIds =
+      kind === 'task'
+        ? usedTaskIds
+        : kind === 'reward'
+          ? usedRewardIds
+          : usedUserIds;
+
+    return filterFamilyImageEntries(baseEntries, {
+      familyId,
+      usedIds,
+      selectedId: value,
+    });
+  }, [
+    familyId,
+    kind,
+    scopedRewardEntries,
+    scopedTaskEntries,
+    scopedUserEntries,
+    usedRewardIds,
+    usedTaskIds,
+    usedUserIds,
+    value,
+  ]);
 
   const openPickModal = () => {
     setIsPickModalOpen(true);
@@ -117,6 +171,7 @@ export function SelectImageWithCustom({
 
   const handleChooseFromGallery = useCallback(async () => {
     setIsPicking(true);
+    setUploadError(null);
 
     try {
       const uri = await pickAndCropFromGallery();
@@ -135,6 +190,7 @@ export function SelectImageWithCustom({
 
   const handleAdjustCrop = useCallback(async () => {
     setIsCropping(true);
+    setUploadError(null);
 
     try {
       const uri = await pickAndCropFromGallery();
@@ -153,18 +209,43 @@ export function SelectImageWithCustom({
     }
 
     setIsSaving(true);
+    setUploadError(null);
 
     try {
       const nextId = uuidv4();
       const savedUri = await saveImageToDevice(draftUri, kind, nextId);
 
-      saveCustomImageUrl(nextId, savedUri);
-      onChange?.(nextId);
+      if (isMultidevice && familyId) {
+        const uploaded = await uploadFamilyImageWithSession(
+          familyId,
+          savedUri,
+        );
+
+        saveCustomImageUrl(uploaded.path, savedUri);
+        onChange?.(uploaded.path);
+      } else {
+        saveCustomImageUrl(nextId, savedUri);
+        onChange?.(nextId);
+      }
+
       closeManipulator();
+    } catch (error) {
+      setUploadError(
+        error instanceof Error
+          ? error.message
+          : t('settings.account.sync_try_later'),
+      );
     } finally {
       setIsSaving(false);
     }
-  }, [draftUri, kind, onChange, saveCustomImageUrl]);
+  }, [
+    draftUri,
+    familyId,
+    isMultidevice,
+    kind,
+    onChange,
+    saveCustomImageUrl,
+  ]);
 
   return (
     <>
@@ -307,6 +388,11 @@ export function SelectImageWithCustom({
             </Button>
 
             <View style={styles.actions}>
+              {uploadError ? (
+                <Text variant="bodyMedium" style={baseStyles.errorText}>
+                  {uploadError}
+                </Text>
+              ) : null}
               <Button
                 mode="contained"
                 bgColor={ButtonColors.Gray}
