@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, View } from 'react-native';
 
-import { Card, Space, Text } from '~/components/ui';
+import { Space, Text } from '~/components/ui';
 import { t } from '~/services';
 import { ESyncMode } from '~/store/settings/enums';
 import { Colors } from '~/styles';
@@ -11,6 +11,8 @@ import { OnboardingStepHeader } from './OnboardingStepHeader';
 import { onboardingStyles as styles } from './styles';
 
 export type OnboardingSetupPath = 'create' | 'connect';
+
+const SETUP_PATHS: OnboardingSetupPath[] = ['create', 'connect'];
 
 type OnboardingSyncModeStepProps = {
   setupPath: OnboardingSetupPath;
@@ -57,13 +59,15 @@ export function OnboardingSyncModeStep({
         accentColor={Colors.blue600}
       />
 
-      <View style={styles.syncModeSection}>
+      <View
+        style={[
+          styles.syncModeSectionBox,
+          setupPath === 'create' && styles.syncModeSectionBoxSelected,
+        ]}
+      >
         <Pressable
           onPress={() => onSetupPathChange('create')}
-          style={[
-            styles.syncModeSectionHeader,
-            setupPath === 'create' && styles.syncModeSectionHeaderSelected,
-          ]}
+          style={styles.syncModeSectionHeader}
         >
           <Text
             variant="titleMedium"
@@ -119,13 +123,15 @@ export function OnboardingSyncModeStep({
 
       <Space size={3} />
 
-      <View style={styles.syncModeSection}>
+      <View
+        style={[
+          styles.syncModeSectionBox,
+          setupPath === 'connect' && styles.syncModeSectionBoxSelected,
+        ]}
+      >
         <Pressable
           onPress={() => onSetupPathChange('connect')}
-          style={[
-            styles.syncModeSectionHeader,
-            setupPath === 'connect' && styles.syncModeSectionHeaderSelected,
-          ]}
+          style={styles.syncModeSectionHeader}
         >
           <Text
             variant="titleMedium"
@@ -140,10 +146,26 @@ export function OnboardingSyncModeStep({
         </Pressable>
 
         {setupPath === 'connect' ? (
-          <Card style={styles.loginFormCard}>
-            <FamilyConnectForm onSuccess={onMemberLoginSuccess} />
-          </Card>
+          <FamilyConnectForm onSuccess={onMemberLoginSuccess} />
         ) : null}
+      </View>
+
+      <View style={styles.dotsRow}>
+        {SETUP_PATHS.map(path => (
+          <Pressable
+            key={path}
+            onPress={() => onSetupPathChange(path)}
+            accessibilityRole="button"
+            accessibilityState={{ selected: setupPath === path }}
+          >
+            <View
+              style={[
+                styles.dot,
+                setupPath === path && styles.dotActive,
+              ]}
+            />
+          </Pressable>
+        ))}
       </View>
     </View>
   );

@@ -79,19 +79,20 @@ export const onboardingStyles = StyleSheet.create({
     backgroundColor: Colors.blue600,
     width: 24,
   },
-  syncModeSection: {
-    gap: spacing(2),
-  },
-  syncModeSectionHeader: {
+  syncModeSectionBox: {
     borderWidth: 2,
     borderColor: Colors.blue200,
     borderRadius: 16,
     padding: spacing(2.5),
     backgroundColor: 'rgba(255, 255, 255, 0.45)',
+    gap: spacing(2),
   },
-  syncModeSectionHeaderSelected: {
+  syncModeSectionBoxSelected: {
     borderColor: Colors.blue600,
     backgroundColor: 'rgba(255, 255, 255, 0.72)',
+  },
+  syncModeSectionHeader: {
+    paddingVertical: spacing(0.5),
   },
   syncModeOptions: {
     gap: spacing(2),
