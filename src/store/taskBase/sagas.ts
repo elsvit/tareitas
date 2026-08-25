@@ -1,17 +1,12 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, select } from 'redux-saga/effects';
 
-import {
-  createTaskInstance,
-  mapServerTaskToLocal,
-  toCreateTaskBody,
-  toUpdateTaskBody,
-  updateTaskInstance,
-} from '~/services/api/tasksApi';
 import { syncCatalogSaga } from '~/store/catalog/sagas';
 import {
-  selectAuthToken,
-  selectFamilyId,
+  assertMultideviceSession,
+} from '~/store/helpers/multideviceSession';
+import { resolveAndCacheTaskPicture } from '~/store/helpers/imageRefSync';
+import {
   selectIsMultidevice,
 } from '~/store/settings/selectors';
 import {
@@ -32,6 +27,7 @@ import {
   RemoveTaskBasePayload,
   UpdateTaskBasePayload,
 } from './types';
+import type { ITaskBase } from '~/types/ITask';
 
 function* syncCatalogIfMultidevice(): Generator<any, void, any> {
   const isMultidevice: boolean = yield select(selectIsMultidevice);
@@ -42,6 +38,31 @@ function* syncCatalogIfMultidevice(): Generator<any, void, any> {
 
   yield put(markCatalogDirty());
   yield call(syncCatalogSaga);
+}
+
+function* resolveTaskEntityPictures(
+  entity: ITaskBase,
+): Generator<any, ITaskBase, any> {
+  const session = yield* assertMultideviceSession();
+
+  if (!session || !entity.picture) {
+    return entity;
+  }
+
+  const resolvedPicture: string | undefined = yield call(
+    resolveAndCacheTaskPicture,
+    entity.picture,
+    session.familyId,
+  );
+
+  if (!resolvedPicture || resolvedPicture === entity.picture) {
+    return entity;
+  }
+
+  return {
+    ...entity,
+    picture: resolvedPicture,
+  };
 }
 
 function* addTaskBaseSaga(
@@ -61,7 +82,10 @@ function* addTaskBaseSaga(
   }
 
   try {
-    yield put(addTaskBaseSuccess(entity));
+    const entityForSync: ITaskBase = yield* resolveTaskEntityPictures(
+      entity,
+    );
+    yield put(addTaskBaseSuccess(entityForSync));
     yield call(syncCatalogIfMultidevice);
   } catch (error) {
     yield put(removeTaskBaseSuccess(entity.id));
@@ -89,7 +113,10 @@ function* updateTaskBaseSaga(
     return;
   }
 
-  yield put(updateTaskBaseSuccess(entity));
+  const entityForSync: ITaskBase = yield* resolveTaskEntityPictures(
+    entity,
+  );
+  yield put(updateTaskBaseSuccess(entityForSync));
   yield call(syncCatalogIfMultidevice);
 
   if (onSuccess) {

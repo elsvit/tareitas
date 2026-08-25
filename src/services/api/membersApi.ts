@@ -78,6 +78,35 @@ export async function updateParentMember(
   return parseApiJson<ServerParentMember>(response);
 }
 
+export type ServerMemberProfile = {
+  userId: string;
+  role: 'admin' | 'parent' | 'child';
+  name: string;
+  color?: string;
+  avatar?: string;
+};
+
+export async function updateMyMemberProfile(
+  token: string,
+  familyId: string,
+  body: {
+    name?: string;
+    color?: string;
+    avatar?: string;
+  },
+) {
+  const response = await apiFetch(
+    `/families/${familyId}/members/me`,
+    {
+      method: 'PATCH',
+      token,
+      body,
+    },
+  );
+
+  return parseApiJson<ServerMemberProfile>(response);
+}
+
 export async function deleteParentMember(
   token: string,
   familyId: string,

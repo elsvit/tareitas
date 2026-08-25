@@ -3,6 +3,10 @@ import { call, put, select } from 'redux-saga/effects';
 
 import { syncCatalogSaga } from '~/store/catalog/sagas';
 import {
+  assertMultideviceSession,
+} from '~/store/helpers/multideviceSession';
+import { resolveAndCacheRewardPicture } from '~/store/helpers/imageRefSync';
+import {
   selectIsMultidevice,
 } from '~/store/settings/selectors';
 import {
@@ -23,6 +27,7 @@ import {
   RemoveRewardBasePayload,
   UpdateRewardBasePayload,
 } from './types';
+import type { IRewardBase } from '~/types/IReward';
 
 function* syncCatalogIfMultidevice(): Generator<any, void, any> {
   const isMultidevice: boolean = yield select(selectIsMultidevice);
@@ -33,6 +38,31 @@ function* syncCatalogIfMultidevice(): Generator<any, void, any> {
 
   yield put(markCatalogDirty());
   yield call(syncCatalogSaga);
+}
+
+function* resolveRewardEntityPictures(
+  entity: IRewardBase,
+): Generator<any, IRewardBase, any> {
+  const session = yield* assertMultideviceSession();
+
+  if (!session || !entity.picture) {
+    return entity;
+  }
+
+  const resolvedPicture: string | undefined = yield call(
+    resolveAndCacheRewardPicture,
+    entity.picture,
+    session.familyId,
+  );
+
+  if (!resolvedPicture || resolvedPicture === entity.picture) {
+    return entity;
+  }
+
+  return {
+    ...entity,
+    picture: resolvedPicture,
+  };
 }
 
 function* addRewardBaseSaga(
@@ -52,7 +82,10 @@ function* addRewardBaseSaga(
   }
 
   try {
-    yield put(addRewardBaseSuccess(entity));
+    const entityForSync: IRewardBase = yield* resolveRewardEntityPictures(
+      entity,
+    );
+    yield put(addRewardBaseSuccess(entityForSync));
     yield call(syncCatalogIfMultidevice);
   } catch (error) {
     yield put(removeRewardBaseSuccess(entity.id));
@@ -80,7 +113,10 @@ function* updateRewardBaseSaga(
     return;
   }
 
-  yield put(updateRewardBaseSuccess(entity));
+  const entityForSync: IRewardBase = yield* resolveRewardEntityPictures(
+    entity,
+  );
+  yield put(updateRewardBaseSuccess(entityForSync));
   yield call(syncCatalogIfMultidevice);
 
   if (onSuccess) {

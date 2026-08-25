@@ -1,17 +1,16 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { CHILDREN_AVATARS, PARENT_AVATARS } from '~/assets/img/users/users';
 import { Text } from '~/components/ui';
-import { selectUserImageUrls } from '~/store/images';
+import { UserAvatar } from '~/components/users/UserAvatar';
 import { t } from '~/services';
+import { selectUserImageUrls } from '~/store/images';
 import { EFamilyRole } from '~/store/settings/enums';
 import { lightenColor } from '~/utils/color';
-import { resolvePictureSource } from '~/utils/pictureSource';
 
 const USER_AVATAR_MAP = Object.fromEntries(
   [...PARENT_AVATARS, ...CHILDREN_AVATARS].map(({ value, image }) => [
@@ -137,11 +136,6 @@ const RowContent: React.FC<RowProps> = ({
   familyRole,
   textColor,
 }) => {
-  const avatarSource = useMemo(
-    () => resolvePictureSource(avatar, userUrls, USER_AVATAR_MAP),
-    [avatar, userUrls],
-  );
-
   const familyRoleText = React.useMemo(() => {
     switch (familyRole) {
       case EFamilyRole.mother:
@@ -189,20 +183,14 @@ const RowContent: React.FC<RowProps> = ({
 
   return (
     <View style={styles.row}>
-      <View style={styles.avatarOuter}>
-        {avatarSource ? (
-          <Image source={avatarSource} style={styles.avatarImage} />
-        ) : (
-          <View style={[styles.avatarImage, styles.avatarFallback]}>
-            <Text
-              style={[styles.avatarText, textColor && { color: textColor }]}
-              numberOfLines={1}
-            >
-              {name?.[0]?.toUpperCase() || '?'}
-            </Text>
-          </View>
-        )}
-      </View>
+      <UserAvatar
+        avatar={avatar}
+        name={name}
+        textColor={textColor}
+        customUrls={userUrls}
+        builtInImages={USER_AVATAR_MAP}
+        size={AVATAR_SIZE}
+      />
 
       <View style={styles.texts}>
         <Text
@@ -249,25 +237,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 12,
-  },
-  avatarOuter: {
-    width: AVATAR_SIZE,
-    height: AVATAR_SIZE,
-    borderRadius: AVATAR_SIZE / 2,
-    overflow: 'hidden',
-    backgroundColor: '#E5E7EB',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatarImage: {
-    width: '100%',
-    height: '100%',
-  },
-  avatarFallback: {
-    backgroundColor: '#E5E7EB',
-  },
-  avatarText: {
-    fontSize: 18,
   },
   texts: {
     flex: 1,

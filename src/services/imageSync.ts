@@ -1,5 +1,8 @@
+import { BASE_REWARDS_IMAGES } from '~/assets/img/rewards/rewards';
+import { BASE_TASKS_IMAGES } from '~/assets/img/tasks/tasks';
 import { CHILDREN_AVATARS, PARENT_AVATARS } from '~/assets/img/users/users';
 import { uploadFamilyImageWithSession } from '~/services/api/uploadFamilyImageWithSession';
+import type { ImageStoreKind } from '~/store/images/types';
 
 const BUILTIN_AVATAR_IDS = new Set([
   ...PARENT_AVATARS.map(option => option.value),
@@ -10,6 +13,31 @@ export function isBuiltinAvatarId(
   value: string | undefined,
 ): boolean {
   return !!value && BUILTIN_AVATAR_IDS.has(value);
+}
+
+export function isBuiltinPictureId(
+  value: string | undefined,
+  kind: ImageStoreKind = 'user',
+): boolean {
+  if (!value) {
+    return false;
+  }
+
+  if (kind === 'task') {
+    return Object.prototype.hasOwnProperty.call(
+      BASE_TASKS_IMAGES,
+      value,
+    );
+  }
+
+  if (kind === 'reward') {
+    return Object.prototype.hasOwnProperty.call(
+      BASE_REWARDS_IMAGES,
+      value,
+    );
+  }
+
+  return isBuiltinAvatarId(value);
 }
 
 export function isRemoteImageRef(
@@ -25,10 +53,11 @@ export function isRemoteImageRef(
 export function isLocalCustomImageRef(
   value: string | undefined,
   localUrls: Record<string, string>,
+  kind: ImageStoreKind = 'user',
 ): boolean {
   return (
     !!value &&
-    !isBuiltinAvatarId(value) &&
+    !isBuiltinPictureId(value, kind) &&
     !isRemoteImageRef(value) &&
     Object.prototype.hasOwnProperty.call(localUrls, value)
   );
@@ -38,11 +67,12 @@ export async function resolveImageRefForServer(
   value: string | undefined,
   localUrls: Record<string, string>,
   familyId: string,
-  authToken: string,
+  _authToken?: string,
+  kind: ImageStoreKind = 'user',
 ): Promise<string | undefined> {
   if (
     !value ||
-    isBuiltinAvatarId(value) ||
+    isBuiltinPictureId(value, kind) ||
     isRemoteImageRef(value)
   ) {
     return value;

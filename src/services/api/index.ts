@@ -22,6 +22,7 @@ export {
   deleteChildMember,
   deleteParentMember,
   updateChildMember,
+  updateMyMemberProfile,
   updateParentMember,
 } from './membersApi';
 export {
