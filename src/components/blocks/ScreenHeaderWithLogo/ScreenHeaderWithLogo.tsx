@@ -1,14 +1,13 @@
 import { useRouter } from 'expo-router';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
-
-import { Image as ExpoImage } from 'expo-image';
 
 import LogoIcon from '~/assets/img/logo.png';
 import { CHILDREN_AVATARS, PARENT_AVATARS } from '~/assets/img/users/users';
 import ChevronLeftIcon from '~/assets/svg/common/chevron-left.svg';
 import { Text } from '~/components/ui';
+import { UserAvatar } from '~/components/users/UserAvatar';
 import { SCREEN_TEXT } from '~/constants/formField';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
@@ -17,7 +16,6 @@ import { t } from '~/services';
 import { selectUserImageUrls } from '~/store/images';
 import { selectChildRewardBalance } from '~/store/rewards/selectors';
 import { Colors } from '~/styles';
-import { resolvePictureSource } from '~/utils/pictureSource';
 import { styles } from './styles';
 import { IIconButton, IScreenHeaderWithLogo } from './types';
 
@@ -43,13 +41,6 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
   useSyncEarnedRewardPeriods();
 
   const userUrls = useSelector(selectUserImageUrls);
-  const currentUserAvatarSource = useMemo(
-    () =>
-      currentUser?.avatar
-        ? resolvePictureSource(currentUser.avatar, userUrls, USER_AVATAR_MAP)
-        : null,
-    [currentUser?.avatar, userUrls],
-  );
 
   const renderButton = (
     btn: IIconButton,
@@ -136,30 +127,31 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
     const renderAvatar = () => {
       if (!currentUser) {
         return (
-          <View style={styles.avatarButton}>
-            <View style={styles.avatarFallback}>
-              <Text style={styles.avatarFallbackText}>?</Text>
-            </View>
-          </View>
+          <UserAvatar
+            name="?"
+            customUrls={userUrls}
+            builtInImages={USER_AVATAR_MAP}
+            size={36}
+            style={styles.avatarButton}
+          />
         );
       }
 
-      const { name, color } = currentUser;
+      const { color, avatar, name } = currentUser;
 
       return (
-        <View
-          style={[styles.avatarButton, color ? { borderColor: color } : null]}
-        >
-          {currentUserAvatarSource ? (
-            <ExpoImage source={currentUserAvatarSource} style={styles.avatarImage} />
-          ) : (
-            <View style={styles.avatarFallback}>
-              <Text style={styles.avatarFallbackText}>
-                {name?.[0]?.toUpperCase() || '?'}
-              </Text>
-            </View>
-          )}
-        </View>
+        <UserAvatar
+          avatar={avatar}
+          name={name}
+          textColor={color}
+          customUrls={userUrls}
+          builtInImages={USER_AVATAR_MAP}
+          size={36}
+          style={[
+            styles.avatarButton,
+            color ? { borderColor: color } : null,
+          ]}
+        />
       );
     };
 

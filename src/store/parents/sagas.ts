@@ -4,6 +4,7 @@ import { call, put, select } from 'redux-saga/effects';
 import {
   createParentMember,
   deleteParentMember,
+  updateMyMemberProfile,
   updateParentMember,
 } from '~/services/api/membersApi';
 import {
@@ -17,7 +18,7 @@ import {
   assertMultideviceSession,
   callMultideviceApi,
 } from '~/store/helpers/multideviceSession';
-import { resolveAndCacheMemberAvatar } from '~/store/helpers/memberAvatarSync';
+import { resolveAndCacheMemberAvatar } from '~/store/helpers/imageRefSync';
 import { takeLatestWithFetchable } from '../helpers/fetchableHandler';
 import {
   addParent,
@@ -28,6 +29,17 @@ import {
   updateParentSuccess,
 } from './slice';
 import { AddParentPayload, RemoveParentPayload, UpdateParentPayload } from './types';
+
+function* syncParentAvatar(
+  avatar: string | undefined,
+  familyId: string,
+) {
+  return yield call(
+    resolveAndCacheMemberAvatar,
+    avatar,
+    familyId,
+  );
+}
 
 function* addParentSaga(
   action: PayloadAction<AddParentPayload>,
@@ -45,11 +57,9 @@ function* addParentSaga(
     return;
   }
 
-  const resolvedAvatar: string | undefined = yield call(
-    resolveAndCacheMemberAvatar,
+  const resolvedAvatar: string | undefined = yield* syncParentAvatar(
     entity.avatar,
     session.familyId,
-    session.authToken,
   );
   const entityForServer = {
     ...entity,
@@ -94,16 +104,6 @@ function* updateParentSaga(
     return;
   }
 
-  if (entity.role === ERole.admin || entity.email?.trim()) {
-    yield put(updateParentSuccess(entity));
-
-    if (onSuccess) {
-      yield call(onSuccess);
-    }
-
-    return;
-  }
-
   const session = yield* assertMultideviceSession();
 
   if (!session) {
@@ -116,16 +116,40 @@ function* updateParentSaga(
     return;
   }
 
-  const resolvedAvatar: string | undefined = yield call(
-    resolveAndCacheMemberAvatar,
+  const resolvedAvatar: string | undefined = yield* syncParentAvatar(
     entity.avatar,
     session.familyId,
-    session.authToken,
   );
   const entityForServer = {
     ...entity,
     avatar: resolvedAvatar,
   };
+
+  if (entity.role === ERole.admin) {
+    const profile = yield* callMultideviceApi(token =>
+      updateMyMemberProfile(token, session.familyId, {
+        name: entityForServer.name.trim(),
+        color: entityForServer.color,
+        avatar: entityForServer.avatar,
+      }),
+    );
+
+    yield put(
+      updateParentSuccess({
+        ...entityForServer,
+        name: profile.name,
+        color: profile.color ?? entityForServer.color,
+        avatar: profile.avatar ?? entityForServer.avatar,
+        role: ERole.admin,
+      }),
+    );
+
+    if (onSuccess) {
+      yield call(onSuccess);
+    }
+
+    return;
+  }
 
   const serverParent = yield* callMultideviceApi(token =>
     updateParentMember(

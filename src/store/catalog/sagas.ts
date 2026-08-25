@@ -29,8 +29,8 @@ import {
   selectPendingRemovedTaskBaseIds,
 } from '~/store/settings/selectors';
 import { IFamilyCatalog } from '~/types/ICatalog';
-import { ITaskBase } from '~/types/ITask';
-import { IRewardBase } from '~/types/IReward';
+import type { ITaskBase } from '~/types/ITask';
+import type { IRewardBase } from '~/types/IReward';
 
 import {
   mapCatalogRewardBaseToLocal,
@@ -38,6 +38,13 @@ import {
   toRewardBaseSyncItem,
   toTaskBaseSyncItem,
 } from './catalogMappers';
+import {
+  resolveAndCacheRewardPicture,
+  resolveAndCacheTaskPicture,
+} from '~/store/helpers/imageRefSync';
+import {
+  assertMultideviceSession,
+} from '~/store/helpers/multideviceSession';
 
 function* applyCatalogFromServer(catalog: IFamilyCatalog) {
   yield put(
@@ -126,12 +133,59 @@ function* syncCatalogSaga(): Generator<any, void, any> {
     return;
   }
 
-  const taskBase: ITaskBase[] = yield select(
+  const session = yield* assertMultideviceSession();
+
+  let taskBase: ITaskBase[] = yield select(
     selectAllTaskBase,
   );
-  const rewardBase: IRewardBase[] = yield select(
+  let rewardBase: IRewardBase[] = yield select(
     selectAllRewardBase,
   );
+
+  if (session && shouldPushTasks) {
+    taskBase = [];
+
+    for (const item of yield select(selectAllTaskBase)) {
+      if (!item.picture) {
+        taskBase.push(item);
+        continue;
+      }
+
+      const resolvedPicture: string | undefined = yield call(
+        resolveAndCacheTaskPicture,
+        item.picture,
+        session.familyId,
+      );
+
+      taskBase.push({
+        ...item,
+        picture: resolvedPicture ?? item.picture,
+      });
+    }
+  }
+
+  if (session && shouldPushRewards) {
+    rewardBase = [];
+
+    for (const item of yield select(selectAllRewardBase)) {
+      if (!item.picture) {
+        rewardBase.push(item);
+        continue;
+      }
+
+      const resolvedPicture: string | undefined = yield call(
+        resolveAndCacheRewardPicture,
+        item.picture,
+        session.familyId,
+      );
+
+      rewardBase.push({
+        ...item,
+        picture: resolvedPicture ?? item.picture,
+      });
+    }
+  }
+
   const removedTaskBaseIds: string[] = yield select(
     selectPendingRemovedTaskBaseIds,
   );

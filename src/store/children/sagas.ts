@@ -5,6 +5,7 @@ import {
   createChildMember,
   deleteChildMember,
   updateChildMember,
+  updateMyMemberProfile,
 } from '~/services/api/membersApi';
 import {
   mapServerChildToLocal,
@@ -15,7 +16,7 @@ import {
   assertMultideviceSession,
   callMultideviceApi,
 } from '~/store/helpers/multideviceSession';
-import { resolveAndCacheMemberAvatar } from '~/store/helpers/memberAvatarSync';
+import { resolveAndCacheMemberAvatar } from '~/store/helpers/imageRefSync';
 import { takeLatestWithFetchable } from '../helpers/fetchableHandler';
 import {
   addChild,
@@ -47,7 +48,6 @@ function* addChildrenSaga(
     resolveAndCacheMemberAvatar,
     entity.avatar,
     session.familyId,
-    session.authToken,
   );
   const entityForServer = {
     ...entity,
@@ -96,12 +96,36 @@ function* updateChildrenSaga(
     resolveAndCacheMemberAvatar,
     entity.avatar,
     session.familyId,
-    session.authToken,
   );
   const entityForServer = {
     ...entity,
     avatar: resolvedAvatar,
   };
+
+  if (entity.id === session.currentUser) {
+    const profile = yield* callMultideviceApi(token =>
+      updateMyMemberProfile(token, session.familyId, {
+        name: entityForServer.name.trim(),
+        color: entityForServer.color,
+        avatar: entityForServer.avatar,
+      }),
+    );
+
+    yield put(
+      updateChildSuccess({
+        ...entityForServer,
+        name: profile.name,
+        color: profile.color ?? entityForServer.color,
+        avatar: profile.avatar ?? entityForServer.avatar,
+      }),
+    );
+
+    if (onSuccess) {
+      yield call(onSuccess);
+    }
+
+    return;
+  }
 
   const serverChild = yield* callMultideviceApi(token =>
     updateChildMember(

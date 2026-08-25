@@ -22,7 +22,7 @@ export function mapServerParentToLocal(
     familyRole:
       (server.familyRole as EFamilyRole | undefined) ??
       existing?.familyRole,
-    role: ERole.parent,
+    role: server.role === 'admin' ? ERole.admin : ERole.parent,
     passwordPattern:
       passwordPattern ?? existing?.passwordPattern,
     createdAt: existing?.createdAt ?? new Date().toISOString(),
