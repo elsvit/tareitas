@@ -25,32 +25,15 @@ import { EMainTabs } from '~/types/ENavigation';
 const TAB_BAR_PADDING_TOP = 16;
 const TAB_BAR_MIN_PADDING_BOTTOM = 12;
 const TAB_BAR_CONTENT_HEIGHT = 60;
+const TAB_BAR_MAX_HEIGHT = 88;
 const TAB_BAR_COLOR = '#016FE8';
 
-function TabBarBackground({
-  bottomInset,
-}: {
-  bottomInset: number;
-}) {
-  if (!IS_ANDROID) {
-    return (
-      <View
-        pointerEvents="none"
-        style={{ flex: 1, backgroundColor: TAB_BAR_COLOR }}
-      />
-    );
-  }
-
+function TabBarBackground() {
   return (
-    <View pointerEvents="none" style={{ flex: 1 }}>
-      <View style={{ flex: 1, backgroundColor: TAB_BAR_COLOR }} />
-      <View
-        style={{
-          height: bottomInset,
-          backgroundColor: TAB_BAR_COLOR,
-        }}
-      />
-    </View>
+    <View
+      pointerEvents="none"
+      style={{ flex: 1, backgroundColor: TAB_BAR_COLOR }}
+    />
   );
 }
 
@@ -60,9 +43,16 @@ export default function TabLayout() {
   const androidTabBarPaddingBottom = useTabBarBottomInset(
     TAB_BAR_MIN_PADDING_BOTTOM,
   );
-  const tabBarPaddingBottom = IS_ANDROID
+  const resolvedTabBarPaddingBottom = IS_ANDROID
     ? androidTabBarPaddingBottom
     : Math.max(insets.bottom, TAB_BAR_MIN_PADDING_BOTTOM);
+  const maxBottomPadding = Math.max(
+    TAB_BAR_MAX_HEIGHT - TAB_BAR_PADDING_TOP - TAB_BAR_CONTENT_HEIGHT,
+    TAB_BAR_MIN_PADDING_BOTTOM,
+  );
+  const tabBarPaddingBottom = IS_ANDROID
+    ? Math.min(resolvedTabBarPaddingBottom, maxBottomPadding)
+    : resolvedTabBarPaddingBottom;
   const tabBarHeight =
     TAB_BAR_PADDING_TOP + TAB_BAR_CONTENT_HEIGHT + tabBarPaddingBottom;
 
@@ -108,6 +98,7 @@ export default function TabLayout() {
 
         tabBarStyle: {
           height: tabBarHeight,
+          ...(IS_ANDROID ? { maxHeight: TAB_BAR_MAX_HEIGHT } : null),
           paddingTop: TAB_BAR_PADDING_TOP,
           paddingBottom: tabBarPaddingBottom,
           paddingHorizontal: 8,
@@ -115,9 +106,7 @@ export default function TabLayout() {
           borderTopWidth: 0,
         },
 
-        tabBarBackground: () => (
-          <TabBarBackground bottomInset={tabBarPaddingBottom} />
-        ),
+        tabBarBackground: () => <TabBarBackground />,
 
         tabBarItemStyle: {
           flex: 1,
