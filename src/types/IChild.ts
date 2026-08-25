@@ -5,6 +5,7 @@ export interface IChild extends CreatedProps {
   color?: string;
   avatar?: string;
   reward?: number;
+  username?: string;
   passwordPattern?: string;
 }
 

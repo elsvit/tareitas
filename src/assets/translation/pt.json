@@ -99,7 +99,16 @@
     "title": "Configurações",
     "language": "Idioma",
     "children": "Filhos",
-    "child_password_obligatory": "Senha do filho obrigatória"
+    "child_password_obligatory": "Senha do filho obrigatória",
+    "account": {
+      "title": "Sincronização na cloud",
+      "signed_in": "Sessão iniciada",
+      "sign_in": "Iniciar sessão",
+      "sign_out": "Terminar sessão",
+      "session_expired": "A sua sessão expirou. Inicie sessão novamente para sincronizar.",
+      "login_screen_title": "Iniciar sessão",
+      "login_screen_subtitle": "Inicie sessão para sincronizar a família entre dispositivos."
+    }
   },
   "users": {
     "title": "Usuários",
@@ -125,6 +134,7 @@
     "login": "Entrar",
     "logout": "Sair",
     "name": "Nome",
+    "unique_username": "Nome de utilizador único",
     "no_children": "Nenhum filho ainda",
     "no_parents": "Nenhum pai ainda",
     "parent": "Pai",
@@ -146,7 +156,8 @@
       "reviewer": "Revisor",
       "sister": "Irmã",
       "uncle": "Tio"
-    }
+    },
+    "change_group": "Mudar grupo"
   },
   "tasks": {
     "title": "Tarefas",
@@ -542,7 +553,78 @@
     },
     "child": {
       "subtitle": "Adicione seu primeiro filho. Você pode adicionar mais filhos posteriormente nas configurações.",
-      "step_indicator": "2° passo de 2"
+      "step_indicator": "2° passo de 2",
+      "skip_for_now": "Ignorar por agora"
+    },
+    "sync_mode": {
+      "header": "Como quer usar o Tareitas?",
+      "title": "Escolha a configuração",
+      "subtitle": "Pode usar o Tareitas apenas neste dispositivo ou sincronizar a família entre telemóveis e tablets.",
+      "multidevice": {
+        "title": "Vários dispositivos",
+        "description": "Sincronize tarefas, recompensas e dados familiares pela cloud. Requer uma conta."
+      },
+      "device_only": {
+        "title": "Apenas este dispositivo",
+        "description": "Tudo fica neste telemóvel ou tablet. Não é necessária conta."
+      },
+      "create_section_title": "Criar novo grupo/família",
+      "connect_section_title": "Ligar a um grupo/família existente"
+    },
+    "account": {
+      "header": "Conta",
+      "title": "Crie a sua conta",
+      "subtitle": "Registe-se para sincronizar a família entre dispositivos, ou inicie sessão se já tiver uma conta.",
+      "tab_register": "Registar",
+      "tab_login": "Iniciar sessão",
+      "email": "E-mail",
+      "username_optional": "Nome de utilizador (opcional)",
+      "pin": "PIN de 4 dígitos",
+      "pin_confirm": "Confirmar PIN",
+      "family_name": "Nome da família",
+      "family_name_default": "Família de {{name}}",
+      "family_name_fallback": "A minha família",
+      "submit_register": "Criar conta",
+      "submit_login": "Iniciar sessão",
+      "error_email_required": "O e-mail é obrigatório",
+      "error_pin_required": "Introduza um PIN de 4 dígitos",
+      "error_pin_mismatch": "Os PIN não coincidem",
+      "error_generic": "Algo correu mal. Tente novamente."
+    },
+    "login": {
+      "header": "Iniciar sessão",
+      "title": "Bem-vindo de volta",
+      "subtitle": "Inicie sessão com o email de admin ou o seu nome de utilizador único.",
+      "admin": "Admin",
+      "not_admin": "Não admin",
+      "email": "E-mail",
+      "username": "Nome de utilizador",
+      "pin": "PIN de 4 dígitos",
+      "submit": "Iniciar sessão",
+      "sign_up": "Registar",
+      "error_email_required": "O e-mail é obrigatório",
+      "error_username_required": "O nome de utilizador é obrigatório",
+      "error_pin_required": "Introduza um PIN de 4 dígitos",
+      "error_generic": "Não foi possível iniciar sessão. Verifique os dados e tente novamente."
+    },
+    "sign_up": {
+      "admin_header": "Criar admin",
+      "admin_title": "Crie o seu perfil de admin",
+      "admin_subtitle": "O admin inicia sessão com email e gere a família.",
+      "admin_email": "Email do admin",
+      "admin_pin": "PIN do admin (4 dígitos)",
+      "child_header": "Adicionar primeiro filho",
+      "child_title": "Crie o seu primeiro filho",
+      "child_subtitle": "As crianças iniciam sessão com um nome de utilizador.",
+      "child_username": "Nome de utilizador da criança",
+      "child_pin": "PIN da criança (4 dígitos)",
+      "error_email_required": "O email do admin é obrigatório",
+      "error_username_required": "O nome de utilizador da criança é obrigatório",
+      "error_admin_pin_required": "Introduza um PIN de admin de 4 dígitos",
+      "error_child_pin_required": "Introduza um PIN da criança de 4 dígitos",
+      "error_admin_incomplete": "Complete primeiro o perfil de admin",
+      "error_generic": "Não foi possível criar a família. Tente novamente.",
+      "error_family_name_required": "O nome da família é obrigatório"
     }
   },
   "helpCenter": {

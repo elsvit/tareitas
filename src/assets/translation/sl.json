@@ -105,7 +105,16 @@
     "language": "Jezik",
     "system_language": "Sistemski jezik",
     "children": "otroci",
-    "child_password_obligatory": "Zahtevano je otroško geslo"
+    "child_password_obligatory": "Zahtevano je otroško geslo",
+    "account": {
+      "title": "Sinhronizacija v oblaku",
+      "signed_in": "Prijavljeni",
+      "sign_in": "Prijava",
+      "sign_out": "Odjava",
+      "session_expired": "Vaša seja je potekla. Ponovno se prijavite za sinhronizacijo.",
+      "login_screen_title": "Prijava",
+      "login_screen_subtitle": "Prijavite se za sinhronizacijo družine med napravami."
+    }
   },
   "users": {
     "title": "Uporabniki",
@@ -131,6 +140,7 @@
     "login": "Prijava",
     "logout": "Odjava",
     "name": "Ime",
+    "unique_username": "Edinstveno uporabniško ime",
     "no_children": "Še brez otrok",
     "no_parents": "Še brez staršev",
     "parent": "starš",
@@ -152,7 +162,8 @@
       "reviewer": "Recenzent",
       "sister": "sestra",
       "uncle": "stric"
-    }
+    },
+    "change_group": "Zamenjaj skupino"
   },
   "tasks": {
     "title": "Naloge",
@@ -548,7 +559,78 @@
     },
     "child": {
       "subtitle": "Dodajte svojega prvega otroka. Več otrok lahko dodate pozneje v nastavitvah.",
-      "step_indicator": "2. korak od 2"
+      "step_indicator": "2. korak od 2",
+      "skip_for_now": "Preskoči za zdaj"
+    },
+    "sync_mode": {
+      "header": "Kako želite uporabljati Tareitas?",
+      "title": "Izberite nastavitev",
+      "subtitle": "Tareitas lahko uporabljate samo na tej napravi ali sinhronizirate družino med telefoni in tablicami.",
+      "multidevice": {
+        "title": "Več naprav",
+        "description": "Sinhronizirajte naloge, nagrade in družinske podatke prek oblaka. Potreben je račun."
+      },
+      "device_only": {
+        "title": "Samo ta naprava",
+        "description": "Vse ostane na tem telefonu ali tablici. Račun ni potreben."
+      },
+      "create_section_title": "Ustvari novo skupino/družino",
+      "connect_section_title": "Poveži se z obstoječo skupino/družino"
+    },
+    "account": {
+      "header": "Račun",
+      "title": "Ustvarite račun",
+      "subtitle": "Registrirajte se za sinhronizacijo družine med napravami ali se prijavite, če že imate račun.",
+      "tab_register": "Registracija",
+      "tab_login": "Prijava",
+      "email": "E-pošta",
+      "username_optional": "Uporabniško ime (neobvezno)",
+      "pin": "4-mestna PIN koda",
+      "pin_confirm": "Potrdi PIN",
+      "family_name": "Ime družine",
+      "family_name_default": "Družina {{name}}",
+      "family_name_fallback": "Moja družina",
+      "submit_register": "Ustvari račun",
+      "submit_login": "Prijava",
+      "error_email_required": "E-pošta je obvezna",
+      "error_pin_required": "Vnesite 4-mestno PIN kodo",
+      "error_pin_mismatch": "PIN kodi se ne ujemata",
+      "error_generic": "Nekaj je šlo narobe. Poskusite znova."
+    },
+    "login": {
+      "header": "Prijava",
+      "title": "Dobrodošli nazaj",
+      "subtitle": "Prijavite se z admin e-pošto ali svojim edinstvenim uporabniškim imenom.",
+      "admin": "Admin",
+      "not_admin": "Ni admin",
+      "email": "E-pošta",
+      "username": "Uporabniško ime",
+      "pin": "4-mestna PIN koda",
+      "submit": "Prijava",
+      "sign_up": "Registracija",
+      "error_email_required": "E-pošta je obvezna",
+      "error_username_required": "Uporabniško ime je obvezno",
+      "error_pin_required": "Vnesite 4-mestno PIN kodo",
+      "error_generic": "Prijava ni uspela. Preverite podatke in poskusite znova."
+    },
+    "sign_up": {
+      "admin_header": "Ustvari admina",
+      "admin_title": "Ustvarite admin profil",
+      "admin_subtitle": "Admin se prijavi z e-pošto in upravlja družino.",
+      "admin_email": "Admin e-pošta",
+      "admin_pin": "Admin PIN (4 številke)",
+      "child_header": "Dodaj prvega otroka",
+      "child_title": "Ustvarite prvega otroka",
+      "child_subtitle": "Otroci se prijavijo z uporabniškim imenom.",
+      "child_username": "Uporabniško ime otroka",
+      "child_pin": "PIN otroka (4 številke)",
+      "error_email_required": "Admin e-pošta je obvezna",
+      "error_username_required": "Uporabniško ime otroka je obvezno",
+      "error_admin_pin_required": "Vnesite 4-mestni admin PIN",
+      "error_child_pin_required": "Vnesite 4-mestni PIN otroka",
+      "error_admin_incomplete": "Najprej dokončajte admin profil",
+      "error_generic": "Družine ni bilo mogoče ustvariti. Poskusite znova.",
+      "error_family_name_required": "Ime družine je obvezno"
     }
   },
   "helpCenter": {

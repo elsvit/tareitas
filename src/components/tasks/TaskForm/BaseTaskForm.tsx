@@ -247,7 +247,7 @@ export const BaseTaskForm: FC<Props> = ({
           )}
 
           <Card.Content>
-            <Space size={8} />
+            <Space size={3} />
             <Controller
               control={control}
               name="name"
@@ -270,7 +270,7 @@ export const BaseTaskForm: FC<Props> = ({
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             <Controller
               control={control}
@@ -287,7 +287,7 @@ export const BaseTaskForm: FC<Props> = ({
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             <Controller
               control={control}
@@ -317,7 +317,7 @@ export const BaseTaskForm: FC<Props> = ({
               )}
             />
 
-            <Space size={16} />
+            <Space size={4} />
 
             <View style={styles.switchRow}>
               <Text style={styles.switchLabel}>{t('tasks.subtasks')}</Text>
@@ -379,7 +379,7 @@ export const BaseTaskForm: FC<Props> = ({
                       </View>
                     </View>
                   ))}
-                  <Space size={8} />
+                  <Space size={3} />
                   <Button
                     mode="contained"
                     onPress={() => append({ value: uuidv4(), label: '' })}
@@ -395,7 +395,7 @@ export const BaseTaskForm: FC<Props> = ({
               </>
             )}
 
-            <Space size={12} />
+            <Space size={3} />
 
             <Controller
               control={control}
@@ -412,7 +412,7 @@ export const BaseTaskForm: FC<Props> = ({
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             <Controller
               control={control}
@@ -427,7 +427,7 @@ export const BaseTaskForm: FC<Props> = ({
               )}
             />
 
-            <Space size={24} />
+            <Space size={5} />
 
             <Button
               mode="contained"
@@ -437,7 +437,7 @@ export const BaseTaskForm: FC<Props> = ({
             </Button>
             {isEditMode && isAdmin && (
               <>
-                <Space size={12} />
+                <Space size={3} />
                 <Button
                   mode="contained"
                   bgColor={ButtonColors.Red}
@@ -448,7 +448,7 @@ export const BaseTaskForm: FC<Props> = ({
               </>
             )}
 
-            <Space size={20} />
+            <Space size={4} />
 
           </Card.Content>
         </Card>

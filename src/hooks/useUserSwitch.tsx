@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'expo-router';
 
 import {
   GesturePasswordModal,
@@ -8,7 +9,14 @@ import {
 } from '~/components/modals';
 import type { SelectedUser } from '~/components/modals';
 import { t } from '~/services';
-import { setCurrentRole, setCurrentUser, setTaskCalendarDate } from '~/store/settings/slice';
+import { clearFamilyStore } from '~/services/familySync';
+import type { AppDispatch } from '~/store';
+import { selectIsMultidevice } from '~/store/settings/selectors';
+import {
+  setCurrentRole,
+  setCurrentUser,
+  setTaskCalendarDate,
+} from '~/store/settings/slice';
 import { getTodayDateString } from '~/utils/date';
 import {
   isPinPassword,
@@ -17,7 +25,9 @@ import {
 } from '~/utils/users/passwordPattern';
 
 export function useUserSwitch() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
+  const isMultidevice = useSelector(selectIsMultidevice);
 
   const [isSelectUsersVisible, setIsSelectUsersVisible] = useState(false);
   const [pendingUser, setPendingUser] = useState<SelectedUser | null>(null);
@@ -59,6 +69,12 @@ export function useUserSwitch() {
     setIsSelectUsersVisible(false);
     logoutUser();
   }, [logoutUser]);
+
+  const handleChangeGroup = useCallback(() => {
+    setIsSelectUsersVisible(false);
+    clearFamilyStore(dispatch);
+    router.replace('/(onboarding)');
+  }, [dispatch, router]);
 
   const handleSelectUser = useCallback(
     (user: SelectedUser) => {
@@ -138,6 +154,8 @@ export function useUserSwitch() {
         onRequestClose={closeSelectUsers}
         onSelectUser={handleSelectUser}
         onLogout={handleLogout}
+        onChangeGroup={handleChangeGroup}
+        showChangeGroup={isMultidevice}
       />
 
       <OTPInputModal

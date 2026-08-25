@@ -104,7 +104,16 @@
     "title": "Налаштування",
     "language": "Мова",
     "children": "Діти",
-    "child_password_obligatory": "Пароль для дітей обов'язковий"
+    "child_password_obligatory": "Пароль для дітей обов'язковий",
+    "account": {
+      "title": "Хмарна синхронізація",
+      "signed_in": "Увійшли",
+      "sign_in": "Увійти",
+      "sign_out": "Вийти",
+      "session_expired": "Ваш сеанс закінчився. Увійдіть знову для синхронізації.",
+      "login_screen_title": "Увійти",
+      "login_screen_subtitle": "Увійдіть, щоб синхронізувати сім’ю між пристроями."
+    }
   },
   "users": {
     "title": "Користувачі",
@@ -130,6 +139,7 @@
     "login": "Вхід",
     "logout": "Вийти",
     "name": "Ім'я",
+    "unique_username": "Унікальне ім'я користувача",
     "no_children": "Немає дітей",
     "no_parents": "Немає батьків",
     "parent": "Батько",
@@ -151,7 +161,8 @@
       "reviewer": "Переглядач",
       "sister": "Сестра",
       "uncle": "Дядя"
-    }
+    },
+    "change_group": "Змінити групу"
   },
   "tasks": {
     "title": "Завдання",
@@ -252,11 +263,11 @@
       "tidyUpYourRoom": "Прибрати кімнату",
       "tidyUpYourRoomDescription": "Прибрати кімнату",
       "putAwayToys": "Скласти іграшки",
-      "putAwayToysDescription": "Скласти іграшки в шухляди або у відведені для цього місця",      
+      "putAwayToysDescription": "Скласти іграшки в шухляди або у відведені для цього місця",
       "putAwayClothes": "Скласти одяг",
       "putAwayClothesDescription": "Скласти одяг в шухляди або у відведені для цього місця",
       "takeOutTrash": "Винести сміття",
-      "takeOutTrashDescription": "Винести сміття в смітник",      
+      "takeOutTrashDescription": "Винести сміття в смітник",
       "helpToCoverTheTable": "Допомогти накрити стіл",
       "helpToCoverTheTableDescription": "Допомогти накрити стіл (поставити тарілки, ложки, чашки, піднос)",
       "washYourOwnDishes": "Помити посуд за собою",
@@ -338,7 +349,7 @@
       "playOutside": "Пограти надворі",
       "playOutsideDescription": "Пограти на свіжому повітрі в активну гру",
       "rideABicycle": "Покататися на велосипеді",
-      "rideABicycleDescription": "Проїхати на велосипеді 5 км", 
+      "rideABicycleDescription": "Проїхати на велосипеді 5 км",
       "jumpOnTheTrampoline": "Пострибати на скакалці",
       "jumpOnTheTrampolineDescription": "Пострибати на скакалці, мінімум 10 хвилин",
       "swim": "Плавання",
@@ -523,7 +534,78 @@
     },
     "child": {
       "subtitle": "Додати свою першу дитину. Ви можете додати більше дітей пізніше в Налаштуваннях.",
-      "step_indicator": "Крок 2 з 2"
+      "step_indicator": "Крок 2 з 2",
+      "skip_for_now": "Пропустити зараз"
+    },
+    "sync_mode": {
+      "header": "Як ви хочете використовувати Tareitas?",
+      "title": "Оберіть налаштування",
+      "subtitle": "Ви можете використовувати Tareitas лише на цьому пристрої або синхронізувати сім’ю між телефонами та планшетами.",
+      "multidevice": {
+        "title": "Кілька пристроїв",
+        "description": "Синхронізуйте завдання, нагороди та сімейні дані через хмару. Потрібен обліковий запис."
+      },
+      "device_only": {
+        "title": "Лише цей пристрій",
+        "description": "Усе залишається на цьому телефоні або планшеті. Обліковий запис не потрібен."
+      },
+      "create_section_title": "Створити нову групу/сім'ю",
+      "connect_section_title": "Підключитися до існуючої групи/сім'ї"
+    },
+    "account": {
+      "header": "Обліковий запис",
+      "title": "Створіть обліковий запис",
+      "subtitle": "Зареєструйтеся, щоб синхронізувати сім’ю між пристроями, або увійдіть, якщо у вас уже є обліковий запис.",
+      "tab_register": "Реєстрація",
+      "tab_login": "Увійти",
+      "email": "Електронна пошта",
+      "username_optional": "Ім’я користувача (необов’язково)",
+      "pin": "4-значний PIN",
+      "pin_confirm": "Підтвердіть PIN",
+      "family_name": "Назва сім’ї",
+      "family_name_default": "Сім’я {{name}}",
+      "family_name_fallback": "Моя сім’я",
+      "submit_register": "Створити обліковий запис",
+      "submit_login": "Увійти",
+      "error_email_required": "Електронна пошта обов’язкова",
+      "error_pin_required": "Введіть 4-значний PIN",
+      "error_pin_mismatch": "PIN-коди не збігаються",
+      "error_generic": "Щось пішло не так. Спробуйте ще раз."
+    },
+    "login": {
+      "header": "Увійти",
+      "title": "З поверненням",
+      "subtitle": "Увійдіть з email адміна або вашим унікальним ім’ям користувача.",
+      "admin": "Адмін",
+      "not_admin": "Не адмін",
+      "email": "Електронна пошта",
+      "username": "Ім’я користувача",
+      "pin": "4-значний PIN",
+      "submit": "Увійти",
+      "sign_up": "Зареєструватися",
+      "error_email_required": "Електронна пошта обов’язкова",
+      "error_username_required": "Ім’я користувача обов’язкове",
+      "error_pin_required": "Введіть 4-значний PIN",
+      "error_generic": "Не вдалося увійти. Перевірте дані та спробуйте ще раз."
+    },
+    "sign_up": {
+      "admin_header": "Створити адміна",
+      "admin_title": "Створіть профіль адміна",
+      "admin_subtitle": "Адмін входить через email і керує сім’єю.",
+      "admin_email": "Email адміна",
+      "admin_pin": "PIN адміна (4 цифри)",
+      "child_header": "Додати першу дитину",
+      "child_title": "Створіть першу дитину",
+      "child_subtitle": "Діти входять за ім’ям користувача.",
+      "child_username": "Ім’я користувача дитини",
+      "child_pin": "PIN дитини (4 цифри)",
+      "error_email_required": "Email адміна обов’язковий",
+      "error_username_required": "Ім’я користувача дитини обов’язкове",
+      "error_admin_pin_required": "Введіть 4-значний PIN адміна",
+      "error_child_pin_required": "Введіть 4-значний PIN дитини",
+      "error_admin_incomplete": "Спочатку заповніть профіль адміна",
+      "error_generic": "Не вдалося створити сім’ю. Спробуйте ще раз.",
+      "error_family_name_required": "Назва сім'ї обов'язкова"
     }
   },
   "helpCenter": {

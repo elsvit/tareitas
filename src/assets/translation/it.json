@@ -104,7 +104,16 @@
     "title": "Impostazioni",
     "language": "Lingua",
     "children": "Figli",
-    "child_password_obligatory": "Password figlio obbligatoria"
+    "child_password_obligatory": "Password figlio obbligatoria",
+    "account": {
+      "title": "Sincronizzazione cloud",
+      "signed_in": "Accesso effettuato",
+      "sign_in": "Accedi",
+      "sign_out": "Esci",
+      "session_expired": "La sessione è scaduta. Accedi di nuovo per sincronizzare.",
+      "login_screen_title": "Accedi",
+      "login_screen_subtitle": "Accedi per sincronizzare la famiglia tra dispositivi."
+    }
   },
   "users": {
     "title": "Utenti",
@@ -130,6 +139,7 @@
     "login": "Login",
     "logout": "Logout",
     "name": "Nome",
+    "unique_username": "Nome utente univoco",
     "no_children": "Nessun figlio ancora",
     "no_parents": "Nessun parente ancora",
     "parent": "Parente",
@@ -151,7 +161,8 @@
       "reviewer": "Rivisore",
       "sister": "Sorella",
       "uncle": "Zio"
-    }
+    },
+    "change_group": "Cambia gruppo"
   },
   "tasks": {
     "title": "Task",
@@ -547,7 +558,78 @@
     },
     "child": {
       "subtitle": "Aggiungere il primo figlio. Puoi aggiungere più figli in seguito dalle impostazioni.",
-      "step_indicator": "2° step di 2"
+      "step_indicator": "2° step di 2",
+      "skip_for_now": "Salta per ora"
+    },
+    "sync_mode": {
+      "header": "Come vuoi usare Tareitas?",
+      "title": "Scegli la configurazione",
+      "subtitle": "Puoi usare Tareitas solo su questo dispositivo o sincronizzare la famiglia tra telefoni e tablet.",
+      "multidevice": {
+        "title": "Più dispositivi",
+        "description": "Sincronizza compiti, ricompense e dati familiari tramite cloud. Richiede un account."
+      },
+      "device_only": {
+        "title": "Solo questo dispositivo",
+        "description": "Tutto resta su questo telefono o tablet. Nessun account necessario."
+      },
+      "create_section_title": "Crea nuovo gruppo/famiglia",
+      "connect_section_title": "Connetti a gruppo/famiglia esistente"
+    },
+    "account": {
+      "header": "Account",
+      "title": "Crea il tuo account",
+      "subtitle": "Registrati per sincronizzare la famiglia tra dispositivi, o accedi se hai già un account.",
+      "tab_register": "Registrati",
+      "tab_login": "Accedi",
+      "email": "Email",
+      "username_optional": "Nome utente (opzionale)",
+      "pin": "PIN a 4 cifre",
+      "pin_confirm": "Conferma PIN",
+      "family_name": "Nome della famiglia",
+      "family_name_default": "Famiglia di {{name}}",
+      "family_name_fallback": "La mia famiglia",
+      "submit_register": "Crea account",
+      "submit_login": "Accedi",
+      "error_email_required": "L’email è obbligatoria",
+      "error_pin_required": "Inserisci un PIN a 4 cifre",
+      "error_pin_mismatch": "I PIN non corrispondono",
+      "error_generic": "Qualcosa è andato storto. Riprova."
+    },
+    "login": {
+      "header": "Accedi",
+      "title": "Bentornato",
+      "subtitle": "Accedi con l’email admin o il tuo nome utente univoco.",
+      "admin": "Admin",
+      "not_admin": "Non admin",
+      "email": "Email",
+      "username": "Nome utente",
+      "pin": "PIN a 4 cifre",
+      "submit": "Accedi",
+      "sign_up": "Registrati",
+      "error_email_required": "L’email è obbligatoria",
+      "error_username_required": "Il nome utente è obbligatorio",
+      "error_pin_required": "Inserisci un PIN a 4 cifre",
+      "error_generic": "Accesso non riuscito. Controlla i dati e riprova."
+    },
+    "sign_up": {
+      "admin_header": "Crea admin",
+      "admin_title": "Crea il profilo admin",
+      "admin_subtitle": "L’admin accede con email e gestisce la famiglia.",
+      "admin_email": "Email admin",
+      "admin_pin": "PIN admin (4 cifre)",
+      "child_header": "Aggiungi primo figlio",
+      "child_title": "Crea il tuo primo figlio",
+      "child_subtitle": "I bambini accedono con un nome utente.",
+      "child_username": "Nome utente del bambino",
+      "child_pin": "PIN bambino (4 cifre)",
+      "error_email_required": "L’email admin è obbligatoria",
+      "error_username_required": "Il nome utente del bambino è obbligatorio",
+      "error_admin_pin_required": "Inserisci un PIN admin a 4 cifre",
+      "error_child_pin_required": "Inserisci un PIN bambino a 4 cifre",
+      "error_admin_incomplete": "Completa prima il profilo admin",
+      "error_generic": "Impossibile creare la famiglia. Riprova.",
+      "error_family_name_required": "Il nome della famiglia è obbligatorio"
     }
   },
   "helpCenter": {

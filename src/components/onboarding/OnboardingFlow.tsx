@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { ScreenHeader } from '~/components/blocks';
@@ -12,10 +12,22 @@ import { ButtonColors } from '~/components/ui/Button';
 import { ChildForm } from '~/components/users/UserForm/ChildForm';
 import { ParentForm } from '~/components/users/UserForm/ParentForm';
 import { t } from '~/services';
+import { signupAndLoadFamily } from '~/services/multideviceSetup';
+import { clearFamilyStore, hydrateFamilyStore } from '~/services/familySync';
+import { ApiError } from '~/services/api/client';
+import type { AppDispatch } from '~/store';
 import { addChild, clearChildren } from '~/store/children/slice';
 import { addParent, clearParents } from '~/store/parents/slice';
-import { ERole } from '~/store/settings/enums';
-import { setCurrentRole, setCurrentUser } from '~/store/settings/slice';
+import { ERole, ESyncMode } from '~/store/settings/enums';
+import {
+  selectRequireLogin,
+  selectSyncMode,
+} from '~/store/settings/selectors';
+import {
+  setCurrentRole,
+  setCurrentUser,
+  setSyncMode,
+} from '~/store/settings/slice';
 import { Colors } from '~/styles';
 import { EFormMode } from '~/types/ECommon';
 import type { ChildFormProps } from '~/types/IChild';
@@ -23,53 +35,130 @@ import type { ParentFormProps } from '~/types/IParent';
 
 import { OnboardingComplete } from './OnboardingComplete';
 import { OnboardingIntroSlide } from './OnboardingIntroSlide';
+import { OnboardingSignUpAdminStep } from './OnboardingSignUpAdminStep';
+import { OnboardingSignUpChildStep } from './OnboardingSignUpChildStep';
+import {
+  OnboardingSyncModeStep,
+  type OnboardingSetupPath,
+} from './OnboardingSyncModeStep';
 import { OnboardingStepHeader } from './OnboardingStepHeader';
 import {
   OnboardingStepTransition,
   type OnboardingTransitionDirection,
 } from './OnboardingStepTransition';
 import {
+  ONBOARDING_DEVICE_ONLY_TOTAL,
   ONBOARDING_INTRO_SLIDES_COUNT,
+  ONBOARDING_MULTIDEVICE_TOTAL,
   ONBOARDING_STEP,
-  ONBOARDING_TOTAL_STEPS,
 } from './constants';
 import { getOnboardingIntroSlides } from './onboardingSlides';
 import { onboardingStyles as styles } from './styles';
 
+type SignUpAdminData = ParentFormProps & {
+  email: string;
+  familyName: string;
+  pin: string;
+};
+
 export function OnboardingFlow() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const scrollRef = useRef<ScrollView>(null);
+  const requireLogin = useSelector(selectRequireLogin);
+  const storedSyncMode = useSelector(selectSyncMode);
 
   const introSlides = useMemo(() => getOnboardingIntroSlides(), []);
 
-  const [step, setStep] = useState(0);
+  const initialStep = requireLogin ? ONBOARDING_STEP.syncMode : 0;
+
+  const [step, setStep] = useState(initialStep);
   const [transitionDirection, setTransitionDirection] =
     useState<OnboardingTransitionDirection>(1);
+  const [setupPath, setSetupPath] = useState<OnboardingSetupPath>(
+    requireLogin ? 'connect' : 'create',
+  );
   const [parent, setParent] = useState<Partial<ParentFormProps>>({
     role: ERole.admin,
   });
   const [child, setChild] = useState<ChildFormProps>();
+  const [syncMode, setSyncModeSelection] = useState(storedSyncMode);
+  const [signUpAdmin, setSignUpAdmin] =
+    useState<Partial<SignUpAdminData>>({ role: ERole.admin });
+  const [signUpError, setSignUpError] = useState<string | null>(null);
+  const [isSubmittingSignUp, setIsSubmittingSignUp] = useState(false);
 
-  const lastStep = ONBOARDING_TOTAL_STEPS - 1;
-  const progress = useMemo(() => (step / lastStep) * 100, [step, lastStep]);
+  const isMultidevice = syncMode === ESyncMode.multidevice;
+  const isMultideviceFlow =
+    requireLogin ||
+    setupPath === 'connect' ||
+    (setupPath === 'create' && isMultidevice);
+  const totalSteps = isMultideviceFlow
+    ? ONBOARDING_MULTIDEVICE_TOTAL
+    : ONBOARDING_DEVICE_ONLY_TOTAL;
+  const lastStep = totalSteps - 1;
+  const progress = useMemo(
+    () => (step / lastStep) * 100,
+    [step, lastStep],
+  );
 
   const isIntroStep = step < ONBOARDING_INTRO_SLIDES_COUNT;
-  const isParentStep = step === ONBOARDING_STEP.parent;
-  const isChildStep = step === ONBOARDING_STEP.child;
+  const isSyncModeStep = step === ONBOARDING_STEP.syncMode;
+  const isSignUpAdminStep =
+    isMultideviceFlow && step === ONBOARDING_STEP.signUpAdmin;
+  const isSignUpChildStep =
+    isMultideviceFlow && step === ONBOARDING_STEP.signUpChild;
+  const isParentStep =
+    !isMultideviceFlow && step === ONBOARDING_STEP.parent;
+  const isChildStep =
+    !isMultideviceFlow && step === ONBOARDING_STEP.child;
   const isCompleteStep = step === ONBOARDING_STEP.complete;
+  const canGoBack = requireLogin
+    ? step > ONBOARDING_STEP.syncMode
+    : step > 0;
 
-  const headerTitle = isParentStep
-    ? t('users.add_parent')
-    : isChildStep
-      ? t('users.add_child')
-      : isCompleteStep
-        ? t('onboarding.complete.header')
-        : t('onboarding.header');
+  const headerTitle = isSyncModeStep
+    ? t('onboarding.sync_mode.header')
+    : isSignUpAdminStep
+        ? t('onboarding.sign_up.admin_header')
+        : isSignUpChildStep
+          ? t('onboarding.sign_up.child_header')
+          : isParentStep
+            ? t('users.add_parent')
+            : isChildStep
+              ? t('users.add_child')
+              : isCompleteStep
+                ? t('onboarding.complete.header')
+                : t('onboarding.header');
 
   const goToStep = (nextStep: number) => {
     setTransitionDirection(nextStep > step ? 1 : -1);
     setStep(nextStep);
+  };
+
+  const getPreviousStep = (currentStep: number) => {
+    if (
+      isMultideviceFlow &&
+      currentStep === ONBOARDING_STEP.signUpAdmin
+    ) {
+      return ONBOARDING_STEP.syncMode;
+    }
+
+    if (
+      isMultideviceFlow &&
+      currentStep === ONBOARDING_STEP.signUpChild
+    ) {
+      return ONBOARDING_STEP.signUpAdmin;
+    }
+
+    if (
+      !isMultideviceFlow &&
+      currentStep === ONBOARDING_STEP.child
+    ) {
+      return ONBOARDING_STEP.parent;
+    }
+
+    return currentStep - 1;
   };
 
   useEffect(() => {
@@ -77,19 +166,27 @@ export function OnboardingFlow() {
   }, [step]);
 
   const onBack = () => {
-    if (step > 0) {
-      goToStep(step - 1);
+    if (canGoBack) {
+      goToStep(getPreviousStep(step));
     }
   };
 
+  const enterApp = () => {
+    router.replace('/(tabs)/Tasks');
+  };
+
   const finishOnboarding = () => {
-    if (!parent.name || !child?.name) {
+    if (!parent.name) {
+      return;
+    }
+
+    if (!isMultideviceFlow && !child?.name) {
       return;
     }
 
     const parentId = uuidv4();
-    const childId = uuidv4();
 
+    dispatch(setSyncMode(syncMode));
     dispatch(clearParents());
     dispatch(
       addParent({
@@ -103,24 +200,44 @@ export function OnboardingFlow() {
         },
       }),
     );
+
     dispatch(clearChildren());
-    dispatch(
-      addChild({
-        entity: {
-          ...child,
-          name: child.name,
-          id: childId,
-          createdAt: new Date().toISOString(),
-          createdBy: parentId,
-        },
-      }),
-    );
+
+    if (child?.name) {
+      const childId = uuidv4();
+
+      dispatch(
+        addChild({
+          entity: {
+            ...child,
+            name: child.name,
+            id: childId,
+            createdAt: new Date().toISOString(),
+            createdBy: parentId,
+          },
+        }),
+      );
+    }
+
     dispatch(setCurrentUser(parentId));
     dispatch(setCurrentRole(ERole.admin));
-    router.replace('/(tabs)/Tasks');
+    enterApp();
   };
 
   const onNext = () => {
+    if (isSyncModeStep) {
+      if (setupPath !== 'create') {
+        return;
+      }
+
+      goToStep(
+        isMultidevice
+          ? ONBOARDING_STEP.signUpAdmin
+          : ONBOARDING_STEP.parent,
+      );
+      return;
+    }
+
     if (isCompleteStep) {
       finishOnboarding();
       return;
@@ -141,6 +258,94 @@ export function OnboardingFlow() {
     goToStep(ONBOARDING_STEP.complete);
   };
 
+  const onSignUpAdminContinue = (
+    value: ParentFormProps,
+    credentials: {
+      email: string;
+      familyName: string;
+      pin: string;
+    },
+  ) => {
+    setSignUpError(null);
+    setSignUpAdmin({
+      ...value,
+      email: credentials.email,
+      familyName: credentials.familyName,
+      pin: credentials.pin,
+      passwordPattern: credentials.pin,
+    });
+    goToStep(ONBOARDING_STEP.signUpChild);
+  };
+
+  const onSignUpChildSubmit = async (
+    value: ChildFormProps,
+    credentials: { username: string; pin: string },
+  ) => {
+    const adminData = signUpAdmin as SignUpAdminData;
+
+    if (!adminData?.name || !adminData.email || !adminData.pin) {
+      setSignUpError(t('onboarding.sign_up.error_admin_incomplete'));
+      return;
+    }
+
+    if (!adminData.familyName?.trim()) {
+      setSignUpError(t('onboarding.sign_up.error_family_name_required'));
+      return;
+    }
+
+    setSignUpError(null);
+    setIsSubmittingSignUp(true);
+
+    try {
+      const result = await signupAndLoadFamily({
+        familyName: adminData.familyName.trim(),
+        admin: {
+          email: adminData.email,
+          pin: adminData.pin,
+          name: adminData.name,
+          avatar: adminData.avatar,
+          color: adminData.color,
+        },
+        child: {
+          username: credentials.username,
+          pin: credentials.pin,
+          name: value.name,
+          avatar: value.avatar,
+          color: value.color,
+        },
+      });
+
+      dispatch(setSyncMode(ESyncMode.multidevice));
+
+      try {
+        hydrateFamilyStore(
+          dispatch,
+          result.family,
+          result.user,
+          {
+            accessToken: result.accessToken,
+            refreshToken: result.refreshToken,
+          },
+        );
+      } catch (hydrateError) {
+        clearFamilyStore(dispatch);
+        throw hydrateError;
+      }
+
+      enterApp();
+    } catch (caught) {
+      setSignUpError(
+        caught instanceof ApiError
+          ? caught.message
+          : caught instanceof Error
+            ? caught.message
+            : t('onboarding.sign_up.error_generic'),
+      );
+    } finally {
+      setIsSubmittingSignUp(false);
+    }
+  };
+
   const renderStepContent = () => {
     if (isIntroStep) {
       return (
@@ -148,6 +353,39 @@ export function OnboardingFlow() {
           slide={introSlides[step]}
           activeIndex={step}
           totalIntroSlides={ONBOARDING_INTRO_SLIDES_COUNT}
+        />
+      );
+    }
+
+    if (isSyncModeStep) {
+      return (
+        <OnboardingSyncModeStep
+          setupPath={setupPath}
+          onSetupPathChange={setSetupPath}
+          value={syncMode}
+          onChange={setSyncModeSelection}
+          onMemberLoginSuccess={enterApp}
+        />
+      );
+    }
+
+    if (isSignUpAdminStep) {
+      return (
+        <OnboardingSignUpAdminStep
+          parent={signUpAdmin}
+          initialFamilyName={signUpAdmin.familyName}
+          initialEmail={signUpAdmin.email}
+          onContinue={onSignUpAdminContinue}
+        />
+      );
+    }
+
+    if (isSignUpChildStep) {
+      return (
+        <OnboardingSignUpChildStep
+          isSubmitting={isSubmittingSignUp}
+          externalError={signUpError}
+          onSubmit={onSignUpChildSubmit}
         />
       );
     }
@@ -202,7 +440,7 @@ export function OnboardingFlow() {
       <ScreenHeader
         title={headerTitle}
         containerStyle={styles.screenHeader}
-        hasBackButton={step > 0}
+        hasBackButton={canGoBack}
         onBackPress={onBack}
       />
       <ScrollView
@@ -221,9 +459,11 @@ export function OnboardingFlow() {
           </OnboardingStepTransition>
         )}
 
-        {(isIntroStep || isCompleteStep) && (
+        {(isIntroStep ||
+          (isSyncModeStep && setupPath === 'create') ||
+          isCompleteStep) && (
           <View style={styles.footer}>
-            {step > 0 ? (
+            {canGoBack ? (
               <Button
                 mode="contained"
                 onPress={onBack}

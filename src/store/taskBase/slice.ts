@@ -5,6 +5,7 @@ import {
   createEntityReducers,
   createGenericEntityAdapter,
 } from '~/store/helpers';
+import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
 import { ITaskBase } from '~/types/ITask';
 import {
   AddTaskBasePayload,
@@ -26,30 +27,18 @@ export const taskBaseSlice = createSlice({
   name: EStateName.taskBase,
   initialState,
   reducers: {
-    addTaskBase: (state, action: PayloadAction<AddTaskBasePayload>) => {
-      entityReducers.addEntity(state, action as unknown as PayloadAction<{ entity: ITaskBase; isUpsert?: boolean }>);
-    },
+    addTaskBase: noopEntityRequestReducer,
     addTaskBaseSuccess: (state, action: PayloadAction<ITaskBase>) => {
       entityReducers.addEntity(state, {
         ...action,
         payload: { entity: action.payload },
       } as unknown as PayloadAction<{ entity: ITaskBase; isUpsert?: boolean }>);
     },
-    updateTaskBase: (state, action: PayloadAction<UpdateTaskBasePayload>) => {
-      entityReducers.upsertEntity(
-        state,
-        { ...action, payload: action.payload.entity } as unknown as PayloadAction<ITaskBase>
-      );
-    },
+    updateTaskBase: noopEntityRequestReducer,
     updateTaskBaseSuccess: (state, action: PayloadAction<ITaskBase>) => {
       entityReducers.upsertEntity(state, action as unknown as PayloadAction<ITaskBase>);
     },
-    removeTaskBase: (state, action: PayloadAction<RemoveTaskBasePayload>) => {
-      entityReducers.removeEntity(
-        state,
-        { ...action, payload: action.payload.id } as unknown as PayloadAction<string>
-      );
-    },
+    removeTaskBase: noopEntityRequestReducer,
     removeTaskBaseSuccess: (state, action: PayloadAction<string>) => {
       entityReducers.removeEntity(state, action as unknown as PayloadAction<string>);
     },
@@ -98,6 +87,12 @@ export const taskBaseSlice = createSlice({
         }
       });
     },
+    replaceTaskBaseCatalog: (
+      state,
+      action: PayloadAction<ITaskBase[]>,
+    ) => {
+      taskBaseAdapter.setAll(state, action.payload);
+    },
   },
 });
 
@@ -111,4 +106,5 @@ export const {
   clearTaskBase,
   resetTaskBase,
   syncTaskBaseTranslations,
+  replaceTaskBaseCatalog,
 } = taskBaseSlice.actions;

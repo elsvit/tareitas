@@ -1,16 +1,12 @@
 import React, { useCallback, useRef } from 'react';
 import { Keyboard, View } from 'react-native';
 
-import { OTPInput as OTPInputNative } from 'input-otp-native';
+import { OTPInput as OTPInputNative, type OTPInputRef } from 'input-otp-native';
 
 import { Button, ButtonColors, Text } from '~/components/ui';
 import { t } from '~/services';
 
 import { styles } from './styles';
-
-type OTPInputHandle = {
-  blur: () => void;
-};
 
 interface OTPInputProps {
   maxLength: number;
@@ -25,7 +21,7 @@ export const OTPInput = ({
   onChange,
   onComplete,
 }: OTPInputProps) => {
-  const otpInputRef = useRef<OTPInputHandle>(null);
+  const otpInputRef = useRef<OTPInputRef>(null);
   const saveButtonRef = useRef<React.ComponentRef<typeof Button>>(null);
 
   const focusSaveButton = useCallback(() => {

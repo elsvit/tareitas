@@ -1,4 +1,4 @@
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
@@ -57,10 +57,15 @@ type Props = {
   showScreenHeader?: boolean;
   embedded?: boolean;
   showSubmitButton?: boolean;
+  fieldsBeforeName?: React.ReactNode;
+  showUniqueUsername?: boolean;
+  submitError?: string | null;
+  isSubmitting?: boolean;
 };
 
 type FormValues = {
   name: string;
+  username?: string;
   color: string;
   familyRole: EFamilyRole;
   role: ERole;
@@ -83,6 +88,10 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
     showScreenHeader = true,
     embedded = false,
     showSubmitButton = true,
+    fieldsBeforeName,
+    showUniqueUsername = false,
+    submitError = null,
+    isSubmitting = false,
   },
   ref,
 ) {
@@ -93,6 +102,14 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
   const currentRole = useSelector(selectCurrentRole);
   const isAdmin = currentRole === ERole.admin;
   const isEditMode = mode === EFormMode.Edit;
+  const isParentAdmin = parent?.role === ERole.admin;
+  const parentEmail = parent?.email?.trim() ?? '';
+  const showReadOnlyEmail =
+    isEditMode && isParentAdmin && parentEmail.length > 0;
+  const showUsernameField =
+    !isParentAdmin &&
+    (showUniqueUsername ||
+      (isEditMode && Boolean(parent?.username?.trim())));
 
   const headerTitle =
     title ??
@@ -100,15 +117,25 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
 
   const requiredMessage = t('common.required') || 'Required';
 
-  const schema = z.object({
-    name: z.string().trim().min(1, requiredMessage),
-    color: z.string().trim().min(1, requiredMessage),
-    familyRole: z.nativeEnum(EFamilyRole),
-    role: z.nativeEnum(ERole),
-    avatar: z.string().trim().min(1, requiredMessage),
-    passwordPattern: z.string().trim().min(1, requiredMessage),
-    // passwordPattern: z.string().trim().min(1, requiredMessage).optional(),
-  });
+  const schema = useMemo(
+    () =>
+      z.object({
+        ...(showUsernameField
+          ? {
+              username: z.string().trim().min(1, requiredMessage),
+            }
+          : {}),
+        name: z.string().trim().min(1, requiredMessage),
+        color: z.string().trim().min(1, requiredMessage),
+        familyRole: z.nativeEnum(EFamilyRole),
+        role: z.nativeEnum(ERole),
+        avatar: z.string().trim().min(1, requiredMessage),
+        passwordPattern: isEditMode
+          ? z.string().trim().optional()
+          : z.string().trim().min(1, requiredMessage),
+      }),
+    [isEditMode, requiredMessage, showUsernameField],
+  );
 
   const FAMILY_ROLE_OPTIONS: IOptions<EFamilyRole>[] = [
     {
@@ -167,9 +194,11 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
     setError,
     watch,
     getValues,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
+      username: parent?.username ?? '',
       name: parent?.name ?? '',
       color: parent?.color ?? userColors.pink,
       familyRole: parent?.familyRole ?? EFamilyRole.mother,
@@ -182,6 +211,28 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
   });
 
   useEffect(() => {
+    reset({
+      username: parent?.username ?? '',
+      name: parent?.name ?? '',
+      color: parent?.color ?? userColors.pink,
+      familyRole: parent?.familyRole ?? EFamilyRole.mother,
+      role: parent?.role ?? ERole.parent,
+      avatar: parent?.avatar ?? '',
+      passwordPattern: parent?.passwordPattern ?? '',
+    });
+  }, [
+    parent?.id,
+    parent?.username,
+    parent?.name,
+    parent?.color,
+    parent?.familyRole,
+    parent?.role,
+    parent?.avatar,
+    parent?.passwordPattern,
+    reset,
+  ]);
+
+  useEffect(() => {
     const sub = watch(() => {
       const values = getValues();
       const valid = schema.safeParse(values).success;
@@ -190,7 +241,7 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
     const initialValid = schema.safeParse(getValues()).success;
     onValidityChange?.(initialValid);
     return () => sub.unsubscribe();
-  }, [watch, getValues, onValidityChange]);
+  }, [watch, getValues, onValidityChange, schema]);
 
   const onSubmit = (raw: FormValues) => {
     const parsed = schema.safeParse(raw);
@@ -218,7 +269,15 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
       familyRole: data.familyRole,
       role: data.role,
       avatar: data.avatar,
-      passwordPattern: data.passwordPattern,
+      passwordPattern: data.passwordPattern?.trim()
+        ? data.passwordPattern.trim()
+        : parent?.passwordPattern,
+      ...(parentEmail ? { email: parentEmail } : {}),
+      ...(showUsernameField && typeof data.username === 'string'
+        ? { username: data.username.trim() }
+        : parent?.username?.trim()
+          ? { username: parent.username.trim() }
+          : {}),
     };
 
     onSave?.(newParent);
@@ -239,11 +298,16 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
       return;
     }
 
-    dispatch(removeParent({ id: parent.id }));
-
-    if (router.canGoBack()) {
-      router.back();
-    }
+    dispatch(
+      removeParent({
+        id: parent.id,
+        onSuccess: () => {
+          if (router.canGoBack()) {
+            router.back();
+          }
+        },
+      }),
+    );
   };
 
   const formBody = (
@@ -254,7 +318,51 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
         </View>
       )}
       <Card.Content>
-      <Space size={8} />
+      <Space size={3} />
+            {fieldsBeforeName ? (
+              <>
+                {fieldsBeforeName}
+                <Space size={3} />
+              </>
+            ) : null}
+            {showReadOnlyEmail ? (
+              <>
+                <TextInput
+                  label={t('onboarding.sign_up.admin_email')}
+                  value={parentEmail}
+                  editable={false}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  mode="outlined"
+                />
+                <Space size={3} />
+              </>
+            ) : null}
+            {showUsernameField ? (
+              <>
+                <Controller
+                  control={control}
+                  name="username"
+                  render={({ field: { value, onChange } }) => (
+                    <>
+                      <TextInput
+                        label={t('users.unique_username')}
+                        value={value ?? ''}
+                        onChangeText={onChange}
+                        autoCapitalize="none"
+                        mode="outlined"
+                      />
+                      {!!errors.username && (
+                        <Text style={styles.errorText}>
+                          {errors.username.message}
+                        </Text>
+                      )}
+                    </>
+                  )}
+                />
+                <Space size={3} />
+              </>
+            ) : null}
             {/* Name */}
             <Controller
               control={control}
@@ -274,7 +382,7 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             {/* Family Role + Role */}
             <Controller
@@ -297,7 +405,7 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             <Controller
               control={control}
@@ -327,7 +435,7 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             <Controller
               control={control}
@@ -344,7 +452,7 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
               )}
             />
 
-            <Space size={12} />
+            <Space size={3} />
 
             {/* Color */}
             <Controller
@@ -360,17 +468,29 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
               )}
             />
 
-            <Space size={20} />
+            <Space size={4} />
 
             {showSubmitButton && (
-              <Button mode="contained" onPress={handleSubmit(onSubmit)}>
+              <Button
+                mode="contained"
+                loading={isSubmitting}
+                disabled={isSubmitting}
+                onPress={handleSubmit(onSubmit)}
+              >
                 {t('button.save') || 'Save'}
               </Button>
             )}
 
-            {isEditMode && isAdmin && (
+            {submitError ? (
               <>
-                <Space size={12} />
+                <Space size={2} />
+                <Text style={styles.errorText}>{submitError}</Text>
+              </>
+            ) : null}
+
+            {isEditMode && isAdmin && !showReadOnlyEmail && (
+              <>
+                <Space size={3} />
                 <Button
                   mode="contained"
                   bgColor={ButtonColors.Red}
@@ -381,7 +501,7 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
               </>
             )}
 
-            <Space size={20} />
+            <Space size={4} />
           </Card.Content>
         </Card>
   );
