@@ -11,8 +11,7 @@ import { ChildListItem, ParentListItem } from '~/components/users/UserListItem';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectAllParents } from '~/store/parents/selectors';
-import { ERole } from '~/store/settings/enums';
-import { selectCurrentRole } from '~/store/settings/selectors';
+import { selectIsAdmin } from '~/store/settings/selectors';
 import { Colors } from '~/styles';
 import { EScreens } from '~/types';
 
@@ -20,8 +19,7 @@ export default function Users() {
   const router = useRouter();
   const parents = useSelector(selectAllParents);
   const children = useSelector(selectAllChildren);
-  const currentRole = useSelector(selectCurrentRole);
-  const isAdmin = currentRole === ERole.admin;
+  const isAdmin = useSelector(selectIsAdmin);
 
   const handleAddParent = useCallback(() => {
     router.push(`/${EScreens.ParentAdd}` as any);

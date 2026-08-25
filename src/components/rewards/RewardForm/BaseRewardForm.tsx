@@ -20,8 +20,7 @@ import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWi
 import { getRewardImageOptions } from '~/constants/rewards';
 import { t } from '~/services';
 import { removeRewardBase } from '~/store/rewardBase/slice';
-import { ERole } from '~/store/settings/enums';
-import { selectCurrentRole } from '~/store/settings/selectors';
+import { selectIsParent } from '~/store/settings/selectors';
 import { EFormMode } from '~/types/ECommon';
 import { IRewardBase, RewardBaseFormProps } from '~/types/IReward';
 
@@ -84,8 +83,7 @@ export const BaseRewardForm: FC<Props> = ({
   const rewardImageOptions = getRewardImageOptions();
   const isEditMode = mode === EFormMode.Edit;
 
-  const currentRole = useSelector(selectCurrentRole);
-  const isAdmin = currentRole === ERole.admin;
+  const canManageBaseRewards = useSelector(selectIsParent);
 
   useEffect(() => {
     const sub = watch(() => {
@@ -222,7 +220,7 @@ export const BaseRewardForm: FC<Props> = ({
               {t('button.save')}
             </Button>
 
-            {isEditMode && isAdmin && (
+            {isEditMode && canManageBaseRewards && (
               <>
                 <Space size={3} />
                 <Button

@@ -9,7 +9,7 @@ import { RootStateT } from '~/store';
 import { ECommonActions } from '~/store/common/types';
 import { EStateName } from '~/store/enums';
 import { addParent } from '~/store/parents/slice';
-import { selectCurrentUser } from '~/store/settings/selectors';
+import { selectCurrentUser, selectIsAdmin } from '~/store/settings/selectors';
 import { EFormMode } from '~/types/ECommon';
 import { IParent, ParentFormProps } from '~/types/IParent';
 
@@ -17,7 +17,22 @@ export default function ParentAdd() {
   const dispatch = useDispatch();
   const router = useRouter();
   const currentUser = useSelector(selectCurrentUser);
+  const isAdmin = useSelector(selectIsAdmin);
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isAdmin) {
+      if (router.canGoBack()) {
+        router.back();
+      } else {
+        router.replace('/users/Users');
+      }
+    }
+  }, [isAdmin, router]);
+
+  if (!isAdmin) {
+    return null;
+  }
 
   const saveError = useSelector((state: RootStateT) => {
     const common = state[EStateName.common];

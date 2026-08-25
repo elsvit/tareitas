@@ -26,6 +26,8 @@ export type SelectedUser = {
   role: ERole;
   passwordPattern?: string;
   name: string;
+  email?: string;
+  username?: string;
 };
 
 type Props = {
@@ -42,6 +44,8 @@ const toParentUser = (parent: IParent): SelectedUser => ({
   role: parent.role === ERole.admin ? ERole.admin : ERole.parent,
   passwordPattern: parent.passwordPattern,
   name: parent.name,
+  email: parent.email,
+  username: parent.username,
 });
 
 const toChildUser = (child: IChild): SelectedUser => ({
@@ -49,6 +53,7 @@ const toChildUser = (child: IChild): SelectedUser => ({
   role: ERole.child,
   passwordPattern: child.passwordPattern,
   name: child.name,
+  username: child.username,
 });
 
 export const SelectUsersModal: React.FC<Props> = ({

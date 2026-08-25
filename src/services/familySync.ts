@@ -18,6 +18,7 @@ import {
 import { ERole } from '~/store/settings/enums';
 import {
   clearAuthSession,
+  clearMultideviceSession,
   setCurrentRole,
   setCurrentUser,
   setMultideviceSession,
@@ -291,4 +292,14 @@ export function clearFamilyStore(dispatch: AppDispatch) {
   dispatch(setCurrentUser(null));
   dispatch(setCurrentRole(null));
   dispatch(setRequireLogin(true));
+}
+
+/** Wipe local family and restart onboarding from the beginning. */
+export function resetFamilyForOnboarding(dispatch: AppDispatch) {
+  dispatch(clearParents());
+  dispatch(clearChildren());
+  dispatch(clearMultideviceSession());
+  dispatch(setCurrentUser(null));
+  dispatch(setCurrentRole(null));
+  dispatch(setRequireLogin(false));
 }
