@@ -92,7 +92,12 @@ export const onboardingStyles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.72)',
   },
   syncModeSectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: spacing(0.5),
+  },
+  syncModeSectionHeaderText: {
+    flex: 1,
   },
   syncModeOptions: {
     gap: spacing(2),
@@ -101,9 +106,18 @@ export const onboardingStyles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.blue200,
     borderRadius: 16,
-    padding: spacing(3),
+    padding: spacing(2),
+    paddingRight: spacing(3),
     backgroundColor: 'rgba(255, 255, 255, 0.45)',
+  },
+  syncModeOptionRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  syncModeOptionContent: {
+    flex: 1,
     gap: spacing(1),
+    paddingTop: spacing(1),
   },
   syncModeOptionDescription: {
     opacity: 0.85,

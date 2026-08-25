@@ -105,6 +105,7 @@ export const SelectUsersModal: React.FC<Props> = ({
                   <UserListItem
                     key={parent.id}
                     name={parent.name}
+                    username={parent.username}
                     familyRole={parent.familyRole}
                     avatar={parent.avatar}
                     color={parent.color}
@@ -132,6 +133,7 @@ export const SelectUsersModal: React.FC<Props> = ({
                   <UserListItem
                     key={child.id}
                     name={child.name}
+                    username={child.username}
                     avatar={child.avatar}
                     color={child.color}
                     onPress={() => onSelectUser(toChildUser(child))}

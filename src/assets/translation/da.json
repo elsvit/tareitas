@@ -129,7 +129,7 @@
     "login": "Log ind",
     "logout": "Log ud",
     "name": "Navn",
-    "unique_username": "Unikt brugernavn",
+    "unique_username": "Unikt login-navn",
     "no_children": "Ingen børn endnu",
     "no_parents": "Ingen forældre endnu",
     "parent": "Forælder",

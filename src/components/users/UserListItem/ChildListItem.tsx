@@ -36,6 +36,7 @@ export const ChildListItem: React.FC<Props> = ({ id, onPress }) => {
   return (
     <UserListItem
       name={child.name}
+      // username={child.username}
       avatar={child.avatar}
       color={child.color}
       onPress={canEdit || onPress ? handlePress : undefined}

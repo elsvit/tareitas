@@ -96,7 +96,9 @@ export function OnboardingFlow({
     role: ERole.admin,
   });
   const [child, setChild] = useState<ChildFormProps>();
-  const [syncMode, setSyncModeSelection] = useState(storedSyncMode);
+  const [syncMode, setSyncModeSelection] = useState(() =>
+    parentIds.length > 0 ? storedSyncMode : ESyncMode.multidevice,
+  );
   const [signUpAdmin, setSignUpAdmin] =
     useState<Partial<SignUpAdminData>>({ role: ERole.admin });
   const [signUpError, setSignUpError] = useState<string | null>(null);

@@ -39,6 +39,7 @@ export const ParentListItem: React.FC<ParentListItemProps> = ({
   return (
     <UserListItem
       name={parent.name}
+      // username={parent.username}
       familyRole={parent.familyRole}
       avatar={parent.avatar}
       color={parent.color}
