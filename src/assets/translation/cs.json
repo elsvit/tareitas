@@ -114,7 +114,9 @@
       "session_expired": "Vaše relace vypršela. Přihlaste se znovu pro synchronizaci.",
       "login_screen_title": "Přihlášení",
       "login_screen_subtitle": "Přihlaste se pro synchronizaci rodiny mezi zařízeními."
-    }
+    },
+    "show_login_name": "Zobrazit přihlašovací jméno",
+    "parents": "Rodiče"
   },
   "users": {
     "title": "Uživatelé",
@@ -140,7 +142,7 @@
     "login": "Přihlášení",
     "logout": "Odhlášení",
     "name": "Jméno",
-    "unique_username": "Unikátní uživatelské jméno",
+    "unique_username": "Unikátní přihlašovací jméno",
     "no_children": "Zatím žádné děti",
     "no_parents": "Zatím bez rodičů",
     "parent": "Rodič",
@@ -584,7 +586,7 @@
       "tab_register": "Registrace",
       "tab_login": "Přihlášení",
       "email": "E-mail",
-      "username_optional": "Uživatelské jméno (volitelné)",
+      "username_optional": "Unikátní přihlašovací jméno (volitelné)",
       "pin": "4místný PIN",
       "pin_confirm": "Potvrdit PIN",
       "family_name": "Název rodiny",
@@ -604,7 +606,7 @@
       "admin": "Admin",
       "not_admin": "Ne admin",
       "email": "E-mail",
-      "username": "Uživatelské jméno",
+      "username": "Unikátní přihlašovací jméno",
       "pin": "4místný PIN",
       "submit": "Přihlásit se",
       "sign_up": "Registrace",
@@ -622,7 +624,7 @@
       "child_header": "Přidat první dítě",
       "child_title": "Vytvořte první dítě",
       "child_subtitle": "Děti se přihlašují uživatelským jménem.",
-      "child_username": "Uživatelské jméno dítěte",
+      "child_username": "Unikátní přihlašovací jméno",
       "child_pin": "PIN dítěte (4 číslice)",
       "error_email_required": "E-mail admina je povinný",
       "error_username_required": "Uživatelské jméno dítěte je povinné",

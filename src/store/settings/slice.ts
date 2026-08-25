@@ -12,6 +12,8 @@ const initialState: IStateSettings = {
   isLangInitiating: true, // TODO Change from null to true
   isHabitsTabSeparated: true,
   isChildPasswordObligatory: true,
+  showLoginName: false,
+  showParentLoginName: false,
   currentUser: null,
   currentRole: null,
   taskCalendarDate: getTodayDateString(),
@@ -46,6 +48,12 @@ export const settingsSlice = createSlice({
     },
     setIsChildPasswordObligatory: (state, action: PayloadAction<boolean>) => {
       state.isChildPasswordObligatory = action.payload;
+    },
+    setShowLoginName: (state, action: PayloadAction<boolean>) => {
+      state.showLoginName = action.payload;
+    },
+    setShowParentLoginName: (state, action: PayloadAction<boolean>) => {
+      state.showParentLoginName = action.payload;
     },
     setCurrentUser: (state, action: PayloadAction<string | null>) => {
       state.currentUser = action.payload;
@@ -190,6 +198,8 @@ export const {
   setLanguage,
   setIsRecurringTabSeparated,
   setIsChildPasswordObligatory,
+  setShowLoginName,
+  setShowParentLoginName,
   setCurrentRole,
   setCurrentUser,
   setTaskCalendarDate,

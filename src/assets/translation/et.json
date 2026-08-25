@@ -113,7 +113,9 @@
       "session_expired": "Teie seanss on aegunud. Sünkroniseerimiseks logige uuesti sisse.",
       "login_screen_title": "Logi sisse",
       "login_screen_subtitle": "Logige sisse, et sünkroniseerida pere seadmete vahel."
-    }
+    },
+    "show_login_name": "Kuva sisselogimisnimi",
+    "parents": "Lapsevanemad"
   },
   "users": {
     "title": "Kasutajad",
@@ -139,7 +141,7 @@
     "login": "Logi sisse",
     "logout": "Väljalogimine",
     "name": "Nimi",
-    "unique_username": "Unikaalne kasutajanimi",
+    "unique_username": "Unikaalne sisselogimisnimi",
     "no_children": "Lapsi veel pole",
     "no_parents": "Vanemaid veel pole",
     "parent": "Lapsevanem",
@@ -583,7 +585,7 @@
       "tab_register": "Registreeru",
       "tab_login": "Logi sisse",
       "email": "E-post",
-      "username_optional": "Kasutajanimi (valikuline)",
+      "username_optional": "Unikaalne sisselogimisnimi (valikuline)",
       "pin": "4-kohaline PIN",
       "pin_confirm": "Kinnita PIN",
       "family_name": "Perekonna nimi",
@@ -603,7 +605,7 @@
       "admin": "Admin",
       "not_admin": "Mitte admin",
       "email": "E-post",
-      "username": "Kasutajanimi",
+      "username": "Unikaalne sisselogimisnimi",
       "pin": "4-kohaline PIN",
       "submit": "Logi sisse",
       "sign_up": "Registreeru",
@@ -621,7 +623,7 @@
       "child_header": "Lisa esimene laps",
       "child_title": "Loo esimene laps",
       "child_subtitle": "Lapsed logivad sisse kasutajanimega.",
-      "child_username": "Lapse kasutajanimi",
+      "child_username": "Unikaalne sisselogimisnimi",
       "child_pin": "Lapse PIN (4 numbrit)",
       "error_email_required": "Admini e-post on kohustuslik",
       "error_username_required": "Lapse kasutajanimi on kohustuslik",

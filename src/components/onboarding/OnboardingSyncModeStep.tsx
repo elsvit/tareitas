@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, View } from 'react-native';
+import { RadioButton } from 'react-native-paper';
 
 import { Space, Text } from '~/components/ui';
 import { t } from '~/services';
@@ -68,7 +69,15 @@ export function OnboardingSyncModeStep({
         <Pressable
           onPress={() => onSetupPathChange('create')}
           style={styles.syncModeSectionHeader}
+          accessibilityRole="radio"
+          accessibilityState={{ selected: setupPath === 'create' }}
         >
+          <RadioButton
+            value="create"
+            status={setupPath === 'create' ? 'checked' : 'unchecked'}
+            onPress={() => onSetupPathChange('create')}
+            color={Colors.blue600}
+          />
           <Text
             variant="titleMedium"
             fontFamily="fredoka"
@@ -76,48 +85,64 @@ export function OnboardingSyncModeStep({
             color={
               setupPath === 'create' ? Colors.blue600 : Colors.grey700
             }
+            style={styles.syncModeSectionHeaderText}
           >
             {t('onboarding.sync_mode.create_section_title')}
           </Text>
         </Pressable>
 
         {setupPath === 'create' ? (
-          <View style={styles.syncModeOptions}>
-            {syncModeOptions.map(option => {
-              const selected = value === option.mode;
+          <RadioButton.Group
+            onValueChange={nextValue => onChange(nextValue as ESyncMode)}
+            value={value}
+          >
+            <View style={styles.syncModeOptions}>
+              {syncModeOptions.map(option => {
+                const selected = value === option.mode;
 
-              return (
-                <Pressable
-                  key={option.mode}
-                  onPress={() => onChange(option.mode)}
-                  style={[
-                    styles.syncModeOption,
-                    selected && {
-                      borderColor: option.accentColor,
-                      backgroundColor: 'rgba(255, 255, 255, 0.72)',
-                    },
-                  ]}
-                >
-                  <Text
-                    variant="titleMedium"
-                    fontFamily="fredoka"
-                    weight="bold"
-                    color={
-                      selected ? option.accentColor : Colors.grey700
-                    }
+                return (
+                  <Pressable
+                    key={option.mode}
+                    onPress={() => onChange(option.mode)}
+                    style={[
+                      styles.syncModeOption,
+                      selected && {
+                        borderColor: option.accentColor,
+                        backgroundColor: 'rgba(255, 255, 255, 0.72)',
+                      },
+                    ]}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected }}
                   >
-                    {option.title}
-                  </Text>
-                  <Text
-                    variant="bodyMedium"
-                    style={styles.syncModeOptionDescription}
-                  >
-                    {option.description}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </View>
+                    <View style={styles.syncModeOptionRow}>
+                      <RadioButton
+                        value={option.mode}
+                        color={option.accentColor}
+                      />
+                      <View style={styles.syncModeOptionContent}>
+                        <Text
+                          variant="titleMedium"
+                          fontFamily="fredoka"
+                          weight="bold"
+                          color={
+                            selected ? option.accentColor : Colors.grey700
+                          }
+                        >
+                          {option.title}
+                        </Text>
+                        <Text
+                          variant="bodyMedium"
+                          style={styles.syncModeOptionDescription}
+                        >
+                          {option.description}
+                        </Text>
+                      </View>
+                    </View>
+                  </Pressable>
+                );
+              })}
+            </View>
+          </RadioButton.Group>
         ) : null}
       </View>
 
@@ -132,7 +157,15 @@ export function OnboardingSyncModeStep({
         <Pressable
           onPress={() => onSetupPathChange('connect')}
           style={styles.syncModeSectionHeader}
+          accessibilityRole="radio"
+          accessibilityState={{ selected: setupPath === 'connect' }}
         >
+          <RadioButton
+            value="connect"
+            status={setupPath === 'connect' ? 'checked' : 'unchecked'}
+            onPress={() => onSetupPathChange('connect')}
+            color={Colors.blue600}
+          />
           <Text
             variant="titleMedium"
             fontFamily="fredoka"
@@ -140,6 +173,7 @@ export function OnboardingSyncModeStep({
             color={
               setupPath === 'connect' ? Colors.blue600 : Colors.grey700
             }
+            style={styles.syncModeSectionHeaderText}
           >
             {t('onboarding.sync_mode.connect_section_title')}
           </Text>

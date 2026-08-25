@@ -3,7 +3,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { selectChildById } from '~/store/children/selectors';
-import { selectCurrentUser, selectIsAdmin } from '~/store/settings/selectors';
+import {
+  selectCurrentUser,
+  selectIsAdmin,
+  selectShowLoginName,
+} from '~/store/settings/selectors';
 import { EScreens } from '~/types/ENavigation';
 import { canEditUserProfile } from '~/utils/users/profilePermissions';
 import { UserListItem } from './UserListItem';
@@ -19,6 +23,7 @@ export const ChildListItem: React.FC<Props> = ({ id, onPress }) => {
   const router = useRouter();
 
   const child = useSelector(state => selectChildById(state as any, id));
+  const showLoginName = useSelector(selectShowLoginName);
 
   const canEdit = canEditUserProfile(isAdmin, currentUserId, id);
 
@@ -36,6 +41,8 @@ export const ChildListItem: React.FC<Props> = ({ id, onPress }) => {
   return (
     <UserListItem
       name={child.name}
+      username={child.username}
+      showLoginName={showLoginName}
       avatar={child.avatar}
       color={child.color}
       onPress={canEdit || onPress ? handlePress : undefined}

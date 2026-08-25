@@ -6,6 +6,8 @@ export interface IStateSettings {
   isLangInitiating: boolean | null;
   isHabitsTabSeparated: boolean;
   isChildPasswordObligatory: boolean;
+  showLoginName: boolean;
+  showParentLoginName: boolean;
   currentUser: string | null;
   currentRole: ERole | null;
   taskCalendarDate: string;

@@ -149,8 +149,8 @@ export function FamilyConnectForm({
       <TextInput
         label={
           loginMode === 'admin'
-            ? t('onboarding.login.email')
-            : t('onboarding.login.username')
+                  ? t('onboarding.login.email')
+                  : t('users.unique_username')
         }
         value={identifier}
         onChangeText={setIdentifier}

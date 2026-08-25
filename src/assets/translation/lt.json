@@ -114,7 +114,9 @@
       "session_expired": "Jūsų sesija baigėsi. Prisijunkite iš naujo, kad sinchronizuotumėte.",
       "login_screen_title": "Prisijungti",
       "login_screen_subtitle": "Prisijunkite, kad sinchronizuotumėte šeimą tarp įrenginių."
-    }
+    },
+    "show_login_name": "Rodyti prisijungimo vardą",
+    "parents": "Tėvai"
   },
   "users": {
     "title": "Vartotojai",
@@ -140,7 +142,7 @@
     "login": "Prisijungti",
     "logout": "Atsijungti",
     "name": "Vardas",
-    "unique_username": "Unikalus naudotojo vardas",
+    "unique_username": "Unikalus prisijungimo vardas",
     "no_children": "Vaikų dar nėra",
     "no_parents": "Tėvų dar nėra",
     "parent": "Tėvas",
@@ -584,7 +586,7 @@
       "tab_register": "Registruotis",
       "tab_login": "Prisijungti",
       "email": "El. paštas",
-      "username_optional": "Naudotojo vardas (nebūtina)",
+      "username_optional": "Unikalus prisijungimo vardas (nebūtina)",
       "pin": "4 skaitmenų PIN",
       "pin_confirm": "Patvirtinti PIN",
       "family_name": "Šeimos pavadinimas",
@@ -604,7 +606,7 @@
       "admin": "Admin",
       "not_admin": "Ne admin",
       "email": "El. paštas",
-      "username": "Naudotojo vardas",
+      "username": "Unikalus prisijungimo vardas",
       "pin": "4 skaitmenų PIN",
       "submit": "Prisijungti",
       "sign_up": "Registruotis",
@@ -622,7 +624,7 @@
       "child_header": "Pridėti pirmą vaiką",
       "child_title": "Sukurkite pirmą vaiką",
       "child_subtitle": "Vaikai prisijungia naudotojo vardu.",
-      "child_username": "Vaiko naudotojo vardas",
+      "child_username": "Unikalus prisijungimo vardas",
       "child_pin": "Vaiko PIN (4 skaitmenys)",
       "error_email_required": "Admin el. paštas privalomas",
       "error_username_required": "Vaiko naudotojo vardas privalomas",

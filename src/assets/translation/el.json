@@ -114,7 +114,9 @@
       "session_expired": "Η συνεδρία σας έληξε. Συνδεθείτε ξανά για συγχρονισμό.",
       "login_screen_title": "Σύνδεση",
       "login_screen_subtitle": "Συνδεθείτε για να συγχρονίσετε την οικογένειά σας μεταξύ συσκευών."
-    }
+    },
+    "show_login_name": "Εμφάνιση ονόματος σύνδεσης",
+    "parents": "Γονείς"
   },
   "users": {
     "title": "Χρήστες",
@@ -140,7 +142,7 @@
     "login": "Σύνδεση",
     "logout": "Αποσύνδεση",
     "name": "Ονομα",
-    "unique_username": "Μοναδικό όνομα χρήστη",
+    "unique_username": "Μοναδικό όνομα σύνδεσης",
     "no_children": "Δεν υπάρχουν ακόμη παιδιά",
     "no_parents": "Χωρίς γονείς ακόμα",
     "parent": "Μητρική εταιρεία",
@@ -584,7 +586,7 @@
       "tab_register": "Εγγραφή",
       "tab_login": "Σύνδεση",
       "email": "Email",
-      "username_optional": "Όνομα χρήστη (προαιρετικό)",
+      "username_optional": "Μοναδικό όνομα σύνδεσης (προαιρετικό)",
       "pin": "PIN 4 ψηφίων",
       "pin_confirm": "Επιβεβαίωση PIN",
       "family_name": "Όνομα οικογένειας",
@@ -604,7 +606,7 @@
       "admin": "Admin",
       "not_admin": "Όχι admin",
       "email": "Email",
-      "username": "Όνομα χρήστη",
+      "username": "Μοναδικό όνομα σύνδεσης",
       "pin": "PIN 4 ψηφίων",
       "submit": "Σύνδεση",
       "sign_up": "Εγγραφή",
@@ -622,7 +624,7 @@
       "child_header": "Προσθήκη πρώτου παιδιού",
       "child_title": "Δημιουργήστε το πρώτο παιδί",
       "child_subtitle": "Τα παιδιά συνδέονται με όνομα χρήστη.",
-      "child_username": "Όνομα χρήστη παιδιού",
+      "child_username": "Μοναδικό όνομα σύνδεσης",
       "child_pin": "PIN παιδιού (4 ψηφία)",
       "error_email_required": "Το email admin είναι υποχρεωτικό",
       "error_username_required": "Το όνομα χρήστη παιδιού είναι υποχρεωτικό",

@@ -18,12 +18,16 @@ import {
   selectLang,
   selectNeedsAuthLogin,
   selectRefreshToken,
+  selectShowLoginName,
+  selectShowParentLoginName,
 } from '~/store/settings/selectors';
 import {
   clearAuthSession,
   setIsChildPasswordObligatory,
   setLanguage,
   setRequireLogin,
+  setShowLoginName,
+  setShowParentLoginName,
 } from '~/store/settings/slice';
 import { syncTaskBaseTranslations } from '~/store/taskBase/slice';
 import { useStyle } from '~/styles';
@@ -40,6 +44,8 @@ export default function Settings() {
   const storedLang = useSelector(selectLang);
   const isAdmin = useSelector(selectIsAdmin);
   const isChildPasswordObligatory = useSelector(selectIsChildPasswordObligatory);
+  const showLoginName = useSelector(selectShowLoginName);
+  const showParentLoginName = useSelector(selectShowParentLoginName);
   const isMultidevice = useSelector(selectIsMultidevice);
   const hasAuthSession = useSelector(selectHasAuthSession);
   const needsAuthLogin = useSelector(selectNeedsAuthLogin);
@@ -80,6 +86,20 @@ export default function Settings() {
   const handleChildPasswordObligatoryChange = useCallback(
     (value: boolean) => {
       dispatch(setIsChildPasswordObligatory(value));
+    },
+    [dispatch],
+  );
+
+  const handleShowLoginNameChange = useCallback(
+    (value: boolean) => {
+      dispatch(setShowLoginName(value));
+    },
+    [dispatch],
+  );
+
+  const handleShowParentLoginNameChange = useCallback(
+    (value: boolean) => {
+      dispatch(setShowParentLoginName(value));
     },
     [dispatch],
   );
@@ -151,17 +171,43 @@ export default function Settings() {
         })),
       },
       {
+        id: 'parents',
+        title: t('settings.parents'),
+        defaultExpanded: false,
+        visible: isAdmin,
+        items: [
+          {
+            type: 'switch' as const,
+            id: 'show-parent-login-name',
+            title: t('settings.show_login_name'),
+            value: showParentLoginName,
+            onValueChange: handleShowParentLoginNameChange,
+          },
+        ],
+      },
+      {
         id: 'children',
         title: t('settings.children'),
         defaultExpanded: false,
         visible: isAdmin,
         items: [
+          ...(!isMultidevice
+            ? [
+                {
+                  type: 'switch' as const,
+                  id: 'child-password-obligatory',
+                  title: t('settings.child_password_obligatory'),
+                  value: isChildPasswordObligatory,
+                  onValueChange: handleChildPasswordObligatoryChange,
+                },
+              ]
+            : []),
           {
-            type: 'switch',
-            id: 'child-password-obligatory',
-            title: t('settings.child_password_obligatory'),
-            value: isChildPasswordObligatory,
-            onValueChange: handleChildPasswordObligatoryChange,
+            type: 'switch' as const,
+            id: 'show-login-name',
+            title: t('settings.show_login_name'),
+            value: showLoginName,
+            onValueChange: handleShowLoginNameChange,
           },
         ],
       },
@@ -172,6 +218,8 @@ export default function Settings() {
     activeLang,
     activeLanguageName,
     handleChildPasswordObligatoryChange,
+    handleShowLoginNameChange,
+    handleShowParentLoginNameChange,
     handleLanguageChange,
     handleSignOut,
     hasAuthSession,
@@ -180,6 +228,8 @@ export default function Settings() {
     isMultidevice,
     needsAuthLogin,
     router,
+    showLoginName,
+    showParentLoginName,
   ]);
 
   return (

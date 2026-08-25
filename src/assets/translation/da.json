@@ -103,7 +103,9 @@
     "title": "Indstillinger",
     "language": "Sprog",
     "children": "Børn",
-    "child_password_obligatory": "Børnekodeord påkrævet"
+    "child_password_obligatory": "Børnekodeord påkrævet",
+    "show_login_name": "Vis login-navn",
+    "parents": "Forældre"
   },
   "users": {
     "title": "Brugere",
@@ -129,7 +131,7 @@
     "login": "Log ind",
     "logout": "Log ud",
     "name": "Navn",
-    "unique_username": "Unikt brugernavn",
+    "unique_username": "Unikt login-navn",
     "no_children": "Ingen børn endnu",
     "no_parents": "Ingen forældre endnu",
     "parent": "Forælder",

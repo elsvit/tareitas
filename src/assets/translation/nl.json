@@ -114,7 +114,9 @@
       "session_expired": "Je sessie is verlopen. Log opnieuw in om te synchroniseren.",
       "login_screen_title": "Inloggen",
       "login_screen_subtitle": "Log in om je gezin tussen apparaten te synchroniseren."
-    }
+    },
+    "show_login_name": "Inlognaam tonen",
+    "parents": "Ouders"
   },
   "users": {
     "title": "Gebruikers",
@@ -140,7 +142,7 @@
     "login": "Login",
     "logout": "Uitloggen",
     "name": "Naam",
-    "unique_username": "Unieke gebruikersnaam",
+    "unique_username": "Unieke inlognaam",
     "no_children": "Nog geen kinderen",
     "no_parents": "Nog geen ouders",
     "parent": "Ouder",
@@ -584,7 +586,7 @@
       "tab_register": "Registreren",
       "tab_login": "Inloggen",
       "email": "E-mail",
-      "username_optional": "Gebruikersnaam (optioneel)",
+      "username_optional": "Unieke inlognaam (optioneel)",
       "pin": "4-cijferige PIN",
       "pin_confirm": "Bevestig PIN",
       "family_name": "Gezinsnaam",
@@ -604,7 +606,7 @@
       "admin": "Admin",
       "not_admin": "Geen admin",
       "email": "E-mail",
-      "username": "Gebruikersnaam",
+      "username": "Unieke inlognaam",
       "pin": "4-cijferige PIN",
       "submit": "Inloggen",
       "sign_up": "Registreren",
@@ -622,7 +624,7 @@
       "child_header": "Eerste kind toevoegen",
       "child_title": "Maak je eerste kind",
       "child_subtitle": "Kinderen loggen in met een gebruikersnaam.",
-      "child_username": "Gebruikersnaam kind",
+      "child_username": "Unieke inlognaam",
       "child_pin": "PIN kind (4 cijfers)",
       "error_email_required": "Admin-e-mail is verplicht",
       "error_username_required": "Gebruikersnaam kind is verplicht",

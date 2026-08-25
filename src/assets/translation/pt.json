@@ -108,7 +108,9 @@
       "session_expired": "A sua sessão expirou. Inicie sessão novamente para sincronizar.",
       "login_screen_title": "Iniciar sessão",
       "login_screen_subtitle": "Inicie sessão para sincronizar a família entre dispositivos."
-    }
+    },
+    "show_login_name": "Mostrar nome de acesso",
+    "parents": "Pais"
   },
   "users": {
     "title": "Usuários",
@@ -134,7 +136,7 @@
     "login": "Entrar",
     "logout": "Sair",
     "name": "Nome",
-    "unique_username": "Nome de utilizador único",
+    "unique_username": "Nome de acesso único",
     "no_children": "Nenhum filho ainda",
     "no_parents": "Nenhum pai ainda",
     "parent": "Pai",
@@ -578,7 +580,7 @@
       "tab_register": "Registar",
       "tab_login": "Iniciar sessão",
       "email": "E-mail",
-      "username_optional": "Nome de utilizador (opcional)",
+      "username_optional": "Nome de acesso único (opcional)",
       "pin": "PIN de 4 dígitos",
       "pin_confirm": "Confirmar PIN",
       "family_name": "Nome da família",
@@ -598,7 +600,7 @@
       "admin": "Admin",
       "not_admin": "Não admin",
       "email": "E-mail",
-      "username": "Nome de utilizador",
+      "username": "Nome de acesso único",
       "pin": "PIN de 4 dígitos",
       "submit": "Iniciar sessão",
       "sign_up": "Registar",
@@ -616,7 +618,7 @@
       "child_header": "Adicionar primeiro filho",
       "child_title": "Crie o seu primeiro filho",
       "child_subtitle": "As crianças iniciam sessão com um nome de utilizador.",
-      "child_username": "Nome de utilizador da criança",
+      "child_username": "Nome de acesso único",
       "child_pin": "PIN da criança (4 dígitos)",
       "error_email_required": "O email do admin é obrigatório",
       "error_username_required": "O nome de utilizador da criança é obrigatório",

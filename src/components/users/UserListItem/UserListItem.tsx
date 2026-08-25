@@ -23,6 +23,8 @@ const USER_AVATAR_MAP = Object.fromEntries(
 type Props = {
   avatar?: string;
   name: string;
+  username?: string;
+  showLoginName?: boolean;
   familyRole?: string;
   color?: string;
   onPress?: () => void;
@@ -31,6 +33,8 @@ type Props = {
 export const UserListItem: React.FC<Props> = ({
   avatar,
   name,
+  username,
+  showLoginName = false,
   familyRole,
   color,
   onPress,
@@ -50,6 +54,8 @@ export const UserListItem: React.FC<Props> = ({
       avatar={avatar}
       userUrls={userUrls}
       name={name}
+      username={username}
+      showLoginName={showLoginName}
       familyRole={familyRole}
       textColor={color}
     />
@@ -116,6 +122,8 @@ type RowProps = {
   avatar?: string;
   userUrls: Record<string, string>;
   name: string;
+  username?: string;
+  showLoginName?: boolean;
   familyRole?: string;
   textColor?: string;
 };
@@ -124,6 +132,8 @@ const RowContent: React.FC<RowProps> = ({
   avatar,
   userUrls,
   name,
+  username,
+  showLoginName = false,
   familyRole,
   textColor,
 }) => {
@@ -163,6 +173,20 @@ const RowContent: React.FC<RowProps> = ({
     }
   }, [familyRole]);
 
+  const subtitle = React.useMemo(() => {
+    const loginName = showLoginName ? username?.trim() : '';
+    if (familyRoleText && loginName) {
+      return `${familyRoleText} (${loginName})`;
+    }
+    if (familyRoleText) {
+      return familyRoleText;
+    }
+    if (loginName) {
+      return `(${loginName})`;
+    }
+    return '';
+  }, [familyRoleText, showLoginName, username]);
+
   return (
     <View style={styles.row}>
       <View style={styles.avatarOuter}>
@@ -190,7 +214,7 @@ const RowContent: React.FC<RowProps> = ({
         >
           {name}
         </Text>
-        {!!familyRoleText && familyRoleText !== '' && (
+        {!!subtitle && (
           <Text
             variant="bodySmall"
             fontFamily="fredoka"
@@ -198,7 +222,7 @@ const RowContent: React.FC<RowProps> = ({
             style={[styles.subtitle, textColor && { color: textColor, fontSize: 18 }]}
             numberOfLines={1}
           >
-            {familyRoleText}
+            {subtitle}
           </Text>
         )}
       </View>

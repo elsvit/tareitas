@@ -103,7 +103,9 @@
     "title": "Einstellungen",
     "language": "Sprache",
     "children": "Kinder",
-    "child_password_obligatory": "Kinderpasswort erforderlich"
+    "child_password_obligatory": "Kinderpasswort erforderlich",
+    "show_login_name": "Anmeldename anzeigen",
+    "parents": "Eltern"
   },
   "users": {
     "title": "Benutzer",
@@ -129,7 +131,7 @@
     "login": "Login",
     "logout": "Abmelden",
     "name": "Name",
-    "unique_username": "Eindeutiger Benutzername",
+    "unique_username": "Eindeutiger Anmeldename",
     "no_children": "Noch keine Kinder",
     "no_parents": "Noch keine Eltern",
     "parent": "Elternteil",

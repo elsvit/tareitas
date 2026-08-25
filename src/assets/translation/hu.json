@@ -114,7 +114,9 @@
       "session_expired": "A munkamenet lejárt. Jelentkezzen be újra a szinkronizáláshoz.",
       "login_screen_title": "Bejelentkezés",
       "login_screen_subtitle": "Jelentkezzen be a család eszközök közötti szinkronizálásához."
-    }
+    },
+    "show_login_name": "Bejelentkezési név megjelenítése",
+    "parents": "Szülők"
   },
   "users": {
     "title": "Felhasználók",
@@ -140,7 +142,7 @@
     "login": "Bejelentkezés",
     "logout": "Kijelentkezés",
     "name": "Név",
-    "unique_username": "Egyedi felhasználónév",
+    "unique_username": "Egyedi bejelentkezési név",
     "no_children": "Még nincs gyerek",
     "no_parents": "Még nincsenek szülők",
     "parent": "Szülő",
@@ -584,7 +586,7 @@
       "tab_register": "Regisztráció",
       "tab_login": "Bejelentkezés",
       "email": "E-mail",
-      "username_optional": "Felhasználónév (opcionális)",
+      "username_optional": "Egyedi bejelentkezési név (opcionális)",
       "pin": "4 számjegyű PIN",
       "pin_confirm": "PIN megerősítése",
       "family_name": "Család neve",
@@ -604,7 +606,7 @@
       "admin": "Admin",
       "not_admin": "Nem admin",
       "email": "E-mail",
-      "username": "Felhasználónév",
+      "username": "Egyedi bejelentkezési név",
       "pin": "4 számjegyű PIN",
       "submit": "Bejelentkezés",
       "sign_up": "Regisztráció",
@@ -622,7 +624,7 @@
       "child_header": "Első gyermek hozzáadása",
       "child_title": "Első gyermek létrehozása",
       "child_subtitle": "A gyerekek felhasználónévvel jelentkeznek be.",
-      "child_username": "Gyermek felhasználóneve",
+      "child_username": "Egyedi bejelentkezési név",
       "child_pin": "Gyermek PIN (4 számjegy)",
       "error_email_required": "Az admin e-mail kötelező",
       "error_username_required": "A gyermek felhasználóneve kötelező",
