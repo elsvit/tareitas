@@ -19,4 +19,12 @@ export interface IStateSettings {
   pendingRemovedTaskBaseIds: string[];
   pendingRemovedRewardBaseIds: string[];
   requireLogin: boolean;
+  lastSessionActivityAt: string | null;
+  pendingReturnRoute: PendingReturnRoute | null;
+  sessionPauseCount: number;
 }
+
+export type PendingReturnRoute = {
+  pathname: string;
+  params?: Record<string, string>;
+};

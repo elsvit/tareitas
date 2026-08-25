@@ -1,9 +1,12 @@
 import { call, put, select } from 'redux-saga/effects';
 
 import { collectFamilyMemberCredentialUpdates } from '~/services/familySync';
-import { refreshAuthToken } from '~/services/api';
 import { LocalizationService } from '~/services/localization/localization';
 import { updateChild } from '~/store/children/slice';
+import {
+  ensureSessionNotIdle,
+  tryRefreshAuthTokens,
+} from '~/store/helpers/multideviceSession';
 import { takeLatestWithFetchable } from '~/store/helpers/fetchableHandler';
 import { updateParent } from '~/store/parents/slice';
 import type { IState } from '~/store/types';
@@ -13,19 +16,19 @@ import { syncTaskBaseTranslations } from '~/store/taskBase/slice';
 import {
   selectAuthToken,
   selectFamilyId,
+  selectHasAuthSession,
   selectIsMultidevice,
+  selectIsSessionPaused,
   selectLang,
-  selectRefreshToken,
 } from './selectors';
 import {
-  clearAuthSession,
   initLanguage,
   refreshAuthSession,
+  resumeMultideviceSession,
   setLanguage,
-  setRequireLogin,
   syncCatalog,
   syncFamilyMembers,
-  updateAuthTokens,
+  touchSessionActivity,
 } from './slice';
 
 function* applyFamilyMemberCredentialUpdatesSaga(): Generator<
@@ -72,38 +75,51 @@ function* syncFamilyMembersSaga(): Generator<any, void, any> {
   }
 }
 
-function* refreshAuthSessionSaga(): Generator<any, void, any> {
+function* resumeMultideviceSessionSaga(): Generator<
+  any,
+  void,
+  any
+> {
   const isMultidevice: boolean = yield select(
     selectIsMultidevice,
   );
-  const refreshToken: string | null = yield select(
-    selectRefreshToken,
+  const hasAuthSession: boolean = yield select(
+    selectHasAuthSession,
   );
 
-  if (!isMultidevice || !refreshToken) {
+  if (!isMultidevice || !hasAuthSession) {
     return;
   }
+
+  const isPaused: boolean = yield select(
+    selectIsSessionPaused,
+  );
+
+  if (isPaused) {
+    return;
+  }
+
+  const idleExpired: boolean = yield call(
+    ensureSessionNotIdle,
+  );
+
+  if (idleExpired) {
+    return;
+  }
+
+  yield put(touchSessionActivity());
 
   try {
-    const tokens = yield call(
-      refreshAuthToken,
-      refreshToken,
-    );
-
-    yield put(
-      updateAuthTokens({
-        authToken: tokens.accessToken,
-        refreshToken: tokens.refreshToken,
-      }),
-    );
+    yield call(tryRefreshAuthTokens);
     yield put(syncCatalog());
+    yield call(applyFamilyMemberCredentialUpdatesSaga);
   } catch {
-    yield put(clearAuthSession());
-    yield put(setRequireLogin(true));
-    return;
+    // Keep the existing session on transient failures (offline, timeout, etc.)
   }
+}
 
-  yield call(applyFamilyMemberCredentialUpdatesSaga);
+function* refreshAuthSessionSaga(): Generator<any, void, any> {
+  yield call(resumeMultideviceSessionSaga);
 }
 
 function* initLanguageSaga(): Generator<any, void, any> {
@@ -115,7 +131,7 @@ function* initLanguageSaga(): Generator<any, void, any> {
   yield put(setLanguage(lang));
   yield put(syncTaskBaseTranslations());
   yield put(syncRewardBaseTranslations());
-  yield put(refreshAuthSession());
+  yield put(resumeMultideviceSession());
   yield put(syncFamilyMembers());
 }
 
@@ -127,6 +143,10 @@ export default [
   takeLatestWithFetchable(
     refreshAuthSession,
     refreshAuthSessionSaga,
+  ),
+  takeLatestWithFetchable(
+    resumeMultideviceSession,
+    resumeMultideviceSessionSaga,
   ),
   takeLatestWithFetchable(
     syncFamilyMembers,

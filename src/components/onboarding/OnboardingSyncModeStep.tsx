@@ -1,33 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Pressable, View } from 'react-native';
 
-import { RadioButton } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
-
-import {
-  Button,
-  ButtonColors,
-  Card,
-  Space,
-  Text,
-  TextInput,
-} from '~/components/ui';
-import { OTPInput } from '~/components/ui/OTPInput';
+import { Card, Space, Text } from '~/components/ui';
 import { t } from '~/services';
-import { ApiError } from '~/services/api/client';
-import { clearFamilyStore, hydrateFamilyStore } from '~/services/familySync';
-import { loginAndLoadFamily } from '~/services/multideviceSetup';
-import type { AppDispatch } from '~/store';
 import { ESyncMode } from '~/store/settings/enums';
-import { setSyncMode } from '~/store/settings/slice';
 import { Colors } from '~/styles';
 
+import { FamilyConnectForm } from './FamilyConnectForm';
 import { OnboardingStepHeader } from './OnboardingStepHeader';
 import { onboardingStyles as styles } from './styles';
 
 export type OnboardingSetupPath = 'create' | 'connect';
-
-type ConnectLoginMode = 'admin' | 'member';
 
 type OnboardingSyncModeStepProps = {
   setupPath: OnboardingSetupPath;
@@ -51,22 +34,6 @@ export function OnboardingSyncModeStep({
   onChange,
   onMemberLoginSuccess,
 }: OnboardingSyncModeStepProps) {
-  const dispatch = useDispatch<AppDispatch>();
-  const [loginMode, setLoginMode] =
-    useState<ConnectLoginMode>('admin');
-  const [identifier, setIdentifier] = useState('');
-  const [pin, setPin] = useState('');
-  const [loginError, setLoginError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleLoginModeChange = (
-    nextMode: ConnectLoginMode,
-  ) => {
-    setLoginMode(nextMode);
-    setIdentifier('');
-    setLoginError(null);
-  };
-
   const syncModeOptions: SyncModeOption[] = [
     {
       mode: ESyncMode.multidevice,
@@ -81,69 +48,6 @@ export function OnboardingSyncModeStep({
       accentColor: Colors.orange500,
     },
   ];
-
-  const handleMemberLogin = async () => {
-    setLoginError(null);
-
-    if (!identifier.trim()) {
-      setLoginError(
-        loginMode === 'admin'
-          ? t('onboarding.login.error_email_required')
-          : t('onboarding.login.error_username_required'),
-      );
-      return;
-    }
-
-    if (pin.length !== 4) {
-      setLoginError(t('onboarding.login.error_pin_required'));
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      const result = await loginAndLoadFamily(
-        loginMode === 'admin'
-          ? {
-              email: identifier.trim(),
-              pin,
-            }
-          : {
-              username: identifier.trim(),
-              pin,
-            },
-      );
-
-      dispatch(setSyncMode(ESyncMode.multidevice));
-
-      try {
-        hydrateFamilyStore(
-          dispatch,
-          result.family,
-          result.user,
-          {
-            accessToken: result.accessToken,
-            refreshToken: result.refreshToken,
-          },
-        );
-      } catch (hydrateError) {
-        clearFamilyStore(dispatch);
-        throw hydrateError;
-      }
-
-      onMemberLoginSuccess();
-    } catch (caught) {
-      setLoginError(
-        caught instanceof ApiError
-          ? caught.message
-          : caught instanceof Error
-            ? caught.message
-            : t('onboarding.login.error_generic'),
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <View>
@@ -237,72 +141,7 @@ export function OnboardingSyncModeStep({
 
         {setupPath === 'connect' ? (
           <Card style={styles.loginFormCard}>
-            <RadioButton.Group
-              onValueChange={value =>
-                handleLoginModeChange(value as ConnectLoginMode)
-              }
-              value={loginMode}
-            >
-              <View style={styles.loginModeOptions}>
-                <RadioButton.Item
-                  label={t('onboarding.login.admin')}
-                  value="admin"
-                  style={styles.loginModeOption}
-                  labelStyle={styles.loginModeOptionLabel}
-                />
-                <RadioButton.Item
-                  label={t('onboarding.login.not_admin')}
-                  value="member"
-                  style={styles.loginModeOption}
-                  labelStyle={styles.loginModeOptionLabel}
-                />
-              </View>
-            </RadioButton.Group>
-
-            <TextInput
-              label={
-                loginMode === 'admin'
-                  ? t('onboarding.login.email')
-                  : t('onboarding.login.username')
-              }
-              value={identifier}
-              onChangeText={setIdentifier}
-              autoCapitalize="none"
-              keyboardType={
-                loginMode === 'admin'
-                  ? 'email-address'
-                  : 'default'
-              }
-            />
-            <Space size={2} />
-            <Text variant="bodyMedium">
-              {t('onboarding.login.pin')}
-            </Text>
-            <Space size={1} />
-            <OTPInput
-              maxLength={4}
-              value={pin}
-              onChange={setPin}
-              onComplete={handleMemberLogin}
-            />
-            {loginError ? (
-              <>
-                <Space size={2} />
-                <Text variant="bodyMedium" color={Colors.red500}>
-                  {loginError}
-                </Text>
-              </>
-            ) : null}
-            <Space size={2} />
-            <Button
-              mode="contained"
-              bgColor={ButtonColors.Green}
-              loading={isSubmitting}
-              disabled={isSubmitting}
-              onPress={handleMemberLogin}
-            >
-              {t('onboarding.login.submit')}
-            </Button>
+            <FamilyConnectForm onSuccess={onMemberLoginSuccess} />
           </Card>
         ) : null}
       </View>

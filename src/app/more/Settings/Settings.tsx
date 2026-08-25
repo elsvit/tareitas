@@ -23,6 +23,7 @@ import {
   clearAuthSession,
   setIsChildPasswordObligatory,
   setLanguage,
+  setRequireLogin,
 } from '~/store/settings/slice';
 import { syncTaskBaseTranslations } from '~/store/taskBase/slice';
 import { useStyle } from '~/styles';
@@ -93,6 +94,7 @@ export default function Settings() {
     }
 
     dispatch(clearAuthSession());
+    dispatch(setRequireLogin(true));
   }, [dispatch, refreshToken]);
 
   const sections = useMemo((): SettingsSection[] => {
@@ -115,7 +117,7 @@ export default function Settings() {
                 title: t('settings.account.sign_in'),
                 selected: false,
                 onPress: () => {
-                  router.push(`/${EScreens.AccountLogin}`);
+                  router.push('/(onboarding)?setup=1');
                 },
               },
             ]

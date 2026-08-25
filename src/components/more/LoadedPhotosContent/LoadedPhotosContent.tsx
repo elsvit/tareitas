@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { Image } from 'expo-image';
@@ -13,12 +13,12 @@ import {
   removeRewardImageUrl,
   removeTaskImageUrl,
   removeUserImageUrl,
-  selectRewardImageUrls,
-  selectTaskImageUrls,
+  selectFamilyScopedRewardImageEntries,
+  selectFamilyScopedTaskImageEntries,
+  selectFamilyScopedUserImageEntries,
   selectUsedRewardImageIds,
   selectUsedTaskImageIds,
   selectUsedUserImageIds,
-  selectUserImageUrls,
 } from '~/store/images';
 import type { ImageStoreKind } from '~/store/images/types';
 import { Colors } from '~/styles';
@@ -106,18 +106,14 @@ const PhotoSection: React.FC<PhotoSectionProps> = ({
 export function LoadedPhotosContent() {
   const dispatch = useDispatch();
 
-  const userUrls = useSelector(selectUserImageUrls);
-  const taskUrls = useSelector(selectTaskImageUrls);
-  const rewardUrls = useSelector(selectRewardImageUrls);
+  const userEntries = useSelector(selectFamilyScopedUserImageEntries);
+  const taskEntries = useSelector(selectFamilyScopedTaskImageEntries);
+  const rewardEntries = useSelector(selectFamilyScopedRewardImageEntries);
   const usedUserIds = useSelector(selectUsedUserImageIds);
   const usedTaskIds = useSelector(selectUsedTaskImageIds);
   const usedRewardIds = useSelector(selectUsedRewardImageIds);
 
   const [pendingDelete, setPendingDelete] = useState<PendingDelete | null>(null);
-
-  const userEntries = useMemo(() => Object.entries(userUrls), [userUrls]);
-  const taskEntries = useMemo(() => Object.entries(taskUrls), [taskUrls]);
-  const rewardEntries = useMemo(() => Object.entries(rewardUrls), [rewardUrls]);
 
   const handleRemovePress = useCallback(
     (kind: ImageStoreKind, id: string, uri: string) => {

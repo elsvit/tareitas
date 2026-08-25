@@ -10,6 +10,7 @@ export const themedStyles = styleSheetFactory(() => ({
   },
   scrollContent: {
     flexGrow: 1,
+    paddingHorizontal: spacing(4),
     paddingBottom: spacing(4),
   },
   subtitle: {

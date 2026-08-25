@@ -1,6 +1,8 @@
 import type { ImageSource } from 'expo-image';
 import type { ImageSourcePropType } from 'react-native';
 
+import { toAbsoluteUploadUrl } from '~/services/api/uploadsApi';
+
 export const resolvePictureSource = (
   picture: string | number | undefined,
   customUrls: Record<string, string>,
@@ -13,6 +15,16 @@ export const resolvePictureSource = (
   if (typeof picture === 'string') {
     if (/^(https?:\/\/|data:|file:)/.test(picture)) {
       return { uri: picture };
+    }
+
+    const uploadUrl = toAbsoluteUploadUrl(picture);
+
+    if (uploadUrl) {
+      if (Object.prototype.hasOwnProperty.call(customUrls, picture)) {
+        return { uri: customUrls[picture] };
+      }
+
+      return { uri: uploadUrl };
     }
 
     if (Object.prototype.hasOwnProperty.call(customUrls, picture)) {

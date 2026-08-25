@@ -11,7 +11,11 @@ import {
   toCreateChildPayload,
   toUpdateChildPayload,
 } from '~/services/api/memberMappers';
-import { assertMultideviceSession } from '~/store/helpers/multideviceSession';
+import {
+  assertMultideviceSession,
+  callMultideviceApi,
+} from '~/store/helpers/multideviceSession';
+import { resolveAndCacheMemberAvatar } from '~/store/helpers/memberAvatarSync';
 import { takeLatestWithFetchable } from '../helpers/fetchableHandler';
 import {
   addChild,
@@ -39,18 +43,30 @@ function* addChildrenSaga(
     return;
   }
 
-  const serverChild = yield call(
-    createChildMember,
-    session.authToken,
+  const resolvedAvatar: string | undefined = yield call(
+    resolveAndCacheMemberAvatar,
+    entity.avatar,
     session.familyId,
-    toCreateChildPayload(entity),
+    session.authToken,
+  );
+  const entityForServer = {
+    ...entity,
+    avatar: resolvedAvatar,
+  };
+
+  const serverChild = yield* callMultideviceApi(token =>
+    createChildMember(
+      token,
+      session.familyId,
+      toCreateChildPayload(entityForServer),
+    ),
   );
 
   const syncedEntity = mapServerChildToLocal(
     serverChild,
     session.currentUser,
     entity.passwordPattern,
-    entity,
+    entityForServer,
   );
 
   yield put(addChildSuccess(syncedEntity));
@@ -76,12 +92,24 @@ function* updateChildrenSaga(
     return;
   }
 
-  const serverChild = yield call(
-    updateChildMember,
-    session.authToken,
+  const resolvedAvatar: string | undefined = yield call(
+    resolveAndCacheMemberAvatar,
+    entity.avatar,
     session.familyId,
-    entity.id,
-    toUpdateChildPayload(entity),
+    session.authToken,
+  );
+  const entityForServer = {
+    ...entity,
+    avatar: resolvedAvatar,
+  };
+
+  const serverChild = yield* callMultideviceApi(token =>
+    updateChildMember(
+      token,
+      session.familyId,
+      entity.id,
+      toUpdateChildPayload(entityForServer),
+    ),
   );
 
   yield put(
@@ -90,7 +118,7 @@ function* updateChildrenSaga(
         serverChild,
         session.currentUser,
         entity.passwordPattern,
-        entity,
+        entityForServer,
       ),
     ),
   );
@@ -107,11 +135,12 @@ function* removeChildrenSaga(
   const session = yield* assertMultideviceSession();
 
   if (session) {
-    yield call(
-      deleteChildMember,
-      session.authToken,
-      session.familyId,
-      id,
+    yield* callMultideviceApi(token =>
+      deleteChildMember(
+        token,
+        session.familyId,
+        id,
+      ),
     );
   }
 

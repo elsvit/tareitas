@@ -5,7 +5,7 @@ import { ERole, ESyncMode } from '~/store/settings/enums';
 import { ELang } from '~/types/ELang';
 import { getTodayDateString } from '~/utils/date';
 
-import type { IStateSettings } from './types';
+import type { IStateSettings, PendingReturnRoute } from './types';
 
 const initialState: IStateSettings = {
   lang: null,
@@ -25,6 +25,9 @@ const initialState: IStateSettings = {
   pendingRemovedTaskBaseIds: [],
   pendingRemovedRewardBaseIds: [],
   requireLogin: false,
+  lastSessionActivityAt: null,
+  pendingReturnRoute: null,
+  sessionPauseCount: 0,
 };
 
 export const settingsSlice = createSlice({
@@ -68,6 +71,8 @@ export const settingsSlice = createSlice({
       state.familyId = action.payload.familyId;
       state.authToken = action.payload.authToken;
       state.refreshToken = action.payload.refreshToken;
+      state.lastSessionActivityAt =
+        new Date().toISOString();
     },
     clearMultideviceSession: state => {
       state.syncMode = ESyncMode.deviceOnly;
@@ -84,10 +89,6 @@ export const settingsSlice = createSlice({
       state.familyId = null;
       state.authToken = null;
       state.refreshToken = null;
-
-      if (state.syncMode === ESyncMode.multidevice) {
-        state.requireLogin = true;
-      }
     },
     updateAuthTokens: (
       state,
@@ -98,6 +99,8 @@ export const settingsSlice = createSlice({
     ) => {
       state.authToken = action.payload.authToken;
       state.refreshToken = action.payload.refreshToken;
+      state.lastSessionActivityAt =
+        new Date().toISOString();
     },
     setCatalogRevisions: (
       state,
@@ -158,6 +161,26 @@ export const settingsSlice = createSlice({
     ) => {
       state.requireLogin = action.payload;
     },
+    touchSessionActivity: state => {
+      state.lastSessionActivityAt =
+        new Date().toISOString();
+    },
+    setPendingReturnRoute: (
+      state,
+      action: PayloadAction<PendingReturnRoute | null>,
+    ) => {
+      state.pendingReturnRoute = action.payload;
+    },
+    resumeMultideviceSession: () => {},
+    pauseSessionChecks: state => {
+      state.sessionPauseCount += 1;
+    },
+    resumeSessionChecks: state => {
+      state.sessionPauseCount = Math.max(
+        0,
+        state.sessionPauseCount - 1,
+      );
+    },
   },
 });
 
@@ -184,4 +207,9 @@ export const {
   refreshAuthSession,
   syncFamilyMembers,
   setRequireLogin,
+  touchSessionActivity,
+  setPendingReturnRoute,
+  resumeMultideviceSession,
+  pauseSessionChecks,
+  resumeSessionChecks,
 } = settingsSlice.actions;

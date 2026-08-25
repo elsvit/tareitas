@@ -18,14 +18,18 @@ import { ApiError } from '~/services/api/client';
 import type { AppDispatch } from '~/store';
 import { addChild, clearChildren } from '~/store/children/slice';
 import { addParent, clearParents } from '~/store/parents/slice';
+import { selectParentIds } from '~/store/parents/selectors';
 import { ERole, ESyncMode } from '~/store/settings/enums';
 import {
+  selectPendingReturnRoute,
   selectRequireLogin,
   selectSyncMode,
 } from '~/store/settings/selectors';
 import {
   setCurrentRole,
   setCurrentUser,
+  setPendingReturnRoute,
+  setRequireLogin,
   setSyncMode,
 } from '~/store/settings/slice';
 import { Colors } from '~/styles';
@@ -61,16 +65,26 @@ type SignUpAdminData = ParentFormProps & {
   pin: string;
 };
 
-export function OnboardingFlow() {
+type OnboardingFlowProps = {
+  /** Skip intro slides and open directly on "Elige tu configuración". */
+  skipIntro?: boolean;
+};
+
+export function OnboardingFlow({
+  skipIntro = false,
+}: OnboardingFlowProps) {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const scrollRef = useRef<ScrollView>(null);
   const requireLogin = useSelector(selectRequireLogin);
+  const pendingReturnRoute = useSelector(selectPendingReturnRoute);
+  const parentIds = useSelector(selectParentIds);
   const storedSyncMode = useSelector(selectSyncMode);
 
   const introSlides = useMemo(() => getOnboardingIntroSlides(), []);
 
-  const initialStep = requireLogin ? ONBOARDING_STEP.syncMode : 0;
+  const opensOnSetup = skipIntro || requireLogin;
+  const initialStep = opensOnSetup ? ONBOARDING_STEP.syncMode : 0;
 
   const [step, setStep] = useState(initialStep);
   const [transitionDirection, setTransitionDirection] =
@@ -90,7 +104,6 @@ export function OnboardingFlow() {
 
   const isMultidevice = syncMode === ESyncMode.multidevice;
   const isMultideviceFlow =
-    requireLogin ||
     setupPath === 'connect' ||
     (setupPath === 'create' && isMultidevice);
   const totalSteps = isMultideviceFlow
@@ -113,9 +126,11 @@ export function OnboardingFlow() {
   const isChildStep =
     !isMultideviceFlow && step === ONBOARDING_STEP.child;
   const isCompleteStep = step === ONBOARDING_STEP.complete;
-  const canGoBack = requireLogin
-    ? step > ONBOARDING_STEP.syncMode
-    : step > 0;
+  const canExitFromSyncMode =
+    opensOnSetup && parentIds.length > 0 && isSyncModeStep;
+  const canGoBack =
+    step > (opensOnSetup ? ONBOARDING_STEP.syncMode : 0) ||
+    canExitFromSyncMode;
 
   const headerTitle = isSyncModeStep
     ? t('onboarding.sync_mode.header')
@@ -166,12 +181,48 @@ export function OnboardingFlow() {
   }, [step]);
 
   const onBack = () => {
+    if (canExitFromSyncMode) {
+      const returnRoute = pendingReturnRoute;
+
+      dispatch(setRequireLogin(false));
+      dispatch(setPendingReturnRoute(null));
+
+      if (returnRoute) {
+        router.replace({
+          pathname: returnRoute.pathname as never,
+          params: returnRoute.params,
+        });
+        return;
+      }
+
+      if (router.canGoBack()) {
+        router.back();
+        return;
+      }
+
+      router.replace('/(tabs)/Tasks');
+      return;
+    }
+
     if (canGoBack) {
       goToStep(getPreviousStep(step));
     }
   };
 
   const enterApp = () => {
+    const returnRoute = pendingReturnRoute;
+
+    dispatch(setPendingReturnRoute(null));
+    dispatch(setRequireLogin(false));
+
+    if (returnRoute) {
+      router.replace({
+        pathname: returnRoute.pathname as never,
+        params: returnRoute.params,
+      });
+      return;
+    }
+
     router.replace('/(tabs)/Tasks');
   };
 

@@ -66,6 +66,7 @@ type Props = {
   fieldsBeforeName?: React.ReactNode;
   showUniqueUsername?: boolean;
   submitError?: string | null;
+  isSubmitting?: boolean;
 };
 
 type FormValues = {
@@ -95,6 +96,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
     fieldsBeforeName,
     showUniqueUsername = false,
     submitError = null,
+    isSubmitting = false,
   },
   ref,
 ) {
@@ -379,7 +381,12 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
             <Space size={4} />
 
             {showSubmitButton && (
-              <Button mode="contained" onPress={handleSubmit(onSubmit)}>
+              <Button
+                mode="contained"
+                onPress={handleSubmit(onSubmit)}
+                loading={isSubmitting}
+                disabled={isSubmitting}
+              >
                 {t('button.save') || 'Save'}
               </Button>
             )}
