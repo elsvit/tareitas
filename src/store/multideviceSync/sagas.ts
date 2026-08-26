@@ -12,16 +12,20 @@ import {
 import {
   listFamilyRewards,
   listRewardRedemptions,
+  completeRewardRedemption,
   mapServerFamilyRewardToAssignment,
   mapServerRedemptionToLocal,
+  ServerRewardRedemption,
+  ServerRewardRedemptionStatus,
 } from '~/services/api/rewardsApi';
 import { fetchFamilyDetails } from '~/services/api';
 import { buildFamilyMembersSyncPlan } from '~/services/familySync';
-import { resolveAndCacheTaskPicture } from '~/store/helpers/imageRefSync';
+import { resolveAndCacheRewardPicture, resolveAndCacheTaskPicture } from '~/store/helpers/imageRefSync';
 import {
   assertMultideviceSession,
   callMultideviceApi,
 } from '~/store/helpers/multideviceSession';
+import { selectCanReviewTasks } from '~/store/settings/selectors';
 import {
   addChildSuccess,
   removeChildSuccess,
@@ -35,15 +39,53 @@ import {
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectAllParents } from '~/store/parents/selectors';
 import { replaceRewardAssignments } from '~/store/rewardAssignment/slice';
+import { inferRewardAssignmentPicture } from '~/store/rewardAssignment/rewardAssignmentPicture';
+import { selectAllRewardBase } from '~/store/rewardBase/selectors';
 import { replaceRewardInstancesFromServer } from '~/store/rewards/slice';
 import { replaceTaskAssignments } from '~/store/taskAssignment/slice';
 import { replaceTasksFromServer } from '~/store/tasks/slice';
 import type { IState } from '~/store/types';
+import { IReward } from '~/types/IReward';
 import {
   selectCurrentUser,
   selectHasAuthSession,
   selectTaskCalendarDate,
 } from '~/store/settings/selectors';
+
+function findLocalCompletedRedemption(
+  localEntities: Record<string, IReward | undefined>,
+  serverRedemption: ServerRewardRedemption,
+): IReward | undefined {
+  const byId = localEntities[serverRedemption.id];
+
+  if (byId?.completedDate) {
+    return byId;
+  }
+
+  return Object.values(localEntities).find(
+    (reward): reward is IReward =>
+      !!reward &&
+      reward.rewardAssignmentId === serverRedemption.rewardId &&
+      reward.childId === serverRedemption.childUserId &&
+      !!reward.completedDate,
+  );
+}
+
+function resolveReconciledRedemption(
+  localEntities: Record<string, IReward | undefined>,
+  serverRedemption: ServerRewardRedemption,
+): IReward {
+  const localCompleted = findLocalCompletedRedemption(
+    localEntities,
+    serverRedemption,
+  );
+  const mapped = mapServerRedemptionToLocal(serverRedemption);
+
+  return {
+    ...mapped,
+    completedDate: mapped.completedDate ?? localCompleted?.completedDate,
+  };
+}
 
 function* resolveAssignmentPictures(
   assignments: ReturnType<typeof mapServerTaskAssignmentToLocal>[],
@@ -59,6 +101,33 @@ function* resolveAssignmentPictures(
 
     const picture: string | undefined = yield call(
       resolveAndCacheTaskPicture,
+      assignment.picture,
+      familyId,
+    );
+
+    resolved.push({
+      ...assignment,
+      picture: picture ?? assignment.picture,
+    });
+  }
+
+  return resolved;
+}
+
+function* resolveRewardAssignmentPictures(
+  assignments: ReturnType<typeof mapServerFamilyRewardToAssignment>[],
+  familyId: string,
+) {
+  const resolved = [];
+
+  for (const assignment of assignments) {
+    if (!assignment.picture) {
+      resolved.push(assignment);
+      continue;
+    }
+
+    const picture: string | undefined = yield call(
+      resolveAndCacheRewardPicture,
       assignment.picture,
       familyId,
     );
@@ -153,23 +222,78 @@ export function* syncRewardsDataFromServerSaga(): Generator<
     (currentState: IState) => currentState,
   );
   const existingAssignments = state.rewardAssignment.entities;
+  const canReviewRewards: boolean = yield select(selectCanReviewTasks);
+  const localRewardEntities = state.rewards.entities;
+  const rewardBase = selectAllRewardBase(state);
+
+  let reconciledRedemptions = serverRedemptions;
+
+  if (canReviewRewards) {
+    reconciledRedemptions = [];
+
+    for (const serverRedemption of serverRedemptions) {
+      const localCompleted = findLocalCompletedRedemption(
+        localRewardEntities,
+        serverRedemption,
+      );
+
+      if (
+        localCompleted?.completedDate &&
+        !serverRedemption.completedAt &&
+        serverRedemption.status === ServerRewardRedemptionStatus.approved
+      ) {
+        try {
+          const updated = yield* callMultideviceApi(token =>
+            completeRewardRedemption(
+              token,
+              session.familyId,
+              serverRedemption.id,
+            ),
+          );
+
+          reconciledRedemptions.push(updated);
+          continue;
+        } catch {
+          // Keep server snapshot when backfill fails; merge preserves completedDate.
+        }
+      }
+
+      reconciledRedemptions.push(serverRedemption);
+    }
+  }
+
+  const reconciledRewards = reconciledRedemptions.map(serverRedemption =>
+    resolveReconciledRedemption(
+      localRewardEntities,
+      serverRedemption,
+    ),
+  );
 
   const assignments = serverRewards.map(serverReward => {
     const existing = existingAssignments[serverReward.id];
+    const mapped = mapServerFamilyRewardToAssignment(serverReward);
 
     return {
-      ...mapServerFamilyRewardToAssignment(serverReward),
-      picture: existing?.picture,
+      ...mapped,
+      picture: inferRewardAssignmentPicture(
+        {
+          title: mapped.title,
+          picture: existing?.picture,
+        },
+        rewardBase,
+      ),
       childIds: existing?.childIds,
     };
   });
 
-  yield put(replaceRewardAssignments(assignments));
-  yield put(
-    replaceRewardInstancesFromServer(
-      serverRedemptions.map(mapServerRedemptionToLocal),
-    ),
+  const assignmentsWithPictures: typeof assignments = yield call(
+    resolveRewardAssignmentPictures,
+    assignments,
+    session.familyId,
   );
+
+  yield put(replaceRewardAssignments(assignmentsWithPictures));
+  yield put(replaceRewardInstancesFromServer(reconciledRewards));
 }
 
 export function* syncFamilyMembersFromServerSaga(): Generator<

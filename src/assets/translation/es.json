@@ -44,7 +44,11 @@
     "TASK_NOT_FOUND": "Tarea no encontrada.",
     "TASK_NOT_ALLOWED": "No puedes modificar esta tarea.",
     "TASK_INVALID_STATUS": "Esta tarea no se puede actualizar en su estado actual.",
-    "TASK_ALREADY_EXISTS": "Esta tarea ya existe."
+    "TASK_ALREADY_EXISTS": "Esta tarea ya existe.",
+    "REWARD_NOT_ALLOWED": "No puedes modificar esta recompensa.",
+    "REWARD_INACTIVE": "Esta recompensa ya no está disponible.",
+    "REWARD_INSUFFICIENT_BALANCE": "No hay suficientes estrellas para esta recompensa.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Esta recompensa no se puede actualizar en su estado actual."
   },
   "imageLoader": {
     "label": "Foto personalizada",
@@ -489,6 +493,7 @@
     "add_reward": "Añadir Premio",
     "base_rewards": "Premios Básicos",
     "base_reward_template": "Usar premio básico",
+    "previous_reward_template": "Usar premio anterior",
     "delete_reward": "Eliminar Premio",
     "delete_reward_confirm": "¿Estás seguro de querer eliminar este premio?",
     "edit_reward": "Editar Premio",
@@ -507,6 +512,7 @@
     "push_to_add_reward": "Pulsa el botón para añadir un premio",
     "no_selected": "El niño no ha seleccionado ningún premio todavía",
     "no_approved": "No hay premios aprobados",
+    "no_completed": "Aún no hay premios completados",
     "no_history": "No hay historial todavía",
     "initial_reward": "Premio inicial",
     "month_reward": "Premio del mes",
@@ -518,6 +524,7 @@
     "tabs": {
       "selected": "Seleccionados",
       "approved": "Aprobados",
+      "completed": "Completados",
       "rewards": "Premios",
       "history": "Historial"
     },
@@ -527,7 +534,8 @@
       "pending": "Pendiente",
       "selected": "Seleccionado",
       "approved": "Aprobado",
-      "rejected": "Rechazado"
+      "rejected": "Rechazado",
+      "completed": "Completado"
     },
     "action": {
       "select": "Seleccionar",

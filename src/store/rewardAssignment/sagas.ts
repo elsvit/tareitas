@@ -14,6 +14,7 @@ import {
   assertMultideviceSession,
   callMultideviceApi,
 } from '~/store/helpers/multideviceSession';
+import { resolveAndCacheRewardPicture } from '~/store/helpers/imageRefSync';
 import { takeLatestWithFetchable } from '../helpers/fetchableHandler';
 import {
   addRewardAssignment,
@@ -45,6 +46,17 @@ function* addRewardAssignmentSaga(
     return;
   }
 
+  let picture = entity.picture;
+
+  if (picture) {
+    picture =
+      (yield call(
+        resolveAndCacheRewardPicture,
+        picture,
+        session.familyId,
+      )) ?? picture;
+  }
+
   const serverReward = yield* callMultideviceApi(token =>
     createFamilyReward(
       token,
@@ -56,8 +68,9 @@ function* addRewardAssignmentSaga(
   yield put(
     addRewardAssignmentSuccess({
       ...mapServerFamilyRewardToAssignment(serverReward),
-      picture: entity.picture,
+      picture,
       childIds: entity.childIds,
+      createdAt: serverReward.createdAt ?? entity.createdAt,
     }),
   );
 
@@ -82,6 +95,19 @@ function* updateRewardAssignmentSaga(
     return;
   }
 
+  let picture = entity.picture;
+
+  if (picture) {
+    picture =
+      (yield call(
+        resolveAndCacheRewardPicture,
+        picture,
+        session.familyId,
+      )) ?? picture;
+  }
+
+  const entityWithPicture = { ...entity, picture };
+
   try {
     const serverReward = yield* callMultideviceApi(token =>
       updateFamilyReward(
@@ -95,7 +121,7 @@ function* updateRewardAssignmentSaga(
     yield put(
       updateRewardAssignmentSuccess({
         ...mapServerFamilyRewardToAssignment(serverReward),
-        picture: entity.picture,
+        picture,
         childIds: entity.childIds,
       }),
     );
@@ -108,14 +134,14 @@ function* updateRewardAssignmentSaga(
         createFamilyReward(
           token,
           session.familyId,
-          toCreateFamilyRewardBody(entity),
+          toCreateFamilyRewardBody(entityWithPicture),
         ),
       );
 
       yield put(
         updateRewardAssignmentSuccess({
           ...mapServerFamilyRewardToAssignment(serverReward),
-          picture: entity.picture,
+          picture,
           childIds: entity.childIds,
         }),
       );

@@ -97,7 +97,63 @@ export const rewardsSlice = createSlice({
       state,
       action: PayloadAction<IReward[]>,
     ) => {
-      rewardsAdapter.setAll(state, action.payload);
+      const localCompletedByAssignmentChild = new Map<string, string>();
+
+      for (const id of state.ids as string[]) {
+        const reward = state.entities[id];
+
+        if (!reward?.completedDate) {
+          continue;
+        }
+
+        localCompletedByAssignmentChild.set(
+          `${reward.rewardAssignmentId}_${reward.childId}`,
+          reward.completedDate,
+        );
+      }
+
+      const serverIds = new Set(action.payload.map(reward => reward.id));
+      const merged = action.payload.map(serverReward => {
+        const existing = state.entities[serverReward.id];
+        const assignmentChildKey = `${serverReward.rewardAssignmentId}_${serverReward.childId}`;
+
+        return {
+          ...serverReward,
+          completedDate:
+            serverReward.completedDate ??
+            existing?.completedDate ??
+            localCompletedByAssignmentChild.get(assignmentChildKey),
+        };
+      });
+      const serverAssignmentChildKeys = new Set(
+        merged.map(
+          reward => `${reward.rewardAssignmentId}_${reward.childId}`,
+        ),
+      );
+
+      if (merged.length > 0) {
+        rewardsAdapter.upsertMany(state, merged);
+      }
+
+      const staleDuplicateIds = (state.ids as string[]).filter(id => {
+        if (serverIds.has(id)) {
+          return false;
+        }
+
+        const reward = state.entities[id];
+
+        if (!reward) {
+          return false;
+        }
+
+        const key = `${reward.rewardAssignmentId}_${reward.childId}`;
+
+        return serverAssignmentChildKeys.has(key);
+      });
+
+      if (staleDuplicateIds.length > 0) {
+        rewardsAdapter.removeMany(state, staleDuplicateIds);
+      }
     },
   },
   extraReducers: builder => {

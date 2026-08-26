@@ -44,7 +44,11 @@
     "TASK_NOT_FOUND": "Task not found.",
     "TASK_NOT_ALLOWED": "You cannot modify this task.",
     "TASK_INVALID_STATUS": "This task cannot be updated in its current state.",
-    "TASK_ALREADY_EXISTS": "This task already exists."
+    "TASK_ALREADY_EXISTS": "This task already exists.",
+    "REWARD_NOT_ALLOWED": "You cannot modify this reward.",
+    "REWARD_INACTIVE": "This reward is no longer available.",
+    "REWARD_INSUFFICIENT_BALANCE": "Not enough points for this reward.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "This reward cannot be updated in its current state."
   },
   "imageLoader": {
     "label": "Custom photo",
@@ -489,6 +493,7 @@
     "add_reward": "Add Reward",
     "base_rewards": "Base Rewards",
     "base_reward_template": "Use base reward",
+    "previous_reward_template": "Use previous reward",
     "delete_reward": "Delete Reward",
     "delete_reward_confirm": "Are you sure you want to delete this reward?",
     "edit_reward": "Edit Reward",
@@ -507,6 +512,7 @@
     "push_to_add_reward": "Push the button to add a reward",
     "no_selected": "Child hasn't selected any rewards yet",
     "no_approved": "No approved rewards",
+    "no_completed": "No completed rewards yet",
     "no_history": "No history yet",
     "initial_reward": "Initial reward",
     "month_reward": "Month reward",
@@ -518,6 +524,7 @@
     "tabs": {
       "selected": "Selected",
       "approved": "Approved",
+      "completed": "Completed",
       "rewards": "Rewards",
       "history": "History"
     },
@@ -527,7 +534,8 @@
       "pending": "Pending",
       "selected": "Selected",
       "approved": "Approved",
-      "rejected": "Rejected"
+      "rejected": "Rejected",
+      "completed": "Completed"
     },
     "action": {
       "select": "Select",

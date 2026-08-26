@@ -31,6 +31,7 @@ export type ServerRewardRedemption = {
   createdAt: string;
   approvedAt?: string;
   rejectedAt?: string;
+  completedAt?: string;
 };
 
 type CreateRewardBody = {
@@ -169,6 +170,22 @@ export async function rejectRewardRedemption(
   return parseApiJson<ServerRewardRedemption>(response);
 }
 
+export async function completeRewardRedemption(
+  token: string,
+  familyId: string,
+  redemptionId: string,
+) {
+  const response = await apiFetch(
+    `/families/${familyId}/rewards/redemptions/${redemptionId}/complete`,
+    {
+      method: 'POST',
+      token,
+    },
+  );
+
+  return parseApiJson<ServerRewardRedemption>(response);
+}
+
 export function mapServerFamilyRewardToAssignment(
   server: ServerFamilyReward,
 ): IRewardAssignment {
@@ -198,13 +215,20 @@ function mapRedemptionStatusToLocal(
 export function mapServerRedemptionToLocal(
   server: ServerRewardRedemption,
 ): IReward {
+  const completedDate = server.completedAt?.slice(0, 10);
+
   return {
     id: server.id,
     rewardAssignmentId: server.rewardId,
     childId: server.childUserId,
     status: mapRedemptionStatusToLocal(server.status),
+    completedDate,
     createdAt: server.createdAt,
-    updatedAt: server.approvedAt ?? server.rejectedAt ?? server.createdAt,
+    updatedAt:
+      server.completedAt ??
+      server.approvedAt ??
+      server.rejectedAt ??
+      server.createdAt,
   };
 }
 

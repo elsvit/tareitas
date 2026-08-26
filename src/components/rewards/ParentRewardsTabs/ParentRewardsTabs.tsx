@@ -21,10 +21,14 @@ import { Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
 import { t } from '~/services';
 import { RootStateT } from '~/store';
+import { ECommonActions } from '~/store/common/types';
+import { EStateName } from '~/store/enums';
 import { selectAllRewardAssignment } from '~/store/rewardAssignment/selectors';
+import { selectCanReviewTasks } from '~/store/settings/selectors';
 import {
   HistoryPeriodItem,
   selectApprovedRewardsByChildSections,
+  selectCompletedRewardsByChildSections,
   selectEarnedRewardPeriods,
   selectSelectedRewardsByChildSections,
   selectUnapprovedHistorySections,
@@ -40,14 +44,15 @@ import { ERewardStatus } from '~/types/EReward';
 import { IReward, IRewardAssignment } from '~/types/IReward';
 
 type ParentTabRoute = {
-  key: 'selected' | 'approved' | 'rewards' | 'history';
+  key: 'selected' | 'approved' | 'completed' | 'rewards' | 'history';
   title: string;
 };
 
 const parentTabRoutes: ParentTabRoute[] = [
+  { key: 'rewards', title: 'rewards' },
   { key: 'selected', title: 'selected' },
   { key: 'approved', title: 'approved' },
-  { key: 'rewards', title: 'rewards' },
+  { key: 'completed', title: 'completed' },
   { key: 'history', title: 'history' },
 ];
 
@@ -59,6 +64,7 @@ const getRewardStatusDate = (reward: IReward) =>
 
 function SelectedRewardsTab() {
   const dispatch = useDispatch();
+  const canReviewRewards = useSelector(selectCanReviewTasks);
   const selectedSections = useSelector(selectSelectedRewardsByChildSections);
   const earnedRewardPeriods = useSelector(selectEarnedRewardPeriods);
 
@@ -74,7 +80,7 @@ function SelectedRewardsTab() {
 
   const handleParentApprove = useCallback(
     (reward: IReward) => {
-      if (isRewardStatusLocked(reward)) {
+      if (!canReviewRewards || isRewardStatusLocked(reward)) {
         return;
       }
 
@@ -88,12 +94,12 @@ function SelectedRewardsTab() {
         }),
       );
     },
-    [dispatch, isRewardStatusLocked],
+    [canReviewRewards, dispatch, isRewardStatusLocked],
   );
 
   const handleParentReject = useCallback(
     (reward: IReward) => {
-      if (isRewardStatusLocked(reward)) {
+      if (!canReviewRewards || isRewardStatusLocked(reward)) {
         return;
       }
 
@@ -107,7 +113,7 @@ function SelectedRewardsTab() {
         }),
       );
     },
-    [dispatch, isRewardStatusLocked],
+    [canReviewRewards, dispatch, isRewardStatusLocked],
   );
 
   const renderSelectedItem = useCallback<
@@ -153,6 +159,7 @@ function SelectedRewardsTab() {
 
 function ApprovedRewardsTab() {
   const dispatch = useDispatch();
+  const canReviewRewards = useSelector(selectCanReviewTasks);
   const approvedSections = useSelector(selectApprovedRewardsByChildSections);
   const earnedRewardPeriods = useSelector(selectEarnedRewardPeriods);
 
@@ -168,7 +175,7 @@ function ApprovedRewardsTab() {
 
   const handleParentReject = useCallback(
     (reward: IReward) => {
-      if (isRewardStatusLocked(reward)) {
+      if (!canReviewRewards || isRewardStatusLocked(reward)) {
         return;
       }
 
@@ -182,12 +189,12 @@ function ApprovedRewardsTab() {
         }),
       );
     },
-    [dispatch, isRewardStatusLocked],
+    [canReviewRewards, dispatch, isRewardStatusLocked],
   );
 
   const handleParentComplete = useCallback(
     (reward: IReward) => {
-      if (isRewardStatusLocked(reward)) {
+      if (!canReviewRewards || isRewardStatusLocked(reward)) {
         return;
       }
 
@@ -202,7 +209,7 @@ function ApprovedRewardsTab() {
         }),
       );
     },
-    [dispatch, isRewardStatusLocked],
+    [canReviewRewards, dispatch, isRewardStatusLocked],
   );
 
   const renderApprovedItem = useCallback<
@@ -241,6 +248,39 @@ function ApprovedRewardsTab() {
       renderItem={renderApprovedItem}
       ListEmptyComponent={
         <Text style={styles.emptyText}>{t('rewards.no_approved')}</Text>
+      }
+    />
+  );
+}
+
+function CompletedRewardsTab() {
+  const completedSections = useSelector(selectCompletedRewardsByChildSections);
+
+  const renderCompletedItem = useCallback<
+    SectionListRenderItem<
+      { reward: IReward; assignment: IRewardAssignment },
+      { childId: string; title: string }
+    >
+  >(
+    ({ item }) => (
+      <RewardItem
+        title={item.assignment.title}
+        picture={item.assignment.picture}
+        reward={item.assignment.reward}
+        mode="completed"
+        completedDate={item.reward.completedDate}
+      />
+    ),
+    [],
+  );
+
+  return (
+    <SegmentedSectionList
+      sections={completedSections}
+      keyExtractor={item => item.reward.id}
+      renderItem={renderCompletedItem}
+      ListEmptyComponent={
+        <Text style={styles.emptyText}>{t('rewards.no_completed')}</Text>
       }
     />
   );
@@ -379,6 +419,7 @@ function HistoryRewardsTab() {
 const renderScene = SceneMap({
   selected: SelectedRewardsTab,
   approved: ApprovedRewardsTab,
+  completed: CompletedRewardsTab,
   rewards: RewardsListTab,
   history: HistoryRewardsTab,
 });
@@ -389,6 +430,8 @@ const getTabTitle = (key: ParentTabRoute['key']) => {
       return t('rewards.tabs.selected');
     case 'approved':
       return t('rewards.tabs.approved');
+    case 'completed':
+      return t('rewards.tabs.completed');
     case 'rewards':
       return t('rewards.tabs.rewards');
     case 'history':

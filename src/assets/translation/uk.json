@@ -44,7 +44,11 @@
     "TASK_NOT_FOUND": "Завдання не знайдено.",
     "TASK_NOT_ALLOWED": "Ви не можете змінити це завдання.",
     "TASK_INVALID_STATUS": "Це завдання не можна оновити в поточному стані.",
-    "TASK_ALREADY_EXISTS": "Це завдання вже існує."
+    "TASK_ALREADY_EXISTS": "Це завдання вже існує.",
+    "REWARD_NOT_ALLOWED": "Ви не можете змінити цю нагороду.",
+    "REWARD_INACTIVE": "Ця нагорода більше недоступна.",
+    "REWARD_INSUFFICIENT_BALANCE": "Недостатньо зірок для цієї нагороди.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Цю нагороду не можна оновити в поточному стані."
   },
   "imageLoader": {
     "label": "Власна фотографія",
@@ -436,6 +440,7 @@
     "add_reward": "Додати нагороду",
     "base_rewards": "Базові нагороди",
     "base_reward_template": "Використовувати базову нагороду",
+    "previous_reward_template": "Використати попередню нагороду",
     "delete_reward": "Вилучити нагороду",
     "delete_reward_confirm": "Ви впевнені, що хочете видалити цю нагороду?",
     "edit_reward": "Edit Reward",
@@ -454,6 +459,7 @@
     "push_to_add_reward": "Натисніть кнопку, щоб додати нагороду",
     "no_selected": "Дитина ще не вибрала жодної нагороди",
     "no_approved": "Немає затверджених нагород",
+    "no_completed": "Немає завершених нагород",
     "no_history": "Немає історії",
     "initial_reward": "Початкова нагорода",
     "month_reward": "Нагорода за місяць",
@@ -465,6 +471,7 @@
     "tabs": {
       "selected": "Вибрано",
       "approved": "Затверджено",
+      "completed": "Завершено",
       "rewards": "Нагороди",
       "history": "Історія"
     },
@@ -474,7 +481,8 @@
       "pending": "В очікуванні",
       "selected": "Вибрано",
       "approved": "Затверджено",
-      "rejected": "Відхилено"
+      "rejected": "Відхилено",
+      "completed": "Завершено"
     },
     "action": {
       "select": "Вибрати",
