@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
@@ -12,17 +12,21 @@ import {
   Button,
   ButtonColors,
   Card,
-  Checkbox,
   Space,
   Text,
   TextInput,
 } from '~/components/ui';
 import { Select } from '~/components/ui/Select/Select';
 import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWithCustom';
+import { SelectMulti } from '~/components/ui/SelectMulti';
 import { getRewardImageOptions } from '~/constants/rewards';
 import { t } from '~/services';
-import { selectAllChildren } from '~/store/children/selectors';
+import { selectDedupedChildren } from '~/store/children/selectors';
 import { removeRewardAssignment } from '~/store/rewardAssignment/slice';
+import {
+  normalizeRewardChildIdsForSave,
+  rewardChildIdsForForm,
+} from '~/store/rewardAssignment/childIds';
 import { selectPreviousRewardTemplates } from '~/store/rewardAssignment/selectors';
 import { selectAllRewardBase } from '~/store/rewardBase/selectors';
 import { ERole } from '~/store/settings/enums';
@@ -47,10 +51,9 @@ type Props = {
   isSubmitting?: boolean;
 };
 
-type FormValues = Omit<RewardAssignmentFormProps, 'reward'> & {
+type FormValues = Omit<RewardAssignmentFormProps, 'reward' | 'childIds'> & {
   reward?: number | null;
-  allChildren: boolean;
-  selectedChildIds: string[];
+  childIds: string[];
   baseRewardId?: string;
   previousRewardId?: string;
 };
@@ -78,17 +81,7 @@ const schema = z
         .min(0, t('rewards.reward_positive') || 'Reward must be ≥ 0'),
     ),
     picture: z.string().trim().min(1, requiredMessage),
-    allChildren: z.boolean(),
-    selectedChildIds: z.array(z.string()),
-  })
-  .superRefine((values, ctx) => {
-    if (!values.allChildren && values.selectedChildIds.length === 0) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: t('rewards.select_children') || 'Select at least one child',
-        path: ['selectedChildIds'],
-      });
-    }
+    childIds: z.array(z.string()),
   });
 
 export const RewardForm: FC<Props> = ({
@@ -109,17 +102,34 @@ export const RewardForm: FC<Props> = ({
   const router = useRouter();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
-  const children = useSelector(selectAllChildren);
+  const children = useSelector(selectDedupedChildren);
   const baseRewards = useSelector(selectAllRewardBase);
   const previousRewards = useSelector(selectPreviousRewardTemplates);
   const rewardImageOptions = getRewardImageOptions();
   const isEditMode = mode === EFormMode.Edit;
   const isAddMode = mode === EFormMode.Add;
+  const hasMultipleChildren = children.length > 1;
+  const singleChild = children.length === 1 ? children[0] : undefined;
+
+  const childOptions = useMemo(
+    () =>
+      children.map(child => ({
+        label: child.name,
+        value: child.id,
+      })),
+    [children],
+  );
+
+  const allChildIds = useMemo(
+    () => childOptions.map(option => option.value),
+    [childOptions],
+  );
+
+  const initialChildIds = rewardChildIdsForForm(reward?.childIds, allChildIds);
+  const hasInitializedChildIds = useRef(false);
 
   const currentRole = useSelector(selectCurrentRole);
   const isAdmin = currentRole === ERole.admin;
-
-  const initialAllChildren = !reward?.childIds || reward.childIds.length === 0;
 
   const {
     control,
@@ -134,17 +144,13 @@ export const RewardForm: FC<Props> = ({
       title: reward?.title ?? '',
       reward: reward?.reward ?? null,
       picture: reward?.picture ?? '',
-      allChildren: initialAllChildren,
-      selectedChildIds: reward?.childIds ?? [],
+      childIds: initialChildIds,
       baseRewardId: '',
       previousRewardId: '',
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
-
-  const allChildren = watch('allChildren');
-  const selectedChildIds = watch('selectedChildIds');
 
   const baseRewardOptions = useMemo(
     () =>
@@ -154,6 +160,23 @@ export const RewardForm: FC<Props> = ({
       })),
     [baseRewards],
   );
+
+  useEffect(() => {
+    hasInitializedChildIds.current = false;
+  }, [reward?.id, mode]);
+
+  useEffect(() => {
+    if (hasInitializedChildIds.current || allChildIds.length === 0) {
+      return;
+    }
+
+    setValue(
+      'childIds',
+      rewardChildIdsForForm(reward?.childIds, allChildIds),
+      { shouldValidate: true },
+    );
+    hasInitializedChildIds.current = true;
+  }, [allChildIds, mode, reward?.childIds, reward?.id, setValue]);
 
   const handleBaseRewardChange = (baseRewardId: string) => {
     setValue('baseRewardId', baseRewardId);
@@ -189,14 +212,6 @@ export const RewardForm: FC<Props> = ({
     return () => sub.unsubscribe();
   }, [watch, getValues, onValidityChange]);
 
-  const toggleChild = (childId: string) => {
-    const next = selectedChildIds.includes(childId)
-      ? selectedChildIds.filter(id => id !== childId)
-      : [...selectedChildIds, childId];
-
-    setValue('selectedChildIds', next, { shouldValidate: true });
-  };
-
   const onSubmit = (values: FormValues) => {
     const parsed = schema.safeParse(values);
 
@@ -219,7 +234,10 @@ export const RewardForm: FC<Props> = ({
       title: parsed.data.title,
       reward: parsed.data.reward,
       picture: parsed.data.picture,
-      childIds: parsed.data.allChildren ? undefined : parsed.data.selectedChildIds,
+      childIds: normalizeRewardChildIdsForSave(
+        parsed.data.childIds,
+        allChildIds,
+      ),
     });
   };
 
@@ -263,6 +281,41 @@ export const RewardForm: FC<Props> = ({
 
           <Card.Content>
             <Space size={3} />
+
+            {childOptions.length > 0 && (
+              <>
+                {hasMultipleChildren ? (
+                  <Controller
+                    control={control}
+                    name="childIds"
+                    render={({ field: { value, onChange } }) => (
+                      <>
+                        <SelectMulti
+                          label={t('users.childs')}
+                          options={childOptions}
+                          value={value}
+                          onChange={onChange}
+                        />
+                        {!!errors.childIds && (
+                          <Text style={styles.errorText}>
+                            {errors.childIds.message}
+                          </Text>
+                        )}
+                      </>
+                    )}
+                  />
+                ) : singleChild ? (
+                  <>
+                    <Text variant="titleMedium" weight="bold">
+                      {t('users.child')}
+                    </Text>
+                    <Space size={2} />
+                    <Text>{singleChild.name}</Text>
+                  </>
+                ) : null}
+                <Space size={3} />
+              </>
+            )}
 
             {baseRewardOptions.length > 0 && (
               <>
@@ -373,48 +426,6 @@ export const RewardForm: FC<Props> = ({
                 />
               )}
             />
-
-            <Space size={4} />
-
-            <Text variant="titleMedium" weight="bold">
-              {t('rewards.children')}
-            </Text>
-            <Space size={3} />
-
-            <Controller
-              control={control}
-              name="allChildren"
-              render={({ field: { value, onChange } }) => (
-                <View style={styles.checkboxRow}>
-                  <Checkbox
-                    status={value ? 'checked' : 'unchecked'}
-                    onPress={() => onChange(!value)}
-                  />
-                  <Text>{t('rewards.all_children')}</Text>
-                </View>
-              )}
-            />
-
-            {!allChildren &&
-              children.map(child => (
-                <View key={child.id} style={styles.checkboxRow}>
-                  <Checkbox
-                    status={
-                      selectedChildIds.includes(child.id)
-                        ? 'checked'
-                        : 'unchecked'
-                    }
-                    onPress={() => toggleChild(child.id)}
-                  />
-                  <Text>{child.name}</Text>
-                </View>
-              ))}
-
-            {!!errors.selectedChildIds && (
-              <Text style={styles.errorText}>
-                {errors.selectedChildIds.message}
-              </Text>
-            )}
 
             <Space size={5} />
 

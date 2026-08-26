@@ -1,5 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { call, put } from 'redux-saga/effects';
+import i18next from 'i18next';
+import { call, put, select } from 'redux-saga/effects';
 
 import {
   createFamilyReward,
@@ -15,7 +16,12 @@ import {
   callMultideviceApi,
 } from '~/store/helpers/multideviceSession';
 import { resolveAndCacheRewardPicture } from '~/store/helpers/imageRefSync';
+import { selectDedupedChildIds } from '~/store/children/selectors';
+import { selectCanReviewTasks } from '~/store/settings/selectors';
 import { takeLatestWithFetchable } from '../helpers/fetchableHandler';
+import {
+  resolveSavedRewardChildIds,
+} from './childIds';
 import {
   addRewardAssignment,
   addRewardAssignmentSuccess,
@@ -29,15 +35,61 @@ import {
   RemoveRewardAssignmentPayload,
   UpdateRewardAssignmentPayload,
 } from './types';
+import type { IState } from '../types';
+
+function* getValidChildIds(): Generator<any, string[], any> {
+  const state: IState = yield select((currentState: IState) => currentState);
+
+  return selectDedupedChildIds(state);
+}
+
+function manageRewardsRequiresAdminLoginMessage(): string {
+  return i18next.t('rewards.manage_requires_admin_login');
+}
+
+function* assertCanManageRewardsOnServer(): Generator<any, void, any> {
+  const canManage: boolean = yield select(selectCanReviewTasks);
+
+  if (!canManage) {
+    throw new Error(manageRewardsRequiresAdminLoginMessage());
+  }
+}
+
+function* persistRewardChildIdsOnServer(
+  familyId: string,
+  rewardId: string,
+  childIds: string[],
+): Generator<any, void, any> {
+  try {
+    yield* callMultideviceApi(token =>
+      updateFamilyReward(token, familyId, rewardId, {
+        childUserIds: childIds,
+      }),
+    );
+  } catch {
+    // Main create/update already succeeded; keep local childIds.
+  }
+}
 
 function* addRewardAssignmentSaga(
   action: PayloadAction<AddRewardAssignmentPayload>,
 ): Generator<any, void, any> {
   const { entity, onSuccess } = action.payload;
   const session = yield* assertMultideviceSession();
+  const validChildIds: string[] = yield* getValidChildIds();
+  const savedChildIds = resolveSavedRewardChildIds(
+    entity.childIds,
+    undefined,
+    validChildIds,
+  );
 
   if (!session) {
-    yield put(addRewardAssignmentSuccess(entity));
+    yield put(
+      addRewardAssignmentSuccess({
+        ...entity,
+        childIds: savedChildIds,
+      }),
+    );
 
     if (onSuccess) {
       yield call(onSuccess);
@@ -45,6 +97,8 @@ function* addRewardAssignmentSaga(
 
     return;
   }
+
+  yield* assertCanManageRewardsOnServer();
 
   let picture = entity.picture;
 
@@ -57,19 +111,42 @@ function* addRewardAssignmentSaga(
       )) ?? picture;
   }
 
-  const serverReward = yield* callMultideviceApi(token =>
+  let serverReward = yield* callMultideviceApi(token =>
     createFamilyReward(
       token,
       session.familyId,
-      toCreateFamilyRewardBody(entity),
+      toCreateFamilyRewardBody({
+        ...entity,
+        childIds: savedChildIds,
+      }),
     ),
+  );
+
+  if (savedChildIds?.length && !serverReward.childUserIds?.length) {
+    yield* persistRewardChildIdsOnServer(
+      session.familyId,
+      serverReward.id,
+      savedChildIds,
+    );
+
+    serverReward = {
+      ...serverReward,
+      childUserIds: savedChildIds,
+    };
+  }
+
+  const mapped = mapServerFamilyRewardToAssignment(serverReward);
+  const childIds = resolveSavedRewardChildIds(
+    savedChildIds,
+    serverReward.childUserIds,
+    validChildIds,
   );
 
   yield put(
     addRewardAssignmentSuccess({
-      ...mapServerFamilyRewardToAssignment(serverReward),
+      ...mapped,
       picture,
-      childIds: entity.childIds,
+      childIds,
       createdAt: serverReward.createdAt ?? entity.createdAt,
     }),
   );
@@ -84,9 +161,19 @@ function* updateRewardAssignmentSaga(
 ): Generator<any, void, any> {
   const { entity, onSuccess } = action.payload;
   const session = yield* assertMultideviceSession();
+  const validChildIds: string[] = yield* getValidChildIds();
+  const savedChildIds = resolveSavedRewardChildIds(
+    entity.childIds,
+    undefined,
+    validChildIds,
+  );
+  const entityForSave = {
+    ...entity,
+    childIds: savedChildIds,
+  };
 
   if (!session) {
-    yield put(updateRewardAssignmentSuccess(entity));
+    yield put(updateRewardAssignmentSuccess(entityForSave));
 
     if (onSuccess) {
       yield call(onSuccess);
@@ -94,6 +181,8 @@ function* updateRewardAssignmentSaga(
 
     return;
   }
+
+  yield* assertCanManageRewardsOnServer();
 
   let picture = entity.picture;
 
@@ -106,23 +195,43 @@ function* updateRewardAssignmentSaga(
       )) ?? picture;
   }
 
-  const entityWithPicture = { ...entity, picture };
+  const entityWithPicture = { ...entityForSave, picture };
 
   try {
-    const serverReward = yield* callMultideviceApi(token =>
+    let serverReward = yield* callMultideviceApi(token =>
       updateFamilyReward(
         token,
         session.familyId,
         entity.id,
-        toUpdateFamilyRewardBody(entity),
+        toUpdateFamilyRewardBody(entityWithPicture),
       ),
+    );
+
+    if (savedChildIds?.length && !serverReward.childUserIds?.length) {
+      yield* persistRewardChildIdsOnServer(
+        session.familyId,
+        serverReward.id,
+        savedChildIds,
+      );
+
+      serverReward = {
+        ...serverReward,
+        childUserIds: savedChildIds,
+      };
+    }
+
+    const mapped = mapServerFamilyRewardToAssignment(serverReward);
+    const childIds = resolveSavedRewardChildIds(
+      savedChildIds,
+      serverReward.childUserIds,
+      validChildIds,
     );
 
     yield put(
       updateRewardAssignmentSuccess({
-        ...mapServerFamilyRewardToAssignment(serverReward),
+        ...mapped,
         picture,
-        childIds: entity.childIds,
+        childIds,
       }),
     );
   } catch (error) {
@@ -130,7 +239,7 @@ function* updateRewardAssignmentSaga(
       error instanceof ApiError &&
       error.status === 404
     ) {
-      const serverReward = yield* callMultideviceApi(token =>
+      let serverReward = yield* callMultideviceApi(token =>
         createFamilyReward(
           token,
           session.familyId,
@@ -138,11 +247,31 @@ function* updateRewardAssignmentSaga(
         ),
       );
 
+      if (savedChildIds?.length && !serverReward.childUserIds?.length) {
+        yield* persistRewardChildIdsOnServer(
+          session.familyId,
+          serverReward.id,
+          savedChildIds,
+        );
+
+        serverReward = {
+          ...serverReward,
+          childUserIds: savedChildIds,
+        };
+      }
+
+      const mapped = mapServerFamilyRewardToAssignment(serverReward);
+      const childIds = resolveSavedRewardChildIds(
+        savedChildIds,
+        serverReward.childUserIds,
+        validChildIds,
+      );
+
       yield put(
         updateRewardAssignmentSuccess({
-          ...mapServerFamilyRewardToAssignment(serverReward),
+          ...mapped,
           picture,
-          childIds: entity.childIds,
+          childIds,
         }),
       );
     } else {
@@ -170,6 +299,8 @@ function* removeRewardAssignmentSaga(
 
     return;
   }
+
+  yield* assertCanManageRewardsOnServer();
 
   try {
     yield* callMultideviceApi(token =>

@@ -1,9 +1,23 @@
 import { createSelector } from '@reduxjs/toolkit';
 
+import { selectDedupedChildIds } from '~/store/children/selectors';
 import { IRewardAssignment } from '~/types/IReward';
 
 import type { IState } from '../types';
+import { isRewardAssignedToChild } from './childIds';
 import { rewardAssignmentAdapter } from './slice';
+
+export {
+  dedupeChildren,
+  filterValidChildIds,
+  isAllChildrenRewardAssignment,
+  isRewardAssignedToChild,
+  mapServerChildUserIdsToChildIds,
+  normalizeRewardChildIdsForSave,
+  remapChildIds,
+  resolveSavedRewardChildIds,
+  rewardChildIdsForForm,
+} from './childIds';
 
 export const {
   selectAll: selectAllRewardAssignment,
@@ -18,24 +32,13 @@ export const {
 export const selectRewardAssignmentById = (id: string) => (state: IState) =>
   selectById(state, id);
 
-export const isRewardAssignedToChild = (
-  assignment: { childIds?: string[] } | undefined,
-  childId: string,
-) => {
-  if (!assignment) {
-    return false;
-  }
-
-  if (!assignment.childIds || assignment.childIds.length === 0) {
-    return true;
-  }
-
-  return assignment.childIds.includes(childId);
-};
-
-export const selectRewardAssignmentsForChild = (childId: string) => (state: IState) =>
-  selectAllRewardAssignment(state).filter(assignment =>
-    isRewardAssignedToChild(assignment, childId),
+export const selectRewardAssignmentsForChild = (childId: string) =>
+  createSelector(
+    [selectAllRewardAssignment, selectDedupedChildIds],
+    (assignments, validChildIds) =>
+      assignments.filter(assignment =>
+        isRewardAssignedToChild(assignment, childId, validChildIds),
+      ),
   );
 
 export const selectPreviousRewardTemplates = createSelector(

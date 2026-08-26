@@ -10,6 +10,7 @@ export type ServerFamilyReward = {
   description?: string;
   cost: number;
   isActive: boolean;
+  childUserIds?: string[];
   createdByUserId: string;
   createdAt: string;
   updatedAt: string;
@@ -38,6 +39,7 @@ type CreateRewardBody = {
   title: string;
   description?: string;
   cost: number;
+  childUserIds?: string[];
 };
 
 type UpdateRewardBody = {
@@ -45,6 +47,7 @@ type UpdateRewardBody = {
   description?: string;
   cost?: number;
   isActive?: boolean;
+  childUserIds?: string[];
 };
 
 export async function listFamilyRewards(
@@ -196,6 +199,10 @@ export function mapServerFamilyRewardToAssignment(
     createdBy: server.createdByUserId,
     createdAt: server.createdAt,
     updatedAt: server.updatedAt,
+    childIds:
+      server.childUserIds && server.childUserIds.length > 0
+        ? server.childUserIds
+        : undefined,
   };
 }
 
@@ -238,6 +245,7 @@ export function toCreateFamilyRewardBody(
   return {
     title: assignment.title,
     cost: assignment.reward,
+    childUserIds: assignment.childIds?.length ? assignment.childIds : [],
   };
 }
 
@@ -248,5 +256,6 @@ export function toUpdateFamilyRewardBody(
     title: assignment.title,
     cost: assignment.reward,
     isActive: true,
+    childUserIds: assignment.childIds?.length ? assignment.childIds : [],
   };
 }

@@ -8,6 +8,7 @@ import {
 import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
 import { IRewardAssignment } from '~/types/IReward';
 
+import { remapChildIds } from './childIds';
 import { IStateRewardAssignment } from './types';
 
 export const rewardAssignmentAdapter =
@@ -96,6 +97,27 @@ export const rewardAssignmentSlice = createSlice({
     clearRewardAssignment: state => {
       entityReducers.clearEntities(state);
     },
+    remapRewardAssignmentChildIds: (
+      state,
+      action: PayloadAction<{ fromId: string; toId: string }>,
+    ) => {
+      const { fromId, toId } = action.payload;
+
+      for (const id of state.ids as string[]) {
+        const assignment = state.entities[id];
+
+        if (!assignment?.childIds?.includes(fromId)) {
+          continue;
+        }
+
+        rewardAssignmentAdapter.updateOne(state, {
+          id: assignment.id,
+          changes: {
+            childIds: remapChildIds(assignment.childIds, fromId, toId),
+          },
+        });
+      }
+    },
   },
 });
 
@@ -108,4 +130,5 @@ export const {
   removeRewardAssignmentSuccess,
   replaceRewardAssignments,
   clearRewardAssignment,
+  remapRewardAssignmentChildIds,
 } = rewardAssignmentSlice.actions;

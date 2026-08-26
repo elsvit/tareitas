@@ -13,7 +13,7 @@ export interface IRewardAssignment extends Partial<CreatedProps> {
   title: string;
   reward: number;
   picture?: string;
-  childIds?: string[]; // undefined = all children
+  childIds?: string[]; // undefined/empty = all children
 }
 
 export type RewardAssignmentFormProps = OmitCreatedKeys<IRewardAssignment>;
