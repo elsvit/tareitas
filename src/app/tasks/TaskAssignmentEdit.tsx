@@ -1,9 +1,13 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AssignmentTaskForm } from '~/components/tasks/TaskForm/AssignmentTaskForm';
 import { t } from '~/services';
+import { RootStateT } from '~/store';
+import { ECommonActions } from '~/store/common/types';
+import { EStateName } from '~/store/enums';
 import { selectEarnedRewardPeriods } from '~/store/rewards/selectors';
 import { selectTaskAssignmentById } from '~/store/taskAssignment/selectors';
 import {
@@ -20,6 +24,8 @@ import {
 export default function TaskAssignmentEdit() {
   const dispatch = useDispatch();
   const router = useRouter();
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [pendingNavigation, setPendingNavigation] = useState(false);
 
   const { params } = useRoute<
     RouteProp<
@@ -35,15 +41,59 @@ export default function TaskAssignmentEdit() {
   const earnedRewardPeriods = useSelector(selectEarnedRewardPeriods);
   const isHabit = assignment?.isHabit ?? isHabitFromRoute;
 
+  const saveError = useSelector((state: RootStateT) => {
+    const common = state[EStateName.common];
+
+    return (
+      common[ECommonActions.ERROR][updateTaskAssignment.type]?.message ??
+      common[ECommonActions.ERROR][addTaskAssignment.type]?.message ??
+      null
+    );
+  });
+
+  const isSaving = useSelector((state: RootStateT) => {
+    const common = state[EStateName.common];
+
+    return (
+      common[ECommonActions.LOADING][updateTaskAssignment.type] ||
+      common[ECommonActions.LOADING][addTaskAssignment.type] ||
+      false
+    );
+  });
+
+  useEffect(() => {
+    if (saveError) {
+      setSubmitError(saveError);
+      setPendingNavigation(false);
+    }
+  }, [saveError]);
+
+  useEffect(() => {
+    if (pendingNavigation && !isSaving && !saveError) {
+      setPendingNavigation(false);
+
+      if (router.canGoBack()) {
+        router.back();
+      }
+    }
+  }, [pendingNavigation, isSaving, saveError, router]);
+
+  const finishSave = () => {
+    setSubmitError(null);
+    setPendingNavigation(true);
+  };
+
   const handleSave = (
     valuesList: TaskAssignmentFormProps[],
     scope?: ERecurringEditScope,
   ): string | null => {
     const values = valuesList[0];
 
-    if (!values || !assignment) {
+    if (!values || !assignment || isSaving) {
       return null;
     }
+
+    setSubmitError(null);
 
     if (
       shouldPromptRecurringEditScope(assignment, editDate) &&
@@ -62,17 +112,28 @@ export default function TaskAssignmentEdit() {
         return result.error;
       }
 
+      let remaining = result.updates.length;
+
+      if (remaining === 0) {
+        finishSave();
+        return null;
+      }
+
       result.updates.forEach(entity => {
+        const onSuccess = () => {
+          remaining -= 1;
+
+          if (remaining === 0) {
+            finishSave();
+          }
+        };
+
         if (entity.id === assignment.id) {
-          dispatch(updateTaskAssignment({ entity }));
+          dispatch(updateTaskAssignment({ entity, onSuccess }));
         } else {
-          dispatch(addTaskAssignment({ entity }));
+          dispatch(addTaskAssignment({ entity, onSuccess }));
         }
       });
-
-      if (router.canGoBack()) {
-        router.back();
-      }
 
       return null;
     }
@@ -84,12 +145,9 @@ export default function TaskAssignmentEdit() {
           updatedAt: new Date().toISOString(),
           ...values,
         } as ITaskAssignment,
+        onSuccess: finishSave,
       }),
     );
-
-    if (router.canGoBack()) {
-      router.back();
-    }
 
     return null;
   };
@@ -102,6 +160,8 @@ export default function TaskAssignmentEdit() {
       isHabit={isHabit}
       title={isHabit ? t('habits.edit_habit') : undefined}
       onSave={handleSave}
+      submitError={submitError}
+      isSubmitting={isSaving}
     />
   );
 }

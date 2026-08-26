@@ -3,7 +3,6 @@ import type { AppDispatch } from '~/store/store';
 import type { IState } from '~/store/types';
 import type { IChild } from '~/types/IChild';
 import type { IParent } from '~/types/IParent';
-import { selectAllChildren, selectChildById } from '~/store/children/selectors';
 import {
   addChildSuccess,
   clearChildren,
@@ -20,6 +19,7 @@ import { ERole } from '~/store/settings/enums';
 import {
   clearAuthSession,
   clearMultideviceSession,
+  setAuthUser,
   setCurrentRole,
   setCurrentUser,
   setMultideviceSession,
@@ -31,6 +31,11 @@ import {
   selectFamilyId,
 } from '~/store/settings/selectors';
 import { fetchFamilyDetails } from '~/services/api';
+import {
+  mapServerChildToLocal,
+  mapServerParentToLocal,
+} from '~/services/api/memberMappers';
+import { selectAllChildren, selectChildById } from '~/store/children/selectors';
 import type {
   IFamilyChildMember,
   IFamilyDetails,
@@ -78,6 +83,14 @@ export function hydrateFamilyStore(
       familyId: family.id,
       authToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
+      authUserId: loggedInUser.id,
+      authUserRole: mapServerRole(loggedInUser.role),
+    }),
+  );
+  dispatch(
+    setAuthUser({
+      id: loggedInUser.id,
+      role: mapServerRole(loggedInUser.role),
     }),
   );
 
@@ -213,6 +226,67 @@ function buildParentCredentialUpdate(
   return {
     ...existing,
     username: serverUsername,
+  };
+}
+
+export type FamilyMembersSyncPlan = {
+  parents: IParent[];
+  children: IChild[];
+  removeParentIds: string[];
+  removeChildIds: string[];
+};
+
+export function buildFamilyMembersSyncPlan(
+  family: IFamilyDetails,
+  adminUserId: string,
+  existingParents: IParent[],
+  existingChildren: IChild[],
+): FamilyMembersSyncPlan {
+  const existingParentMap = new Map(
+    existingParents.map(parent => [parent.id, parent]),
+  );
+  const existingChildMap = new Map(
+    existingChildren.map(child => [child.id, child]),
+  );
+
+  const parents = family.parents.map(serverParent => {
+    const existing = existingParentMap.get(serverParent.userId);
+
+    return mapServerParentToLocal(
+      serverParent,
+      adminUserId,
+      existing?.passwordPattern,
+      existing,
+    );
+  });
+
+  const children = family.children.map(serverChild => {
+    const existing = existingChildMap.get(serverChild.userId);
+
+    return mapServerChildToLocal(
+      serverChild,
+      adminUserId,
+      existing?.passwordPattern,
+      existing,
+    );
+  });
+
+  const serverParentIds = new Set(
+    family.parents.map(parent => parent.userId),
+  );
+  const serverChildIds = new Set(
+    family.children.map(child => child.userId),
+  );
+
+  return {
+    parents,
+    children,
+    removeParentIds: existingParents
+      .map(parent => parent.id)
+      .filter(id => !serverParentIds.has(id)),
+    removeChildIds: existingChildren
+      .map(child => child.id)
+      .filter(id => !serverChildIds.has(id)),
   };
 }
 

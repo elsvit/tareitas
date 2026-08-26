@@ -34,6 +34,18 @@
     "save": "Guardar",
     "submit": "Enviar"
   },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Algo salió mal. Inténtalo de nuevo.",
+    "INTERNAL_ERROR": "Algo salió mal. Inténtalo de nuevo.",
+    "VALIDATION_ERROR": "Solicitud no válida. Revisa los datos introducidos.",
+    "NOT_FOUND": "Recurso no encontrado.",
+    "FORBIDDEN": "No tienes permiso para realizar esta acción.",
+    "UNAUTHORIZED": "No estás autorizado. Inicia sesión de nuevo.",
+    "TASK_NOT_FOUND": "Tarea no encontrada.",
+    "TASK_NOT_ALLOWED": "No puedes modificar esta tarea.",
+    "TASK_INVALID_STATUS": "Esta tarea no se puede actualizar en su estado actual.",
+    "TASK_ALREADY_EXISTS": "Esta tarea ya existe."
+  },
   "imageLoader": {
     "label": "Foto personalizada",
     "add": "Añadir foto",
@@ -194,6 +206,8 @@
     "description": "Descripción",
     "no_base_tasks": "No hay tareas básicas todavía",
     "no_tasks": "No hay tareas todavía.",
+    "review_requires_admin_login": "Inicia sesión como administrador o padre/madre para aprobar o rechazar tareas",
+    "status_locked_closed_period": "No se puede cambiar el estado: este mes ya está cerrado en premios",
     "push_to_add_task": "Pulsa el botón para añadir una tarea",
     "search_by_title": "Buscar por título",
     "reward": "Recompensa",
@@ -213,6 +227,7 @@
     "subtask_label": "Subtarea",
     "add_subtask": "Añadir subtarea",
     "subtasks_required": "Añade al menos una subtarea",
+    "syncing": "Guardando…",
     "done": "Hecho",
     "completed_history": "Tareas completadas",
     "no_filtered_tasks": "No se encontraron tareas",

@@ -9,6 +9,34 @@ import { getTodayDateString } from '~/utils/date';
 import { ERole, ESyncMode } from './enums';
 import type { IStateSettings } from './types';
 
+function decodeJwtSub(token: string): string | null {
+  try {
+    const segment = token.split('.')[1];
+
+    if (!segment) {
+      return null;
+    }
+
+    const normalized = segment.replace(/-/g, '+').replace(/_/g, '/');
+    const padded = normalized.padEnd(
+      normalized.length + ((4 - (normalized.length % 4)) % 4),
+      '=',
+    );
+
+    if (typeof globalThis.atob !== 'function') {
+      return null;
+    }
+
+    const payload = JSON.parse(globalThis.atob(padded)) as {
+      sub?: unknown;
+    };
+
+    return typeof payload.sub === 'string' ? payload.sub : null;
+  } catch {
+    return null;
+  }
+}
+
 export const getSettingsState = (state: RootStateT) => state[EStateName.settings];
 
 export const selectLang = (state: RootStateT) =>
@@ -99,6 +127,60 @@ export const selectHasAuthSession = createSelector(
   [selectAuthToken, selectRefreshToken, selectFamilyId],
   (authToken, refreshToken, familyId) =>
     Boolean(authToken && refreshToken && familyId),
+);
+
+/** True when the app should read/write family data through the server. */
+export const selectUsesCloudSync = selectHasAuthSession;
+
+export const selectAuthUserId = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>).authUserId;
+
+export const selectResolvedAuthUserId = createSelector(
+  [selectAuthUserId, selectAuthToken],
+  (authUserId, authToken) =>
+    authUserId ?? (authToken ? decodeJwtSub(authToken) : null),
+);
+
+export const selectAuthUserRole = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>).authUserRole;
+
+export const selectCanReviewTasks = createSelector(
+  [
+    selectHasAuthSession,
+    selectAuthUserRole,
+    selectResolvedAuthUserId,
+    (state: RootStateT) => state,
+  ],
+  (hasAuthSession, authUserRole, authUserId, state) => {
+    if (!hasAuthSession) {
+      return true;
+    }
+
+    if (
+      authUserRole === ERole.admin ||
+      authUserRole === ERole.parent
+    ) {
+      return true;
+    }
+
+    if (authUserRole === ERole.child) {
+      return false;
+    }
+
+    if (!authUserId) {
+      return false;
+    }
+
+    const parent = selectParentById(state, authUserId);
+
+    if (parent) {
+      return (
+        parent.role === ERole.admin || parent.role === ERole.parent
+      );
+    }
+
+    return !selectChildById(state, authUserId);
+  },
 );
 
 export const selectNeedsAuthLogin = createSelector(

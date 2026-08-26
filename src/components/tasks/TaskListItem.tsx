@@ -1,5 +1,6 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
+  ActivityIndicator,
   Platform,
   Pressable,
   StyleSheet,
@@ -21,12 +22,18 @@ import { TaskRewardStarsAnimation } from '~/components/tasks/TaskRewardStarsAnim
 import { Text } from '~/components/ui';
 import { t } from '~/services';
 import { RootStateT } from '~/store';
+import { ECommonActions } from '~/store/common/types';
+import { EStateName } from '~/store/enums';
 import {
   ScheduledTaskItem,
   selectTaskListItemViewByScheduledItem,
 } from '~/store/tasks/selectors';
 import { addTask, updateTask } from '~/store/tasks/slice';
 import { selectTaskImageUrls } from '~/store/images';
+import { selectUsesCloudSync, selectCanReviewTasks } from '~/store/settings/selectors';
+import { selectTaskAssignmentById } from '~/store/taskAssignment/selectors';
+import { selectEarnedRewardPeriods } from '~/store/rewards/selectors';
+import { isDateInClosedRewardPeriod } from '~/store/rewards/earnedRewardPeriodUtils';
 import { Colors } from '~/styles';
 import { ETaskStatus } from '~/types/ETask';
 import { ITask } from '~/types/ITask';
@@ -49,9 +56,34 @@ export const TaskListItem: React.FC<Props> = ({
 }) => {
   const dispatch = useDispatch();
   const customUrls = useSelector(selectTaskImageUrls);
+  const usesCloudSync = useSelector(selectUsesCloudSync);
+  const canReviewTasks = useSelector(selectCanReviewTasks);
+  const earnedRewardPeriods = useSelector(selectEarnedRewardPeriods);
+  const assignment = useSelector((state: RootStateT) =>
+    selectTaskAssignmentById(item.assignmentId)(state),
+  );
   const taskView = useSelector((state: RootStateT) =>
     selectTaskListItemViewByScheduledItem(state, item),
   );
+  const isTaskActionLoading = useSelector((state: RootStateT) => {
+    const common = state[EStateName.common];
+
+    return (
+      common[ECommonActions.LOADING][updateTask.type] ||
+      common[ECommonActions.LOADING][addTask.type] ||
+      false
+    );
+  });
+  const taskActionError = useSelector((state: RootStateT) => {
+    const common = state[EStateName.common];
+
+    return (
+      common[ECommonActions.ERROR][updateTask.type]?.message ??
+      common[ECommonActions.ERROR][addTask.type]?.message ??
+      null
+    );
+  });
+  const [isSyncing, setIsSyncing] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [areSubtasksExpanded, setAreSubtasksExpanded] = useState(false);
   const [rewardAnimationTrigger, setRewardAnimationTrigger] = useState(0);
@@ -80,6 +112,16 @@ export const TaskListItem: React.FC<Props> = ({
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   }, [isChildView, rewardText]);
 
+  useEffect(() => {
+    if (!isSyncing) {
+      return;
+    }
+
+    if (!isTaskActionLoading || taskActionError) {
+      setIsSyncing(false);
+    }
+  }, [isSyncing, isTaskActionLoading, taskActionError]);
+
   if (!taskView || !gradientColors) {
     return null;
   }
@@ -103,17 +145,52 @@ export const TaskListItem: React.FC<Props> = ({
   } = taskView;
 
   const hasSubtasks = subtasks.length > 0;
+  const isStatusUpdating = usesCloudSync && isSyncing;
+  const isPeriodLocked =
+    !!assignment &&
+    isDateInClosedRewardPeriod(earnedRewardPeriods, assignment.childId, date);
+  const canChildModifyTask =
+    isChildView && !isPeriodLocked && status !== ETaskStatus.Approved;
+  const showReviewActions =
+    !isChildView && (!usesCloudSync || canReviewTasks) && !isPeriodLocked;
 
-  const upsertTask = (entity: ITask) => {
+  const upsertTask = (
+    entity: ITask,
+    onSynced?: () => void,
+  ) => {
+    if (usesCloudSync) {
+      setIsSyncing(true);
+    }
+
+    const handleSynced = () => {
+      if (usesCloudSync) {
+        setIsSyncing(false);
+      }
+
+      onSynced?.();
+    };
+
     if (task) {
-      dispatch(updateTask({ entity }));
+      dispatch(updateTask({ entity, onSuccess: handleSynced }));
       return;
     }
 
-    dispatch(addTask({ entity }));
+    dispatch(addTask({ entity, onSuccess: handleSynced }));
   };
 
-  const setStatus = (nextStatus: ETaskStatus, nextCompletedSubtasks?: string[]) => {
+  const setStatus = (
+    nextStatus: ETaskStatus,
+    nextCompletedSubtasks?: string[],
+    onSynced?: () => void,
+  ) => {
+    if (isPeriodLocked) {
+      return;
+    }
+
+    if (isChildView && status === ETaskStatus.Approved) {
+      return;
+    }
+
     const entity: ITask = {
       id: createTaskId(assignmentId, date),
       assignmentId,
@@ -128,15 +205,20 @@ export const TaskListItem: React.FC<Props> = ({
       updatedAt: new Date().toISOString(),
     };
 
-    upsertTask(entity);
+    upsertTask(entity, onSynced);
   };
 
   const completeTask = (nextCompletedSubtasks?: string[]) => {
-    setStatus(ETaskStatus.Completed, nextCompletedSubtasks);
-    triggerCompletionAnimation();
+    setStatus(ETaskStatus.Completed, nextCompletedSubtasks, () => {
+      triggerCompletionAnimation();
+    });
   };
 
   const handleChildStatusPress = () => {
+    if (isStatusUpdating || !canChildModifyTask) {
+      return;
+    }
+
     if (status === ETaskStatus.Rejected) {
       setStatus(ETaskStatus.Pending, []);
       return;
@@ -164,15 +246,24 @@ export const TaskListItem: React.FC<Props> = ({
   };
 
   const handleParentReviewStatusPress = () => {
+    if (isStatusUpdating || isPeriodLocked) {
+      return;
+    }
+
     setStatus(ETaskStatus.Completed);
   };
 
   const canChildPressStatus =
-    status === ETaskStatus.Rejected ||
-    status === ETaskStatus.Pending ||
-    (!hasSubtasks && status === ETaskStatus.Completed);
+    canChildModifyTask &&
+    (status === ETaskStatus.Rejected ||
+      status === ETaskStatus.Pending ||
+      (!hasSubtasks && status === ETaskStatus.Completed));
 
   const handleToggleSubtask = (subtaskValue: string, checked: boolean) => {
+    if (isStatusUpdating || !canChildModifyTask) {
+      return;
+    }
+
     const nextCompleted = checked
       ? [...new Set([...completedSubtasks, subtaskValue])]
       : completedSubtasks.filter(value => value !== subtaskValue);
@@ -184,8 +275,7 @@ export const TaskListItem: React.FC<Props> = ({
     const nextStatus = allDone ? ETaskStatus.Completed : ETaskStatus.Pending;
 
     if (allDone && isChildView && status === ETaskStatus.Pending) {
-      setStatus(nextStatus, nextCompleted);
-      triggerCompletionAnimation();
+      completeTask(nextCompleted);
       return;
     }
 
@@ -284,30 +374,57 @@ export const TaskListItem: React.FC<Props> = ({
         compact
       />
     </View>
-  ) : status === ETaskStatus.Completed ? (
+  ) : (
     <View style={styles.statusColumn}>
-      <TaskStatusBadge
-        status={ETaskStatus.Approved}
-        labelKey="tasks.taskStatus.approve"
-        onPress={() => setStatus(ETaskStatus.Approved)}
-        compact
-      />
-      <TaskStatusBadge
-        status={ETaskStatus.Rejected}
-        labelKey="tasks.taskStatus.reject"
-        onPress={() => setStatus(ETaskStatus.Rejected)}
-        compact
-      />
+      {status === ETaskStatus.Completed && showReviewActions ? (
+        <>
+          <TaskStatusBadge status={ETaskStatus.Completed} compact />
+          <TaskStatusBadge
+            status={ETaskStatus.Approved}
+            labelKey="tasks.taskStatus.approve"
+            onPress={
+              isStatusUpdating ? undefined : () => setStatus(ETaskStatus.Approved)
+            }
+            compact
+          />
+          <TaskStatusBadge
+            status={ETaskStatus.Rejected}
+            labelKey="tasks.taskStatus.reject"
+            onPress={
+              isStatusUpdating ? undefined : () => setStatus(ETaskStatus.Rejected)
+            }
+            compact
+          />
+        </>
+      ) : (
+        <TaskStatusBadge
+          status={status}
+          onPress={
+            showReviewActions &&
+            (status === ETaskStatus.Approved ||
+              status === ETaskStatus.Rejected) &&
+            !isStatusUpdating
+              ? handleParentReviewStatusPress
+              : undefined
+          }
+          compact
+        />
+      )}
+      {status === ETaskStatus.Completed &&
+        usesCloudSync &&
+        !canReviewTasks &&
+        !isChildView && (
+          <Text style={styles.reviewHint} numberOfLines={3}>
+            {t('tasks.review_requires_admin_login')}
+          </Text>
+        )}
+      {isPeriodLocked && !isChildView && (
+        <Text style={styles.reviewHint} numberOfLines={3}>
+          {t('tasks.status_locked_closed_period')}
+        </Text>
+      )}
     </View>
-  ) : status === ETaskStatus.Approved || status === ETaskStatus.Rejected ? (
-    <View style={styles.statusColumn}>
-      <TaskStatusBadge
-        status={status}
-        onPress={handleParentReviewStatusPress}
-        compact
-      />
-    </View>
-  ) : null;
+  );
 
   const hasBottomContent = !!description || hasSubtasks;
 
@@ -380,53 +497,32 @@ export const TaskListItem: React.FC<Props> = ({
                     const checked = completedSubtasks.includes(subtask.value);
 
                     return (
-                      <View key={subtask.value} style={styles.subtaskRow}>
-                        {isChildView ? (
-                          <Pressable
-                            onPress={() =>
-                              handleToggleSubtask(subtask.value, !checked)
-                            }
-                            accessibilityRole="checkbox"
-                            accessibilityState={{ checked }}
-                            style={[
-                              styles.subtaskCheckbox,
-                              checked && styles.subtaskCheckboxChecked,
-                            ]}
-                          >
-                            {checked && (
-                              <Text style={styles.subtaskCheckmark}>✓</Text>
-                            )}
-                          </Pressable>
-                        ) : (
-                          <View
-                            style={[
-                              styles.subtaskCheckbox,
-                              checked && styles.subtaskCheckboxChecked,
-                            ]}
-                          >
-                            {checked && (
-                              <Text style={styles.subtaskCheckmark}>✓</Text>
-                            )}
-                          </View>
-                        )}
-                        {isChildView ? (
-                          <TouchableOpacity
-                            style={styles.subtaskLabelPressable}
-                            onPress={() =>
-                              handleToggleSubtask(subtask.value, !checked)
-                            }
-                            activeOpacity={0.7}
-                            accessibilityRole="checkbox"
-                            accessibilityState={{ checked }}
-                          >
-                            <Text style={styles.subtaskLabel}>{subtask.label}</Text>
-                          </TouchableOpacity>
-                        ) : (
-                          <View style={styles.subtaskLabelWrapper}>
-                            <Text style={styles.subtaskLabel}>{subtask.label}</Text>
-                          </View>
-                        )}
-                      </View>
+                      <Pressable
+                        key={subtask.value}
+                        onPress={() =>
+                          canChildModifyTask
+                            ? handleToggleSubtask(subtask.value, !checked)
+                            : undefined
+                        }
+                        disabled={!canChildModifyTask || isStatusUpdating}
+                        accessibilityRole="checkbox"
+                        accessibilityState={{ checked }}
+                        style={styles.subtaskRow}
+                      >
+                        <View
+                          style={[
+                            styles.subtaskCheckbox,
+                            checked && styles.subtaskCheckboxChecked,
+                          ]}
+                        >
+                          {checked && (
+                            <Text style={styles.subtaskCheckmark}>✓</Text>
+                          )}
+                        </View>
+                        <View style={styles.subtaskLabelWrapper}>
+                          <Text style={styles.subtaskLabel}>{subtask.label}</Text>
+                        </View>
+                      </Pressable>
                     );
                   })}
                 </View>
@@ -460,6 +556,18 @@ export const TaskListItem: React.FC<Props> = ({
           {row}
         </LinearGradient>
       </View>
+
+      {isStatusUpdating && (
+        <View pointerEvents="none" style={styles.syncSpinner}>
+          <ActivityIndicator size="small" color={taskColor} />
+        </View>
+      )}
+
+      {!!taskActionError && !isStatusUpdating && (
+        <Text style={styles.syncError} numberOfLines={2}>
+          {taskActionError}
+        </Text>
+      )}
 
       {isChildView && (
         <TaskRewardStarsAnimation
@@ -608,6 +716,28 @@ const styles = StyleSheet.create({
     gap: 4,
   },
 
+  syncSpinner: {
+    position: 'absolute',
+    left: 8,
+    bottom: 8,
+    zIndex: 2,
+  },
+
+  syncError: {
+    marginTop: 4,
+    marginHorizontal: 8,
+    color: Colors.red500,
+    fontSize: 12,
+  },
+
+  reviewHint: {
+    marginTop: 4,
+    maxWidth: 120,
+    color: Colors.grey700,
+    fontSize: 11,
+    textAlign: 'center',
+  },
+
   subtaskRow: {
     width: '100%',
     flexDirection: 'row',
@@ -647,10 +777,6 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     textAlign: 'left',
     includeFontPadding: false,
-  },
-
-  subtaskLabelPressable: {
-    flex: 1,
   },
 
   subtaskLabelWrapper: {

@@ -5,6 +5,7 @@ import {
   useGlobalSearchParams,
   usePathname,
   useRouter,
+  useSegments,
 } from 'expo-router';
 
 import { selectParentIds } from '~/store/parents/selectors';
@@ -23,8 +24,8 @@ import {
 
 const ONBOARDING_SETUP_PATH = '/(onboarding)?setup=1';
 
-function isOnboardingSetupPath(pathname: string): boolean {
-  return pathname.includes('(onboarding)');
+function isOnboardingRoute(segments: string[]): boolean {
+  return segments.some(segment => segment === '(onboarding)');
 }
 
 function normalizeReturnParams(
@@ -51,6 +52,7 @@ export const useCatalogForegroundSync = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
+  const segments = useSegments();
   const searchParams = useGlobalSearchParams();
   const isMultidevice = useSelector(selectIsMultidevice);
   const hasAuthSession = useSelector(selectHasAuthSession);
@@ -59,18 +61,30 @@ export const useCatalogForegroundSync = () => {
   const parentIds = useSelector(selectParentIds);
   const appState = useRef(AppState.currentState);
   const isSessionPausedRef = useRef(isSessionPaused);
+  const hasRedirectedToLoginRef = useRef(false);
 
   isSessionPausedRef.current = isSessionPaused;
 
+  const returnRouteParamsKey = JSON.stringify(
+    normalizeReturnParams(searchParams) ?? null,
+  );
+
   useEffect(() => {
+    if (!requireLogin) {
+      hasRedirectedToLoginRef.current = false;
+      return;
+    }
+
     if (
-      !requireLogin ||
       isSessionPaused ||
       parentIds.length === 0 ||
-      isOnboardingSetupPath(pathname)
+      isOnboardingRoute(segments) ||
+      hasRedirectedToLoginRef.current
     ) {
       return;
     }
+
+    hasRedirectedToLoginRef.current = true;
 
     const returnRoute: PendingReturnRoute = {
       pathname,
@@ -81,12 +95,14 @@ export const useCatalogForegroundSync = () => {
     router.replace(ONBOARDING_SETUP_PATH);
   }, [
     dispatch,
-    requireLogin,
-    isSessionPaused,
     parentIds.length,
     pathname,
+    requireLogin,
+    returnRouteParamsKey,
     router,
     searchParams,
+    segments,
+    isSessionPaused,
   ]);
 
   useEffect(() => {
