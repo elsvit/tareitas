@@ -31,6 +31,21 @@ export function mapApiError(error: unknown): IError {
   if (error instanceof ApiError) {
     const code = readErrorCode(error);
 
+    if (error.fieldErrors?.length) {
+      const details = error.fieldErrors
+        .map(fieldError =>
+          fieldError.field
+            ? `${fieldError.field}: ${fieldError.errorMessage}`
+            : fieldError.errorMessage,
+        )
+        .join('\n');
+
+      return {
+        code,
+        message: details || translateApiErrorCode(code),
+      };
+    }
+
     return {
       code,
       message: translateApiErrorCode(code),

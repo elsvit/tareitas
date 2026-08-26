@@ -10,10 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "net.tareitas",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
-      }
+      "bundleIdentifier": "net.tareitas"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,8 +23,7 @@
       "predictiveBackGestureEnabled": false,
       "package": "net.tareitas",
       "permissions": [
-        "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS"
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "web": {
@@ -42,9 +38,9 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#60A5FA",
           "dark": {
-            "backgroundColor": "#ffffff"
+            "backgroundColor": "#60A5FA"
           }
         }
       ],
@@ -56,7 +52,15 @@
           "photosPermission": "Allow access to your photos to set custom task and reward images."
         }
       ],
-      "expo-audio"
+      "expo-audio",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Tareitas to use your camera.",
+          "microphonePermission": "Allow Tareitas to use your microphone.",
+          "recordAudioAndroid": true
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

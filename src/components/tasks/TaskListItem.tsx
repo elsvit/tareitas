@@ -139,6 +139,7 @@ export const TaskListItem: React.FC<Props> = ({
     reward,
     rewardDisplayText,
     taskColor,
+    time,
     subtasks,
     completedSubtasks,
     status,
@@ -427,6 +428,8 @@ export const TaskListItem: React.FC<Props> = ({
   );
 
   const hasBottomContent = !!description || hasSubtasks;
+  const descriptionText =
+    description && time ? `${time}: ${description}` : description;
 
   const contentColumn = (
     <View style={styles.contentColumn} collapsable={false}>
@@ -466,7 +469,7 @@ export const TaskListItem: React.FC<Props> = ({
                   weight="medium"
                   style={styles.description}
                 >
-                  {description}
+                  {descriptionText}
                 </Text>
               )}
             </View>

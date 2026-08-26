@@ -166,5 +166,7 @@ export function toCreateTaskAssignmentBody(
 export function toUpdateTaskAssignmentBody(
   entity: ITaskAssignment,
 ): UpdateTaskAssignmentBody {
-  return toCreateTaskAssignmentBody(entity);
+  const { id: _id, ...body } = toCreateTaskAssignmentBody(entity);
+
+  return body;
 }
