@@ -18,11 +18,14 @@ import { TaskScreenFabs } from '~/components/tasks/TaskScreenFabs';
 import { Text } from '~/components/ui';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { useHasCompletedTasksInPast } from '~/hooks/useHasCompletedTasksInPast';
+import { useMultideviceScreenSync } from '~/hooks/useMultideviceScreenSync';
 import { useTaskCalendarDate } from '~/hooks/useTaskCalendarDate';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
 import { selectAllTaskBase } from '~/store/taskBase/selectors';
+import { selectHasAuthSession, selectUsesCloudSync } from '~/store/settings/selectors';
+import { syncTaskAssignments } from '~/store/settings/slice';
 import {
   buildTaskListItemViewFromParts,
   ScheduledTaskItem,
@@ -63,7 +66,19 @@ export default function Habits() {
     setFilter(current => mergeTaskCalendarFilterChildren(current, children));
   }, [children]);
 
+  useMultideviceScreenSync('tasks');
+
   const assignments = useSelector(selectAllTaskAssignment);
+  const usesCloudSync = useSelector(selectUsesCloudSync);
+  const hasAuthSession = useSelector(selectHasAuthSession);
+
+  useEffect(() => {
+    if (!hasAuthSession) {
+      return;
+    }
+
+    dispatch(syncTaskAssignments());
+  }, [dispatch, hasAuthSession, selectedDate]);
 
   const scheduledItems = useSelector(
     useMemo(
@@ -159,12 +174,12 @@ export default function Habits() {
   );
 
   useEffect(() => {
-    if (isChild) {
+    if (isChild || usesCloudSync) {
       return;
     }
 
     dispatch(generateTasksForDate({ date: selectedDate, assignments }));
-  }, [dispatch, selectedDate, assignments, isChild]);
+  }, [dispatch, selectedDate, assignments, isChild, usesCloudSync]);
 
   const handleOpenFilter = useCallback(() => {
     setIsFilterModalVisible(true);

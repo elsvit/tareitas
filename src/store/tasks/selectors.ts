@@ -165,21 +165,11 @@ export const buildTaskListItemViewFromParts = (
 
   const subtasks = assignment.subtasks ?? [];
   const completedSubtasks = task?.completedSubtasks ?? [];
-  const allSubtasksDone =
-    subtasks.length > 0 &&
-    subtasks.every(subtask => completedSubtasks.includes(subtask.value));
   const isDone =
     task?.status === ETaskStatus.Completed ||
-    task?.status === ETaskStatus.Approved ||
-    allSubtasksDone;
+    task?.status === ETaskStatus.Approved;
 
-  const status = normalizeTaskStatus(
-    allSubtasksDone &&
-      task?.status !== ETaskStatus.Approved &&
-      task?.status !== ETaskStatus.Rejected
-      ? ETaskStatus.Completed
-      : task?.status ?? ETaskStatus.Pending,
-  );
+  const status = normalizeTaskStatus(task?.status ?? ETaskStatus.Pending);
 
   const baseReward = fieldsForDate.reward;
   const bonusActive = isNewTaskBonusActive(effectiveAssignment, date);

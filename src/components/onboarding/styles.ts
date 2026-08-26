@@ -3,13 +3,16 @@ import { StyleSheet } from 'react-native';
 import { Colors, spacing } from '~/styles';
 
 export const onboardingStyles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
   screenHeader: {
     backgroundColor: 'transparent',
     borderBottomWidth: 0,
   },
   container: {
     padding: spacing(4),
-    paddingBottom: spacing(8),
+    paddingBottom: spacing(4),
     flexGrow: 1,
   },
   progressBar: {
@@ -147,6 +150,7 @@ export const onboardingStyles = StyleSheet.create({
   },
   loginModeOptionLabel: {
     fontFamily: 'Fredoka_500Medium',
+    color: Colors.grey900,
   },
   loginFormCard: {
     padding: spacing(2),

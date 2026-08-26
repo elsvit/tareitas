@@ -7,16 +7,12 @@ import {
   createEntityReducers,
   createGenericEntityAdapter,
 } from '~/store/helpers';
+import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
 import { removeChild } from '~/store/children/slice';
 import type { IState } from '~/store/types';
 
 import { pruneOrphanedTaskAssignmentsInState } from './taskAssignmentCleanup';
-import {
-  AddTaskAssignmentPayload,
-  IStateTaskAssignment,
-  RemoveTaskAssignmentPayload,
-  UpdateTaskAssignmentPayload,
-} from './types';
+import { IStateTaskAssignment } from './types';
 
 export const taskAssignmentAdapter =
   createGenericEntityAdapter<ITaskAssignment>();
@@ -31,18 +27,8 @@ export const taskAssignmentSlice = createSlice({
   name: EStateName.taskAssignment,
   initialState,
   reducers: {
-    addTaskAssignment: (
-      state,
-      action: PayloadAction<AddTaskAssignmentPayload>
-    ) => {
-      entityReducers.addEntity(
-        state,
-        action as unknown as PayloadAction<{
-          entity: ITaskAssignment;
-          isUpsert?: boolean;
-        }>
-      );
-    },
+    addTaskAssignment: noopEntityRequestReducer,
+    addTaskAssignmentsBatch: noopEntityRequestReducer,
     addTaskAssignmentSuccess: (
       state,
       action: PayloadAction<ITaskAssignment>
@@ -58,15 +44,7 @@ export const taskAssignmentSlice = createSlice({
         }>
       );
     },
-    updateTaskAssignment: (
-      state,
-      action: PayloadAction<UpdateTaskAssignmentPayload>
-    ) => {
-      entityReducers.upsertEntity(
-        state,
-        ({ ...action, payload: action.payload.entity } as unknown) as PayloadAction<ITaskAssignment>
-      );
-    },
+    updateTaskAssignment: noopEntityRequestReducer,
     updateTaskAssignmentSuccess: (
       state,
       action: PayloadAction<ITaskAssignment>
@@ -76,20 +54,18 @@ export const taskAssignmentSlice = createSlice({
         (action as unknown) as PayloadAction<ITaskAssignment>
       );
     },
-    removeTaskAssignment: (
-      state,
-      action: PayloadAction<RemoveTaskAssignmentPayload>
-    ) => {
-      entityReducers.removeEntity(
-        state,
-        ({ ...action, payload: action.payload.entity } as unknown) as PayloadAction<string>
-      );
-    },
+    removeTaskAssignment: noopEntityRequestReducer,
     removeTaskAssignmentSuccess: (state, action: PayloadAction<string>) => {
       entityReducers.removeEntity(
         state,
         (action as unknown) as PayloadAction<string>
       );
+    },
+    replaceTaskAssignments: (
+      state,
+      action: PayloadAction<ITaskAssignment[]>,
+    ) => {
+      taskAssignmentAdapter.setAll(state, action.payload);
     },
     clearTaskAssignment: (state) => {
       entityReducers.clearEntities(state);
@@ -127,11 +103,13 @@ export const taskAssignmentSlice = createSlice({
 
 export const {
   addTaskAssignment,
+  addTaskAssignmentsBatch,
   addTaskAssignmentSuccess,
   updateTaskAssignment,
   updateTaskAssignmentSuccess,
   removeTaskAssignment,
   removeTaskAssignmentSuccess,
+  replaceTaskAssignments,
   clearTaskAssignment,
   pruneOrphanedTaskAssignments,
 } = taskAssignmentSlice.actions;

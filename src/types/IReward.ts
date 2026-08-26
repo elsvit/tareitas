@@ -29,7 +29,8 @@ export interface IReward extends Partial<CreatedProps> {
 export interface IEarnedRewardPeriodChildBalance {
   remainingRewardFromPreviousMonths: number | null;
   monthReward: number;
-  // isPeriodApproved: boolean;
+  /** Set when parent/admin explicitly approves the period in Rewards history. */
+  isPeriodApproved?: boolean;
 }
 
 export interface IEarnedRewardPeriod {

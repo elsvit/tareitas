@@ -21,6 +21,8 @@ const initialState: IStateSettings = {
   familyId: null,
   authToken: null,
   refreshToken: null,
+  authUserId: null,
+  authUserRole: null,
   lastSyncedTaskBaseRevision: 0,
   lastSyncedRewardBaseRevision: 0,
   catalogDirty: false,
@@ -73,20 +75,36 @@ export const settingsSlice = createSlice({
         familyId: string;
         authToken: string;
         refreshToken: string;
+        authUserId?: string | null;
+        authUserRole?: ERole | null;
       }>,
     ) => {
       state.syncMode = ESyncMode.multidevice;
       state.familyId = action.payload.familyId;
       state.authToken = action.payload.authToken;
       state.refreshToken = action.payload.refreshToken;
+      state.authUserId = action.payload.authUserId ?? null;
+      state.authUserRole = action.payload.authUserRole ?? null;
       state.lastSessionActivityAt =
         new Date().toISOString();
+    },
+    setAuthUser: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        role: ERole;
+      }>,
+    ) => {
+      state.authUserId = action.payload.id;
+      state.authUserRole = action.payload.role;
     },
     clearMultideviceSession: state => {
       state.syncMode = ESyncMode.deviceOnly;
       state.familyId = null;
       state.authToken = null;
       state.refreshToken = null;
+      state.authUserId = null;
+      state.authUserRole = null;
       state.lastSyncedTaskBaseRevision = 0;
       state.lastSyncedRewardBaseRevision = 0;
       state.catalogDirty = false;
@@ -97,6 +115,8 @@ export const settingsSlice = createSlice({
       state.familyId = null;
       state.authToken = null;
       state.refreshToken = null;
+      state.authUserId = null;
+      state.authUserRole = null;
     },
     updateAuthTokens: (
       state,
@@ -163,6 +183,8 @@ export const settingsSlice = createSlice({
     syncCatalog: () => {},
     refreshAuthSession: () => {},
     syncFamilyMembers: () => {},
+    syncTaskAssignments: () => {},
+    syncRewardsData: () => {},
     setRequireLogin: (
       state,
       action: PayloadAction<boolean>,
@@ -205,6 +227,7 @@ export const {
   setTaskCalendarDate,
   setSyncMode,
   setMultideviceSession,
+  setAuthUser,
   clearMultideviceSession,
   clearAuthSession,
   updateAuthTokens,
@@ -216,6 +239,8 @@ export const {
   syncCatalog,
   refreshAuthSession,
   syncFamilyMembers,
+  syncTaskAssignments,
+  syncRewardsData,
   setRequireLogin,
   touchSessionActivity,
   setPendingReturnRoute,

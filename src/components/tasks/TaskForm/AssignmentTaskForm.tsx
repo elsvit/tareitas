@@ -68,6 +68,8 @@ type Props = {
   ) => string | null;
   onValidityChange?: (valid: boolean) => void;
   showScreenHeader?: boolean;
+  submitError?: string | null;
+  isSubmitting?: boolean;
 };
 
 type FormValues = {
@@ -271,6 +273,8 @@ export const AssignmentTaskForm: FC<Props> = ({
   onSave,
   onValidityChange,
   showScreenHeader = true,
+  submitError = null,
+  isSubmitting = false,
 }) => {
   const headerTitle =
     title ??
@@ -1180,9 +1184,21 @@ export const AssignmentTaskForm: FC<Props> = ({
 
             <Space size={5} />
 
-            <Button mode="contained" onPress={handleSubmit(onSubmit)}>
+            <Button
+              mode="contained"
+              onPress={handleSubmit(onSubmit)}
+              loading={isSubmitting}
+              disabled={isSubmitting}
+            >
               {t('button.save')}
             </Button>
+
+            {submitError ? (
+              <>
+                <Space size={2} />
+                <Text style={styles.errorText}>{submitError}</Text>
+              </>
+            ) : null}
 
             {isEditMode && isAdmin && (
               <>

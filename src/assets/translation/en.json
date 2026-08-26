@@ -34,6 +34,18 @@
     "save": "Save",
     "submit": "Submit"
   },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Something went wrong. Please try again.",
+    "INTERNAL_ERROR": "Something went wrong. Please try again.",
+    "VALIDATION_ERROR": "Invalid request. Please check your input.",
+    "NOT_FOUND": "Resource not found.",
+    "FORBIDDEN": "You do not have permission to perform this action.",
+    "UNAUTHORIZED": "You are not authorized. Please sign in again.",
+    "TASK_NOT_FOUND": "Task not found.",
+    "TASK_NOT_ALLOWED": "You cannot modify this task.",
+    "TASK_INVALID_STATUS": "This task cannot be updated in its current state.",
+    "TASK_ALREADY_EXISTS": "This task already exists."
+  },
   "imageLoader": {
     "label": "Custom photo",
     "add": "Add photo",
@@ -194,6 +206,8 @@
     "description": "Description",
     "no_base_tasks": "No base tasks yet",
     "no_tasks": "No tasks yet.",
+    "review_requires_admin_login": "Sign in as admin or parent to approve or reject tasks.",
+    "status_locked_closed_period": "Status cannot be changed — this month is closed in rewards history",
     "push_to_add_task": "Push the button to add a task",
     "search_by_title": "Search by title",
     "reward": "Reward",
@@ -213,6 +227,7 @@
     "subtask_label": "Subtask",
     "add_subtask": "Add subtask",
     "subtasks_required": "Add at least one subtask",
+    "syncing": "Saving…",
     "done": "Done",
     "completed_history": "Completed Tasks",
     "no_filtered_tasks": "No tasks found",

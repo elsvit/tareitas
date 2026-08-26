@@ -7,7 +7,8 @@ import {
   createEntityReducers,
 } from '~/store/helpers';
 import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
-import { AddTasksPayload, UpdateTasksPayload } from './types';
+import { AddTasksPayload, ReplaceTasksFromServerPayload, UpdateTasksPayload } from './types';
+import { ETaskStatus } from '~/types/ETask';
 import { generateTasksForDate as buildTasksForDate } from '~/utils/tasks/taskGeneration';
 
 export const tasksAdapter = createGenericEntityAdapter<ITask>();
@@ -40,6 +41,31 @@ export const tasksSlice = createSlice({
     clearTasks: state => {
       entityReducers.clearEntities(state);
     },
+    replaceTasksFromServer: (
+      state,
+      action: PayloadAction<ReplaceTasksFromServerPayload>,
+    ) => {
+      const { tasks, from, to } = action.payload;
+      const serverIds = new Set(tasks.map(task => task.id));
+
+      if (tasks.length > 0) {
+        tasksAdapter.upsertMany(state, tasks);
+      }
+
+      const stalePendingIds = (state.ids as string[]).filter(id => {
+        const task = state.entities[id];
+
+        if (!task || task.date < from || task.date > to) {
+          return false;
+        }
+
+        return !serverIds.has(id) && task.status === ETaskStatus.Pending;
+      });
+
+      if (stalePendingIds.length > 0) {
+        tasksAdapter.removeMany(state, stalePendingIds);
+      }
+    },
     generateTasksForDate: (
       state,
       action: PayloadAction<{ date: string; assignments: ITaskAssignment[] }>,
@@ -71,6 +97,7 @@ export const {
   removeTask,
   removeTaskSuccess,
   clearTasks,
+  replaceTasksFromServer,
   generateTasksForDate,
   addGeneratedTask,
 } = tasksSlice.actions;

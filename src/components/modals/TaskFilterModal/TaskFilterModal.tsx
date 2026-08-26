@@ -105,25 +105,25 @@ export const TaskFilterModal: React.FC<Props> = ({
                   {t('tasks.filter_children')}
                 </Text>
 
-                {children.map(child => (
+                {children.map(child => {
+                  const isChecked = filter.childIds[child.id] ?? false;
+
+                  return (
                   <TouchableOpacity
                     key={child.id}
                     accessibilityRole="checkbox"
-                    accessibilityState={{
-                      checked: filter.childIds[child.id] ?? false,
-                    }}
+                    accessibilityState={{ checked: isChecked }}
                     onPress={() => toggleChild(child.id)}
                     style={styles.checkboxRow}
                   >
                     <Checkbox
-                      status={
-                        filter.childIds[child.id] ? 'checked' : 'unchecked'
-                      }
-                      onPress={() => toggleChild(child.id)}
+                      status={isChecked ? 'checked' : 'unchecked'}
+                      pointerEvents="none"
                     />
                     <Text style={styles.checkboxLabel}>{child.name}</Text>
                   </TouchableOpacity>
-                ))}
+                  );
+                })}
               </>
             )}
 
@@ -139,21 +139,25 @@ export const TaskFilterModal: React.FC<Props> = ({
               {t('tasks.filter_statuses')}
             </Text>
 
-            {TASK_CALENDAR_STATUSES.map(status => (
+            {TASK_CALENDAR_STATUSES.map(status => {
+              const isChecked = filter.statuses[status];
+
+              return (
               <TouchableOpacity
                 key={status}
                 accessibilityRole="checkbox"
-                accessibilityState={{ checked: filter.statuses[status] }}
+                accessibilityState={{ checked: isChecked }}
                 onPress={() => toggleStatus(status)}
                 style={styles.checkboxRow}
               >
                 <Checkbox
-                  status={filter.statuses[status] ? 'checked' : 'unchecked'}
-                  onPress={() => toggleStatus(status)}
+                  status={isChecked ? 'checked' : 'unchecked'}
+                  pointerEvents="none"
                 />
                 <Text style={styles.checkboxLabel}>{getStatusLabel(status)}</Text>
               </TouchableOpacity>
-            ))}
+              );
+            })}
           </ScrollView>
         </View>
       </SafeAreaView>

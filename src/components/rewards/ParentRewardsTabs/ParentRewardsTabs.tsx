@@ -25,9 +25,11 @@ import { selectAllRewardAssignment } from '~/store/rewardAssignment/selectors';
 import {
   HistoryPeriodItem,
   selectApprovedRewardsByChildSections,
+  selectEarnedRewardPeriods,
   selectSelectedRewardsByChildSections,
   selectUnapprovedHistorySections,
 } from '~/store/rewards/selectors';
+import { isDateInClosedRewardPeriod } from '~/store/rewards/earnedRewardPeriodUtils';
 import {
   buildPeriodApprovalUpdates,
 } from '~/store/rewards/rewardCalculations';
@@ -49,12 +51,33 @@ const parentTabRoutes: ParentTabRoute[] = [
   { key: 'history', title: 'history' },
 ];
 
+const getRewardStatusDate = (reward: IReward) =>
+  reward.completedDate ??
+  (reward.createdAt
+    ? reward.createdAt.slice(0, 10)
+    : format(new Date(), 'yyyy-MM-dd'));
+
 function SelectedRewardsTab() {
   const dispatch = useDispatch();
   const selectedSections = useSelector(selectSelectedRewardsByChildSections);
+  const earnedRewardPeriods = useSelector(selectEarnedRewardPeriods);
+
+  const isRewardStatusLocked = useCallback(
+    (reward: IReward) =>
+      isDateInClosedRewardPeriod(
+        earnedRewardPeriods,
+        reward.childId,
+        getRewardStatusDate(reward),
+      ),
+    [earnedRewardPeriods],
+  );
 
   const handleParentApprove = useCallback(
     (reward: IReward) => {
+      if (isRewardStatusLocked(reward)) {
+        return;
+      }
+
       dispatch(
         updateReward({
           entity: {
@@ -65,11 +88,15 @@ function SelectedRewardsTab() {
         }),
       );
     },
-    [dispatch],
+    [dispatch, isRewardStatusLocked],
   );
 
   const handleParentReject = useCallback(
     (reward: IReward) => {
+      if (isRewardStatusLocked(reward)) {
+        return;
+      }
+
       dispatch(
         updateReward({
           entity: {
@@ -80,7 +107,7 @@ function SelectedRewardsTab() {
         }),
       );
     },
-    [dispatch],
+    [dispatch, isRewardStatusLocked],
   );
 
   const renderSelectedItem = useCallback<
@@ -127,9 +154,24 @@ function SelectedRewardsTab() {
 function ApprovedRewardsTab() {
   const dispatch = useDispatch();
   const approvedSections = useSelector(selectApprovedRewardsByChildSections);
+  const earnedRewardPeriods = useSelector(selectEarnedRewardPeriods);
+
+  const isRewardStatusLocked = useCallback(
+    (reward: IReward) =>
+      isDateInClosedRewardPeriod(
+        earnedRewardPeriods,
+        reward.childId,
+        getRewardStatusDate(reward),
+      ),
+    [earnedRewardPeriods],
+  );
 
   const handleParentReject = useCallback(
     (reward: IReward) => {
+      if (isRewardStatusLocked(reward)) {
+        return;
+      }
+
       dispatch(
         updateReward({
           entity: {
@@ -140,11 +182,15 @@ function ApprovedRewardsTab() {
         }),
       );
     },
-    [dispatch],
+    [dispatch, isRewardStatusLocked],
   );
 
   const handleParentComplete = useCallback(
     (reward: IReward) => {
+      if (isRewardStatusLocked(reward)) {
+        return;
+      }
+
       dispatch(
         updateReward({
           entity: {
@@ -156,7 +202,7 @@ function ApprovedRewardsTab() {
         }),
       );
     },
-    [dispatch],
+    [dispatch, isRewardStatusLocked],
   );
 
   const renderApprovedItem = useCallback<

@@ -25,7 +25,7 @@ export const isEarnedPeriodChildBalance = (
 
 export const isPeriodClosed = (
   balance: IEarnedRewardPeriodChildBalance,
-): boolean => balance.remainingRewardFromPreviousMonths !== null;
+): boolean => balance.isPeriodApproved === true;
 
 export const isFlatEarnedRewardPeriod = (
   value: unknown,
@@ -71,6 +71,7 @@ export const createEarnedPeriodForChild = (
         ? balance.remainingRewardFromPreviousMonths
         : null,
     monthReward: balance?.monthReward ?? 0,
+    isPeriodApproved: balance?.isPeriodApproved,
   },
 });
 
@@ -87,6 +88,7 @@ const mergeFlatPeriods = (
     existing[item.childId] = {
       remainingRewardFromPreviousMonths: item.remainingRewardFromPreviousMonths,
       monthReward: item.monthReward,
+      isPeriodApproved: item.isPeriodApproved,
     };
 
     byYearMonth.set(item.yearMonth, existing);
@@ -105,6 +107,79 @@ const normalizeNestedObject = (
     ...childMap,
   }));
 
+const getChildIdsFromPeriods = (
+  periods: IEarnedRewardPeriods,
+): string[] => {
+  const childIds = new Set<string>();
+
+  periods.forEach(period => {
+    Object.entries(period).forEach(([key, value]) => {
+      if (key !== 'yearMonth' && isEarnedPeriodChildBalance(value)) {
+        childIds.add(key);
+      }
+    });
+  });
+
+  return [...childIds];
+};
+
+/** Fix legacy sync placeholder that marked the first month as closed. */
+const migrateLegacyPeriodApprovalFlags = (
+  periods: IEarnedRewardPeriods,
+): IEarnedRewardPeriods => {
+  getChildIdsFromPeriods(periods).forEach(childId => {
+    const childPeriods = periods
+      .map(period => ({
+        period,
+        balance: getChildBalanceFromPeriod(period, childId),
+      }))
+      .filter(
+        (
+          item,
+        ): item is {
+          period: IEarnedRewardPeriod;
+          balance: IEarnedRewardPeriodChildBalance;
+        } => !!item.balance,
+      )
+      .sort((a, b) => a.period.yearMonth.localeCompare(b.period.yearMonth));
+
+    const hasExplicitApproval = childPeriods.some(
+      ({ balance }) => balance.isPeriodApproved === true,
+    );
+
+    if (hasExplicitApproval) {
+      return;
+    }
+
+    const legacyClosedMonths = childPeriods.filter(
+      ({ balance }) => balance.remainingRewardFromPreviousMonths !== null,
+    );
+
+    if (legacyClosedMonths.length === 0) {
+      return;
+    }
+
+    if (legacyClosedMonths.length === 1) {
+      const [{ period, balance }] = legacyClosedMonths;
+
+      period[childId] = {
+        remainingRewardFromPreviousMonths: null,
+        monthReward: balance.monthReward,
+      };
+      return;
+    }
+
+    legacyClosedMonths.forEach(({ period, balance }) => {
+      period[childId] = {
+        ...balance,
+        isPeriodApproved: true,
+      };
+    });
+  });
+
+  return periods;
+};
+
 export const normalizeEarnedRewardPeriods = (
   periods: unknown,
 ): IEarnedRewardPeriods => {
@@ -112,31 +187,33 @@ export const normalizeEarnedRewardPeriods = (
     return [];
   }
 
+  let normalized: IEarnedRewardPeriods;
+
   if (Array.isArray(periods)) {
     if (periods.length === 0) {
       return [];
     }
 
     if (isFlatEarnedRewardPeriod(periods[0])) {
-      return mergeFlatPeriods(periods as FlatEarnedRewardPeriod[]);
-    }
-
-    return (periods as IEarnedRewardPeriod[]).map(period => ({
-      yearMonth: period.yearMonth,
-      ...Object.fromEntries(
-        Object.entries(period).filter(
-          ([key, value]) =>
-            key !== 'yearMonth' && isEarnedPeriodChildBalance(value),
+      normalized = mergeFlatPeriods(periods as FlatEarnedRewardPeriod[]);
+    } else {
+      normalized = (periods as IEarnedRewardPeriod[]).map(period => ({
+        yearMonth: period.yearMonth,
+        ...Object.fromEntries(
+          Object.entries(period).filter(
+            ([key, value]) =>
+              key !== 'yearMonth' && isEarnedPeriodChildBalance(value),
+          ),
         ),
-      ),
-    }));
+      }));
+    }
+  } else if (typeof periods === 'object') {
+    normalized = normalizeNestedObject(periods as LegacyNestedEarnedRewardPeriods);
+  } else {
+    return [];
   }
 
-  if (typeof periods === 'object') {
-    return normalizeNestedObject(periods as LegacyNestedEarnedRewardPeriods);
-  }
-
-  return [];
+  return migrateLegacyPeriodApprovalFlags(normalized);
 };
 
 export const sortEarnedPeriods = (
@@ -201,6 +278,28 @@ export const getLastApprovedMonth = (
   childId: string,
 ): string | null => getLastClosedPeriod(periods, childId)?.yearMonth ?? null;
 
+export const isDateInClosedRewardPeriod = (
+  periods: IEarnedRewardPeriods,
+  childId: string,
+  date: string,
+): boolean => {
+  const taskYearMonth = date.slice(0, 7);
+  const period = periods.find(item => item.yearMonth === taskYearMonth);
+  const balance = getChildBalanceFromPeriod(period, childId);
+
+  if (balance?.isPeriodApproved === true) {
+    return true;
+  }
+
+  const lastClosedMonth = getLastApprovedMonth(periods, childId);
+
+  if (!lastClosedMonth) {
+    return false;
+  }
+
+  return taskYearMonth <= lastClosedMonth;
+};
+
 export const getApprovedPeriodBalance = (
   period: IEarnedRewardPeriodEntry | null | undefined,
 ): number => {
@@ -231,6 +330,10 @@ export const upsertChildEarnedPeriod = (
         ? update.remainingRewardFromPreviousMonths
         : existingBalance?.remainingRewardFromPreviousMonths ?? null,
     monthReward: update.monthReward ?? existingBalance?.monthReward ?? 0,
+    isPeriodApproved:
+      update.isPeriodApproved !== undefined
+        ? update.isPeriodApproved
+        : existingBalance?.isPeriodApproved,
   };
 
   if (index < 0) {

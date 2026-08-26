@@ -8,16 +8,18 @@ import {
   tryRefreshAuthTokens,
 } from '~/store/helpers/multideviceSession';
 import { takeLatestWithFetchable } from '~/store/helpers/fetchableHandler';
+import {
+  syncFamilyMembersFromServerSaga,
+  syncRewardsDataFromServerSaga,
+  syncTaskAssignmentsFromServerSaga,
+} from '~/store/multideviceSync/sagas';
 import { updateParent } from '~/store/parents/slice';
 import type { IState } from '~/store/types';
 import { syncRewardBaseTranslations } from '~/store/rewardBase/slice';
 import { syncTaskBaseTranslations } from '~/store/taskBase/slice';
 
 import {
-  selectAuthToken,
-  selectFamilyId,
   selectHasAuthSession,
-  selectIsMultidevice,
   selectIsSessionPaused,
   selectLang,
 } from './selectors';
@@ -28,6 +30,8 @@ import {
   setLanguage,
   syncCatalog,
   syncFamilyMembers,
+  syncRewardsData,
+  syncTaskAssignments,
   touchSessionActivity,
 } from './slice';
 
@@ -54,22 +58,48 @@ function* applyFamilyMemberCredentialUpdatesSaga(): Generator<
 }
 
 function* syncFamilyMembersSaga(): Generator<any, void, any> {
-  const isMultidevice: boolean = yield select(
-    selectIsMultidevice,
-  );
-  const authToken: string | null = yield select(
-    selectAuthToken,
-  );
-  const familyId: string | null = yield select(
-    selectFamilyId,
+  const hasAuthSession: boolean = yield select(
+    selectHasAuthSession,
   );
 
-  if (!isMultidevice || !authToken || !familyId) {
+  if (!hasAuthSession) {
     return;
   }
 
   try {
-    yield call(applyFamilyMemberCredentialUpdatesSaga);
+    yield call(syncFamilyMembersFromServerSaga);
+  } catch {
+    // Keep local data if sync fails (offline, expired token, etc.)
+  }
+}
+
+function* syncTaskAssignmentsSaga(): Generator<any, void, any> {
+  const hasAuthSession: boolean = yield select(
+    selectHasAuthSession,
+  );
+
+  if (!hasAuthSession) {
+    return;
+  }
+
+  try {
+    yield call(syncTaskAssignmentsFromServerSaga);
+  } catch {
+    // Keep local data if sync fails (offline, expired token, etc.)
+  }
+}
+
+function* syncRewardsDataSaga(): Generator<any, void, any> {
+  const hasAuthSession: boolean = yield select(
+    selectHasAuthSession,
+  );
+
+  if (!hasAuthSession) {
+    return;
+  }
+
+  try {
+    yield call(syncRewardsDataFromServerSaga);
   } catch {
     // Keep local data if sync fails (offline, expired token, etc.)
   }
@@ -80,14 +110,11 @@ function* resumeMultideviceSessionSaga(): Generator<
   void,
   any
 > {
-  const isMultidevice: boolean = yield select(
-    selectIsMultidevice,
-  );
   const hasAuthSession: boolean = yield select(
     selectHasAuthSession,
   );
 
-  if (!isMultidevice || !hasAuthSession) {
+  if (!hasAuthSession) {
     return;
   }
 
@@ -112,6 +139,7 @@ function* resumeMultideviceSessionSaga(): Generator<
   try {
     yield call(tryRefreshAuthTokens);
     yield put(syncCatalog());
+    yield put(syncTaskAssignments());
     yield call(applyFamilyMemberCredentialUpdatesSaga);
   } catch {
     // Keep the existing session on transient failures (offline, timeout, etc.)
@@ -133,6 +161,7 @@ function* initLanguageSaga(): Generator<any, void, any> {
   yield put(syncRewardBaseTranslations());
   yield put(resumeMultideviceSession());
   yield put(syncFamilyMembers());
+  yield put(syncTaskAssignments());
 }
 
 export default [
@@ -151,5 +180,13 @@ export default [
   takeLatestWithFetchable(
     syncFamilyMembers,
     syncFamilyMembersSaga,
+  ),
+  takeLatestWithFetchable(
+    syncTaskAssignments,
+    syncTaskAssignmentsSaga,
+  ),
+  takeLatestWithFetchable(
+    syncRewardsData,
+    syncRewardsDataSaga,
   ),
 ];

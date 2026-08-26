@@ -15,6 +15,8 @@ export interface IStateSettings {
   familyId: string | null;
   authToken: string | null;
   refreshToken: string | null;
+  authUserId: string | null;
+  authUserRole: ERole | null;
   lastSyncedTaskBaseRevision: number;
   lastSyncedRewardBaseRevision: number;
   catalogDirty: boolean;

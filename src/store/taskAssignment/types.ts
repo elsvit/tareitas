@@ -9,6 +9,11 @@ export type AddTaskAssignmentPayload = {
   onSuccess?: () => void;
 };
 
+export type AddTaskAssignmentsBatchPayload = {
+  entities: ITaskAssignment[];
+  onSuccess?: () => void;
+};
+
 export type UpdateTaskAssignmentPayload = AddTaskAssignmentPayload;
 
 export type RemoveTaskAssignmentPayload = {

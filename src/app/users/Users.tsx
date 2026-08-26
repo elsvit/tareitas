@@ -8,6 +8,7 @@ import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { Button, Text } from '~/components/ui';
 import { ChildListItem, ParentListItem } from '~/components/users/UserListItem';
+import { useMultideviceScreenSync } from '~/hooks/useMultideviceScreenSync';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectAllParents } from '~/store/parents/selectors';
@@ -17,6 +18,7 @@ import { EScreens } from '~/types';
 
 export default function Users() {
   const router = useRouter();
+  useMultideviceScreenSync('users');
   const parents = useSelector(selectAllParents);
   const children = useSelector(selectAllChildren);
   const isAdmin = useSelector(selectIsAdmin);

@@ -23,9 +23,12 @@ import { IStateRewardAssignment, rewardAssignmentSlice } from './rewardAssignmen
 import { IStateRewards, rewardsSlice } from './rewards';
 import { normalizeEarnedRewardPeriods } from './rewards/rewardCalculations';
 import { IStateTaskAssignment, taskAssignmentSlice } from './taskAssignment';
+import taskAssignmentSagas from './taskAssignment/sagas';
 import taskBaseSagas from './taskBase/sagas';
 import { IStateTaskBase, taskBaseSlice } from './taskBase';
 import tasksSagas from './tasks/sagas';
+import rewardAssignmentSagas from './rewardAssignment/sagas';
+import rewardsSagas from './rewards/sagas';
 import { IStateImages, imagesSlice } from './images';
 import { IStateTasks, tasksSlice } from './tasks';
 
@@ -35,6 +38,9 @@ function* rootSaga() {
     ...parentsSagas,
     ...childrenSagas,
     ...tasksSagas,
+    ...taskAssignmentSagas,
+    ...rewardAssignmentSagas,
+    ...rewardsSagas,
     ...taskBaseSagas,
     ...rewardBaseSagas,
     ...settingsSagas,

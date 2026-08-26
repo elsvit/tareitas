@@ -259,7 +259,7 @@ export const buildPeriodApprovalUpdates = (
   ).filter(yearMonth => {
     const period = findEarnedPeriod(periods, childId, yearMonth);
 
-    return (period?.remainingRewardFromPreviousMonths ?? null) === null;
+    return !period || !isPeriodClosed(period);
   });
 
   return monthsToUpdate.map(yearMonth => {
@@ -332,7 +332,7 @@ export const findApprovableMonthPeriod = (
 
     const period = findEarnedPeriod(periods, childId, yearMonth);
 
-    if ((period?.remainingRewardFromPreviousMonths ?? null) !== null) {
+    if (period && isPeriodClosed(period)) {
       continue;
     }
 
@@ -370,7 +370,7 @@ export const syncEarnedRewardPeriodsFromState = (
 
     const months = getMonthsBetweenInclusive(firstTaskMonth, currentYearMonth);
 
-    months.forEach((yearMonth, index) => {
+    months.forEach(yearMonth => {
       const existingBalance = getChildBalanceFromPeriod(
         nextPeriods.find(period => period.yearMonth === yearMonth),
         child.id,
@@ -383,10 +383,6 @@ export const syncEarnedRewardPeriodsFromState = (
 
       let remainingRewardFromPreviousMonths =
         existingBalance?.remainingRewardFromPreviousMonths ?? null;
-
-      if (remainingRewardFromPreviousMonths === null && index === 0) {
-        remainingRewardFromPreviousMonths = 0;
-      }
 
       upsertChildEarnedPeriod(nextPeriods, child.id, yearMonth, {
         remainingRewardFromPreviousMonths,

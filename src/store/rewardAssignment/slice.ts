@@ -5,14 +5,10 @@ import {
   createEntityReducers,
   createGenericEntityAdapter,
 } from '~/store/helpers';
+import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
 import { IRewardAssignment } from '~/types/IReward';
 
-import {
-  AddRewardAssignmentPayload,
-  IStateRewardAssignment,
-  RemoveRewardAssignmentPayload,
-  UpdateRewardAssignmentPayload,
-} from './types';
+import { IStateRewardAssignment } from './types';
 
 export const rewardAssignmentAdapter =
   createGenericEntityAdapter<IRewardAssignment>();
@@ -27,18 +23,7 @@ export const rewardAssignmentSlice = createSlice({
   name: EStateName.rewardAssignment,
   initialState,
   reducers: {
-    addRewardAssignment: (
-      state,
-      action: PayloadAction<AddRewardAssignmentPayload>,
-    ) => {
-      entityReducers.addEntity(
-        state,
-        action as unknown as PayloadAction<{
-          entity: IRewardAssignment;
-          isUpsert?: boolean;
-        }>,
-      );
-    },
+    addRewardAssignment: noopEntityRequestReducer,
     addRewardAssignmentSuccess: (
       state,
       action: PayloadAction<IRewardAssignment>,
@@ -54,15 +39,7 @@ export const rewardAssignmentSlice = createSlice({
         }>,
       );
     },
-    updateRewardAssignment: (
-      state,
-      action: PayloadAction<UpdateRewardAssignmentPayload>,
-    ) => {
-      entityReducers.upsertEntity(
-        state,
-        ({ ...action, payload: action.payload.entity } as unknown) as PayloadAction<IRewardAssignment>,
-      );
-    },
+    updateRewardAssignment: noopEntityRequestReducer,
     updateRewardAssignmentSuccess: (
       state,
       action: PayloadAction<IRewardAssignment>,
@@ -72,20 +49,18 @@ export const rewardAssignmentSlice = createSlice({
         (action as unknown) as PayloadAction<IRewardAssignment>,
       );
     },
-    removeRewardAssignment: (
-      state,
-      action: PayloadAction<RemoveRewardAssignmentPayload>,
-    ) => {
-      entityReducers.removeEntity(
-        state,
-        ({ ...action, payload: action.payload.entity } as unknown) as PayloadAction<string>,
-      );
-    },
+    removeRewardAssignment: noopEntityRequestReducer,
     removeRewardAssignmentSuccess: (state, action: PayloadAction<string>) => {
       entityReducers.removeEntity(
         state,
         (action as unknown) as PayloadAction<string>,
       );
+    },
+    replaceRewardAssignments: (
+      state,
+      action: PayloadAction<IRewardAssignment[]>,
+    ) => {
+      rewardAssignmentAdapter.setAll(state, action.payload);
     },
     clearRewardAssignment: state => {
       entityReducers.clearEntities(state);
@@ -100,5 +75,6 @@ export const {
   updateRewardAssignmentSuccess,
   removeRewardAssignment,
   removeRewardAssignmentSuccess,
+  replaceRewardAssignments,
   clearRewardAssignment,
 } = rewardAssignmentSlice.actions;

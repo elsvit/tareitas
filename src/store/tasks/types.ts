@@ -23,3 +23,9 @@ export type RemoveTasksPayload = {
   entity: string;
   onSuccess?: () => void;
 };
+
+export type ReplaceTasksFromServerPayload = {
+  tasks: ITask[];
+  from: string;
+  to: string;
+};

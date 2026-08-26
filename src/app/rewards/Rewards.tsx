@@ -9,6 +9,7 @@ import { ParentRewardsTabs } from '~/components/rewards/ParentRewardsTabs';
 import { RewardItem } from '~/components/rewards/RewardItem';
 import { Text } from '~/components/ui';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
+import { useMultideviceScreenSync } from '~/hooks/useMultideviceScreenSync';
 import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
 import { t } from '~/services';
 import {
@@ -29,6 +30,7 @@ export default function Rewards() {
   const childId = isChild ? currentUser?.id ?? '' : '';
 
   useSyncEarnedRewardPeriods();
+  useMultideviceScreenSync('rewards');
 
   const childBalance = useSelector(selectChildRewardBalance(childId));
   const childRewardItems = useSelector(selectRewardListItemsForChild(childId));

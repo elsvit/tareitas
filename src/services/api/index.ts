@@ -27,8 +27,33 @@ export {
 } from './membersApi';
 export {
   createTaskInstance,
+  listTaskInstances,
   updateTaskInstance,
+  mapServerTaskToLocal,
 } from './tasksApi';
+export {
+  listTaskAssignments,
+  createTaskAssignment,
+  updateTaskAssignment,
+  deleteTaskAssignment,
+  mapServerTaskAssignmentToLocal,
+  toCreateTaskAssignmentBody,
+  toUpdateTaskAssignmentBody,
+} from './taskAssignmentsApi';
+export {
+  listFamilyRewards,
+  createFamilyReward,
+  updateFamilyReward,
+  deleteFamilyReward,
+  listRewardRedemptions,
+  redeemFamilyReward,
+  approveRewardRedemption,
+  rejectRewardRedemption,
+  mapServerFamilyRewardToAssignment,
+  mapServerRedemptionToLocal,
+  toCreateFamilyRewardBody,
+  toUpdateFamilyRewardBody,
+} from './rewardsApi';
 export {
   toAbsoluteUploadUrl,
   uploadFamilyImage,

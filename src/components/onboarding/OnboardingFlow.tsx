@@ -90,7 +90,7 @@ export function OnboardingFlow({
   const [transitionDirection, setTransitionDirection] =
     useState<OnboardingTransitionDirection>(1);
   const [setupPath, setSetupPath] = useState<OnboardingSetupPath>(
-    requireLogin ? 'connect' : 'create',
+    opensOnSetup ? 'connect' : 'create',
   );
   const [parent, setParent] = useState<Partial<ParentFormProps>>({
     role: ERole.admin,
@@ -498,6 +498,7 @@ export function OnboardingFlow({
       />
       <ScrollView
         ref={scrollRef}
+        style={styles.flex}
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"

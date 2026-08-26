@@ -8,7 +8,7 @@ import {
   selectAuthToken,
   selectCurrentUser,
   selectFamilyId,
-  selectIsMultidevice,
+  selectHasAuthSession,
   selectIsSessionPaused,
   selectLastSessionActivityAt,
   selectRefreshToken,
@@ -120,11 +120,11 @@ export function* assertMultideviceSession(): Generator<
   MultideviceSession | null,
   any
 > {
-  const isMultidevice: boolean = yield select(
-    selectIsMultidevice,
+  const hasAuthSession: boolean = yield select(
+    selectHasAuthSession,
   );
 
-  if (!isMultidevice) {
+  if (!hasAuthSession) {
     return null;
   }
 

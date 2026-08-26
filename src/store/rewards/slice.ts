@@ -6,6 +6,7 @@ import {
   createEntityReducers,
   createGenericEntityAdapter,
 } from '~/store/helpers';
+import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
 import { IEarnedRewardPeriod, IReward } from '~/types/IReward';
 
 import {
@@ -13,12 +14,9 @@ import {
   normalizeEarnedRewardPeriods,
 } from './earnedRewardPeriodUtils';
 import {
-  AddRewardPayload,
   ApprovePeriodPayload,
   IStateRewards,
-  RemoveRewardPayload,
   SetRemainingRewardFromPreviousMonthsPayload,
-  UpdateRewardPayload,
 } from './types';
 
 const ensureEarnedRewardPeriods = (state: IStateRewards) => {
@@ -40,33 +38,21 @@ export const rewardsSlice = createSlice({
   name: EStateName.rewards,
   initialState,
   reducers: {
-    addReward: (state, action: PayloadAction<AddRewardPayload>) => {
-      entityReducers.addEntity(state, action);
-    },
+    addReward: noopEntityRequestReducer,
     addRewardSuccess: (state, action: PayloadAction<IReward>) => {
       entityReducers.addEntity(state, {
         ...action,
         payload: { entity: action.payload },
       });
     },
-    updateReward: (state, action: PayloadAction<UpdateRewardPayload>) => {
-      entityReducers.upsertEntity(state, {
-        ...action,
-        payload: action.payload.entity,
-      });
-    },
+    updateReward: noopEntityRequestReducer,
     updateRewardSuccess: (state, action: PayloadAction<IReward>) => {
       entityReducers.upsertEntity(
         state,
         action as unknown as PayloadAction<IReward>,
       );
     },
-    removeReward: (state, action: PayloadAction<RemoveRewardPayload>) => {
-      entityReducers.removeEntity(state, {
-        ...action,
-        payload: action.payload.entity,
-      });
-    },
+    removeReward: noopEntityRequestReducer,
     removeRewardSuccess: (state, action: PayloadAction<string>) => {
       entityReducers.removeEntity(
         state,
@@ -96,6 +82,7 @@ export const rewardsSlice = createSlice({
           upsertChildEarnedPeriod(state.earnedRewardPeriods, childId, yearMonth, {
             remainingRewardFromPreviousMonths,
             monthReward,
+            isPeriodApproved: true,
           });
         },
       );
@@ -105,6 +92,12 @@ export const rewardsSlice = createSlice({
       action: PayloadAction<IEarnedRewardPeriod[]>,
     ) => {
       state.earnedRewardPeriods = normalizeEarnedRewardPeriods(action.payload);
+    },
+    replaceRewardInstancesFromServer: (
+      state,
+      action: PayloadAction<IReward[]>,
+    ) => {
+      rewardsAdapter.setAll(state, action.payload);
     },
   },
   extraReducers: builder => {
@@ -131,4 +124,5 @@ export const {
   setRemainingRewardFromPreviousMonths,
   approvePeriod,
   syncEarnedRewardPeriods,
+  replaceRewardInstancesFromServer,
 } = rewardsSlice.actions;

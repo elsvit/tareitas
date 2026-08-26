@@ -9,7 +9,7 @@ import { call, takeLatest, ForkEffect, put } from 'redux-saga/effects';
 import { Saga } from '~/store';
 import { setError, setLoaded, setLoading } from '~/store/common';
 import { ActionApiT } from '~/store/common';
-import { IError } from '~/types/IError';
+import { mapApiError } from '~/services/api/mapApiError';
 
 export function* captureError(error: any, context?: any) {
   // ToDo: add notification handler
@@ -24,7 +24,7 @@ export function* captureError(error: any, context?: any) {
  * @param onError
  * @param context
  */
-export const withFatchable = ({
+export const withFetchable = ({
   saga,
   onError,
   context,
@@ -45,10 +45,7 @@ export const withFatchable = ({
       yield captureError(error, context);
 
       // Convert Error object to serializable IError format
-      const serializableError: IError = {
-        code: error?.code || 'UNKNOWN_ERROR',
-        message: error?.message || 'An unknown error occurred',
-      };
+      const serializableError = mapApiError(error);
 
       yield put(
         setError({
@@ -72,7 +69,7 @@ export function takeLatestWithFetchable<
   options?: { args: any[]; onError?: Effect; context?: any },
 ): ForkEffect<never> {
   const { args = [], onError, context } = options || {};
-  const wrappedSaga = withFatchable({
+  const wrappedSaga = withFetchable({
     saga,
     onError,
     context,
