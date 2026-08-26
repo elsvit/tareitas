@@ -1,5 +1,8 @@
-import type { IState } from '../types';
+import { createSelector } from '@reduxjs/toolkit';
 
+import { IRewardAssignment } from '~/types/IReward';
+
+import type { IState } from '../types';
 import { rewardAssignmentAdapter } from './slice';
 
 export const {
@@ -34,3 +37,11 @@ export const selectRewardAssignmentsForChild = (childId: string) => (state: ISta
   selectAllRewardAssignment(state).filter(assignment =>
     isRewardAssignedToChild(assignment, childId),
   );
+
+export const selectPreviousRewardTemplates = createSelector(
+  [selectAllRewardAssignment],
+  assignments =>
+    [...assignments].sort((left, right) =>
+      (right.createdAt ?? '').localeCompare(left.createdAt ?? ''),
+    ),
+);

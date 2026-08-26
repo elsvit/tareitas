@@ -187,6 +187,182 @@ export const selectApprovedRewardsByChildSections = createSelector(
       .filter(section => section.data.length > 0),
 );
 
+export const selectCompletedRewardsByChildSections = createSelector(
+  [selectAllRewards, selectAllRewardAssignment, selectAllChildren],
+  (rewards, assignments, children) =>
+    children
+      .map(child => ({
+        childId: child.id,
+        title: child.name,
+        data: rewards
+          .filter(reward => reward.childId === child.id && !!reward.completedDate)
+          .map(reward => {
+            const assignment = assignments.find(
+              item => item.id === reward.rewardAssignmentId,
+            );
+
+            if (!assignment) {
+              return null;
+            }
+
+            return {
+              reward,
+              assignment,
+            };
+          })
+          .filter(
+            (
+              item,
+            ): item is { reward: IReward; assignment: IRewardAssignment } =>
+              item != null,
+          )
+          .sort((left, right) =>
+            (right.reward.completedDate ?? '').localeCompare(
+              left.reward.completedDate ?? '',
+            ),
+          ),
+      }))
+      .filter(section => section.data.length > 0),
+);
+
+export const selectChildCatalogRewardItems = (childId: string) =>
+  createSelector(
+    [
+      selectAllRewardAssignment,
+      selectAllRewards,
+      selectChildRewardBalance(childId),
+    ],
+    (assignments, rewards, balance) =>
+      assignments
+        .filter(assignment => isRewardAssignedToChild(assignment, childId))
+        .filter(assignment =>
+          !rewards.some(
+            reward =>
+              reward.rewardAssignmentId === assignment.id &&
+              reward.childId === childId &&
+              !reward.completedDate &&
+              (reward.status === ERewardStatus.Selected ||
+                reward.status === ERewardStatus.Approved),
+          ),
+        )
+        .map(assignment => {
+          const rejectedInstance = rewards.find(
+            reward =>
+              reward.rewardAssignmentId === assignment.id &&
+              reward.childId === childId &&
+              !reward.completedDate &&
+              reward.status === ERewardStatus.Rejected,
+          );
+
+          return buildRewardListItemView(
+            assignment,
+            childId,
+            rejectedInstance ?? null,
+            balance,
+          );
+        }),
+  );
+
+export const selectChildSelectedRewardItems = (childId: string) =>
+  createSelector(
+    [
+      selectAllRewards,
+      selectAllRewardAssignment,
+      selectChildRewardBalance(childId),
+    ],
+    (rewards, assignments, balance) =>
+      rewards
+        .filter(
+          reward =>
+            reward.childId === childId &&
+            reward.status === ERewardStatus.Selected &&
+            !reward.completedDate,
+        )
+        .map(reward => {
+          const assignment = assignments.find(
+            item => item.id === reward.rewardAssignmentId,
+          );
+
+          if (!assignment) {
+            return null;
+          }
+
+          return buildRewardListItemView(
+            assignment,
+            childId,
+            reward,
+            balance,
+          );
+        })
+        .filter((item): item is RewardListItemView => item != null),
+  );
+
+export const selectChildApprovedRewardItems = (childId: string) =>
+  createSelector(
+    [
+      selectAllRewards,
+      selectAllRewardAssignment,
+      selectChildRewardBalance(childId),
+    ],
+    (rewards, assignments, balance) =>
+      rewards
+        .filter(
+          reward =>
+            reward.childId === childId &&
+            reward.status === ERewardStatus.Approved &&
+            !reward.completedDate,
+        )
+        .map(reward => {
+          const assignment = assignments.find(
+            item => item.id === reward.rewardAssignmentId,
+          );
+
+          if (!assignment) {
+            return null;
+          }
+
+          return buildRewardListItemView(
+            assignment,
+            childId,
+            reward,
+            balance,
+          );
+        })
+        .filter((item): item is RewardListItemView => item != null),
+  );
+
+export const selectChildCompletedRewardItems = (childId: string) =>
+  createSelector(
+    [
+      selectAllRewards,
+      selectAllRewardAssignment,
+      selectChildRewardBalance(childId),
+    ],
+    (rewards, assignments, balance) =>
+      rewards
+        .filter(reward => reward.childId === childId && !!reward.completedDate)
+        .map(reward => {
+          const assignment = assignments.find(
+            item => item.id === reward.rewardAssignmentId,
+          );
+
+          if (!assignment) {
+            return null;
+          }
+
+          return buildRewardListItemView(
+            assignment,
+            childId,
+            reward,
+            balance,
+          );
+        })
+        .filter((item): item is RewardListItemView => item != null)
+        .sort((left, right) =>
+          (right.completedDate ?? '').localeCompare(left.completedDate ?? ''),
+        ),
+  );
+
 export type HistoryPeriodItem = {
   childId: string;
   childName: string;

@@ -23,6 +23,7 @@ import { getRewardImageOptions } from '~/constants/rewards';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
 import { removeRewardAssignment } from '~/store/rewardAssignment/slice';
+import { selectPreviousRewardTemplates } from '~/store/rewardAssignment/selectors';
 import { selectAllRewardBase } from '~/store/rewardBase/selectors';
 import { ERole } from '~/store/settings/enums';
 import { selectCurrentRole } from '~/store/settings/selectors';
@@ -33,6 +34,7 @@ import {
 } from '~/types/IReward';
 
 import { styles } from './styles';
+import { PreviousRewardSelect } from './PreviousRewardSelect';
 
 type Props = {
   title?: string;
@@ -41,6 +43,8 @@ type Props = {
   onSave?: (values: RewardAssignmentFormProps) => void;
   onValidityChange?: (valid: boolean) => void;
   showScreenHeader?: boolean;
+  submitError?: string | null;
+  isSubmitting?: boolean;
 };
 
 type FormValues = Omit<RewardAssignmentFormProps, 'reward'> & {
@@ -48,6 +52,7 @@ type FormValues = Omit<RewardAssignmentFormProps, 'reward'> & {
   allChildren: boolean;
   selectedChildIds: string[];
   baseRewardId?: string;
+  previousRewardId?: string;
 };
 
 const requiredMessage = t('common.required') || 'Required';
@@ -93,6 +98,8 @@ export const RewardForm: FC<Props> = ({
   onSave,
   onValidityChange,
   showScreenHeader = true,
+  submitError,
+  isSubmitting = false,
 }) => {
   const headerTitle =
     title ??
@@ -104,8 +111,10 @@ export const RewardForm: FC<Props> = ({
 
   const children = useSelector(selectAllChildren);
   const baseRewards = useSelector(selectAllRewardBase);
+  const previousRewards = useSelector(selectPreviousRewardTemplates);
   const rewardImageOptions = getRewardImageOptions();
   const isEditMode = mode === EFormMode.Edit;
+  const isAddMode = mode === EFormMode.Add;
 
   const currentRole = useSelector(selectCurrentRole);
   const isAdmin = currentRole === ERole.admin;
@@ -128,6 +137,7 @@ export const RewardForm: FC<Props> = ({
       allChildren: initialAllChildren,
       selectedChildIds: reward?.childIds ?? [],
       baseRewardId: '',
+      previousRewardId: '',
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -147,6 +157,7 @@ export const RewardForm: FC<Props> = ({
 
   const handleBaseRewardChange = (baseRewardId: string) => {
     setValue('baseRewardId', baseRewardId);
+    setValue('previousRewardId', '');
 
     const baseReward = baseRewards.find(item => item.id === baseRewardId);
 
@@ -157,6 +168,14 @@ export const RewardForm: FC<Props> = ({
     setValue('title', baseReward.title, { shouldValidate: true });
     setValue('reward', baseReward.reward ?? null, { shouldValidate: true });
     setValue('picture', baseReward.picture ?? '', { shouldValidate: true });
+  };
+
+  const handlePreviousRewardChange = (previousReward: IRewardAssignment) => {
+    setValue('previousRewardId', previousReward.id);
+    setValue('baseRewardId', '');
+    setValue('title', previousReward.title, { shouldValidate: true });
+    setValue('reward', previousReward.reward ?? null, { shouldValidate: true });
+    setValue('picture', previousReward.picture ?? '', { shouldValidate: true });
   };
 
   useEffect(() => {
@@ -263,6 +282,24 @@ export const RewardForm: FC<Props> = ({
               </>
             )}
 
+            {isAddMode && previousRewards.length > 0 && (
+              <>
+                <Controller
+                  control={control}
+                  name="previousRewardId"
+                  render={({ field: { value } }) => (
+                    <PreviousRewardSelect
+                      label={t('rewards.previous_reward_template')}
+                      options={previousRewards}
+                      value={value}
+                      onChange={handlePreviousRewardChange}
+                    />
+                  )}
+                />
+                <Space size={3} />
+              </>
+            )}
+
             <Controller
               control={control}
               name="title"
@@ -332,6 +369,7 @@ export const RewardForm: FC<Props> = ({
                   options={rewardImageOptions}
                   value={value}
                   onChange={onChange}
+                  errorMessage={errors.picture?.message}
                 />
               )}
             />
@@ -380,7 +418,19 @@ export const RewardForm: FC<Props> = ({
 
             <Space size={5} />
 
-            <Button mode="contained" onPress={handleSubmit(onSubmit)}>
+            {!!submitError && (
+              <>
+                <Text style={styles.errorText}>{submitError}</Text>
+                <Space size={2} />
+              </>
+            )}
+
+            <Button
+              mode="contained"
+              onPress={handleSubmit(onSubmit)}
+              disabled={isSubmitting}
+              loading={isSubmitting}
+            >
               {t('button.save')}
             </Button>
 

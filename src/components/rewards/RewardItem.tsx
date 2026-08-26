@@ -1,20 +1,28 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { RewardBaseListItem } from '~/components/rewards/RewardBaseListItem';
 import { RewardStatusBadge } from '~/components/rewards/RewardStatusBadge';
+import { Text } from '~/components/ui';
 import {
   getChildRewardStatusColor,
   REWARD_STATUS_COLORS,
 } from '~/constants/rewards/rewardStatus';
 import { t } from '~/services';
+import { RootStateT } from '~/store';
+import { ECommonActions } from '~/store/common/types';
+import { EStateName } from '~/store/enums';
+import { addReward, updateReward } from '~/store/rewards/slice';
 import { ERewardStatus } from '~/types/EReward';
+import { Colors } from '~/styles';
 
 export type RewardItemMode =
   | 'child'
   | 'parentSelected'
   | 'parentApproved'
-  | 'assignment';
+  | 'assignment'
+  | 'completed';
 
 type Props = {
   title: string;
@@ -23,6 +31,7 @@ type Props = {
   mode: RewardItemMode;
   status?: ERewardStatus;
   canAfford?: boolean;
+  completedDate?: string;
   onPress?: () => void;
   onSelect?: () => void;
   onRedeem?: () => void;
@@ -67,7 +76,18 @@ export const RewardItem: React.FC<Props> = ({
   onApprove,
   onReject,
   onComplete,
+  completedDate,
 }) => {
+  const rewardActionError = useSelector((state: RootStateT) => {
+    const common = state[EStateName.common];
+
+    return (
+      common[ECommonActions.ERROR][updateReward.type]?.message ??
+      common[ECommonActions.ERROR][addReward.type]?.message ??
+      null
+    );
+  });
+
   const renderChildFooter = () => {
     const leftLabel = getChildLeftLabel(status, canAfford);
 
@@ -157,26 +177,55 @@ export const RewardItem: React.FC<Props> = ({
     </View>
   );
 
+  const renderCompletedFooter = () => (
+    <View style={styles.footer}>
+      <RewardStatusBadge
+        label={t('rewards.status.completed')}
+        color={REWARD_STATUS_COLORS.approved}
+        compact
+      />
+      {completedDate ? (
+        <RewardStatusBadge
+          label={completedDate}
+          color={REWARD_STATUS_COLORS.action}
+          compact
+        />
+      ) : null}
+    </View>
+  );
+
   return (
-    <RewardBaseListItem
-      title={title}
-      picture={picture}
-      reward={reward}
-      onPress={onPress}
-      footer={
-        mode === 'child'
-          ? renderChildFooter()
-          : mode === 'parentSelected'
-            ? renderParentSelectedFooter()
-            : mode === 'parentApproved'
-              ? renderParentApprovedFooter()
-              : undefined
-      }
-    />
+    <View style={styles.wrapper}>
+      <RewardBaseListItem
+        title={title}
+        picture={picture}
+        reward={reward}
+        onPress={onPress}
+        footer={
+          mode === 'child'
+            ? renderChildFooter()
+            : mode === 'parentSelected'
+              ? renderParentSelectedFooter()
+              : mode === 'parentApproved'
+                ? renderParentApprovedFooter()
+                : mode === 'completed'
+                  ? renderCompletedFooter()
+                  : undefined
+        }
+      />
+      {!!rewardActionError && mode !== 'child' && mode !== 'assignment' ? (
+        <Text style={styles.actionError} numberOfLines={2}>
+          {rewardActionError}
+        </Text>
+      ) : null}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    width: '100%',
+  },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -189,6 +238,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexWrap: 'wrap',
     gap: 6,
+  },
+  actionError: {
+    marginTop: 4,
+    color: Colors.red500,
+    fontSize: 12,
   },
 });
 
