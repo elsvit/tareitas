@@ -36,9 +36,10 @@ import {
   removeParentSuccess,
   updateParentSuccess,
 } from '~/store/parents/slice';
-import { selectAllChildren } from '~/store/children/selectors';
+import { selectAllChildren, selectDedupedChildIds } from '~/store/children/selectors';
 import { selectAllParents } from '~/store/parents/selectors';
-import { replaceRewardAssignments } from '~/store/rewardAssignment/slice';
+import { replaceRewardAssignments, remapRewardAssignmentChildIds } from '~/store/rewardAssignment/slice';
+import { mapServerChildUserIdsToChildIds } from '~/store/rewardAssignment/childIds';
 import { inferRewardAssignmentPicture } from '~/store/rewardAssignment/rewardAssignmentPicture';
 import { selectAllRewardBase } from '~/store/rewardBase/selectors';
 import { replaceRewardInstancesFromServer } from '~/store/rewards/slice';
@@ -225,6 +226,8 @@ export function* syncRewardsDataFromServerSaga(): Generator<
   const canReviewRewards: boolean = yield select(selectCanReviewTasks);
   const localRewardEntities = state.rewards.entities;
   const rewardBase = selectAllRewardBase(state);
+  const children = selectAllChildren(state);
+  const validChildIds = selectDedupedChildIds(state);
 
   let reconciledRedemptions = serverRedemptions;
 
@@ -272,8 +275,13 @@ export function* syncRewardsDataFromServerSaga(): Generator<
   const assignments = serverRewards.map(serverReward => {
     const existing = existingAssignments[serverReward.id];
     const mapped = mapServerFamilyRewardToAssignment(serverReward);
+    const childIds = mapServerChildUserIdsToChildIds(
+      serverReward.childUserIds,
+      validChildIds,
+    );
 
     return {
+      ...(existing ?? {}),
       ...mapped,
       picture: inferRewardAssignmentPicture(
         {
@@ -282,7 +290,7 @@ export function* syncRewardsDataFromServerSaga(): Generator<
         },
         rewardBase,
       ),
-      childIds: existing?.childIds,
+      childIds,
     };
   });
 
@@ -319,12 +327,39 @@ export function* syncFamilyMembersFromServerSaga(): Generator<
       (parent: { role: string }) => parent.role === 'admin',
     )?.userId ?? currentUser ?? '';
 
+  const existingChildren = selectAllChildren(state);
+
   const plan = buildFamilyMembersSyncPlan(
     family,
     adminUserId,
     selectAllParents(state),
-    selectAllChildren(state),
+    existingChildren,
   );
+
+  for (const removedChildId of plan.removeChildIds) {
+    const removedChild = existingChildren.find(
+      child => child.id === removedChildId,
+    );
+
+    if (!removedChild) {
+      continue;
+    }
+
+    const replacement = plan.children.find(
+      child =>
+        child.name.trim().toLowerCase() ===
+        removedChild.name.trim().toLowerCase(),
+    );
+
+    if (replacement) {
+      yield put(
+        remapRewardAssignmentChildIds({
+          fromId: removedChildId,
+          toId: replacement.id,
+        }),
+      );
+    }
+  }
 
   for (const parentId of plan.removeParentIds) {
     yield put(removeParentSuccess(parentId));

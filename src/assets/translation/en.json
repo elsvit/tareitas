@@ -514,6 +514,7 @@
     "no_approved": "No approved rewards",
     "no_completed": "No completed rewards yet",
     "no_history": "No history yet",
+    "manage_requires_admin_login": "Sign in as admin or parent to create, edit, or delete rewards.",
     "initial_reward": "Initial reward",
     "month_reward": "Month reward",
     "approve_period": "Approve period",

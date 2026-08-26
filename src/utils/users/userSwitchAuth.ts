@@ -1,5 +1,6 @@
 import { loginUser } from '~/services/api/authApi';
 import { ERole } from '~/store/settings/enums';
+import type { IAuthTokens } from '~/types/IAuth';
 import {
   isPinPassword,
   verifyPassword,
@@ -13,6 +14,11 @@ export type SwitchableUser = {
   username?: string;
   passwordPattern?: string;
 };
+
+export type SwitchPasswordResult =
+  | { ok: true; kind: 'local' }
+  | { ok: true; kind: 'cloud'; auth: IAuthTokens }
+  | { ok: false };
 
 export function userRequiresPasswordOnSwitch(
   user: SwitchableUser,
@@ -37,13 +43,11 @@ export function userRequiresPasswordOnSwitch(
 export async function verifyUserSwitchPassword(
   user: SwitchableUser,
   input: string,
-): Promise<boolean> {
+): Promise<SwitchPasswordResult> {
   if (user.passwordPattern?.trim()) {
-    if (isPinPassword(user.passwordPattern)) {
-      return verifyPassword(user.passwordPattern, input);
-    }
+    const isValid = verifyPassword(user.passwordPattern, input);
 
-    return verifyPassword(user.passwordPattern, input);
+    return isValid ? { ok: true, kind: 'local' } : { ok: false };
   }
 
   const email = user.email?.trim();
@@ -51,21 +55,23 @@ export async function verifyUserSwitchPassword(
 
   if (email) {
     try {
-      await loginUser({ email, pin: input });
-      return true;
+      const auth = await loginUser({ email, pin: input });
+
+      return { ok: true, kind: 'cloud', auth };
     } catch {
-      return false;
+      return { ok: false };
     }
   }
 
   if (username) {
     try {
-      await loginUser({ username, pin: input });
-      return true;
+      const auth = await loginUser({ username, pin: input });
+
+      return { ok: true, kind: 'cloud', auth };
     } catch {
-      return false;
+      return { ok: false };
     }
   }
 
-  return false;
+  return { ok: false };
 }

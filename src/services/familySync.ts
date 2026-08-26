@@ -25,6 +25,7 @@ import {
   setMultideviceSession,
   setRequireLogin,
   syncCatalog,
+  updateAuthTokens,
 } from '~/store/settings/slice';
 import {
   selectAuthToken,
@@ -40,6 +41,7 @@ import type {
   IFamilyChildMember,
   IFamilyDetails,
   IFamilyParentMember,
+  IAuthTokens,
   IAuthUser,
 } from '~/types/IAuth';
 
@@ -55,6 +57,24 @@ function mapServerRole(
   }
 
   return ERole.parent;
+}
+
+export function applyAuthTokensFromLogin(
+  dispatch: AppDispatch,
+  auth: IAuthTokens,
+) {
+  dispatch(
+    updateAuthTokens({
+      authToken: auth.accessToken,
+      refreshToken: auth.refreshToken,
+    }),
+  );
+  dispatch(
+    setAuthUser({
+      id: auth.user.id,
+      role: mapServerRole(auth.user.role),
+    }),
+  );
 }
 
 export function hydrateFamilyStore(

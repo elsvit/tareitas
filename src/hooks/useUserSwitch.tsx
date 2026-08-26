@@ -9,7 +9,10 @@ import {
 } from '~/components/modals';
 import type { SelectedUser } from '~/components/modals';
 import { t } from '~/services';
-import { resetFamilyForOnboarding } from '~/services/familySync';
+import {
+  applyAuthTokensFromLogin,
+  resetFamilyForOnboarding,
+} from '~/services/familySync';
 import type { AppDispatch } from '~/store';
 import {
   selectIsChildPasswordObligatory,
@@ -136,9 +139,13 @@ export function useUserSwitch() {
       setPasswordError(null);
 
       try {
-        const isValid = await verifyUserSwitchPassword(user, input);
+        const result = await verifyUserSwitchPassword(user, input);
 
-        if (isValid) {
+        if (result.ok) {
+          if (result.kind === 'cloud') {
+            applyAuthTokensFromLogin(dispatch, result.auth);
+          }
+
           completeLogin(user);
           return;
         }

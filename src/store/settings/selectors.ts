@@ -137,8 +137,11 @@ export const selectAuthUserId = (state: RootStateT) =>
 
 export const selectResolvedAuthUserId = createSelector(
   [selectAuthUserId, selectAuthToken],
-  (authUserId, authToken) =>
-    authUserId ?? (authToken ? decodeJwtSub(authToken) : null),
+  (authUserId, authToken) => {
+    const jwtUserId = authToken ? decodeJwtSub(authToken) : null;
+
+    return jwtUserId ?? authUserId;
+  },
 );
 
 export const selectAuthUserRole = (state: RootStateT) =>
@@ -147,31 +150,23 @@ export const selectAuthUserRole = (state: RootStateT) =>
 export const selectCanReviewTasks = createSelector(
   [
     selectHasAuthSession,
-    selectAuthUserRole,
     selectResolvedAuthUserId,
     (state: RootStateT) => state,
   ],
-  (hasAuthSession, authUserRole, authUserId, state) => {
+  (hasAuthSession, cloudUserId, state) => {
     if (!hasAuthSession) {
       return true;
     }
 
-    if (
-      authUserRole === ERole.admin ||
-      authUserRole === ERole.parent
-    ) {
-      return true;
-    }
-
-    if (authUserRole === ERole.child) {
+    if (!cloudUserId) {
       return false;
     }
 
-    if (!authUserId) {
+    if (selectChildById(state, cloudUserId)) {
       return false;
     }
 
-    const parent = selectParentById(state, authUserId);
+    const parent = selectParentById(state, cloudUserId);
 
     if (parent) {
       return (
@@ -179,7 +174,7 @@ export const selectCanReviewTasks = createSelector(
       );
     }
 
-    return !selectChildById(state, authUserId);
+    return false;
   },
 );
 

@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 
 import type { IState } from '../types';
-import { selectAllChildren, selectChildById } from '~/store/children/selectors';
+import { selectAllChildren, selectChildById, selectDedupedChildIds } from '~/store/children/selectors';
 import { ERewardStatus } from '~/types/EReward';
 import { IReward, IRewardAssignment } from '~/types/IReward';
 
@@ -112,10 +112,13 @@ export const selectRewardListItemsForChild = (childId: string) =>
       selectAllRewards,
       (state: IState) => state.rewards.entities,
       selectChildRewardBalance(childId),
+      selectDedupedChildIds,
     ],
-    (assignments, rewards, _rewardEntities, balance) =>
+    (assignments, rewards, _rewardEntities, balance, validChildIds) =>
       assignments
-        .filter(assignment => isRewardAssignedToChild(assignment, childId))
+        .filter(assignment =>
+          isRewardAssignedToChild(assignment, childId, validChildIds),
+        )
         .map(assignment =>
           buildRewardListItemView(
             assignment,
@@ -231,10 +234,13 @@ export const selectChildCatalogRewardItems = (childId: string) =>
       selectAllRewardAssignment,
       selectAllRewards,
       selectChildRewardBalance(childId),
+      selectDedupedChildIds,
     ],
-    (assignments, rewards, balance) =>
+    (assignments, rewards, balance, validChildIds) =>
       assignments
-        .filter(assignment => isRewardAssignedToChild(assignment, childId))
+        .filter(assignment =>
+          isRewardAssignedToChild(assignment, childId, validChildIds),
+        )
         .filter(assignment =>
           !rewards.some(
             reward =>
