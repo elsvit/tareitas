@@ -481,6 +481,7 @@
     "no_selected": "Dziecko nie wybrało jeszcze żadnych nagród",
     "no_approved": "Brak zatwierdzonych nagród",
     "no_history": "Nie ma jeszcze historii",
+    "manage_requires_admin_login": "Zaloguj się jako administrator lub rodzic, aby tworzyć, edytować lub usuwać nagrody.",
     "initial_reward": "Nagroda początkowa",
     "month_reward": "Nagroda miesięczna",
     "approve_period": "Zatwierdź okres",

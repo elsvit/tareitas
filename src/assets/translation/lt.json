@@ -481,6 +481,7 @@
     "no_selected": "Vaikas dar nepasirinko jokių apdovanojimų",
     "no_approved": "Nėra patvirtintų apdovanojimų",
     "no_history": "Istorijos dar nėra",
+    "manage_requires_admin_login": "Prisijunkite kaip administratorius arba tėvas/motina, kad kurtumėte, redaguotumėte ar šalintumėte apdovanojimus.",
     "initial_reward": "Pradinis atlygis",
     "month_reward": "Mėnesio atlygis",
     "approve_period": "Patvirtinimo laikotarpis",

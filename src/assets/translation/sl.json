@@ -481,6 +481,7 @@
     "no_selected": "Otrok še ni izbral nobene nagrade",
     "no_approved": "Ni odobrenih nagrad",
     "no_history": "Ni še zgodovine",
+    "manage_requires_admin_login": "Prijavite se kot skrbnik ali starš za ustvarjanje, urejanje ali brisanje nagrad.",
     "initial_reward": "Začetna nagrada",
     "month_reward": "Mesečna nagrada",
     "approve_period": "Obdobje odobritve",

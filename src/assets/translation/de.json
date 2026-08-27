@@ -352,6 +352,7 @@
     "no_selected": "Das Kind hat noch keine Belohnungen ausgewählt",
     "no_approved": "Keine genehmigten Belohnungen",
     "no_history": "Noch keine Geschichte",
+    "manage_requires_admin_login": "Melden Sie sich als Administrator oder Elternteil an, um Belohnungen zu erstellen, zu bearbeiten oder zu löschen.",
     "initial_reward": "Erste Belohnung",
     "month_reward": "Monatsbelohnung",
     "approve_period": "Zeitraum genehmigen",

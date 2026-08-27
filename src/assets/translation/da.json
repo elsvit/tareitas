@@ -352,6 +352,7 @@
     "no_selected": "Child har ikke valgt nogen belønninger endnu",
     "no_approved": "Ingen godkendte belønninger",
     "no_history": "Ingen historie endnu",
+    "manage_requires_admin_login": "Log ind som administrator eller forælder for at oprette, redigere eller slette belønninger.",
     "initial_reward": "Indledende belønning",
     "month_reward": "Måneds belønning",
     "approve_period": "Godkend periode",

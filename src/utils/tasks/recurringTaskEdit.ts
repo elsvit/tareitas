@@ -13,8 +13,9 @@ import {
   findEarnedPeriod,
   isPeriodClosed,
 } from '~/store/rewards/earnedRewardPeriodUtils';
+import { normalizeTaskStatus } from '~/constants/tasks/taskStatus';
 import { ERecurringEditScope } from '~/types/ECommon';
-import { ETaskRepeatType } from '~/types/ETask';
+import { ETaskRepeatType, ETaskStatus } from '~/types/ETask';
 import {
   ITaskAssignment,
   ITaskAssignmentChange,
@@ -23,6 +24,7 @@ import {
 import { IEarnedRewardPeriods } from '~/types/IReward';
 import { t } from '~/services';
 import {
+  createTaskId,
   isRepeatingAssignment,
   shouldShowAssignmentOnDate,
 } from '~/utils/tasks/taskGeneration';
@@ -302,6 +304,230 @@ export type ApplyRecurringEditResult =
       removes?: string[];
     }
   | { ok: false; error: string };
+
+export type TaskInstanceRef = {
+  id: string;
+  assignmentId: string;
+  date: string;
+  status?: ETaskStatus | string | null;
+};
+
+export const getTaskInstanceStatus = (
+  assignmentId: string,
+  date: string,
+  tasks: TaskInstanceRef[],
+): ETaskStatus => {
+  const task = tasks.find(
+    item => item.assignmentId === assignmentId && item.date === date,
+  );
+
+  return normalizeTaskStatus(task?.status);
+};
+
+export const canDeleteTaskInstance = (
+  assignmentId: string,
+  date: string,
+  tasks: TaskInstanceRef[],
+): boolean =>
+  getTaskInstanceStatus(assignmentId, date, tasks) === ETaskStatus.Pending;
+
+export const getNonPendingTasksForAssignment = (
+  assignmentId: string,
+  tasks: TaskInstanceRef[],
+  fromDate?: string,
+): TaskInstanceRef[] =>
+  tasks.filter(
+    task =>
+      task.assignmentId === assignmentId &&
+      (!fromDate || task.date >= fromDate) &&
+      normalizeTaskStatus(task.status) !== ETaskStatus.Pending,
+  );
+
+export const validateTaskDeleteAllowed = (
+  assignment: ITaskAssignment,
+  editDate: string | undefined,
+  scope: ERecurringEditScope | undefined,
+  tasks: TaskInstanceRef[],
+): string | null => {
+  const deleteError =
+    t('tasks.delete_only_pending') ||
+    'Only pending tasks can be deleted.';
+
+  if (
+    scope &&
+    editDate &&
+    shouldPromptRecurringEditScope(assignment, editDate)
+  ) {
+    if (scope === ERecurringEditScope.OnlyThis) {
+      return canDeleteTaskInstance(assignment.id, editDate, tasks)
+        ? null
+        : deleteError;
+    }
+
+    if (scope === ERecurringEditScope.ThisAndFollowing) {
+      return getNonPendingTasksForAssignment(
+        assignment.id,
+        tasks,
+        editDate,
+      ).length > 0
+        ? deleteError
+        : null;
+    }
+
+    return getNonPendingTasksForAssignment(assignment.id, tasks).length > 0
+      ? deleteError
+      : null;
+  }
+
+  const date = editDate ?? assignment.startDate;
+
+  if (!canDeleteTaskInstance(assignment.id, date, tasks)) {
+    return deleteError;
+  }
+
+  return getNonPendingTasksForAssignment(assignment.id, tasks).length > 0
+    ? deleteError
+    : null;
+};
+
+export type ApplyRecurringDeleteParams = {
+  assignment: ITaskAssignment;
+  editDate: string;
+  scope: ERecurringEditScope;
+};
+
+export type ApplyRecurringDeleteResult =
+  | {
+      ok: true;
+      updates?: ITaskAssignment[];
+      removes?: string[];
+      taskIdsToRemove: string[];
+    }
+  | { ok: false; error: string };
+
+export const applyOnlyThisTaskDelete = (
+  assignment: ITaskAssignment,
+  date: string,
+): ITaskAssignment => {
+  const nextChanges = { ...(assignment.changes ?? {}) };
+
+  nextChanges[date] = {
+    ...nextChanges[date],
+    excluded: true,
+  };
+
+  return {
+    ...assignment,
+    changes: nextChanges,
+    updatedAt: new Date().toISOString(),
+  };
+};
+
+export const applyFollowingTasksDelete = (
+  assignment: ITaskAssignment,
+  date: string,
+): { update?: ITaskAssignment; remove?: string } => {
+  const splitDate = parseISO(date);
+  const assignmentStart = parseISO(assignment.startDate);
+
+  if (splitDate <= assignmentStart) {
+    return { remove: assignment.id };
+  }
+
+  const previousDay = format(subDays(splitDate, 1), 'yyyy-MM-dd');
+  const keptChanges = Object.fromEntries(
+    Object.entries(assignment.changes ?? {}).filter(
+      ([changeDate]) => changeDate < date,
+    ),
+  );
+
+  return {
+    update: {
+      ...assignment,
+      endDate: previousDay,
+      changes: Object.keys(keptChanges).length > 0 ? keptChanges : undefined,
+      updatedAt: new Date().toISOString(),
+    },
+  };
+};
+
+export const collectPendingTaskIdsForAssignment = (
+  assignmentId: string,
+  tasks: TaskInstanceRef[],
+  fromDate?: string,
+): string[] =>
+  tasks
+    .filter(
+      task =>
+        task.assignmentId === assignmentId &&
+        (!fromDate || task.date >= fromDate) &&
+        normalizeTaskStatus(task.status) === ETaskStatus.Pending,
+    )
+    .map(task => task.id);
+
+export const collectTaskIdsForAssignment = (
+  assignmentId: string,
+  tasks: Array<{ id: string; assignmentId: string; date: string }>,
+  fromDate?: string,
+): string[] => collectPendingTaskIdsForAssignment(assignmentId, tasks, fromDate);
+
+export const applyRecurringTaskDelete = (
+  params: ApplyRecurringDeleteParams,
+  tasks: TaskInstanceRef[],
+): ApplyRecurringDeleteResult => {
+  const { assignment, editDate, scope } = params;
+
+  const validationError = validateTaskDeleteAllowed(
+    assignment,
+    editDate,
+    scope,
+    tasks,
+  );
+
+  if (validationError) {
+    return { ok: false, error: validationError };
+  }
+
+  if (scope === ERecurringEditScope.OnlyThis) {
+    return {
+      ok: true,
+      updates: [applyOnlyThisTaskDelete(assignment, editDate)],
+      taskIdsToRemove: [createTaskId(assignment.id, editDate)],
+    };
+  }
+
+  if (scope === ERecurringEditScope.ThisAndFollowing) {
+    const result = applyFollowingTasksDelete(assignment, editDate);
+
+    if (result.remove) {
+      return {
+        ok: true,
+        removes: [result.remove],
+        taskIdsToRemove: collectPendingTaskIdsForAssignment(
+          assignment.id,
+          tasks,
+          editDate,
+        ),
+      };
+    }
+
+    return {
+      ok: true,
+      updates: result.update ? [result.update] : [],
+      taskIdsToRemove: collectPendingTaskIdsForAssignment(
+        assignment.id,
+        tasks,
+        editDate,
+      ),
+    };
+  }
+
+  return {
+    ok: true,
+    removes: [assignment.id],
+    taskIdsToRemove: collectPendingTaskIdsForAssignment(assignment.id, tasks),
+  };
+};
 
 export const applyRecurringTaskEdit = (
   params: ApplyRecurringEditParams,

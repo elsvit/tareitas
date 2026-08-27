@@ -481,6 +481,7 @@
     "no_selected": "Bērns vēl nav izvēlējies nevienu atlīdzību",
     "no_approved": "Nav apstiprinātu atlīdzību",
     "no_history": "Vēstures vēl nav",
+    "manage_requires_admin_login": "Piesakieties kā administrators vai vecāks, lai izveidotu, rediģētu vai dzēstu balvas.",
     "initial_reward": "Sākotnējā atlīdzība",
     "month_reward": "Mēneša atlīdzība",
     "approve_period": "Apstiprināšanas periods",
