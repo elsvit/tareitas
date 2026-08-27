@@ -192,7 +192,13 @@ export default function Tasks() {
   }, []);
 
   const handleSearchPress = useCallback(() => {
-    setIsSearchVisible(current => !current);
+    setIsSearchVisible(current => {
+      if (current) {
+        setSearchQuery('');
+      }
+
+      return !current;
+    });
   }, []);
 
   const handleAddTask = useCallback(() => {

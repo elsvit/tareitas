@@ -514,7 +514,6 @@
     "no_approved": "No hay premios aprobados",
     "no_completed": "Aún no hay premios completados",
     "no_history": "No hay historial todavía",
-    "manage_requires_admin_login": "Inicia sesión como administrador o padre/madre para crear, editar o eliminar recompensas.",
     "manage_requires_admin_login": "[TODO: es] Sign in as admin or parent to create, edit, or delete rewards.",
     "initial_reward": "Premio inicial",
     "month_reward": "Premio del mes",
