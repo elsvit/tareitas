@@ -190,7 +190,13 @@ export default function Habits() {
   }, []);
 
   const handleSearchPress = useCallback(() => {
-    setIsSearchVisible(current => !current);
+    setIsSearchVisible(current => {
+      if (current) {
+        setSearchQuery('');
+      }
+
+      return !current;
+    });
   }, []);
 
   const handleAddHabit = useCallback(() => {
