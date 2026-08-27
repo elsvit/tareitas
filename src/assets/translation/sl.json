@@ -113,7 +113,8 @@
       "sign_out": "Odjava",
       "session_expired": "Vaša seja je potekla. Ponovno se prijavite za sinhronizacijo.",
       "login_screen_title": "Prijava",
-      "login_screen_subtitle": "Prijavite se za sinhronizacijo družine med napravami."
+      "login_screen_subtitle": "Prijavite se za sinhronizacijo družine med napravami.",
+      "sync_try_later": "Sinhronizacija zdaj ni uspela. Poskusite znova čez trenutek."
     },
     "show_login_name": "Prikaži prijavno ime",
     "parents": "Starši"
@@ -386,7 +387,7 @@
       "makeAnAppliqueDescription": "Naredite prijavo",
       "playAnMusicInstrument": "Igrajte glasbilo",
       "playAnMusicInstrumentDescription": "Igrajte glasbilo vsaj 15 minut na dan ali eno skladbo 5-krat",
-      "singASong": "peti",
+      "singASong": "Peti",
       "singASongDescription": "Zapojte najljubšo pesem ali tisto, ki so jo zaprosili v glasbeni šoli",
       "musicTheory": "Glasbena teorija",
       "musicTheoryDescription": "Študij glasbene teorije, solfeggio, delaj domače naloge iz glasbene teorije",
@@ -416,7 +417,7 @@
       "rideABicycleDescription": "S kolesom 5 km",
       "jumpOnTheTrampoline": "Vrv za skakanje",
       "jumpOnTheTrampolineDescription": "Skakanje po vrvi, vsaj 10 minut",
-      "swim": "plavanje",
+      "swim": "Plavanje",
       "swimDescription": "Preplavajte 200 metrov",
       "run": "Teči",
       "runDescription": "Teči 1 km",
@@ -447,7 +448,16 @@
       "pending": "V teku",
       "reject": "Zavrni",
       "rejected": "Zavrnjeno"
-    }
+    },
+    "delete_only_pending": "Izbrisati je mogoče samo naloge v teku.",
+    "status_locked_closed_period": "Stanja ni mogoče spremeniti — ta mesec je zaprt v zgodovini nagrad",
+    "recurring_delete_title": "Izbriši",
+    "recurring_delete_only_this": "Samo to nalogo",
+    "recurring_delete_only_this_desc": "Izbriši samo izbrani dan",
+    "recurring_delete_following": "To nalogo in naslednje",
+    "recurring_delete_following_desc": "Izbriši od tega dne naprej",
+    "recurring_delete_all": "Vse naloge",
+    "recurring_delete_all_desc": "Izbriši celotno serijo"
   },
   "habits": {
     "title": "Navade",
@@ -493,7 +503,8 @@
       "selected": "Izbrano",
       "approved": "Odobreno",
       "rewards": "Nagrade",
-      "history": "Zgodovina"
+      "history": "Zgodovina",
+      "completed": "Dokončane"
     },
     "status": {
       "available": "Na voljo",
@@ -501,7 +512,8 @@
       "pending": "V teku",
       "selected": "Izbrano",
       "approved": "Odobreno",
-      "rejected": "Zavrnjeno"
+      "rejected": "Zavrnjeno",
+      "completed": "Dokončano"
     },
     "action": {
       "select": "Izberite",
@@ -511,7 +523,9 @@
       "reject": "Zavrni",
       "approve": "odobri",
       "complete": "Popolna"
-    }
+    },
+    "previous_reward_template": "Uporabi prejšnjo nagrado",
+    "no_completed": "Še ni dokončanih nagrad"
   },
   "baseRewards": {
     "choose_desert": "Izberite nocojšnjo sladico",
@@ -616,7 +630,8 @@
       "error_email_required": "E-pošta je obvezna",
       "error_username_required": "Uporabniško ime je obvezno",
       "error_pin_required": "Vnesite 4-mestno PIN kodo",
-      "error_generic": "Prijava ni uspela. Preverite podatke in poskusite znova."
+      "error_generic": "Prijava ni uspela. Preverite podatke in poskusite znova.",
+      "error_empty_family": "Prijavljeni, vendar družinskih članov ni bilo mogoče najti. Poskusite znova."
     },
     "sign_up": {
       "admin_header": "Ustvari admina",
@@ -651,5 +666,21 @@
     "write_us": "Pišite nam",
     "write_us_hint": "Tapnite, da nam pošljete e-pošto",
     "change_user": "Spremeni uporabnika"
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Nekaj je šlo narobe. Poskusite znova.",
+    "INTERNAL_ERROR": "Nekaj je šlo narobe. Poskusite znova.",
+    "VALIDATION_ERROR": "Neveljavna zahteva. Preverite vnesene podatke.",
+    "NOT_FOUND": "Vir ni bil najden.",
+    "FORBIDDEN": "Nimate dovoljenja za izvedbo tega dejanja.",
+    "UNAUTHORIZED": "Niste avtorizirani. Prijavite se znova.",
+    "TASK_NOT_FOUND": "Naloga ni bila najdena.",
+    "TASK_NOT_ALLOWED": "Te naloge ne morete spremeniti.",
+    "TASK_INVALID_STATUS": "Te naloge ni mogoče posodobiti v trenutnem stanju.",
+    "TASK_ALREADY_EXISTS": "Ta naloga že obstaja.",
+    "REWARD_NOT_ALLOWED": "Te nagrade ne morete spremeniti.",
+    "REWARD_INACTIVE": "Ta nagrada ni več na voljo.",
+    "REWARD_INSUFFICIENT_BALANCE": "Ni dovolj zvezdic za to nagrado.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Te nagrade ni mogoče posodobiti v trenutnem stanju."
   }
 }

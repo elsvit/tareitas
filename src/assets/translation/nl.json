@@ -113,7 +113,8 @@
       "sign_out": "Uitloggen",
       "session_expired": "Je sessie is verlopen. Log opnieuw in om te synchroniseren.",
       "login_screen_title": "Inloggen",
-      "login_screen_subtitle": "Log in om je gezin tussen apparaten te synchroniseren."
+      "login_screen_subtitle": "Log in om je gezin tussen apparaten te synchroniseren.",
+      "sync_try_later": "Synchroniseren is nu niet gelukt. Probeer het zo meteen opnieuw."
     },
     "show_login_name": "Inlognaam tonen",
     "parents": "Ouders"
@@ -386,7 +387,7 @@
       "makeAnAppliqueDescription": "Doe een aanvraag",
       "playAnMusicInstrument": "Bespeel een muziekinstrument",
       "playAnMusicInstrumentDescription": "Bespeel een muziekinstrument minimaal 15 minuten per dag of 5 keer één stuk",
-      "singASong": "zingen",
+      "singASong": "Zingen",
       "singASongDescription": "Zing een favoriet liedje of het liedje dat op de muziekschool werd gevraagd",
       "musicTheory": "Muziek theorie",
       "musicTheoryDescription": "Studeer muziektheorie, solfège, maak huiswerk over muziektheorie",
@@ -447,7 +448,16 @@
       "pending": "In behandeling",
       "reject": "Afwijzen",
       "rejected": "Afgewezen"
-    }
+    },
+    "delete_only_pending": "Alleen openstaande taken kunnen worden verwijderd.",
+    "status_locked_closed_period": "Status kan niet worden gewijzigd — deze maand is gesloten in de beloningsgeschiedenis",
+    "recurring_delete_title": "Verwijderen",
+    "recurring_delete_only_this": "Alleen deze taak",
+    "recurring_delete_only_this_desc": "Alleen de geselecteerde dag verwijderen",
+    "recurring_delete_following": "Deze taak en volgende",
+    "recurring_delete_following_desc": "Verwijderen vanaf deze dag",
+    "recurring_delete_all": "Alle taken",
+    "recurring_delete_all_desc": "De hele reeks verwijderen"
   },
   "habits": {
     "title": "Gebruiken",
@@ -493,7 +503,8 @@
       "selected": "Gekozen",
       "approved": "Goedgekeurd",
       "rewards": "Beloningen",
-      "history": "Geschiedenis"
+      "history": "Geschiedenis",
+      "completed": "Voltooid"
     },
     "status": {
       "available": "Beschikbaar",
@@ -501,7 +512,8 @@
       "pending": "In behandeling",
       "selected": "Gekozen",
       "approved": "Goedgekeurd",
-      "rejected": "Afgewezen"
+      "rejected": "Afgewezen",
+      "completed": "Voltooid"
     },
     "action": {
       "select": "Selecteer",
@@ -511,7 +523,9 @@
       "reject": "Afwijzen",
       "approve": "Goedkeuren",
       "complete": "Compleet"
-    }
+    },
+    "previous_reward_template": "Vorige beloning gebruiken",
+    "no_completed": "Nog geen voltooide beloningen"
   },
   "baseRewards": {
     "choose_desert": "Kies het dessert van vanavond",
@@ -616,7 +630,8 @@
       "error_email_required": "E-mail is verplicht",
       "error_username_required": "Gebruikersnaam is verplicht",
       "error_pin_required": "Voer een 4-cijferige PIN in",
-      "error_generic": "Inloggen mislukt. Controleer je gegevens en probeer opnieuw."
+      "error_generic": "Inloggen mislukt. Controleer je gegevens en probeer opnieuw.",
+      "error_empty_family": "Ingelogd, maar geen gezinsleden gevonden. Probeer het opnieuw."
     },
     "sign_up": {
       "admin_header": "Admin aanmaken",
@@ -651,5 +666,21 @@
     "write_us": "Schrijf ons",
     "write_us_hint": "Tik om ons een e-mail te sturen",
     "change_user": "Gebruiker wijzigen"
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Er is iets misgegaan. Probeer het opnieuw.",
+    "INTERNAL_ERROR": "Er is iets misgegaan. Probeer het opnieuw.",
+    "VALIDATION_ERROR": "Ongeldige aanvraag. Controleer je invoer.",
+    "NOT_FOUND": "Bron niet gevonden.",
+    "FORBIDDEN": "Je hebt geen toestemming om deze actie uit te voeren.",
+    "UNAUTHORIZED": "Je bent niet geautoriseerd. Meld je opnieuw aan.",
+    "TASK_NOT_FOUND": "Taak niet gevonden.",
+    "TASK_NOT_ALLOWED": "Je kunt deze taak niet wijzigen.",
+    "TASK_INVALID_STATUS": "Deze taak kan in de huidige staat niet worden bijgewerkt.",
+    "TASK_ALREADY_EXISTS": "Deze taak bestaat al.",
+    "REWARD_NOT_ALLOWED": "Je kunt deze beloning niet wijzigen.",
+    "REWARD_INACTIVE": "Deze beloning is niet meer beschikbaar.",
+    "REWARD_INSUFFICIENT_BALANCE": "Niet genoeg sterren voor deze beloning.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Deze beloning kan in de huidige staat niet worden bijgewerkt."
   }
 }

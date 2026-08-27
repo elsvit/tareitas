@@ -113,7 +113,8 @@
       "sign_out": "Se déconnecter",
       "session_expired": "Votre session a expiré. Connectez-vous à nouveau pour synchroniser.",
       "login_screen_title": "Connexion",
-      "login_screen_subtitle": "Connectez-vous pour synchroniser votre famille entre appareils."
+      "login_screen_subtitle": "Connectez-vous pour synchroniser votre famille entre appareils.",
+      "sync_try_later": "Impossible de synchroniser pour le moment. Réessayez dans un instant."
     },
     "show_login_name": "Afficher le nom de connexion",
     "parents": "Parents"
@@ -386,7 +387,7 @@
       "makeAnAppliqueDescription": "Faire une demande",
       "playAnMusicInstrument": "Jouer d'un instrument de musique",
       "playAnMusicInstrumentDescription": "Jouer d'un instrument de musique au moins 15 minutes par jour ou d'un morceau 5 fois",
-      "singASong": "chanter",
+      "singASong": "Chanter",
       "singASongDescription": "Chantez une chanson préférée ou celle qui a été demandée à l'école de musique",
       "musicTheory": "Théorie de la musique",
       "musicTheoryDescription": "Étudier le solfège, le solfège, faire ses devoirs de solfège",
@@ -447,7 +448,16 @@
       "pending": "En attente",
       "reject": "Rejeter",
       "rejected": "Rejeté"
-    }
+    },
+    "delete_only_pending": "Seules les tâches en attente peuvent être supprimées.",
+    "status_locked_closed_period": "Le statut ne peut pas être modifié — ce mois est clos dans l'historique des récompenses",
+    "recurring_delete_title": "Supprimer",
+    "recurring_delete_only_this": "Cette tâche uniquement",
+    "recurring_delete_only_this_desc": "Supprimer uniquement le jour sélectionné",
+    "recurring_delete_following": "Cette tâche et les suivantes",
+    "recurring_delete_following_desc": "Supprimer à partir de ce jour",
+    "recurring_delete_all": "Toutes les tâches",
+    "recurring_delete_all_desc": "Supprimer toute la série"
   },
   "habits": {
     "title": "Habitudes",
@@ -493,7 +503,8 @@
       "selected": "Choisi",
       "approved": "Approuvé",
       "rewards": "Récompenses",
-      "history": "Histoire"
+      "history": "Histoire",
+      "completed": "Terminées"
     },
     "status": {
       "available": "Disponible",
@@ -501,7 +512,8 @@
       "pending": "En attente",
       "selected": "Choisi",
       "approved": "Approuvé",
-      "rejected": "Rejeté"
+      "rejected": "Rejeté",
+      "completed": "Terminée"
     },
     "action": {
       "select": "Sélectionner",
@@ -511,7 +523,9 @@
       "reject": "Rejeter",
       "approve": "Approuver",
       "complete": "Complet"
-    }
+    },
+    "previous_reward_template": "Utiliser la récompense précédente",
+    "no_completed": "Aucune récompense terminée pour le moment"
   },
   "baseRewards": {
     "choose_desert": "Choisissez le dessert de ce soir",
@@ -616,7 +630,8 @@
       "error_email_required": "L’e-mail est obligatoire",
       "error_username_required": "Le nom d’utilisateur est obligatoire",
       "error_pin_required": "Saisissez un PIN à 4 chiffres",
-      "error_generic": "Connexion impossible. Vérifiez vos informations et réessayez."
+      "error_generic": "Connexion impossible. Vérifiez vos informations et réessayez.",
+      "error_empty_family": "Connecté, mais aucun membre de la famille trouvé. Réessayez."
     },
     "sign_up": {
       "admin_header": "Créer un admin",
@@ -699,5 +714,21 @@
     "write_us": "Écrivez-nous",
     "write_us_hint": "Appuyez pour nous envoyer un e-mail",
     "change_user": "Changer d'utilisateur"
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Une erreur s'est produite. Veuillez réessayer.",
+    "INTERNAL_ERROR": "Une erreur s'est produite. Veuillez réessayer.",
+    "VALIDATION_ERROR": "Requête invalide. Veuillez vérifier vos données.",
+    "NOT_FOUND": "Ressource introuvable.",
+    "FORBIDDEN": "Vous n'avez pas la permission d'effectuer cette action.",
+    "UNAUTHORIZED": "Vous n'êtes pas autorisé. Veuillez vous reconnecter.",
+    "TASK_NOT_FOUND": "Tâche introuvable.",
+    "TASK_NOT_ALLOWED": "Vous ne pouvez pas modifier cette tâche.",
+    "TASK_INVALID_STATUS": "Cette tâche ne peut pas être mise à jour dans son état actuel.",
+    "TASK_ALREADY_EXISTS": "Cette tâche existe déjà.",
+    "REWARD_NOT_ALLOWED": "Vous ne pouvez pas modifier cette récompense.",
+    "REWARD_INACTIVE": "Cette récompense n'est plus disponible.",
+    "REWARD_INSUFFICIENT_BALANCE": "Pas assez d'étoiles pour cette récompense.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Cette récompense ne peut pas être mise à jour dans son état actuel."
   }
 }

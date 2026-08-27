@@ -97,13 +97,26 @@
     "loaded_images_empty": "Δεν υπάρχουν φορτωμένες φωτογραφίες",
     "remove_loaded_image": "Αφαίρεση φωτογραφίας",
     "remove_loaded_image_title": "Κατάργηση φωτογραφίας;",
-    "remove_loaded_image_message": "Αυτή η φωτογραφία θα διαγραφεί από το τηλέφωνό σας και δεν μπορεί να αναιρεθεί."
+    "remove_loaded_image_message": "Αυτή η φωτογραφία θα διαγραφεί από το τηλέφωνό σας και δεν μπορεί να αναιρεθεί.",
+    "help_center": "Κέντρο βοήθειας"
   },
   "settings": {
     "title": "Ρυθμίσεις",
     "language": "Γλώσσα",
     "children": "Παιδιά",
-    "child_password_obligatory": "Απαιτείται παιδικός κωδικός πρόσβασης"
+    "child_password_obligatory": "Απαιτείται παιδικός κωδικός πρόσβασης",
+    "account": {
+      "title": "Συγχρονισμός cloud",
+      "signed_in": "Συνδεδεμένος",
+      "sign_in": "Σύνδεση",
+      "sign_out": "Αποσύνδεση",
+      "session_expired": "Η συνεδρία σας έληξε. Συνδεθείτε ξανά για συγχρονισμό.",
+      "sync_try_later": "Δεν ήταν δυνατός ο συγχρονισμός τώρα. Δοκιμάστε ξανά σε λίγο.",
+      "login_screen_title": "Σύνδεση",
+      "login_screen_subtitle": "Συνδεθείτε για να συγχρονίσετε την οικογένειά σας σε όλες τις συσκευές."
+    },
+    "show_login_name": "Εμφάνιση ονόματος σύνδεσης",
+    "parents": "Γονείς"
   },
   "users": {
     "title": "Χρήστες",
@@ -150,7 +163,9 @@
       "reviewer": "Κριτής",
       "sister": "Αδελφή",
       "uncle": "Θείος"
-    }
+    },
+    "change_group": "Αλλαγή ομάδας",
+    "unique_username": "Μοναδικό όνομα σύνδεσης"
   },
   "tasks": {
     "title": "Καθήκοντα",
@@ -280,7 +295,8 @@
         "subtask1": "Ξύστε",
         "subtask2": "Πλύστε τα δόντια",
         "subtask3": "Χτυπήστε τα ρούχα",
-        "subtask4": "Πήγαινε για ύπνο"
+        "subtask4": "Πήγαινε για ύπνο",
+        "subtask5": "S'habiller"
       },
       "eveningRoutine": {
         "title": "Ρυθμός απόγευσης",
@@ -300,8 +316,124 @@
         "description": "Ρυθμός δημιουργικής εργασίας",
         "subtask1": "Παρασκευάστε τα υλικά",
         "subtask2": "Κάνε τη δημιουργική εργασία",
-        "subtask3": "Καθαρίστε το χώρο"
-      }
+        "subtask3": "Καθαρίστε το χώρο",
+        "subtask4": "Se laver les mains",
+        "subtask5": "Afficher le résultat"
+      },
+      "washYourFace": "Lavez-vous le visage",
+      "washYourFaceDescription": "Lavez-vous le visage",
+      "brushYourHair": "Peignez vos cheveux",
+      "brushYourHairDescription": "Peignez vos cheveux",
+      "cutYourNails": "Couper les ongles",
+      "cutYourNailsDescription": "Couper les ongles",
+      "changeYourClothes": "Changer de vêtements",
+      "changeYourClothesDescription": "Changer de vêtements pour des vêtements de maison (vêtements de sport/pyjama avant d'aller au lit)",
+      "applyCream": "Appliquer une crème/baume",
+      "applyCreamDescription": "Appliquer une crème/baume",
+      "dayWithoutSweets": "Une journée sans sucreries",
+      "dayWithoutSweetsDescription": "Ne mangez pas de sucreries, vous pouvez les remplacer par des fruits",
+      "drinkWater": "Boire un verre d'eau",
+      "drinkWaterDescription": "Buvez suffisamment d'eau, surtout si vous faites du sport",
+      "prepareClothesForTomorrow": "Préparez les vêtements pour demain",
+      "prepareClothesForTomorrowDescription": "Préparez les vêtements pour demain",
+      "putAwayClothes": "Plier les vêtements",
+      "putAwayClothesDescription": "Mettez les vêtements dans des tiroirs ou dans des endroits désignés",
+      "helpToCoverTheTable": "Aidez à mettre la table",
+      "helpToCoverTheTableDescription": "Aider à mettre la table (placer les assiettes, les cuillères, les tasses, le plateau)",
+      "washYourOwnDishes": "Lavez la vaisselle après vous",
+      "washYourOwnDishesDescription": "Lavez la vaisselle après vous",
+      "cleanUpAfterMeal": "Nettoyer après avoir mangé",
+      "cleanUpAfterMealDescription": "Nettoyer après les repas et mettre la vaisselle au lave-vaisselle",
+      "takeCareOfPlants": "Prenez soin des plantes",
+      "takeCareOfPlantsDescription": "Prenez soin des plantes",
+      "putAwayBooks": "Disposez les livres",
+      "putAwayBooksDescription": "Placez les livres dans les tiroirs ou dans les zones désignées",
+      "sweepTheDirt": "Essuyez la poussière",
+      "sweepTheDirtDescription": "Essuyez la poussière",
+      "cleanShoes": "Laver/nettoyer les chaussures",
+      "cleanShoesDescription": "Laver/nettoyer les chaussures",
+      "sweepTheFloor": "Remplacer le sol",
+      "sweepTheFloorDescription": "Remplacer le sol",
+      "washTheFloor": "Laver le sol",
+      "washTheFloorDescription": "Laver le sol",
+      "runTheVacuumCleaner": "Démarrer le robot aspirateur",
+      "runTheVacuumCleanerDescription": "Démarrer le robot aspirateur",
+      "vacuumTheFurniture": "Passer l'aspirateur sur les meubles",
+      "vacuumTheFurnitureDescription": "Passer l'aspirateur sur les meubles",
+      "putDirtyClothesInTheBin": "Pliez/étalez les vêtements sales",
+      "putDirtyClothesInTheBinDescription": "Pliez/mettez les vêtements sales dans un panier ou une machine à laver",
+      "repeatTheMaterial": "Répétition du matériel",
+      "repeatTheMaterialDescription": "Répétition du matériel",
+      "prepareForTheTest": "Préparation à l'examen",
+      "prepareForTheTestDescription": "Préparation à l'examen",
+      "learnNewTopic": "Apprendre un nouveau sujet",
+      "learnNewTopicDescription": "Apprendre un nouveau sujet",
+      "learnNewLanguage": "Apprendre la langue",
+      "learnNewLanguageDescription": "Apprendre la langue",
+      "readOnePage": "Lire une page",
+      "readOnePageDescription": "Lire une page",
+      "readFor20Minutes": "Lire pendant 20 minutes",
+      "readFor20MinutesDescription": "Lire pendant 20 minutes",
+      "reciteTheRead": "Racontez ce que vous lisez",
+      "reciteTheReadDescription": "Racontez ce que vous lisez",
+      "logicalGames": "Jeux logiques",
+      "logicalGamesDescription": "Jouez à un jeu de logique (échecs, sudoku, résoudre des mots croisés, etc.)",
+      "solveThePuzzle": "Résolvez l'énigme",
+      "solveThePuzzleDescription": "Résolvez l'énigme",
+      "drawAPicture": "Dessine une image",
+      "drawAPictureDescription": "Dessine une image",
+      "makeAnApplique": "Faire une demande",
+      "makeAnAppliqueDescription": "Faire une demande",
+      "playAnMusicInstrument": "Jouer d'un instrument de musique",
+      "playAnMusicInstrumentDescription": "Jouer d'un instrument de musique au moins 15 minutes par jour ou d'un morceau 5 fois",
+      "singASong": "To sing",
+      "singASongDescription": "Chantez une chanson préférée ou celle qui a été demandée à l'école de musique",
+      "musicTheory": "Théorie de la musique",
+      "musicTheoryDescription": "Étudier le solfège, le solfège, faire ses devoirs de solfège",
+      "morningExercise": "Frais du matin",
+      "morningExerciseDescription": "Faites des exercices le matin, au moins 20 minutes",
+      "eveningExercises": "Faire des exercices le soir",
+      "eveningExercisesDescription": "Faites des exercices le soir, au moins 20 minutes",
+      "homeTraining": "Formation à domicile",
+      "homeTrainingDescription": "Faites un entraînement à domicile, comme une routine de football ou un étirement de gymnastique, pendant au moins 20 minutes",
+      "activeGame": "Jeu actif",
+      "activeGameDescription": "Jouez au football, au tennis, au basket-ball, aux jeux aquatiques, etc.",
+      "stretch": "Étirage",
+      "stretchDescription": "Étirez-vous, au moins 10 minutes",
+      "squats": "Squat",
+      "squatsDescription": "S'accroupir, au moins 20 fois",
+      "pullUps": "Tirer vers le haut",
+      "pullUpsDescription": "Tirez au moins 5 fois",
+      "pushUps": "Des pompes",
+      "pushUpsDescription": "Poussez au moins 20 fois",
+      "walk": "Marcher",
+      "walkDescription": "Faites une promenade, au moins 30 minutes",
+      "hike": "Campagne",
+      "hikeDescription": "Randonnée, minimum 5 km",
+      "playOutside": "Jouer dehors",
+      "playOutsideDescription": "Jouez à un jeu actif en plein air",
+      "rideABicycle": "Faire du vélo",
+      "rideABicycleDescription": "Faire du vélo 5 km",
+      "jumpOnTheTrampoline": "Corde à sauter",
+      "jumpOnTheTrampolineDescription": "Corde à sauter, au moins 10 minutes",
+      "swim": "Natation",
+      "swimDescription": "Nager 200 mètres",
+      "run": "Courir",
+      "runDescription": "Courir 1 km",
+      "helpToPrepareFood": "Aider à préparer la nourriture",
+      "helpToPrepareFoodDescription": "Aider à préparer la nourriture (mettre des assiettes, des cuillères, des tasses, un plateau)",
+      "pourWaterToThePet": "Verser de l'eau sur l'animal",
+      "pourWaterToThePetDescription": "Versez de l'eau à l'animal (ajoutez de la nourriture ou versez de l'eau fraîche)",
+      "cleanTheCage": "Nettoyer la cage",
+      "cleanTheCageDescription": "Nettoyer la cage de l'animal",
+      "playWithThePet": "Jouer avec l'animal",
+      "playWithThePetDescription": "Jouer avec l'animal (jouer avec lui, lire des livres, regarder des vidéos, etc.)",
+      "cleanAfterThePet": "Nettoyer après l'animal",
+      "cleanAfterThePetDescription": "Nettoyer les toilettes après l'animal",
+      "greetTheMorning": "Dites bonjour, dites bonjour !",
+      "greetTheMorningDescription": "Dites bonjour, dites bonjour !",
+      "sayGoodNight": "Dites bonne nuit !",
+      "sayGoodNightDescription": "Bonne nuit!"
     },
     "taskStatus": {
       "approve": "Εγκρίνω",
@@ -315,7 +447,16 @@
       "pending": "Εκκρεμής",
       "reject": "Απορρίπτω",
       "rejected": "Απορρίφθηκε"
-    }
+    },
+    "delete_only_pending": "Μπορούν να διαγραφούν μόνο εκκρεμείς εργασίες.",
+    "status_locked_closed_period": "Δεν μπορεί να αλλάξει η κατάσταση — αυτός ο μήνας είναι κλειστός στο ιστορικό ανταμοιβών",
+    "recurring_delete_title": "Διαγραφή",
+    "recurring_delete_only_this": "Μόνο αυτή η εργασία",
+    "recurring_delete_only_this_desc": "Διαγραφή μόνο της επιλεγμένης ημέρας",
+    "recurring_delete_following": "Αυτή η εργασία και οι επόμενες",
+    "recurring_delete_following_desc": "Διαγραφή από αυτή την ημέρα και μετά",
+    "recurring_delete_all": "Όλες οι εργασίες",
+    "recurring_delete_all_desc": "Διαγραφή ολόκληρης της σειράς"
   },
   "habits": {
     "title": "Συνήθειες",
@@ -361,7 +502,8 @@
       "selected": "Επιλεγμένο",
       "approved": "Εγκρίθηκε",
       "rewards": "Ανταμοιβές",
-      "history": "Ιστορία"
+      "history": "Ιστορία",
+      "completed": "Ολοκληρωμένες"
     },
     "status": {
       "available": "Διαθέσιμος",
@@ -369,7 +511,8 @@
       "pending": "Εκκρεμής",
       "selected": "Επιλεγμένο",
       "approved": "Εγκρίθηκε",
-      "rejected": "Απορρίφθηκε"
+      "rejected": "Απορρίφθηκε",
+      "completed": "Ολοκληρωμένη"
     },
     "action": {
       "select": "Επιλέγω",
@@ -379,7 +522,9 @@
       "reject": "Απορρίπτω",
       "approve": "Εγκρίνω",
       "complete": "Πλήρης"
-    }
+    },
+    "previous_reward_template": "Χρήση προηγούμενης ανταμοιβής",
+    "no_completed": "Δεν υπάρχουν ακόμα ολοκληρωμένες ανταμοιβές"
   },
   "baseRewards": {
     "choose_desert": "Επιλέξτε το αποψινό επιδόρπιο",
@@ -432,7 +577,79 @@
     },
     "child": {
       "subtitle": "Προσθέστε το πρώτο σας παιδί. Μπορείτε να προσθέσετε περισσότερα παιδιά αργότερα από τις Ρυθμίσεις.",
-      "step_indicator": "Βήμα 2 από 2"
+      "step_indicator": "Βήμα 2 από 2",
+      "skip_for_now": "Passer pour l’instant"
+    },
+    "sync_mode": {
+      "header": "Comment voulez-vous utiliser Tareitas ?",
+      "title": "Choisissez votre configuration",
+      "subtitle": "Vous pouvez utiliser Tareitas sur cet appareil uniquement ou synchroniser votre famille entre téléphones et tablettes.",
+      "multidevice": {
+        "title": "Plusieurs appareils",
+        "description": "Synchronisez tâches, récompenses et données familiales via le cloud. Nécessite un compte."
+      },
+      "device_only": {
+        "title": "Cet appareil uniquement",
+        "description": "Tout reste sur ce téléphone ou cette tablette. Aucun compte requis."
+      },
+      "create_section_title": "Créer un nouveau groupe/famille",
+      "connect_section_title": "Se connecter à un groupe/famille existant"
+    },
+    "account": {
+      "header": "Compte",
+      "title": "Créez votre compte",
+      "subtitle": "Inscrivez-vous pour synchroniser votre famille entre appareils, ou connectez-vous si vous avez déjà un compte.",
+      "tab_register": "Inscription",
+      "tab_login": "Connexion",
+      "email": "E-mail",
+      "username_optional": "Nom de connexion unique (optionnel)",
+      "pin": "Code PIN à 4 chiffres",
+      "pin_confirm": "Confirmer le PIN",
+      "family_name": "Nom de la famille",
+      "family_name_default": "Famille de {{name}}",
+      "family_name_fallback": "Ma famille",
+      "submit_register": "Créer un compte",
+      "submit_login": "Se connecter",
+      "error_email_required": "L’e-mail est obligatoire",
+      "error_pin_required": "Saisissez un PIN à 4 chiffres",
+      "error_pin_mismatch": "Les PIN ne correspondent pas",
+      "error_generic": "Une erreur s’est produite. Veuillez réessayer."
+    },
+    "login": {
+      "header": "Connexion",
+      "title": "Bon retour",
+      "subtitle": "Connectez-vous avec l’e-mail admin ou votre nom d’utilisateur unique.",
+      "admin": "Διαχειριστής",
+      "not_admin": "Non admin",
+      "email": "E-mail",
+      "username": "Nom de connexion unique",
+      "pin": "Code PIN à 4 chiffres",
+      "submit": "Se connecter",
+      "sign_up": "S’inscrire",
+      "error_email_required": "L’e-mail est obligatoire",
+      "error_username_required": "Le nom d’utilisateur est obligatoire",
+      "error_pin_required": "Saisissez un PIN à 4 chiffres",
+      "error_generic": "Connexion impossible. Vérifiez vos informations et réessayez.",
+      "error_empty_family": "Συνδεθήκατε, αλλά δεν βρέθηκαν μέλη οικογένειας. Δοκιμάστε ξανά."
+    },
+    "sign_up": {
+      "admin_header": "Créer un admin",
+      "admin_title": "Créez votre profil admin",
+      "admin_subtitle": "L’admin se connecte par e-mail et gère la famille.",
+      "admin_email": "E-mail de l’admin",
+      "admin_pin": "PIN admin (4 chiffres)",
+      "child_header": "Ajouter le premier enfant",
+      "child_title": "Créez votre premier enfant",
+      "child_subtitle": "Les enfants se connectent avec un nom d’utilisateur.",
+      "child_username": "Nom de connexion unique",
+      "child_pin": "PIN enfant (4 chiffres)",
+      "error_email_required": "L’e-mail admin est obligatoire",
+      "error_username_required": "Le nom d’utilisateur de l’enfant est obligatoire",
+      "error_admin_pin_required": "Saisissez un PIN admin à 4 chiffres",
+      "error_child_pin_required": "Saisissez un PIN enfant à 4 chiffres",
+      "error_admin_incomplete": "Complétez d’abord le profil admin",
+      "error_generic": "Impossible de créer la famille. Veuillez réessayer.",
+      "error_family_name_required": "Le nom de la famille est requis"
     }
   },
   "welcome": {
@@ -482,5 +699,35 @@
     "subtitle": "Συμπληρώστε το προφίλ σας",
     "welcome_to_tareitas": "Καλώς ήρθατε στο Tareitas",
     "welcome_steps": "Ας ρυθμίσουμε το προφίλ σας με μερικά γρήγορα βήματα."
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Κάτι πήγε στραβά. Δοκιμάστε ξανά.",
+    "INTERNAL_ERROR": "Κάτι πήγε στραβά. Δοκιμάστε ξανά.",
+    "VALIDATION_ERROR": "Μη έγκυρο αίτημα. Ελέγξτε τα δεδομένα που εισάγατε.",
+    "NOT_FOUND": "Ο πόρος δεν βρέθηκε.",
+    "FORBIDDEN": "Δεν έχετε άδεια να εκτελέσετε αυτή την ενέργεια.",
+    "UNAUTHORIZED": "Δεν είστε εξουσιοδοτημένοι. Συνδεθείτε ξανά.",
+    "TASK_NOT_FOUND": "Η εργασία δεν βρέθηκε.",
+    "TASK_NOT_ALLOWED": "Δεν μπορείτε να τροποποιήσετε αυτή την εργασία.",
+    "TASK_INVALID_STATUS": "Αυτή η εργασία δεν μπορεί να ενημερωθεί στην τρέχουσα κατάστασή της.",
+    "TASK_ALREADY_EXISTS": "Αυτή η εργασία υπάρχει ήδη.",
+    "REWARD_NOT_ALLOWED": "Δεν μπορείτε να τροποποιήσετε αυτή την ανταμοιβή.",
+    "REWARD_INACTIVE": "Αυτή η ανταμοιβή δεν είναι πλέον διαθέσιμη.",
+    "REWARD_INSUFFICIENT_BALANCE": "Δεν υπάρχουν αρκετά αστέρια για αυτή την ανταμοιβή.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Αυτή η ανταμοιβή δεν μπορεί να ενημερωθεί στην τρέχουσα κατάστασή της."
+  },
+  "helpCenter": {
+    "title": "Centre d'aide",
+    "flow": "Couler",
+    "flow_step_1": "Le parent crée une tâche",
+    "flow_step_2": "L'enfant termine la tâche",
+    "flow_step_3": "Le parent approuve la tâche terminée",
+    "flow_step_4": "L'enfant reçoit des étoiles",
+    "flow_step_5": "L'enfant sélectionne une récompense",
+    "flow_step_6": "Le parent approuve la récompense",
+    "flow_step_7": "L'enfant reçoit la récompense et le parent marque la récompense comme terminée",
+    "write_us": "Écrivez-nous",
+    "write_us_hint": "Appuyez pour nous envoyer un e-mail",
+    "change_user": "Changer d'utilisateur"
   }
 }

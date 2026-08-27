@@ -113,7 +113,8 @@
       "sign_out": "Iziet",
       "session_expired": "Jūsu sesija ir beigusies. Pierakstieties vēlreiz, lai sinhronizētu.",
       "login_screen_title": "Pieteikties",
-      "login_screen_subtitle": "Pierakstieties, lai sinhronizētu ģimeni starp ierīcēm."
+      "login_screen_subtitle": "Pierakstieties, lai sinhronizētu ģimeni starp ierīcēm.",
+      "sync_try_later": "Tagad neizdevās sinhronizēt. Mēģiniet vēlreiz pēc brīža."
     },
     "show_login_name": "Rādīt pieteikšanās vārdu",
     "parents": "Vecāki"
@@ -386,7 +387,7 @@
       "makeAnAppliqueDescription": "Izveidojiet pieteikumu",
       "playAnMusicInstrument": "Spēlēt kādu mūzikas instrumentu",
       "playAnMusicInstrumentDescription": "Spēlējiet kādu mūzikas instrumentu vismaz 15 minūtes dienā vai vienu skaņdarbu 5 reizes",
-      "singASong": "dziedāt",
+      "singASong": "Dziedāt",
       "singASongDescription": "Dziediet mīļāko dziesmu vai to, kas tika lūgta mūzikas skolā",
       "musicTheory": "Mūzikas teorija",
       "musicTheoryDescription": "Mācīties mūzikas teoriju, solfedžo, pildīt mājas darbus par mūzikas teoriju",
@@ -447,7 +448,16 @@
       "pending": "Gaida",
       "reject": "Noraidīt",
       "rejected": "Noraidīts"
-    }
+    },
+    "delete_only_pending": "Var dzēst tikai gaidošos uzdevumus.",
+    "status_locked_closed_period": "Statusu nevar mainīt — šis mēnesis ir slēgts balvu vēsturē",
+    "recurring_delete_title": "Dzēst",
+    "recurring_delete_only_this": "Tikai šo uzdevumu",
+    "recurring_delete_only_this_desc": "Dzēst tikai izvēlēto dienu",
+    "recurring_delete_following": "Šo uzdevumu un nākamos",
+    "recurring_delete_following_desc": "Dzēst no šīs dienas",
+    "recurring_delete_all": "Visus uzdevumus",
+    "recurring_delete_all_desc": "Dzēst visu sēriju"
   },
   "habits": {
     "title": "Ieradumi",
@@ -493,7 +503,8 @@
       "selected": "Atlasīts",
       "approved": "Apstiprināts",
       "rewards": "Atlīdzības",
-      "history": "Vēsture"
+      "history": "Vēsture",
+      "completed": "Pabeigtie"
     },
     "status": {
       "available": "Pieejams",
@@ -501,7 +512,8 @@
       "pending": "Gaida",
       "selected": "Atlasīts",
       "approved": "Apstiprināts",
-      "rejected": "Noraidīts"
+      "rejected": "Noraidīts",
+      "completed": "Pabeigts"
     },
     "action": {
       "select": "Izvēlieties",
@@ -511,7 +523,9 @@
       "reject": "Noraidīt",
       "approve": "Apstiprināt",
       "complete": "Pabeigts"
-    }
+    },
+    "previous_reward_template": "Izmantot iepriekšējo balvu",
+    "no_completed": "Vēl nav pabeigtu balvu"
   },
   "baseRewards": {
     "choose_desert": "Izvēlieties šī vakara desertu",
@@ -616,7 +630,8 @@
       "error_email_required": "E-pasts ir obligāts",
       "error_username_required": "Lietotājvārds ir obligāts",
       "error_pin_required": "Ievadiet 4 ciparu PIN",
-      "error_generic": "Neizdevās pieteikties. Pārbaudiet datus un mēģiniet vēlreiz."
+      "error_generic": "Neizdevās pieteikties. Pārbaudiet datus un mēģiniet vēlreiz.",
+      "error_empty_family": "Pierakstījāties, bet ģimenes locekļi netika atrasti. Mēģiniet vēlreiz."
     },
     "sign_up": {
       "admin_header": "Izveidot admin",
@@ -651,5 +666,21 @@
     "write_us": "Uzrakstiet mums",
     "write_us_hint": "Pieskarieties, lai nosūtītu mums e-pastu",
     "change_user": "Mainīt lietotāju"
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Kaut kas nogāja greizi. Mēģiniet vēlreiz.",
+    "INTERNAL_ERROR": "Kaut kas nogāja greizi. Mēģiniet vēlreiz.",
+    "VALIDATION_ERROR": "Nederīgs pieprasījums. Pārbaudiet ievadītos datus.",
+    "NOT_FOUND": "Resurss nav atrasts.",
+    "FORBIDDEN": "Jums nav atļaujas veikt šo darbību.",
+    "UNAUTHORIZED": "Jūs neesat autorizēts. Pierakstieties vēlreiz.",
+    "TASK_NOT_FOUND": "Uzdevums nav atrasts.",
+    "TASK_NOT_ALLOWED": "Jūs nevarat mainīt šo uzdevumu.",
+    "TASK_INVALID_STATUS": "Šo uzdevumu nevar atjaunināt tā pašreizējā stāvoklī.",
+    "TASK_ALREADY_EXISTS": "Šis uzdevums jau pastāv.",
+    "REWARD_NOT_ALLOWED": "Jūs nevarat mainīt šo balvu.",
+    "REWARD_INACTIVE": "Šī balva vairs nav pieejama.",
+    "REWARD_INSUFFICIENT_BALANCE": "Nav pietiekami daudz zvaigžņu šai balvai.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Šo balvu nevar atjaunināt tā pašreizējā stāvoklī."
   }
 }

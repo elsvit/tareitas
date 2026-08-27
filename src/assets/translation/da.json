@@ -97,7 +97,8 @@
     "loaded_images_empty": "Ingen indlæste billeder",
     "remove_loaded_image": "Fjern foto",
     "remove_loaded_image_title": "Vil du fjerne billedet?",
-    "remove_loaded_image_message": "Dette billede slettes fra din telefon og kan ikke fortrydes."
+    "remove_loaded_image_message": "Dette billede slettes fra din telefon og kan ikke fortrydes.",
+    "help_center": "Hjælpecenter"
   },
   "settings": {
     "title": "Indstillinger",
@@ -105,14 +106,24 @@
     "children": "Børn",
     "child_password_obligatory": "Børnekodeord påkrævet",
     "show_login_name": "Vis login-navn",
-    "parents": "Forældre"
+    "parents": "Forældre",
+    "account": {
+      "title": "Skysynkronisering",
+      "signed_in": "Logget ind",
+      "sign_in": "Log ind",
+      "sign_out": "Log ud",
+      "session_expired": "Din session er udløbet. Log ind igen for at synkronisere.",
+      "sync_try_later": "Kunne ikke synkronisere nu. Prøv igen om et øjeblik.",
+      "login_screen_title": "Log ind",
+      "login_screen_subtitle": "Log ind for at synkronisere din familie på tværs af enheder."
+    }
   },
   "users": {
     "title": "Brugere",
     "add": "Tilføj bruger",
     "add_child": "Tilføj barn",
     "add_parent": "Tilføj forælder",
-    "admin": "Admin",
+    "admin": "Administrator",
     "avatar": "Avatar",
     "child": "Barn",
     "childs": "Børn",
@@ -153,7 +164,8 @@
       "reviewer": "Anmelder",
       "sister": "Søster",
       "uncle": "Onkel"
-    }
+    },
+    "change_group": "Skift gruppe"
   },
   "tasks": {
     "title": "Opgaver",
@@ -283,7 +295,8 @@
         "subtask1": "Stå op til tiden",
         "subtask2": "Børst tænder om morgenen",
         "subtask3": "Vælg tøj",
-        "subtask4": "Gå i seng til tiden"
+        "subtask4": "Gå i seng til tiden",
+        "subtask5": "Klä på sig"
       },
       "eveningRoutine": {
         "title": "Aftenrutine",
@@ -303,8 +316,124 @@
         "description": "Kreativt arbejde",
         "subtask1": "Forbered materialer",
         "subtask2": "Lav kreativt arbejde",
-        "subtask3": "Ryd op"
-      }
+        "subtask3": "Ryd op",
+        "subtask4": "Tvätta händerna",
+        "subtask5": "Visa resultatet"
+      },
+      "washYourFace": "Tvätta ansiktet",
+      "washYourFaceDescription": "Tvätta ansiktet",
+      "brushYourHair": "Kamma håret",
+      "brushYourHairDescription": "Kamma håret",
+      "cutYourNails": "Klipp naglarna",
+      "cutYourNailsDescription": "Klipp naglarna",
+      "changeYourClothes": "Byt kläder",
+      "changeYourClothesDescription": "Byt kläder till hemkläder (sportkläder/pyjamas innan du går och lägger dig)",
+      "applyCream": "Applicera kräm/balsam",
+      "applyCreamDescription": "Applicera kräm/balsam",
+      "dayWithoutSweets": "En dag utan godis",
+      "dayWithoutSweetsDescription": "Ät inga godis, du kan ersätta dem med frukt",
+      "drinkWater": "Drick ett glas vatten",
+      "drinkWaterDescription": "Drick tillräckligt med vatten, särskilt om du sportar",
+      "prepareClothesForTomorrow": "Förbered kläder för imorgon",
+      "prepareClothesForTomorrowDescription": "Förbered kläder för imorgon",
+      "putAwayClothes": "Vik kläder",
+      "putAwayClothesDescription": "Lägg kläder i lådor eller på avsedda platser",
+      "helpToCoverTheTable": "Hjälp till att duka",
+      "helpToCoverTheTableDescription": "Hjälp till att duka (ställ tallrikar, skedar, koppar, bricka)",
+      "washYourOwnDishes": "Diska efter dig",
+      "washYourOwnDishesDescription": "Diska efter dig",
+      "cleanUpAfterMeal": "Städa efter att ha ätit",
+      "cleanUpAfterMealDescription": "Städa upp efter maten och ställ disken i diskmaskinen",
+      "takeCareOfPlants": "Ta hand om växterna",
+      "takeCareOfPlantsDescription": "Ta hand om växterna",
+      "putAwayBooks": "Lägg ut böckerna",
+      "putAwayBooksDescription": "Placera böcker i lådor eller på avsedda platser",
+      "sweepTheDirt": "Torka av dammet",
+      "sweepTheDirtDescription": "Torka av dammet",
+      "cleanShoes": "Tvätta/rengör skor",
+      "cleanShoesDescription": "Tvätta/rengör skor",
+      "sweepTheFloor": "Byt ut golvet",
+      "sweepTheFloorDescription": "Byt ut golvet",
+      "washTheFloor": "Tvätta golvet",
+      "washTheFloorDescription": "Tvätta golvet",
+      "runTheVacuumCleaner": "Starta robotdammsugaren",
+      "runTheVacuumCleanerDescription": "Starta robotdammsugaren",
+      "vacuumTheFurniture": "Dammsug möblerna",
+      "vacuumTheFurnitureDescription": "Dammsug möblerna",
+      "putDirtyClothesInTheBin": "Vik/lägg ut smutsiga kläder",
+      "putDirtyClothesInTheBinDescription": "Vik/lägg smutsiga kläder i en korg eller tvättmaskin",
+      "repeatTheMaterial": "Upprepning av material",
+      "repeatTheMaterialDescription": "Upprepning av material",
+      "prepareForTheTest": "Förberedelser inför provet",
+      "prepareForTheTestDescription": "Förberedelser inför provet",
+      "learnNewTopic": "Att lära sig ett nytt ämne",
+      "learnNewTopicDescription": "Att lära sig ett nytt ämne",
+      "learnNewLanguage": "Att lära sig språket",
+      "learnNewLanguageDescription": "Att lära sig språket",
+      "readOnePage": "Läs en sida",
+      "readOnePageDescription": "Läs en sida",
+      "readFor20Minutes": "Läs i 20 minuter",
+      "readFor20MinutesDescription": "Läs i 20 minuter",
+      "reciteTheRead": "Återberätta vad du läst",
+      "reciteTheReadDescription": "Återberätta vad du läst",
+      "logicalGames": "Logiska spel",
+      "logicalGamesDescription": "Spela något logiskt spel (schack, sudoku, lösa ett korsord, etc.)",
+      "solveThePuzzle": "Lös pusslet",
+      "solveThePuzzleDescription": "Lös pusslet",
+      "drawAPicture": "Rita en bild",
+      "drawAPictureDescription": "Rita en bild",
+      "makeAnApplique": "Gör en ansökan",
+      "makeAnAppliqueDescription": "Gör en ansökan",
+      "playAnMusicInstrument": "Spela ett musikinstrument",
+      "playAnMusicInstrumentDescription": "Spela ett musikinstrument minst 15 minuter om dagen eller ett stycke 5 gånger",
+      "singASong": "To sing",
+      "singASongDescription": "Sjung en favoritlåt eller den som tillfrågades i musikskolan",
+      "musicTheory": "Musikteori",
+      "musicTheoryDescription": "Studera musikteori, solfeggio, göra läxor om musikteori",
+      "morningExercise": "Morgonladdning",
+      "morningExerciseDescription": "Gör morgonövningar, minst 20 minuter",
+      "eveningExercises": "Gör kvällsövningar",
+      "eveningExercisesDescription": "Gör kvällsövningar, minst 20 minuter",
+      "homeTraining": "Hemmeträning",
+      "homeTrainingDescription": "Gör ett hemträning, till exempel en fotbollsrutin eller en gymnastiksträcka, i minst 20 minuter",
+      "activeGame": "Aktivt spel",
+      "activeGameDescription": "Spela fotboll, tennis, basket, vattenspel osv.",
+      "stretch": "Strækøvelser",
+      "stretchDescription": "Stretch, minst 10 minuter",
+      "squats": "Hukande",
+      "squatsDescription": "Squat, minst 20 gånger",
+      "pullUps": "Dra upp",
+      "pullUpsDescription": "Dra upp minst 5 gånger",
+      "pushUps": "Armbøjninger",
+      "pushUpsDescription": "Tryck upp minst 20 gånger",
+      "walk": "Promenad",
+      "walkDescription": "Ta en promenad, minst 30 minuter",
+      "hike": "Kampanj",
+      "hikeDescription": "Vandring, minst 5 km",
+      "playOutside": "Lek ute",
+      "playOutsideDescription": "Spela ett aktivt spel utomhus",
+      "rideABicycle": "Cykla",
+      "rideABicycleDescription": "Cykla 5 km",
+      "jumpOnTheTrampoline": "Hopprep",
+      "jumpOnTheTrampolineDescription": "Hopprep, minst 10 minuter",
+      "swim": "Simning",
+      "swimDescription": "Simma 200 meter",
+      "run": "Sikt",
+      "runDescription": "Spring 1 km",
+      "helpToPrepareFood": "Hjälp till att laga mat",
+      "helpToPrepareFoodDescription": "Hjälp till att laga mat (lägg tallrikar, skedar, koppar, bricka)",
+      "pourWaterToThePet": "Häll vatten på djuret",
+      "pourWaterToThePetDescription": "Häll vatten till djuret (tillsätt mat eller häll färskvatten)",
+      "cleanTheCage": "Rengör buren",
+      "cleanTheCageDescription": "Rengör djurets bur",
+      "playWithThePet": "Lek med djuret",
+      "playWithThePetDescription": "Lek med djuret (lek med det, läs böcker, titta på videor, etc.)",
+      "cleanAfterThePet": "Städa upp efter djuret",
+      "cleanAfterThePetDescription": "Rengör toaletten efter djuret",
+      "greetTheMorning": "Säg hej, säg god morgon!",
+      "greetTheMorningDescription": "Säg hej, säg god morgon!",
+      "sayGoodNight": "Säg godnatt!",
+      "sayGoodNightDescription": "God natt!"
     },
     "taskStatus": {
       "approve": "Godkende",
@@ -318,7 +447,16 @@
       "pending": "Indtil",
       "reject": "Afvise",
       "rejected": "Afvist"
-    }
+    },
+    "delete_only_pending": "Kun afventende opgaver kan slettes.",
+    "status_locked_closed_period": "Status kan ikke ændres — denne måned er lukket i belønningshistorikken",
+    "recurring_delete_title": "Slet",
+    "recurring_delete_only_this": "Kun denne opgave",
+    "recurring_delete_only_this_desc": "Slet kun den valgte dag",
+    "recurring_delete_following": "Denne opgave og følgende",
+    "recurring_delete_following_desc": "Slet fra denne dag og frem",
+    "recurring_delete_all": "Alle opgaver",
+    "recurring_delete_all_desc": "Slet hele serien"
   },
   "habits": {
     "title": "Vaner",
@@ -364,7 +502,8 @@
       "selected": "Valgt",
       "approved": "Godkendt",
       "rewards": "Belønninger",
-      "history": "Historie"
+      "history": "Historie",
+      "completed": "Afsluttede"
     },
     "status": {
       "available": "Tilgængelig",
@@ -372,7 +511,8 @@
       "pending": "Indtil",
       "selected": "Valgt",
       "approved": "Godkendt",
-      "rejected": "Afvist"
+      "rejected": "Afvist",
+      "completed": "Afsluttet"
     },
     "action": {
       "select": "Vælge",
@@ -382,7 +522,9 @@
       "reject": "Afvise",
       "approve": "Godkende",
       "complete": "Komplet"
-    }
+    },
+    "previous_reward_template": "Brug tidligere belønning",
+    "no_completed": "Ingen afsluttede belønninger endnu"
   },
   "baseRewards": {
     "choose_desert": "Vælg aftenens dessert",
@@ -403,7 +545,7 @@
     "new_book": "Ny bog",
     "new_sports_equipment": "Nyt sportsudstyr",
     "camping_movie_night_at_home": "Camping filmaften derhjemme",
-    "playstation_30_min": "Playstation 30 min"
+    "playstation_30_min": "PlayStation 30 min"
   },
   "onboarding": {
     "header": "Velkommen til Tareitas",
@@ -435,7 +577,79 @@
     },
     "child": {
       "subtitle": "Tilføj dit første barn. Du kan tilføje flere børn senere fra Indstillinger.",
-      "step_indicator": "Trin 2 af 2"
+      "step_indicator": "Trin 2 af 2",
+      "skip_for_now": "Hoppa över för nu"
+    },
+    "sync_mode": {
+      "header": "Hur vill du använda Tareitas?",
+      "title": "Välj din inställning",
+      "subtitle": "Du kan använda Tareitas endast på den här enheten eller synka din familj mellan telefoner och surfplattor.",
+      "multidevice": {
+        "title": "Flera enheter",
+        "description": "Synka uppgifter, belöningar och familjedata via molnet. Kräver ett konto."
+      },
+      "device_only": {
+        "title": "Endast den här enheten",
+        "description": "Allt stannar på den här telefonen eller surfplattan. Inget konto behövs."
+      },
+      "create_section_title": "Skapa ny grupp/familj",
+      "connect_section_title": "Anslut till befintlig grupp/familj"
+    },
+    "account": {
+      "header": "Konto",
+      "title": "Skapa ditt konto",
+      "subtitle": "Registrera dig för att synka din familj mellan enheter, eller logga in om du redan har ett konto.",
+      "tab_register": "Registrera",
+      "tab_login": "Logga in",
+      "email": "E-post",
+      "username_optional": "Unikt inloggningsnamn (valfritt)",
+      "pin": "4-siffrig PIN",
+      "pin_confirm": "Bekräfta PIN",
+      "family_name": "Familjenamn",
+      "family_name_default": "{{name}}s familj",
+      "family_name_fallback": "Min familj",
+      "submit_register": "Skapa konto",
+      "submit_login": "Logga in",
+      "error_email_required": "E-post krävs",
+      "error_pin_required": "Ange en 4-siffrig PIN",
+      "error_pin_mismatch": "PIN-koderna matchar inte",
+      "error_generic": "Något gick fel. Försök igen."
+    },
+    "login": {
+      "header": "Logga in",
+      "title": "Välkommen tillbaka",
+      "subtitle": "Logga in med admin-e-post eller ditt unika användarnamn.",
+      "admin": "Administrator",
+      "not_admin": "Inte admin",
+      "email": "E-post",
+      "username": "Unikt inloggningsnamn",
+      "pin": "4-siffrig PIN",
+      "submit": "Logga in",
+      "sign_up": "Registrera",
+      "error_email_required": "E-post krävs",
+      "error_username_required": "Användarnamn krävs",
+      "error_pin_required": "Ange en 4-siffrig PIN",
+      "error_generic": "Inloggningen misslyckades. Kontrollera uppgifterna och försök igen.",
+      "error_empty_family": "Logget ind, men ingen familiemedlemmer blev fundet. Prøv igen."
+    },
+    "sign_up": {
+      "admin_header": "Skapa admin",
+      "admin_title": "Skapa din adminprofil",
+      "admin_subtitle": "Admin loggar in med e-post och hanterar familjen.",
+      "admin_email": "Admin-e-post",
+      "admin_pin": "Admin-PIN (4 siffror)",
+      "child_header": "Lägg till första barnet",
+      "child_title": "Skapa ditt första barn",
+      "child_subtitle": "Barn loggar in med användarnamn.",
+      "child_username": "Unikt inloggningsnamn",
+      "child_pin": "Barnets PIN (4 siffror)",
+      "error_email_required": "Admin-e-post krävs",
+      "error_username_required": "Barnets användarnamn krävs",
+      "error_admin_pin_required": "Ange en 4-siffrig admin-PIN",
+      "error_child_pin_required": "Ange en 4-siffrig barn-PIN",
+      "error_admin_incomplete": "Fyll i adminprofilen först",
+      "error_generic": "Familjen kunde inte skapas. Försök igen.",
+      "error_family_name_required": "Familjenamn krävs"
     }
   },
   "welcome": {
@@ -485,5 +699,35 @@
     "subtitle": "Udfyld din profil",
     "welcome_to_tareitas": "Velkommen til Tareitas",
     "welcome_steps": "Lad os få din profil opsat med et par hurtige trin."
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Noget gik galt. Prøv igen.",
+    "INTERNAL_ERROR": "Noget gik galt. Prøv igen.",
+    "VALIDATION_ERROR": "Ugyldig anmodning. Tjek dine indtastninger.",
+    "NOT_FOUND": "Ressource ikke fundet.",
+    "FORBIDDEN": "Du har ikke tilladelse til at udføre denne handling.",
+    "UNAUTHORIZED": "Du er ikke autoriseret. Log ind igen.",
+    "TASK_NOT_FOUND": "Opgave ikke fundet.",
+    "TASK_NOT_ALLOWED": "Du kan ikke ændre denne opgave.",
+    "TASK_INVALID_STATUS": "Denne opgave kan ikke opdateres i dens nuværende tilstand.",
+    "TASK_ALREADY_EXISTS": "Denne opgave findes allerede.",
+    "REWARD_NOT_ALLOWED": "Du kan ikke ændre denne belønning.",
+    "REWARD_INACTIVE": "Denne belønning er ikke længere tilgængelig.",
+    "REWARD_INSUFFICIENT_BALANCE": "Ikke nok stjerner til denne belønning.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Denne belønning kan ikke opdateres i dens nuværende tilstand."
+  },
+  "helpCenter": {
+    "title": "Hjälpcenter",
+    "flow": "Flöde",
+    "flow_step_1": "Förälder skapar en uppgift",
+    "flow_step_2": "Barnet slutför uppgiften",
+    "flow_step_3": "Föräldern godkänner den slutförda uppgiften",
+    "flow_step_4": "Barn får stjärnor",
+    "flow_step_5": "Barn väljer en belöning",
+    "flow_step_6": "Föräldern godkänner belöningen",
+    "flow_step_7": "Barnet får belöningen och föräldern markerar belöningen som avslutad",
+    "write_us": "Skriv till oss",
+    "write_us_hint": "Tryck för att skicka ett e-postmeddelande till oss",
+    "change_user": "Byt användare"
   }
 }

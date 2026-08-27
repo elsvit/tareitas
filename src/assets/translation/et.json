@@ -112,7 +112,8 @@
       "sign_out": "Logi välja",
       "session_expired": "Teie seanss on aegunud. Sünkroniseerimiseks logige uuesti sisse.",
       "login_screen_title": "Logi sisse",
-      "login_screen_subtitle": "Logige sisse, et sünkroniseerida pere seadmete vahel."
+      "login_screen_subtitle": "Logige sisse, et sünkroniseerida pere seadmete vahel.",
+      "sync_try_later": "Sünkroniseerimine ebaõnnestus. Proovige hetke pärast uuesti."
     },
     "show_login_name": "Kuva sisselogimisnimi",
     "parents": "Lapsevanemad"
@@ -385,7 +386,7 @@
       "makeAnAppliqueDescription": "Tehke taotlus",
       "playAnMusicInstrument": "Mängige muusikariista",
       "playAnMusicInstrumentDescription": "Mängige mõnda muusikainstrumenti vähemalt 15 minutit päevas või ühte pala 5 korda",
-      "singASong": "laulma",
+      "singASong": "Laulma",
       "singASongDescription": "Laulge oma lemmiklaulu või seda, mida muusikakoolis küsiti",
       "musicTheory": "Muusikateooria",
       "musicTheoryDescription": "Õppige muusikateooriat, solfedžot, tehke muusikateooria kodutööd",
@@ -446,7 +447,16 @@
       "pending": "Ootel",
       "reject": "Keeldu",
       "rejected": "Tagasi lükatud"
-    }
+    },
+    "delete_only_pending": "Kustutada saab ainult ootel ülesandeid.",
+    "status_locked_closed_period": "Olekut ei saa muuta — see kuu on auhindade ajaloos suletud",
+    "recurring_delete_title": "Kustuta",
+    "recurring_delete_only_this": "Ainult see ülesanne",
+    "recurring_delete_only_this_desc": "Kustuta ainult valitud päev",
+    "recurring_delete_following": "See ülesanne ja järgmised",
+    "recurring_delete_following_desc": "Kustuta alates sellest päevast",
+    "recurring_delete_all": "Kõik ülesanded",
+    "recurring_delete_all_desc": "Kustuta kogu seeria"
   },
   "habits": {
     "title": "Harjumused",
@@ -492,7 +502,8 @@
       "selected": "Valitud",
       "approved": "Kinnitatud",
       "rewards": "Preemiad",
-      "history": "Ajalugu"
+      "history": "Ajalugu",
+      "completed": "Lõpetatud"
     },
     "status": {
       "available": "Saadaval",
@@ -500,7 +511,8 @@
       "pending": "Ootel",
       "selected": "Valitud",
       "approved": "Kinnitatud",
-      "rejected": "Tagasi lükatud"
+      "rejected": "Tagasi lükatud",
+      "completed": "Lõpetatud"
     },
     "action": {
       "select": "Valige",
@@ -510,7 +522,9 @@
       "reject": "Keeldu",
       "approve": "Kinnita",
       "complete": "Täielik"
-    }
+    },
+    "previous_reward_template": "Kasuta eelmist auhinda",
+    "no_completed": "Lõpetatud auhindu pole veel"
   },
   "baseRewards": {
     "choose_desert": "Valige tänaõhtune magustoit",
@@ -615,7 +629,8 @@
       "error_email_required": "E-post on kohustuslik",
       "error_username_required": "Kasutajanimi on kohustuslik",
       "error_pin_required": "Sisestage 4-kohaline PIN",
-      "error_generic": "Sisselogimine ebaõnnestus. Kontrollige andmeid ja proovige uuesti."
+      "error_generic": "Sisselogimine ebaõnnestus. Kontrollige andmeid ja proovige uuesti.",
+      "error_empty_family": "Sisse logitud, kuid pereliikmeid ei leitud. Proovige uuesti."
     },
     "sign_up": {
       "admin_header": "Loo admin",
@@ -698,5 +713,21 @@
     "write_us": "Kirjuta meile",
     "write_us_hint": "Puudutage meile e-kirja saatmiseks",
     "change_user": "Vaheta kasutajat"
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Midagi läks valesti. Proovige uuesti.",
+    "INTERNAL_ERROR": "Midagi läks valesti. Proovige uuesti.",
+    "VALIDATION_ERROR": "Vigane päring. Kontrollige sisestatud andmeid.",
+    "NOT_FOUND": "Ressurssi ei leitud.",
+    "FORBIDDEN": "Teil pole luba seda toimingut teha.",
+    "UNAUTHORIZED": "Te pole autoriseeritud. Logige uuesti sisse.",
+    "TASK_NOT_FOUND": "Ülesannet ei leitud.",
+    "TASK_NOT_ALLOWED": "Te ei saa seda ülesannet muuta.",
+    "TASK_INVALID_STATUS": "Seda ülesannet ei saa praeguses olekus uuendada.",
+    "TASK_ALREADY_EXISTS": "See ülesanne on juba olemas.",
+    "REWARD_NOT_ALLOWED": "Te ei saa seda auhinda muuta.",
+    "REWARD_INACTIVE": "See auhind pole enam saadaval.",
+    "REWARD_INSUFFICIENT_BALANCE": "Selle auhinna jaoks pole piisavalt tähti.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Seda auhinda ei saa praeguses olekus uuendada."
   }
 }

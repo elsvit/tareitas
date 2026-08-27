@@ -85,14 +85,14 @@
     }
   },
   "home": {
-    "title": "Home"
+    "title": "Inizio"
   },
   "menu": {
     "title": "Menu"
   },
   "more": {
     "title": "Altro",
-    "language": "Language",
+    "language": "Lingua",
     "loaded_images": "Foto caricate",
     "loaded_images_empty": "Nessuna foto caricata",
     "remove_loaded_image": "Rimuovi foto",
@@ -112,7 +112,8 @@
       "sign_out": "Esci",
       "session_expired": "La sessione è scaduta. Accedi di nuovo per sincronizzare.",
       "login_screen_title": "Accedi",
-      "login_screen_subtitle": "Accedi per sincronizzare la famiglia tra dispositivi."
+      "login_screen_subtitle": "Accedi per sincronizzare la famiglia tra dispositivi.",
+      "sync_try_later": "Impossibile sincronizzare ora. Riprova tra un momento."
     },
     "show_login_name": "Mostra nome di accesso",
     "parents": "Genitori"
@@ -138,8 +139,8 @@
     "edit_parent": "Modifica Parente",
     "family": "Familia",
     "family_role": "Ruolo familiare",
-    "login": "Login",
-    "logout": "Logout",
+    "login": "Accedi",
+    "logout": "Esci",
     "name": "Nome",
     "unique_username": "Nome di accesso univoco",
     "no_children": "Nessun figlio ancora",
@@ -159,7 +160,7 @@
       "grandmother": "Nonna",
       "mother": "Madre",
       "nanny": "Nanna",
-      "reviewee": "Reviewee",
+      "reviewee": "Recensito",
       "reviewer": "Rivisore",
       "sister": "Sorella",
       "uncle": "Zio"
@@ -172,11 +173,11 @@
     "edit_base_task": "Modifica Task Base",
     "base_tasks": "Task Base",
     "default_tasks": "Task Predefiniti",
-    "delete_task": "Delete Task",
+    "delete_task": "Elimina attività",
     "delete_task_confirm": "Sei sicuro di voler eliminare questo task?",
-    "reset_base_tasks": "Reset Base Tasks",
+    "reset_base_tasks": "Reimposta attività base",
     "reset_base_tasks_confirm": "Sei sicuro di voler resettare i task base?",
-    "description": "Description",
+    "description": "Descrizione",
     "no_base_tasks": "Nessun task base ancora",
     "no_tasks": "Nessun task ancora.",
     "review_requires_admin_login": "Accedi come amministratore o genitore per approvare o rifiutare le attività.",
@@ -195,8 +196,8 @@
     "invalid_date": "Usa il formato YYYY-MM-DD",
     "invalid_time": "Usa il formato HH:mm",
     "with_subtasks": "Con subtasks",
-    "subtasks": "Subtasks",
-    "subtask_label": "Subtask",
+    "subtasks": "Sotto-attività",
+    "subtask_label": "Sotto-attività",
     "add_subtask": "Aggiungi subtask",
     "subtasks_required": "Aggiungi almeno un subtask",
     "syncing": "Salvataggio…",
@@ -214,7 +215,7 @@
     "new_task_bonus_positive": "Il nuovo bonus di task deve essere maggiore di 0",
     "new_task_duration_positive": "La durata deve essere almeno 1 giorno",
     "new_task_duration_after_end_date": "La durata del bonus non può estendersi oltre la data di fine",
-    "recurring_edit_title": "Apply changes to",
+    "recurring_edit_title": "Applica modifiche a",
     "recurring_edit_only_this": "Solo questo task",
     "recurring_edit_only_this_desc": "Cambia solo il giorno selezionato",
     "recurring_edit_following": "Questo task e i successivi",
@@ -242,7 +243,7 @@
       "doEveningExercisesDescription": "Fare esercizi in tarda mattina",
       "doHomework": "Fai i compiti",
       "doHomeworkDescription": "Fai i compiti",
-      "doMorningExercises": "Do moning exercises",
+      "doMorningExercises": "Fare esercizi mattutini",
       "doMorningExercisesDescription": "Fare esercizi in tarda mattina",
       "drinkAGlassOfWater": "Bere un bicchiere d'acqua",
       "drinkAGlassOfWaterDescription": "Bere un bicchiere d'acqua",
@@ -385,7 +386,7 @@
       "makeAnAppliqueDescription": "Fai una domanda",
       "playAnMusicInstrument": "Suona uno strumento musicale",
       "playAnMusicInstrumentDescription": "Suona uno strumento musicale almeno 15 minuti al giorno o un brano 5 volte",
-      "singASong": "cantare",
+      "singASong": "Cantare",
       "singASongDescription": "Canta la tua canzone preferita o quella che ti è stata chiesta alla scuola di musica",
       "musicTheory": "Teoria musicale",
       "musicTheoryDescription": "Studia teoria musicale, solfeggio, fai compiti di teoria musicale",
@@ -446,7 +447,16 @@
       "pending": "In attesa",
       "reject": "Respinto",
       "rejected": "Respinto"
-    }
+    },
+    "delete_only_pending": "Possono essere eliminate solo le attività in sospeso.",
+    "status_locked_closed_period": "Lo stato non può essere modificato — questo mese è chiuso nella cronologia ricompense",
+    "recurring_delete_title": "Elimina",
+    "recurring_delete_only_this": "Solo questa attività",
+    "recurring_delete_only_this_desc": "Elimina solo il giorno selezionato",
+    "recurring_delete_following": "Questa attività e le successive",
+    "recurring_delete_following_desc": "Elimina da questo giorno in poi",
+    "recurring_delete_all": "Tutte le attività",
+    "recurring_delete_all_desc": "Elimina l'intera serie"
   },
   "habits": {
     "title": "Abitudini",
@@ -492,7 +502,8 @@
       "selected": "Selezionato",
       "approved": "Approvato",
       "rewards": "Rimborso",
-      "history": "Storia"
+      "history": "Storia",
+      "completed": "Completate"
     },
     "status": {
       "available": "Disponibile",
@@ -500,7 +511,8 @@
       "pending": "In attesa",
       "selected": "Selezionato",
       "approved": "Approvato",
-      "rejected": "Respinto"
+      "rejected": "Respinto",
+      "completed": "Completata"
     },
     "action": {
       "select": "Selezionare",
@@ -510,7 +522,9 @@
       "reject": "Respinto",
       "approve": "Approvato",
       "complete": "Completato"
-    }
+    },
+    "previous_reward_template": "Usa ricompensa precedente",
+    "no_completed": "Nessuna ricompensa completata"
   },
   "baseRewards": {
     "choose_desert": "Scegliere il dessert di questa sera",
@@ -605,7 +619,7 @@
       "header": "Accedi",
       "title": "Bentornato",
       "subtitle": "Accedi con l’email admin o il tuo nome utente univoco.",
-      "admin": "Admin",
+      "admin": "Amministratore",
       "not_admin": "Non admin",
       "email": "Email",
       "username": "Nome di accesso univoco",
@@ -615,7 +629,8 @@
       "error_email_required": "L’email è obbligatoria",
       "error_username_required": "Il nome utente è obbligatorio",
       "error_pin_required": "Inserisci un PIN a 4 cifre",
-      "error_generic": "Accesso non riuscito. Controlla i dati e riprova."
+      "error_generic": "Accesso non riuscito. Controlla i dati e riprova.",
+      "error_empty_family": "Accesso effettuato, ma nessun membro della famiglia trovato. Riprova."
     },
     "sign_up": {
       "admin_header": "Crea admin",
@@ -650,5 +665,21 @@
     "write_us": "Scrivici",
     "write_us_hint": "Tocca per inviarci un'e-mail",
     "change_user": "Cambia utente"
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Qualcosa è andato storto. Riprova.",
+    "INTERNAL_ERROR": "Qualcosa è andato storto. Riprova.",
+    "VALIDATION_ERROR": "Richiesta non valida. Controlla i dati inseriti.",
+    "NOT_FOUND": "Risorsa non trovata.",
+    "FORBIDDEN": "Non hai il permesso di eseguire questa azione.",
+    "UNAUTHORIZED": "Non sei autorizzato. Accedi di nuovo.",
+    "TASK_NOT_FOUND": "Attività non trovata.",
+    "TASK_NOT_ALLOWED": "Non puoi modificare questa attività.",
+    "TASK_INVALID_STATUS": "Questa attività non può essere aggiornata nel suo stato attuale.",
+    "TASK_ALREADY_EXISTS": "Questa attività esiste già.",
+    "REWARD_NOT_ALLOWED": "Non puoi modificare questa ricompensa.",
+    "REWARD_INACTIVE": "Questa ricompensa non è più disponibile.",
+    "REWARD_INSUFFICIENT_BALANCE": "Non ci sono abbastanza stelle per questa ricompensa.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Questa ricompensa non può essere aggiornata nel suo stato attuale."
   }
 }

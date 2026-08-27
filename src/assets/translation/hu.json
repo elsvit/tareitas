@@ -113,7 +113,8 @@
       "sign_out": "Kijelentkezés",
       "session_expired": "A munkamenet lejárt. Jelentkezzen be újra a szinkronizáláshoz.",
       "login_screen_title": "Bejelentkezés",
-      "login_screen_subtitle": "Jelentkezzen be a család eszközök közötti szinkronizálásához."
+      "login_screen_subtitle": "Jelentkezzen be a család eszközök közötti szinkronizálásához.",
+      "sync_try_later": "A szinkronizálás most nem sikerült. Próbálja újra egy pillanat múlva."
     },
     "show_login_name": "Bejelentkezési név megjelenítése",
     "parents": "Szülők"
@@ -386,7 +387,7 @@
       "makeAnAppliqueDescription": "Készítsen jelentkezést",
       "playAnMusicInstrument": "Játssz egy hangszeren",
       "playAnMusicInstrumentDescription": "Játssz naponta legalább 15 percet egy hangszeren vagy 5-ször egy darabon",
-      "singASong": "énekelni",
+      "singASong": "Énekelni",
       "singASongDescription": "Énekelje el kedvenc dalát, vagy azt, amelyet a zeneiskolában kértek",
       "musicTheory": "Zeneelmélet",
       "musicTheoryDescription": "Tanulj zeneelméletet, szolfézsot, készíts házi feladatot zeneelméletből",
@@ -404,7 +405,7 @@
       "squatsDescription": "Guggolás, legalább 20-szor",
       "pullUps": "Felhúzva",
       "pullUpsDescription": "Húzza fel legalább 5-ször",
-      "pushUps": "fekvőtámasz",
+      "pushUps": "Fekvőtámasz",
       "pushUpsDescription": "Nyomd fel legalább 20-szor",
       "walk": "Séta",
       "walkDescription": "Sétáljon legalább 30 percet",
@@ -447,7 +448,16 @@
       "pending": "Függőben levő",
       "reject": "Elutasít",
       "rejected": "Elutasítva"
-    }
+    },
+    "delete_only_pending": "Csak a függőben lévő feladatok törölhetők.",
+    "status_locked_closed_period": "Az állapot nem módosítható — ez a hónap le van zárva a jutalmak előzményeiben",
+    "recurring_delete_title": "Törlés",
+    "recurring_delete_only_this": "Csak ez a feladat",
+    "recurring_delete_only_this_desc": "Csak a kiválasztott nap törlése",
+    "recurring_delete_following": "Ez a feladat és a következők",
+    "recurring_delete_following_desc": "Törlés ettől a naptól",
+    "recurring_delete_all": "Minden feladat",
+    "recurring_delete_all_desc": "Az egész sorozat törlése"
   },
   "habits": {
     "title": "Szokások",
@@ -493,7 +503,8 @@
       "selected": "Kiválasztott",
       "approved": "Jóváhagyott",
       "rewards": "Jutalmak",
-      "history": "Történelem"
+      "history": "Történelem",
+      "completed": "Befejezett"
     },
     "status": {
       "available": "Elérhető",
@@ -501,7 +512,8 @@
       "pending": "Függőben levő",
       "selected": "Kiválasztott",
       "approved": "Jóváhagyott",
-      "rejected": "Elutasítva"
+      "rejected": "Elutasítva",
+      "completed": "Befejezve"
     },
     "action": {
       "select": "Válassza ki",
@@ -511,7 +523,9 @@
       "reject": "Elutasít",
       "approve": "Jóváhagyni",
       "complete": "Teljes"
-    }
+    },
+    "previous_reward_template": "Előző jutalom használata",
+    "no_completed": "Még nincsenek befejezett jutalmak"
   },
   "baseRewards": {
     "choose_desert": "Válaszd a ma esti desszertet",
@@ -616,7 +630,8 @@
       "error_email_required": "Az e-mail kötelező",
       "error_username_required": "A felhasználónév kötelező",
       "error_pin_required": "Adjon meg 4 számjegyű PIN-t",
-      "error_generic": "Bejelentkezés sikertelen. Ellenőrizze az adatokat és próbálja újra."
+      "error_generic": "Bejelentkezés sikertelen. Ellenőrizze az adatokat és próbálja újra.",
+      "error_empty_family": "Bejelentkezett, de nem találhatók családtagok. Próbálja újra."
     },
     "sign_up": {
       "admin_header": "Admin létrehozása",
@@ -651,5 +666,21 @@
     "write_us": "Írj nekünk",
     "write_us_hint": "Érintse meg, ha e-mailt szeretne küldeni nekünk",
     "change_user": "Felhasználó váltása"
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Valami hiba történt. Próbálja újra.",
+    "INTERNAL_ERROR": "Valami hiba történt. Próbálja újra.",
+    "VALIDATION_ERROR": "Érvénytelen kérés. Ellenőrizze a megadott adatokat.",
+    "NOT_FOUND": "Az erőforrás nem található.",
+    "FORBIDDEN": "Nincs jogosultsága ehhez a művelethez.",
+    "UNAUTHORIZED": "Nincs engedélyezve. Jelentkezzen be újra.",
+    "TASK_NOT_FOUND": "A feladat nem található.",
+    "TASK_NOT_ALLOWED": "Ezt a feladatot nem módosíthatja.",
+    "TASK_INVALID_STATUS": "Ez a feladat jelenlegi állapotában nem frissíthető.",
+    "TASK_ALREADY_EXISTS": "Ez a feladat már létezik.",
+    "REWARD_NOT_ALLOWED": "Ezt a jutalmat nem módosíthatja.",
+    "REWARD_INACTIVE": "Ez a jutalom már nem érhető el.",
+    "REWARD_INSUFFICIENT_BALANCE": "Nincs elég csillag ehhez a jutalomhoz.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Ez a jutalom jelenlegi állapotában nem frissíthető."
   }
 }

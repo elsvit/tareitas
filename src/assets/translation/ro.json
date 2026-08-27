@@ -113,7 +113,8 @@
       "sign_out": "Deconectare",
       "session_expired": "Sesiunea a expirat. Autentifică-te din nou pentru sincronizare.",
       "login_screen_title": "Autentificare",
-      "login_screen_subtitle": "Autentifică-te pentru a sincroniza familia între dispozitive."
+      "login_screen_subtitle": "Autentifică-te pentru a sincroniza familia între dispozitive.",
+      "sync_try_later": "Nu s-a putut sincroniza acum. Încercați din nou peste un moment."
     },
     "show_login_name": "Afișează numele de autentificare",
     "parents": "Părinți"
@@ -386,7 +387,7 @@
       "makeAnAppliqueDescription": "Faceți o cerere",
       "playAnMusicInstrument": "Cântați la un instrument muzical",
       "playAnMusicInstrumentDescription": "Cântați la un instrument muzical cel puțin 15 minute pe zi sau o piesă de 5 ori",
-      "singASong": "a cânta",
+      "singASong": "A cânta",
       "singASongDescription": "Cântați o melodie preferată sau cea care a fost cerută la școala de muzică",
       "musicTheory": "Teoria muzicii",
       "musicTheoryDescription": "Studiați teoria muzicii, solfegiu, faceți temele de teoria muzicii",
@@ -400,7 +401,7 @@
       "activeGameDescription": "Joacă fotbal, tenis, baschet, jocuri de apă etc.",
       "stretch": "Întinderea",
       "stretchDescription": "Întindeți-vă, cel puțin 10 minute",
-      "squats": "ghemuit",
+      "squats": "Ghemuit",
       "squatsDescription": "Squat, de cel puțin 20 de ori",
       "pullUps": "Tragând în sus",
       "pullUpsDescription": "Trageți în sus de cel puțin 5 ori",
@@ -447,7 +448,16 @@
       "pending": "În așteptare",
       "reject": "Respinge",
       "rejected": "Respins"
-    }
+    },
+    "delete_only_pending": "Pot fi șterse doar sarcinile în așteptare.",
+    "status_locked_closed_period": "Starea nu poate fi schimbată — luna aceasta este închisă în istoricul recompenselor",
+    "recurring_delete_title": "Șterge",
+    "recurring_delete_only_this": "Doar această sarcină",
+    "recurring_delete_only_this_desc": "Șterge doar ziua selectată",
+    "recurring_delete_following": "Această sarcină și următoarele",
+    "recurring_delete_following_desc": "Șterge de la această zi înainte",
+    "recurring_delete_all": "Toate sarcinile",
+    "recurring_delete_all_desc": "Șterge întreaga serie"
   },
   "habits": {
     "title": "Obiceiuri",
@@ -493,7 +503,8 @@
       "selected": "Selectat",
       "approved": "Aprobat",
       "rewards": "Recompense",
-      "history": "Istorie"
+      "history": "Istorie",
+      "completed": "Finalizate"
     },
     "status": {
       "available": "Disponibil",
@@ -501,7 +512,8 @@
       "pending": "În așteptare",
       "selected": "Selectat",
       "approved": "Aprobat",
-      "rejected": "Respins"
+      "rejected": "Respins",
+      "completed": "Finalizată"
     },
     "action": {
       "select": "Selecta",
@@ -511,7 +523,9 @@
       "reject": "Respinge",
       "approve": "Aproba",
       "complete": "Complet"
-    }
+    },
+    "previous_reward_template": "Folosește recompensa anterioară",
+    "no_completed": "Nu există încă recompense finalizate"
   },
   "baseRewards": {
     "choose_desert": "Alege desertul din seara asta",
@@ -616,7 +630,8 @@
       "error_email_required": "E-mailul este obligatoriu",
       "error_username_required": "Numele de utilizator este obligatoriu",
       "error_pin_required": "Introdu un PIN din 4 cifre",
-      "error_generic": "Autentificarea a eșuat. Verifică datele și încearcă din nou."
+      "error_generic": "Autentificarea a eșuat. Verifică datele și încearcă din nou.",
+      "error_empty_family": "Autentificat, dar nu s-au găsit membri ai familiei. Încercați din nou."
     },
     "sign_up": {
       "admin_header": "Creează admin",
@@ -651,5 +666,21 @@
     "write_us": "Scrie-ne",
     "write_us_hint": "Atingeți pentru a ne trimite un e-mail",
     "change_user": "Schimbă utilizatorul"
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Ceva nu a mers bine. Încercați din nou.",
+    "INTERNAL_ERROR": "Ceva nu a mers bine. Încercați din nou.",
+    "VALIDATION_ERROR": "Cerere invalidă. Verificați datele introduse.",
+    "NOT_FOUND": "Resursa nu a fost găsită.",
+    "FORBIDDEN": "Nu aveți permisiunea de a efectua această acțiune.",
+    "UNAUTHORIZED": "Nu sunteți autorizat. Conectați-vă din nou.",
+    "TASK_NOT_FOUND": "Sarcina nu a fost găsită.",
+    "TASK_NOT_ALLOWED": "Nu puteți modifica această sarcină.",
+    "TASK_INVALID_STATUS": "Această sarcină nu poate fi actualizată în starea actuală.",
+    "TASK_ALREADY_EXISTS": "Această sarcină există deja.",
+    "REWARD_NOT_ALLOWED": "Nu puteți modifica această recompensă.",
+    "REWARD_INACTIVE": "Această recompensă nu mai este disponibilă.",
+    "REWARD_INSUFFICIENT_BALANCE": "Nu sunt suficiente stele pentru această recompensă.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Această recompensă nu poate fi actualizată în starea actuală."
   }
 }

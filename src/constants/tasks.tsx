@@ -222,7 +222,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     id: 'goToBedOnTime',
     name: t('tasks.baseTasks.goToBedOnTime'),
     description: t('tasks.baseTasks.goToBedOnTimeDescription'),
-    picture: 'alarm_morning',
+    picture: 'alarm_evening',
     time: '21:00',
   },
   {
@@ -236,7 +236,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     id: 'prepareClothesForTomorrow',
     name: t('tasks.baseTasks.prepareClothesForTomorrow'),
     description: t('tasks.baseTasks.prepareClothesForTomorrowDescription'),
-    picture: 'clothes_tomorrow',
+    picture: 'gather_clean_clothes',
     time: '9:15',
   },
   {
@@ -387,28 +387,28 @@ export const getBaseTasks = (): ITaskBase[] => {
     time: '15:39',
   },
   {
-    id: 'do_homework',
+    id: 'homework',
     name: t('tasks.baseTasks.doHomework'),
     description: t('tasks.baseTasks.doHomeworkDescription'),
-    picture: 'do_homework',
+    picture: 'homework',
   },
   {
     id: 'repeatTheMaterial',
     name: t('tasks.baseTasks.repeatTheMaterial'),
     description: t('tasks.baseTasks.repeatTheMaterialDescription'),
-    picture: 'do_homework',
+    picture: 'homework',
   },
   {
     id: 'prepareForTheTest',
     name: t('tasks.baseTasks.prepareForTheTest'),
     description: t('tasks.baseTasks.prepareForTheTestDescription'),
-    picture: 'do_homework',
+    picture: 'homework',
   },
   {
     id: 'learnNewTopic',
     name: t('tasks.baseTasks.learnNewTopic'),
     description: t('tasks.baseTasks.learnNewTopicDescription'),
-    picture: 'do_homework',
+    picture: 'homework',
   },
   {
     id: 'learnNewLanguage',
@@ -576,7 +576,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     id: 'feedThePet',
     name: t('tasks.baseTasks.feedThePet'),
     description: t('tasks.baseTasks.feedThePetDescription'),
-    picture: 'feed_pet',
+    picture: 'water_for_pet',
   },
   {
     id: 'pourWaterToThePet',

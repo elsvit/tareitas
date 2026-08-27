@@ -113,7 +113,8 @@
       "sign_out": "Odhlásit se",
       "session_expired": "Vaše relace vypršela. Přihlaste se znovu pro synchronizaci.",
       "login_screen_title": "Přihlášení",
-      "login_screen_subtitle": "Přihlaste se pro synchronizaci rodiny mezi zařízeními."
+      "login_screen_subtitle": "Přihlaste se pro synchronizaci rodiny mezi zařízeními.",
+      "sync_try_later": "Synchronizace se nyní nezdařila. Zkuste to za chvíli znovu."
     },
     "show_login_name": "Zobrazit přihlašovací jméno",
     "parents": "Rodiče"
@@ -386,7 +387,7 @@
       "makeAnAppliqueDescription": "Vytvořte aplikaci",
       "playAnMusicInstrument": "Hrajte na hudební nástroj",
       "playAnMusicInstrumentDescription": "Hrajte na hudební nástroj alespoň 15 minut denně nebo 5x na jeden kus",
-      "singASong": "zpívat",
+      "singASong": "Zpívat",
       "singASongDescription": "Zazpívejte oblíbenou písničku nebo písničku, na kterou se ptali v hudební škole",
       "musicTheory": "Hudební teorie",
       "musicTheoryDescription": "Studujte hudební teorii, solfeggio, udělejte domácí úkoly z hudební teorie",
@@ -447,7 +448,16 @@
       "pending": "Čeká na vyřízení",
       "reject": "Odmítnout",
       "rejected": "Odmítnuto"
-    }
+    },
+    "delete_only_pending": "Smazat lze pouze nevyřízené úkoly.",
+    "status_locked_closed_period": "Stav nelze změnit — tento měsíc je uzavřen v historii odměn",
+    "recurring_delete_title": "Smazat",
+    "recurring_delete_only_this": "Pouze tento úkol",
+    "recurring_delete_only_this_desc": "Smazat pouze vybraný den",
+    "recurring_delete_following": "Tento úkol a následující",
+    "recurring_delete_following_desc": "Smazat od tohoto dne dále",
+    "recurring_delete_all": "Všechny úkoly",
+    "recurring_delete_all_desc": "Smazat celou sérii"
   },
   "habits": {
     "title": "Zvyky",
@@ -493,7 +503,8 @@
       "selected": "Vybraný",
       "approved": "Schválený",
       "rewards": "Odměny",
-      "history": "Dějiny"
+      "history": "Dějiny",
+      "completed": "Dokončené"
     },
     "status": {
       "available": "K dispozici",
@@ -501,7 +512,8 @@
       "pending": "Čeká na vyřízení",
       "selected": "Vybraný",
       "approved": "Schválený",
-      "rejected": "Odmítnuto"
+      "rejected": "Odmítnuto",
+      "completed": "Dokončeno"
     },
     "action": {
       "select": "Vybrat",
@@ -511,7 +523,9 @@
       "reject": "Odmítnout",
       "approve": "Schvalovat",
       "complete": "Kompletní"
-    }
+    },
+    "previous_reward_template": "Použít předchozí odměnu",
+    "no_completed": "Zatím žádné dokončené odměny"
   },
   "baseRewards": {
     "choose_desert": "Vyberte si dnešní dezert",
@@ -616,7 +630,8 @@
       "error_email_required": "E-mail je povinný",
       "error_username_required": "Uživatelské jméno je povinné",
       "error_pin_required": "Zadejte 4místný PIN",
-      "error_generic": "Přihlášení se nezdařilo. Zkontrolujte údaje a zkuste to znovu."
+      "error_generic": "Přihlášení se nezdařilo. Zkontrolujte údaje a zkuste to znovu.",
+      "error_empty_family": "Přihlášení proběhlo, ale nebyli nalezeni členové rodiny. Zkuste to znovu."
     },
     "sign_up": {
       "admin_header": "Vytvořit admina",
@@ -651,5 +666,21 @@
     "write_us": "Napište nám",
     "write_us_hint": "Klepnutím nám pošlete e-mail",
     "change_user": "Změnit uživatele"
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Něco se pokazilo. Zkuste to prosím znovu.",
+    "INTERNAL_ERROR": "Něco se pokazilo. Zkuste to prosím znovu.",
+    "VALIDATION_ERROR": "Neplatný požadavek. Zkontrolujte prosím zadané údaje.",
+    "NOT_FOUND": "Zdroj nebyl nalezen.",
+    "FORBIDDEN": "Nemáte oprávnění provést tuto akci.",
+    "UNAUTHORIZED": "Nejste autorizováni. Přihlaste se prosím znovu.",
+    "TASK_NOT_FOUND": "Úkol nebyl nalezen.",
+    "TASK_NOT_ALLOWED": "Tento úkol nemůžete upravit.",
+    "TASK_INVALID_STATUS": "Tento úkol nelze v aktuálním stavu aktualizovat.",
+    "TASK_ALREADY_EXISTS": "Tento úkol již existuje.",
+    "REWARD_NOT_ALLOWED": "Tuto odměnu nemůžete upravit.",
+    "REWARD_INACTIVE": "Tato odměna již není k dispozici.",
+    "REWARD_INSUFFICIENT_BALANCE": "Na tuto odměnu nemáte dost hvězdiček.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Tuto odměnu nelze v aktuálním stavu aktualizovat."
   }
 }

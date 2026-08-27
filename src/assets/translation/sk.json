@@ -113,7 +113,8 @@
       "sign_out": "Odhlásiť sa",
       "session_expired": "Vaša relácia vypršala. Prihláste sa znova na synchronizáciu.",
       "login_screen_title": "Prihlásenie",
-      "login_screen_subtitle": "Prihláste sa na synchronizáciu rodiny medzi zariadeniami."
+      "login_screen_subtitle": "Prihláste sa na synchronizáciu rodiny medzi zariadeniami.",
+      "sync_try_later": "Synchronizácia teraz zlyhala. Skúste to o chvíľu znova."
     },
     "show_login_name": "Zobraziť prihlasovacie meno",
     "parents": "Rodičia"
@@ -386,7 +387,7 @@
       "makeAnAppliqueDescription": "Urobte si žiadosť",
       "playAnMusicInstrument": "Hrať na hudobnom nástroji",
       "playAnMusicInstrumentDescription": "Hrajte na hudobnom nástroji aspoň 15 minút denne alebo 5-krát jeden kus",
-      "singASong": "spievať",
+      "singASong": "Spievať",
       "singASongDescription": "Zaspievajte obľúbenú pieseň alebo pieseň, ktorú si pýtali v hudobnej škole",
       "musicTheory": "Hudobná teória",
       "musicTheoryDescription": "Študujte hudobnú teóriu, solfeggio, urobte si domáce úlohy z hudobnej teórie",
@@ -447,7 +448,16 @@
       "pending": "Čaká na spracovanie",
       "reject": "Odmietnuť",
       "rejected": "Odmietnuté"
-    }
+    },
+    "delete_only_pending": "Odstrániť možno len čakajúce úlohy.",
+    "status_locked_closed_period": "Stav nemožno zmeniť — tento mesiac je uzavretý v histórii odmien",
+    "recurring_delete_title": "Odstrániť",
+    "recurring_delete_only_this": "Len túto úlohu",
+    "recurring_delete_only_this_desc": "Odstrániť len vybraný deň",
+    "recurring_delete_following": "Túto úlohu a nasledujúce",
+    "recurring_delete_following_desc": "Odstrániť od tohto dňa",
+    "recurring_delete_all": "Všetky úlohy",
+    "recurring_delete_all_desc": "Odstrániť celú sériu"
   },
   "habits": {
     "title": "Návyky",
@@ -493,7 +503,8 @@
       "selected": "Vybrané",
       "approved": "Schválené",
       "rewards": "Odmeny",
-      "history": "História"
+      "history": "História",
+      "completed": "Dokončené"
     },
     "status": {
       "available": "K dispozícii",
@@ -501,7 +512,8 @@
       "pending": "Čaká na spracovanie",
       "selected": "Vybrané",
       "approved": "Schválené",
-      "rejected": "Odmietnuté"
+      "rejected": "Odmietnuté",
+      "completed": "Dokončené"
     },
     "action": {
       "select": "Vyberte",
@@ -511,7 +523,9 @@
       "reject": "Odmietnuť",
       "approve": "schváliť",
       "complete": "Dokončiť"
-    }
+    },
+    "previous_reward_template": "Použiť predchádzajúcu odmenu",
+    "no_completed": "Zatiaľ žiadne dokončené odmeny"
   },
   "baseRewards": {
     "choose_desert": "Vyberte si dnešný dezert",
@@ -616,7 +630,8 @@
       "error_email_required": "E-mail je povinný",
       "error_username_required": "Používateľské meno je povinné",
       "error_pin_required": "Zadajte 4-miestny PIN",
-      "error_generic": "Prihlásenie zlyhalo. Skontrolujte údaje a skúste znova."
+      "error_generic": "Prihlásenie zlyhalo. Skontrolujte údaje a skúste znova.",
+      "error_empty_family": "Prihlásený, ale nenašli sa členovia rodiny. Skúste to znova."
     },
     "sign_up": {
       "admin_header": "Vytvoriť admina",
@@ -651,5 +666,21 @@
     "write_us": "Napíšte nám",
     "write_us_hint": "Klepnutím nám pošlite e-mail",
     "change_user": "Zmeniť používateľa"
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Niečo sa pokazilo. Skúste to znova.",
+    "INTERNAL_ERROR": "Niečo sa pokazilo. Skúste to znova.",
+    "VALIDATION_ERROR": "Neplatná požiadavka. Skontrolujte zadané údaje.",
+    "NOT_FOUND": "Zdroj sa nenašiel.",
+    "FORBIDDEN": "Nemáte oprávnenie vykonať túto akciu.",
+    "UNAUTHORIZED": "Nie ste autorizovaní. Prihláste sa znova.",
+    "TASK_NOT_FOUND": "Úloha sa nenašla.",
+    "TASK_NOT_ALLOWED": "Túto úlohu nemôžete upraviť.",
+    "TASK_INVALID_STATUS": "Túto úlohu nie je možné aktualizovať v aktuálnom stave.",
+    "TASK_ALREADY_EXISTS": "Táto úloha už existuje.",
+    "REWARD_NOT_ALLOWED": "Túto odmenu nemôžete upraviť.",
+    "REWARD_INACTIVE": "Táto odmena už nie je k dispozícii.",
+    "REWARD_INSUFFICIENT_BALANCE": "Na túto odmenu nemáte dosť hviezd.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Túto odmenu nie je možné aktualizovať v aktuálnom stave."
   }
 }
