@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import { Text } from '~/components/ui';
-import { Colors } from '~/styles';
+import { Colors, spacing } from '~/styles';
 
 export type SegmentedSection<TItem, TSectionExtra = Record<string, unknown>> = {
   title: string;
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     paddingBottom: 96,
   },
   sectionHeader: {
-    paddingTop: 16,
+    paddingTop: spacing(2),
     paddingBottom: 8,
     backgroundColor: 'transparent',
   },

@@ -27,7 +27,7 @@ import {
   removeReward,
   updateReward,
 } from '~/store/rewards/slice';
-import { Colors } from '~/styles';
+import { Colors, spacing } from '~/styles';
 import { ERewardStatus } from '~/types/EReward';
 
 type ChildTabRoute = {
@@ -317,7 +317,8 @@ const styles = StyleSheet.create({
   },
   listContent: {
     flexGrow: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing(4),
+    paddingTop: spacing(2),
     paddingBottom: 96,
   },
   separator: {

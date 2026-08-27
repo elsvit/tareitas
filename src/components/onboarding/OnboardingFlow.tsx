@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Keyboard, Platform, ScrollView, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,7 +32,7 @@ import {
   setRequireLogin,
   setSyncMode,
 } from '~/store/settings/slice';
-import { Colors } from '~/styles';
+import { Colors, spacing } from '~/styles';
 import { EFormMode } from '~/types/ECommon';
 import type { ChildFormProps } from '~/types/IChild';
 import type { ParentFormProps } from '~/types/IParent';
@@ -103,6 +103,7 @@ export function OnboardingFlow({
     useState<Partial<SignUpAdminData>>({ role: ERole.admin });
   const [signUpError, setSignUpError] = useState<string | null>(null);
   const [isSubmittingSignUp, setIsSubmittingSignUp] = useState(false);
+  const [keyboardInset, setKeyboardInset] = useState(0);
 
   const isMultidevice = syncMode === ESyncMode.multidevice;
   const isMultideviceFlow =
@@ -181,6 +182,32 @@ export function OnboardingFlow({
   useEffect(() => {
     scrollRef.current?.scrollTo({ y: 0, animated: false });
   }, [step]);
+
+  useEffect(() => {
+    const showEvent =
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent =
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const showSubscription = Keyboard.addListener(showEvent, event => {
+      setKeyboardInset(event.endCoordinates.height);
+
+      if (isSyncModeStep && setupPath === 'connect') {
+        requestAnimationFrame(() => {
+          scrollRef.current?.scrollToEnd({ animated: true });
+        });
+      }
+    });
+
+    const hideSubscription = Keyboard.addListener(hideEvent, () => {
+      setKeyboardInset(0);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, [isSyncModeStep, setupPath]);
 
   const onBack = () => {
     if (canExitFromSyncMode) {
@@ -499,9 +526,15 @@ export function OnboardingFlow({
       <ScrollView
         ref={scrollRef}
         style={styles.flex}
-        contentContainerStyle={styles.container}
+        contentContainerStyle={[
+          styles.container,
+          keyboardInset > 0 && {
+            paddingBottom: keyboardInset + spacing(2),
+          },
+        ]}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="interactive"
       >
         <ProgressBar progress={progress} style={styles.progressBar} />
 
