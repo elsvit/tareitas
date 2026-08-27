@@ -484,7 +484,7 @@
     "manage_requires_admin_login": "Logga in som administratör eller förälder för att skapa, redigera eller ta bort belöningar.",
     "initial_reward": "Inledande belöning",
     "month_reward": "Månadsbelöning",
-    "approve_period": "Godkänn period",
+    "approve_period": "Godkänn föregående period",
     "approve_period_confirm": "Stänga belöningsperioder till och med denna månad och överföra saldon för alla öppna månader?",
     "approve_month": "Godkänn månad",
     "set_initial_reward": "Ställ in första belöning",

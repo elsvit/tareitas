@@ -19,6 +19,7 @@ import {
   ServerRewardRedemptionStatus,
 } from '~/services/api/rewardsApi';
 import { fetchFamilyDetails } from '~/services/api';
+import { getFamilyEarnedRewardPeriods } from '~/services/api/earnedRewardPeriodsApi';
 import { buildFamilyMembersSyncPlan } from '~/services/familySync';
 import { resolveAndCacheRewardPicture, resolveAndCacheTaskPicture } from '~/store/helpers/imageRefSync';
 import {
@@ -42,7 +43,9 @@ import { replaceRewardAssignments, remapRewardAssignmentChildIds } from '~/store
 import { mapServerChildUserIdsToChildIds } from '~/store/rewardAssignment/childIds';
 import { inferRewardAssignmentPicture } from '~/store/rewardAssignment/rewardAssignmentPicture';
 import { selectAllRewardBase } from '~/store/rewardBase/selectors';
-import { replaceRewardInstancesFromServer } from '~/store/rewards/slice';
+import { replaceRewardInstancesFromServer, syncEarnedRewardPeriods } from '~/store/rewards/slice';
+import { normalizeEarnedRewardPeriods } from '~/store/rewards/earnedRewardPeriodUtils';
+import { syncEarnedRewardPeriodsFromState } from '~/store/rewards/rewardCalculations';
 import { replaceTaskAssignments } from '~/store/taskAssignment/slice';
 import { replaceTasksFromServer } from '~/store/tasks/slice';
 import type { IState } from '~/store/types';
@@ -302,6 +305,30 @@ export function* syncRewardsDataFromServerSaga(): Generator<
 
   yield put(replaceRewardAssignments(assignmentsWithPictures));
   yield put(replaceRewardInstancesFromServer(reconciledRewards));
+
+  try {
+    const { periods: serverPeriods } = yield* callMultideviceApi(token =>
+      getFamilyEarnedRewardPeriods(token, session.familyId),
+    );
+
+    yield put(
+      syncEarnedRewardPeriods(
+        normalizeEarnedRewardPeriods(serverPeriods),
+      ),
+    );
+
+    const nextState: IState = yield select(
+      (currentState: IState) => currentState,
+    );
+
+    yield put(
+      syncEarnedRewardPeriods(
+        syncEarnedRewardPeriodsFromState(nextState),
+      ),
+    );
+  } catch {
+    // Keep local earned reward periods if fetch fails.
+  }
 }
 
 export function* syncFamilyMembersFromServerSaga(): Generator<

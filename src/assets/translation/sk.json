@@ -484,7 +484,7 @@
     "manage_requires_admin_login": "Prihláste sa ako správca alebo rodič na vytváranie, úpravu alebo mazanie odmien.",
     "initial_reward": "Počiatočná odmena",
     "month_reward": "Mesačná odmena",
-    "approve_period": "Schvaľovacie obdobie",
+    "approve_period": "Schváliť predchádzajúce obdobie",
     "approve_period_confirm": "Uzavrieť obdobia odmeňovania počas tohto mesiaca a preniesť zostatky za všetky otvorené mesiace?",
     "approve_month": "Schváliť mesiac",
     "set_initial_reward": "Nastavte počiatočnú odmenu",

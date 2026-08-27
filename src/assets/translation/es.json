@@ -525,7 +525,7 @@
     "manage_requires_admin_login": "Inicia sesión como administrador o padre/madre para crear, editar o eliminar premios.",
     "initial_reward": "Premio inicial",
     "month_reward": "Premio del mes",
-    "approve_period": "Aprobar periodo",
+    "approve_period": "Aprobar periodo anterior",
     "approve_period_confirm": "¿Cerrar los periodos de premios hasta este mes y arrastrar los saldos de todos los meses abiertos?",
     "approve_month": "Aprobar mes",
     "set_initial_reward": "Establecer premio inicial",

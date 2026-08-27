@@ -478,7 +478,7 @@
     "manage_requires_admin_login": "Inicie sessão como administrador ou encarregado de educação para criar, editar ou eliminar recompensas.",
     "initial_reward": "Recompensa Inicial",
     "month_reward": "Recompensa Mensal",
-    "approve_period": "Aprovar período",
+    "approve_period": "Aprovar período anterior",
     "approve_period_confirm": "Fechar períodos de recompensa através deste mês e transferir saldos para todos os meses abertos?",
     "approve_month": "Aprovar mês",
     "set_initial_reward": "Definir recompensa inicial",

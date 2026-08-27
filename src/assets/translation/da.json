@@ -355,7 +355,7 @@
     "manage_requires_admin_login": "Log ind som administrator eller forælder for at oprette, redigere eller slette belønninger.",
     "initial_reward": "Indledende belønning",
     "month_reward": "Måneds belønning",
-    "approve_period": "Godkend periode",
+    "approve_period": "Godkend forrige periode",
     "approve_period_confirm": "Vil du lukke belønningsperioder gennem denne måned og overføre saldi for alle åbne måneder?",
     "approve_month": "Godkend måned",
     "set_initial_reward": "Indstil indledende belønning",
