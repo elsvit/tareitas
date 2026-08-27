@@ -483,7 +483,7 @@
     "no_history": "Még nincs előzmény",
     "initial_reward": "Kezdeti jutalom",
     "month_reward": "Havi jutalom",
-    "approve_period": "Jóváhagyási időszak",
+    "approve_period": "Előző időszak jóváhagyása",
     "approve_period_confirm": "Lezárja a jutalmazási időszakokat ebben a hónapban, és átviszi az egyenlegeket az összes nyitott hónapra?",
     "approve_month": "Jóváhagyás hónap",
     "set_initial_reward": "Állítsa be a kezdeti jutalmat",

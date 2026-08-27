@@ -483,7 +483,7 @@
     "no_history": "Ei vielä historiaa",
     "initial_reward": "Alkupalkinto",
     "month_reward": "Kuukauden palkinto",
-    "approve_period": "Hyväksymisaika",
+    "approve_period": "Hyväksy edellinen jakso",
     "approve_period_confirm": "Suljetaanko palkintojaksot tämän kuun loppuun ja siirretäänkö saldot kaikille avoimille kuukausille?",
     "approve_month": "Hyväksy kuukausi",
     "set_initial_reward": "Aseta alkupalkinto",

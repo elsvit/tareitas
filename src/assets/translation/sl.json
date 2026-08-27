@@ -483,7 +483,7 @@
     "no_history": "Ni še zgodovine",
     "initial_reward": "Začetna nagrada",
     "month_reward": "Mesečna nagrada",
-    "approve_period": "Obdobje odobritve",
+    "approve_period": "Odobri prejšnje obdobje",
     "approve_period_confirm": "Zapreti obdobja nagrajevanja skozi ta mesec in prenesti stanja za vse odprte mesece?",
     "approve_month": "Odobritev meseca",
     "set_initial_reward": "Določite začetno nagrado",

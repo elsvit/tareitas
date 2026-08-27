@@ -517,7 +517,7 @@
     "manage_requires_admin_login": "Sign in as admin or parent to create, edit, or delete rewards.",
     "initial_reward": "Initial reward",
     "month_reward": "Month reward",
-    "approve_period": "Approve period",
+    "approve_period": "Approve previous period",
     "approve_period_confirm": "Close reward periods through this month and carry forward balances for all open months?",
     "approve_month": "Approve month",
     "set_initial_reward": "Set initial reward",

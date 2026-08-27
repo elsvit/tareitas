@@ -483,7 +483,7 @@
     "no_history": "Pas encore d'historique",
     "initial_reward": "Récompense initiale",
     "month_reward": "Récompense du mois",
-    "approve_period": "Période d'approbation",
+    "approve_period": "Approuver la période précédente",
     "approve_period_confirm": "Clôturer les périodes de récompense ce mois-ci et reporter les soldes pour tous les mois ouverts ?",
     "approve_month": "Approuver le mois",
     "set_initial_reward": "Définir la récompense initiale",

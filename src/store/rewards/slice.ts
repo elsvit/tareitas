@@ -73,7 +73,8 @@ export const rewardsSlice = createSlice({
         remainingRewardFromPreviousMonths: amount,
       });
     },
-    approvePeriod: (state, action: PayloadAction<ApprovePeriodPayload>) => {
+    approvePeriod: noopEntityRequestReducer,
+    approvePeriodSuccess: (state, action: PayloadAction<ApprovePeriodPayload>) => {
       ensureEarnedRewardPeriods(state);
       const { childId, updates } = action.payload;
 
@@ -179,6 +180,7 @@ export const {
   clearRewards,
   setRemainingRewardFromPreviousMonths,
   approvePeriod,
+  approvePeriodSuccess,
   syncEarnedRewardPeriods,
   replaceRewardInstancesFromServer,
 } = rewardsSlice.actions;
