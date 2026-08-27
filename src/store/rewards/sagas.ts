@@ -8,28 +8,38 @@ import {
   redeemFamilyReward,
   rejectRewardRedemption,
 } from '~/services/api/rewardsApi';
+import {
+  putFamilyEarnedRewardPeriods,
+} from '~/services/api/earnedRewardPeriodsApi';
 import { ApiError } from '~/services/api/client';
 import { ERewardStatus } from '~/types/EReward';
+import { IEarnedRewardPeriods } from '~/types/IReward';
 import {
   assertMultideviceSession,
   callMultideviceApi,
 } from '~/store/helpers/multideviceSession';
+import { selectCanReviewTasks } from '~/store/settings/selectors';
 import { takeLatestWithFetchable } from '../helpers/fetchableHandler';
 import { RootStateT } from '~/store';
 import {
   addReward,
   addRewardSuccess,
+  approvePeriod,
+  approvePeriodSuccess,
   removeReward,
   removeRewardSuccess,
+  syncEarnedRewardPeriods,
   updateReward,
   updateRewardSuccess,
 } from './slice';
 import { selectRewardById, selectAllRewards } from './selectors';
 import {
   AddRewardPayload,
+  ApprovePeriodPayload,
   RemoveRewardPayload,
   UpdateRewardPayload,
 } from './types';
+import { syncEarnedRewardPeriodsFromState } from './rewardCalculations';
 import { syncRewardsData } from '~/store/settings/slice';
 import { IReward } from '~/types/IReward';
 
@@ -59,6 +69,49 @@ function resolveRedemptionIdForComplete(
 
     return currentTime >= latestTime ? current : latest;
   }).id;
+}
+
+function* pushEarnedRewardPeriodsToServer(
+  periods: IEarnedRewardPeriods,
+): Generator<any, void, any> {
+  const session = yield* assertMultideviceSession();
+
+  if (!session) {
+    return;
+  }
+
+  const canManage: boolean = yield select(selectCanReviewTasks);
+
+  if (!canManage) {
+    return;
+  }
+
+  yield* callMultideviceApi(token =>
+    putFamilyEarnedRewardPeriods(
+      token,
+      session.familyId,
+      periods,
+    ),
+  );
+}
+
+function* approvePeriodSaga(
+  action: PayloadAction<ApprovePeriodPayload>,
+): Generator<any, void, any> {
+  yield put(approvePeriodSuccess(action.payload));
+
+  const state: RootStateT = yield select(
+    (currentState: RootStateT) => currentState,
+  );
+  const periods = syncEarnedRewardPeriodsFromState(state);
+
+  yield put(syncEarnedRewardPeriods(periods));
+
+  try {
+    yield* pushEarnedRewardPeriodsToServer(periods);
+  } catch {
+    // Local approval remains; sync on next screen focus will reconcile.
+  }
 }
 
 function* updateRewardSaga(
@@ -221,4 +274,5 @@ export default [
   takeLatestWithFetchable(addReward, addRewardSaga),
   takeLatestWithFetchable(updateReward, updateRewardSaga),
   takeLatestWithFetchable(removeReward, removeRewardSaga),
+  takeLatestWithFetchable(approvePeriod, approvePeriodSaga),
 ];

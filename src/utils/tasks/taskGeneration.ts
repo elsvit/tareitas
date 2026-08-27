@@ -15,10 +15,19 @@ export const isRepeatingAssignment = (assignment: ITaskAssignment) =>
   !!assignment.repeat &&
   assignment.repeat.type !== ETaskRepeatType.None;
 
+export const isAssignmentExcludedOnDate = (
+  assignment: ITaskAssignment,
+  date: string,
+): boolean => assignment.changes?.[date]?.excluded === true;
+
 export const shouldShowAssignmentOnDate = (
   assignment: ITaskAssignment,
   date: string,
 ): boolean => {
+  if (isAssignmentExcludedOnDate(assignment, date)) {
+    return false;
+  }
+
   const targetDate = parseISO(date);
   const startDate = parseISO(assignment.startDate);
 
