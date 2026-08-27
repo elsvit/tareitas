@@ -118,6 +118,7 @@ function* addRewardAssignmentSaga(
       toCreateFamilyRewardBody({
         ...entity,
         childIds: savedChildIds,
+        picture,
       }),
     ),
   );
