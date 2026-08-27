@@ -57,6 +57,7 @@ export interface ITaskAssignmentChange {
   picture?: string;
   newTaskBonus?: number;
   newTaskDuration?: number;
+  excluded?: boolean;
 }
 
 // for currently showing task in the calendar and completed tasks in task store

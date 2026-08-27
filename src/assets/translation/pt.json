@@ -475,6 +475,7 @@
     "no_selected": "O filho não selecionou nenhuma recompensa ainda",
     "no_approved": "Nenhuma recompensa aprovada",
     "no_history": "Nenhuma história ainda",
+    "manage_requires_admin_login": "Inicie sessão como administrador ou encarregado de educação para criar, editar ou eliminar recompensas.",
     "initial_reward": "Recompensa Inicial",
     "month_reward": "Recompensa Mensal",
     "approve_period": "Aprovar período",

@@ -481,6 +481,7 @@
     "no_selected": "A gyermek még nem választott ki jutalmakat",
     "no_approved": "Nincs jóváhagyott jutalom",
     "no_history": "Még nincs előzmény",
+    "manage_requires_admin_login": "Jelentkezzen be adminisztrátorként vagy szülőként a jutalmak létrehozásához, szerkesztéséhez vagy törléséhez.",
     "initial_reward": "Kezdeti jutalom",
     "month_reward": "Havi jutalom",
     "approve_period": "Jóváhagyási időszak",

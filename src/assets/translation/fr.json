@@ -481,6 +481,7 @@
     "no_selected": "L'enfant n'a pas encore sélectionné de récompenses",
     "no_approved": "Aucune récompense approuvée",
     "no_history": "Pas encore d'historique",
+    "manage_requires_admin_login": "Connectez-vous en tant qu'administrateur ou parent pour créer, modifier ou supprimer des récompenses.",
     "initial_reward": "Récompense initiale",
     "month_reward": "Récompense du mois",
     "approve_period": "Période d'approbation",

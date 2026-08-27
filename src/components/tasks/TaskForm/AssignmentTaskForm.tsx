@@ -2,9 +2,8 @@ import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { format } from 'date-fns';
-import { useRouter } from 'expo-router';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
@@ -37,7 +36,6 @@ import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectEarnedRewardPeriods } from '~/store/rewards/selectors';
 import { selectIsAdmin, selectIsChild } from '~/store/settings/selectors';
-import { removeTaskAssignment } from '~/store/taskAssignment/slice';
 import { selectAllTaskBaseInDefaultOrder } from '~/store/taskBase/selectors';
 import { Colors, userColors } from '~/styles';
 import { EFormMode, ERecurringEditScope, WeekDay } from '~/types/ECommon';
@@ -66,10 +64,13 @@ type Props = {
     assignments: TaskAssignmentFormProps[],
     scope?: ERecurringEditScope,
   ) => string | null;
+  onDelete?: (scope?: ERecurringEditScope) => void;
+  canDelete?: boolean;
   onValidityChange?: (valid: boolean) => void;
   showScreenHeader?: boolean;
   submitError?: string | null;
   isSubmitting?: boolean;
+  isDeleting?: boolean;
 };
 
 type FormValues = {
@@ -271,10 +272,13 @@ export const AssignmentTaskForm: FC<Props> = ({
   editDate,
   isHabit,
   onSave,
+  onDelete,
+  canDelete = true,
   onValidityChange,
   showScreenHeader = true,
   submitError = null,
   isSubmitting = false,
+  isDeleting = false,
 }) => {
   const headerTitle =
     title ??
@@ -286,10 +290,10 @@ export const AssignmentTaskForm: FC<Props> = ({
         ? t('tasks.add_task')
         : t('tasks.edit_task'));
 
-  const dispatch = useDispatch();
-  const router = useRouter();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [isScopeModalVisible, setIsScopeModalVisible] = useState(false);
+  const [scopeModalMode, setScopeModalMode] = useState<'save' | 'delete' | null>(
+    null,
+  );
   const [pendingPayload, setPendingPayload] = useState<
     TaskAssignmentFormProps[] | null
   >(null);
@@ -636,7 +640,7 @@ export const AssignmentTaskForm: FC<Props> = ({
       shouldPromptRecurringEditScope(assignment as ITaskAssignment, editDate)
     ) {
       setPendingPayload(payloads);
-      setIsScopeModalVisible(true);
+      setScopeModalMode('save');
       return;
     }
 
@@ -651,7 +655,13 @@ export const AssignmentTaskForm: FC<Props> = ({
   };
 
   const handleScopeSelect = (scope: ERecurringEditScope) => {
-    setIsScopeModalVisible(false);
+    const mode = scopeModalMode;
+    setScopeModalMode(null);
+
+    if (mode === 'delete') {
+      onDelete?.(scope);
+      return;
+    }
 
     if (!pendingPayload) {
       return;
@@ -669,8 +679,20 @@ export const AssignmentTaskForm: FC<Props> = ({
   };
 
   const handleScopeModalClose = () => {
-    setIsScopeModalVisible(false);
+    setScopeModalMode(null);
     setPendingPayload(null);
+  };
+
+  const handleDeletePress = () => {
+    if (
+      isEditMode &&
+      shouldPromptRecurringEditScope(assignment as ITaskAssignment, editDate)
+    ) {
+      setScopeModalMode('delete');
+      return;
+    }
+
+    setIsDeleteModalVisible(true);
   };
 
   const handleConfirmDelete = () => {
@@ -678,11 +700,8 @@ export const AssignmentTaskForm: FC<Props> = ({
       return;
     }
 
-    dispatch(removeTaskAssignment({ entity: assignment.id }));
-
-    if (router.canGoBack()) {
-      router.back();
-    }
+    setIsDeleteModalVisible(false);
+    onDelete?.();
   };
 
   return (
@@ -1206,7 +1225,9 @@ export const AssignmentTaskForm: FC<Props> = ({
                 <Button
                   mode="contained"
                   bgColor={ButtonColors.Red}
-                  onPress={() => setIsDeleteModalVisible(true)}
+                  onPress={handleDeletePress}
+                  loading={isDeleting}
+                  disabled={!canDelete || isDeleting || isSubmitting}
                 >
                   {t('button.delete')}
                 </Button>
@@ -1225,9 +1246,10 @@ export const AssignmentTaskForm: FC<Props> = ({
       />
 
       <EditRecurringTaskScopeModal
-        isVisible={isScopeModalVisible}
+        isVisible={scopeModalMode !== null}
         onRequestClose={handleScopeModalClose}
         onSelectScope={handleScopeSelect}
+        variant={scopeModalMode === 'delete' ? 'delete' : 'edit'}
       />
     </SafeAreaBgImage>
   );

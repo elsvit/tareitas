@@ -481,6 +481,7 @@
     "no_selected": "Copilul nu a selectat încă nicio recompensă",
     "no_approved": "Nicio recompensă aprobată",
     "no_history": "Nicio istorie încă",
+    "manage_requires_admin_login": "Conectați-vă ca administrator sau părinte pentru a crea, edita sau șterge recompense.",
     "initial_reward": "Recompensa inițială",
     "month_reward": "Recompensa lunara",
     "approve_period": "Aprobați perioada",

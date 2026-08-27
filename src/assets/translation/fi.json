@@ -481,6 +481,7 @@
     "no_selected": "Lapsi ei ole vielä valinnut yhtään palkintoa",
     "no_approved": "Ei hyväksyttyjä palkintoja",
     "no_history": "Ei vielä historiaa",
+    "manage_requires_admin_login": "Kirjaudu ylläpitäjänä tai vanhempana luodaksesi, muokataksesi tai poistaaksesi palkintoja.",
     "initial_reward": "Alkupalkinto",
     "month_reward": "Kuukauden palkinto",
     "approve_period": "Hyväksymisaika",

@@ -480,6 +480,7 @@
     "no_selected": "Il figlio non ha selezionato ancora nessun rimborso",
     "no_approved": "Nessun rimborso approvato",
     "no_history": "Nessun history ancora",
+    "manage_requires_admin_login": "Accedi come amministratore o genitore per creare, modificare o eliminare le ricompense.",
     "initial_reward": "Rimborso iniziale",
     "month_reward": "Rimborso mensile",
     "approve_period": "Approvare la periodo",

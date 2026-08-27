@@ -481,6 +481,7 @@
     "no_selected": "Kind heeft nog geen beloningen geselecteerd",
     "no_approved": "Geen goedgekeurde beloningen",
     "no_history": "Nog geen geschiedenis",
+    "manage_requires_admin_login": "Log in als beheerder of ouder om beloningen te maken, te bewerken of te verwijderen.",
     "initial_reward": "Eerste beloning",
     "month_reward": "Maand beloning",
     "approve_period": "Goedkeuren periode",

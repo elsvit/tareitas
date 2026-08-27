@@ -1,6 +1,6 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AssignmentTaskForm } from '~/components/tasks/TaskForm/AssignmentTaskForm';
@@ -12,12 +12,19 @@ import { selectEarnedRewardPeriods } from '~/store/rewards/selectors';
 import { selectTaskAssignmentById } from '~/store/taskAssignment/selectors';
 import {
   addTaskAssignment,
+  removeTaskAssignment,
   updateTaskAssignment,
 } from '~/store/taskAssignment/slice';
+import { selectAllTasks } from '~/store/tasks/selectors';
+import { removeTask } from '~/store/tasks/slice';
 import { EFormMode, ERecurringEditScope } from '~/types/ECommon';
 import { ITaskAssignment, TaskAssignmentFormProps } from '~/types/ITask';
 import {
+  applyRecurringTaskDelete,
   applyRecurringTaskEdit,
+  canDeleteTaskInstance,
+  collectPendingTaskIdsForAssignment,
+  validateTaskDeleteAllowed,
   shouldPromptRecurringEditScope,
 } from '~/utils/tasks/recurringTaskEdit';
 
@@ -39,7 +46,18 @@ export default function TaskAssignmentEdit() {
 
   const assignment = useSelector(selectTaskAssignmentById(id));
   const earnedRewardPeriods = useSelector(selectEarnedRewardPeriods);
+  const allTasks = useSelector(selectAllTasks);
   const isHabit = assignment?.isHabit ?? isHabitFromRoute;
+
+  const canDelete = useMemo(() => {
+    if (!assignment) {
+      return false;
+    }
+
+    const date = editDate ?? assignment.startDate;
+
+    return canDeleteTaskInstance(assignment.id, date, allTasks);
+  }, [allTasks, assignment, editDate]);
 
   const saveError = useSelector((state: RootStateT) => {
     const common = state[EStateName.common];
@@ -47,6 +65,7 @@ export default function TaskAssignmentEdit() {
     return (
       common[ECommonActions.ERROR][updateTaskAssignment.type]?.message ??
       common[ECommonActions.ERROR][addTaskAssignment.type]?.message ??
+      common[ECommonActions.ERROR][removeTaskAssignment.type]?.message ??
       null
     );
   });
@@ -61,6 +80,16 @@ export default function TaskAssignmentEdit() {
     );
   });
 
+  const isDeleting = useSelector((state: RootStateT) => {
+    const common = state[EStateName.common];
+
+    return (
+      common[ECommonActions.LOADING][removeTaskAssignment.type] ||
+      common[ECommonActions.LOADING][updateTaskAssignment.type] ||
+      false
+    );
+  });
+
   useEffect(() => {
     if (saveError) {
       setSubmitError(saveError);
@@ -69,18 +98,72 @@ export default function TaskAssignmentEdit() {
   }, [saveError]);
 
   useEffect(() => {
-    if (pendingNavigation && !isSaving && !saveError) {
+    if (pendingNavigation && !isSaving && !isDeleting && !saveError) {
       setPendingNavigation(false);
 
       if (router.canGoBack()) {
         router.back();
       }
     }
-  }, [pendingNavigation, isSaving, saveError, router]);
+  }, [pendingNavigation, isSaving, isDeleting, saveError, router]);
 
   const finishSave = () => {
     setSubmitError(null);
     setPendingNavigation(true);
+  };
+
+  const removeTaskInstances = (taskIds: string[]) => {
+    for (const taskId of taskIds) {
+      dispatch(removeTask({ entity: taskId }));
+    }
+  };
+
+  const runAssignmentMutations = (
+    updates: ITaskAssignment[],
+    removes: string[],
+    onComplete: () => void,
+  ) => {
+    let remaining = updates.length + removes.length;
+
+    if (remaining === 0) {
+      onComplete();
+      return;
+    }
+
+    const handleSuccess = () => {
+      remaining -= 1;
+
+      if (remaining === 0) {
+        onComplete();
+      }
+    };
+
+    for (const entity of updates) {
+      if (assignment && entity.id === assignment.id) {
+        dispatch(
+          updateTaskAssignment({
+            entity,
+            onSuccess: handleSuccess,
+          }),
+        );
+      } else {
+        dispatch(
+          addTaskAssignment({
+            entity,
+            onSuccess: handleSuccess,
+          }),
+        );
+      }
+    }
+
+    for (const assignmentId of removes) {
+      dispatch(
+        removeTaskAssignment({
+          entity: assignmentId,
+          onSuccess: handleSuccess,
+        }),
+      );
+    }
   };
 
   const handleSave = (
@@ -112,28 +195,7 @@ export default function TaskAssignmentEdit() {
         return result.error;
       }
 
-      let remaining = result.updates.length;
-
-      if (remaining === 0) {
-        finishSave();
-        return null;
-      }
-
-      result.updates.forEach(entity => {
-        const onSuccess = () => {
-          remaining -= 1;
-
-          if (remaining === 0) {
-            finishSave();
-          }
-        };
-
-        if (entity.id === assignment.id) {
-          dispatch(updateTaskAssignment({ entity, onSuccess }));
-        } else {
-          dispatch(addTaskAssignment({ entity, onSuccess }));
-        }
-      });
+      runAssignmentMutations(result.updates, result.removes ?? [], finishSave);
 
       return null;
     }
@@ -152,6 +214,65 @@ export default function TaskAssignmentEdit() {
     return null;
   };
 
+  const handleDelete = (scope?: ERecurringEditScope) => {
+    if (!assignment || isDeleting) {
+      return;
+    }
+
+    setSubmitError(null);
+
+    const validationError = validateTaskDeleteAllowed(
+      assignment,
+      editDate,
+      scope,
+      allTasks,
+    );
+
+    if (validationError) {
+      setSubmitError(validationError);
+      return;
+    }
+
+    if (
+      shouldPromptRecurringEditScope(assignment, editDate) &&
+      scope &&
+      editDate
+    ) {
+      const result = applyRecurringTaskDelete(
+        {
+          assignment,
+          editDate,
+          scope,
+        },
+        allTasks,
+      );
+
+      if (!result.ok) {
+        setSubmitError(result.error);
+        return;
+      }
+
+      removeTaskInstances(result.taskIdsToRemove);
+      runAssignmentMutations(
+        result.updates ?? [],
+        result.removes ?? [],
+        finishSave,
+      );
+      return;
+    }
+
+    removeTaskInstances(
+      collectPendingTaskIdsForAssignment(assignment.id, allTasks),
+    );
+
+    dispatch(
+      removeTaskAssignment({
+        entity: assignment.id,
+        onSuccess: finishSave,
+      }),
+    );
+  };
+
   return (
     <AssignmentTaskForm
       mode={EFormMode.Edit}
@@ -160,8 +281,11 @@ export default function TaskAssignmentEdit() {
       isHabit={isHabit}
       title={isHabit ? t('habits.edit_habit') : undefined}
       onSave={handleSave}
+      onDelete={handleDelete}
+      canDelete={canDelete}
       submitError={submitError}
       isSubmitting={isSaving}
+      isDeleting={isDeleting}
     />
   );
 }
