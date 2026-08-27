@@ -113,7 +113,8 @@
       "sign_out": "Kirjaudu ulos",
       "session_expired": "Istuntosi on vanhentunut. Kirjaudu uudelleen synkronoidaksesi.",
       "login_screen_title": "Kirjaudu",
-      "login_screen_subtitle": "Kirjaudu synkronoidaksesi perheesi laitteiden välillä."
+      "login_screen_subtitle": "Kirjaudu synkronoidaksesi perheesi laitteiden välillä.",
+      "sync_try_later": "Synkronointi epäonnistui. Yritä hetken kuluttua uudelleen."
     },
     "show_login_name": "Näytä kirjautumisnimi",
     "parents": "Vanhemmat"
@@ -386,7 +387,7 @@
       "makeAnAppliqueDescription": "Tee hakemus",
       "playAnMusicInstrument": "Soita musiikki-instrumenttia",
       "playAnMusicInstrumentDescription": "Soita jotakin instrumenttia vähintään 15 minuuttia päivässä tai yhtä kappaletta 5 kertaa",
-      "singASong": "laulamaan",
+      "singASong": "Laulamaan",
       "singASongDescription": "Laula suosikkikappaleesi tai se, jota kysyttiin musiikkikoulussa",
       "musicTheory": "Musiikin teoria",
       "musicTheoryDescription": "Opiskele musiikin teoriaa, solfedžoa, tee läksyjä musiikin teoriasta",
@@ -402,7 +403,7 @@
       "stretchDescription": "Venytä, vähintään 10 minuuttia",
       "squats": "Kyykky",
       "squatsDescription": "Kyykky, vähintään 20 kertaa",
-      "pullUps": "vetää ylös",
+      "pullUps": "Vetää ylös",
       "pullUpsDescription": "Vedä ylös vähintään 5 kertaa",
       "pushUps": "Push-ups",
       "pushUpsDescription": "Työnnä ylös vähintään 20 kertaa",
@@ -414,7 +415,7 @@
       "playOutsideDescription": "Pelaa aktiivista peliä ulkona",
       "rideABicycle": "Aja pyörällä",
       "rideABicycleDescription": "Pyöräile 5 km",
-      "jumpOnTheTrampoline": "hyppynaru",
+      "jumpOnTheTrampoline": "Hyppynaru",
       "jumpOnTheTrampolineDescription": "Hyppynaru, vähintään 10 minuuttia",
       "swim": "Uima",
       "swimDescription": "Ui 200 metriä",
@@ -447,7 +448,16 @@
       "pending": "Odottaa",
       "reject": "Hylätä",
       "rejected": "Hylätty"
-    }
+    },
+    "delete_only_pending": "Vain odottavat tehtävät voidaan poistaa.",
+    "status_locked_closed_period": "Tilaa ei voi muuttaa — tämä kuukausi on suljettu palkintohistoriassa",
+    "recurring_delete_title": "Poista",
+    "recurring_delete_only_this": "Vain tämä tehtävä",
+    "recurring_delete_only_this_desc": "Poista vain valittu päivä",
+    "recurring_delete_following": "Tämä tehtävä ja seuraavat",
+    "recurring_delete_following_desc": "Poista tästä päivästä eteenpäin",
+    "recurring_delete_all": "Kaikki tehtävät",
+    "recurring_delete_all_desc": "Poista koko sarja"
   },
   "habits": {
     "title": "Tottumukset",
@@ -493,7 +503,8 @@
       "selected": "Valittu",
       "approved": "Hyväksytty",
       "rewards": "Palkinnot",
-      "history": "Historia"
+      "history": "Historia",
+      "completed": "Suoritetut"
     },
     "status": {
       "available": "Saatavilla",
@@ -501,7 +512,8 @@
       "pending": "Odottaa",
       "selected": "Valittu",
       "approved": "Hyväksytty",
-      "rejected": "Hylätty"
+      "rejected": "Hylätty",
+      "completed": "Suoritettu"
     },
     "action": {
       "select": "Valitse",
@@ -511,7 +523,9 @@
       "reject": "Hylätä",
       "approve": "Hyväksyä",
       "complete": "Täydellinen"
-    }
+    },
+    "previous_reward_template": "Käytä edellistä palkintoa",
+    "no_completed": "Ei vielä suoritettuja palkintoja"
   },
   "baseRewards": {
     "choose_desert": "Valitse illan jälkiruoka",
@@ -616,7 +630,8 @@
       "error_email_required": "Sähköposti on pakollinen",
       "error_username_required": "Käyttäjänimi on pakollinen",
       "error_pin_required": "Syötä 4-numeroinen PIN",
-      "error_generic": "Kirjautuminen epäonnistui. Tarkista tiedot ja yritä uudelleen."
+      "error_generic": "Kirjautuminen epäonnistui. Tarkista tiedot ja yritä uudelleen.",
+      "error_empty_family": "Kirjautuminen onnistui, mutta perheenjäseniä ei löytynyt. Yritä uudelleen."
     },
     "sign_up": {
       "admin_header": "Luo admin",
@@ -699,5 +714,21 @@
     "write_us": "Kirjoita meille",
     "write_us_hint": "Napauta lähettääksesi meille sähköpostia",
     "change_user": "Vaihda käyttäjää"
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Jokin meni pieleen. Yritä uudelleen.",
+    "INTERNAL_ERROR": "Jokin meni pieleen. Yritä uudelleen.",
+    "VALIDATION_ERROR": "Virheellinen pyyntö. Tarkista syöttämäsi tiedot.",
+    "NOT_FOUND": "Resurssia ei löytynyt.",
+    "FORBIDDEN": "Sinulla ei ole oikeutta suorittaa tätä toimintoa.",
+    "UNAUTHORIZED": "Et ole valtuutettu. Kirjaudu sisään uudelleen.",
+    "TASK_NOT_FOUND": "Tehtävää ei löytynyt.",
+    "TASK_NOT_ALLOWED": "Et voi muokata tätä tehtävää.",
+    "TASK_INVALID_STATUS": "Tätä tehtävää ei voi päivittää sen nykyisessä tilassa.",
+    "TASK_ALREADY_EXISTS": "Tämä tehtävä on jo olemassa.",
+    "REWARD_NOT_ALLOWED": "Et voi muokata tätä palkintoa.",
+    "REWARD_INACTIVE": "Tämä palkinto ei ole enää saatavilla.",
+    "REWARD_INSUFFICIENT_BALANCE": "Tähän palkintoon ei ole tarpeeksi tähtiä.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Tätä palkintoa ei voi päivittää sen nykyisessä tilassa."
   }
 }

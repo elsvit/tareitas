@@ -11,28 +11,26 @@ import clean_floor from '~/assets/img/tasks/clean_floor.jpg';
 import clean_house from '~/assets/img/tasks/clean_house.jpg';
 import clean_pet_toilet from '~/assets/img/tasks/clean_pet_toilet.jpg';
 import clean_shoes from '~/assets/img/tasks/clean_shoes.jpg';
-import clothes_tomorrow from '~/assets/img/tasks/clothes_tomorrow.jpg';
 import cut_nails from '~/assets/img/tasks/cut_nails.jpg';
 import cut_of_paper from '~/assets/img/tasks/cut_of_paper.jpg';
 import day_without_sweets from '~/assets/img/tasks/day_without_sweets.jpg';
 import dirty_clothes_to_bin from '~/assets/img/tasks/dirty_clothes_to_bin.jpg';
 import dish from '~/assets/img/tasks/dish.jpg';
-import do_homework from '~/assets/img/tasks/do_homework.jpg';
 import drink_water from '~/assets/img/tasks/drink_water.jpg';
 import dust_furniture from '~/assets/img/tasks/dust_furniture.jpg';
-import feed_pet from '~/assets/img/tasks/feed_pet.jpg';
 import foreign_language from '~/assets/img/tasks/foreign_language.jpg';
 import gather_clean_clothes from '~/assets/img/tasks/gather_clean_clothes.jpg';
 import get_up from '~/assets/img/tasks/get_up.jpg';
 import glass_of_water from '~/assets/img/tasks/glass_of_water.jpg';
+import go_to_bed from '~/assets/img/tasks/go_to_bed.jpg';
 import good_morning from '~/assets/img/tasks/good_morning.jpg';
 import good_night from '~/assets/img/tasks/good_night.jpg';
+import homework from '~/assets/img/tasks/homework.jpg';
 import jogging from '~/assets/img/tasks/jogging.jpg';
 import jumping from '~/assets/img/tasks/jumping.jpg';
 import line_up_shoes from '~/assets/img/tasks/line_up_shoes.jpg';
 import logic_games from '~/assets/img/tasks/logic_games.jpg';
 import make_bed from '~/assets/img/tasks/make_bed.jpg';
-import morning_exercises from '~/assets/img/tasks/morning_exercises.jpg';
 import music from '~/assets/img/tasks/music.jpg';
 import organize_clothes from '~/assets/img/tasks/organize_clothes.jpg';
 import pack_backpack from '~/assets/img/tasks/pack_backpack.jpg';
@@ -75,7 +73,6 @@ export const BASE_TASKS_IMAGES = {
   clean_desk,
   clean_house,
   clean_pet_toilet,
-  clothes_tomorrow,
   clean_shoes,
   clean_floor,
   cut_nails,
@@ -83,14 +80,14 @@ export const BASE_TASKS_IMAGES = {
   day_without_sweets,
   dirty_clothes_to_bin,
   dish,
-  do_homework,
+  homework,
   drink_water,
   dust_furniture,
-  feed_pet,
   foreign_language,
   gather_clean_clothes,
   get_up,
   glass_of_water,
+  go_to_bed,
   good_morning,
   good_night,
   jumping,
@@ -98,7 +95,6 @@ export const BASE_TASKS_IMAGES = {
   line_up_shoes,
   logic_games,
   make_bed,
-  morning_exercises,
   music,
   organize_clothes,
   pack_backpack,

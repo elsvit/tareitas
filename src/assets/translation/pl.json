@@ -113,7 +113,8 @@
       "sign_out": "Wyloguj się",
       "session_expired": "Twoja sesja wygasła. Zaloguj się ponownie, aby synchronizować.",
       "login_screen_title": "Logowanie",
-      "login_screen_subtitle": "Zaloguj się, aby synchronizować rodzinę między urządzeniami."
+      "login_screen_subtitle": "Zaloguj się, aby synchronizować rodzinę między urządzeniami.",
+      "sync_try_later": "Synchronizacja nie powiodła się. Spróbuj ponownie za chwilę."
     },
     "show_login_name": "Pokaż nazwę logowania",
     "parents": "Rodzice"
@@ -386,7 +387,7 @@
       "makeAnAppliqueDescription": "Złóż wniosek",
       "playAnMusicInstrument": "Graj na instrumencie muzycznym",
       "playAnMusicInstrumentDescription": "Graj na instrumencie muzycznym przynajmniej 15 minut dziennie lub jeden utwór 5 razy",
-      "singASong": "śpiewać",
+      "singASong": "Śpiewać",
       "singASongDescription": "Zaśpiewaj ulubioną piosenkę lub tę, o którą pytano w szkole muzycznej",
       "musicTheory": "Teoria muzyki",
       "musicTheoryDescription": "Studiuj teorię muzyki, solfeż, odrabiaj prace domowe z teorii muzyki",
@@ -447,7 +448,16 @@
       "pending": "Aż do",
       "reject": "Odrzucić",
       "rejected": "Odrzucony"
-    }
+    },
+    "delete_only_pending": "Można usuwać tylko oczekujące zadania.",
+    "status_locked_closed_period": "Nie można zmienić statusu — ten miesiąc jest zamknięty w historii nagród",
+    "recurring_delete_title": "Usuń",
+    "recurring_delete_only_this": "Tylko to zadanie",
+    "recurring_delete_only_this_desc": "Usuń tylko wybrany dzień",
+    "recurring_delete_following": "To zadanie i kolejne",
+    "recurring_delete_following_desc": "Usuń od tego dnia",
+    "recurring_delete_all": "Wszystkie zadania",
+    "recurring_delete_all_desc": "Usuń całą serię"
   },
   "habits": {
     "title": "Nawyki",
@@ -493,7 +503,8 @@
       "selected": "Wybrany",
       "approved": "Zatwierdzony",
       "rewards": "Nagrody",
-      "history": "Historia"
+      "history": "Historia",
+      "completed": "Ukończone"
     },
     "status": {
       "available": "Dostępny",
@@ -501,7 +512,8 @@
       "pending": "Aż do",
       "selected": "Wybrany",
       "approved": "Zatwierdzony",
-      "rejected": "Odrzucony"
+      "rejected": "Odrzucony",
+      "completed": "Ukończona"
     },
     "action": {
       "select": "Wybierać",
@@ -511,7 +523,9 @@
       "reject": "Odrzucić",
       "approve": "Zatwierdzić",
       "complete": "Kompletny"
-    }
+    },
+    "previous_reward_template": "Użyj poprzedniej nagrody",
+    "no_completed": "Brak ukończonych nagród"
   },
   "baseRewards": {
     "choose_desert": "Wybierz dzisiejszy deser",
@@ -616,7 +630,8 @@
       "error_email_required": "E-mail jest wymagany",
       "error_username_required": "Nazwa użytkownika jest wymagana",
       "error_pin_required": "Wprowadź 4-cyfrowy PIN",
-      "error_generic": "Nie udało się zalogować. Sprawdź dane i spróbuj ponownie."
+      "error_generic": "Nie udało się zalogować. Sprawdź dane i spróbuj ponownie.",
+      "error_empty_family": "Zalogowano, ale nie znaleziono członków rodziny. Spróbuj ponownie."
     },
     "sign_up": {
       "admin_header": "Utwórz admina",
@@ -651,5 +666,21 @@
     "write_us": "Napisz do nas",
     "write_us_hint": "Kliknij, aby wysłać nam e-mail",
     "change_user": "Zmień użytkownika"
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Coś poszło nie tak. Spróbuj ponownie.",
+    "INTERNAL_ERROR": "Coś poszło nie tak. Spróbuj ponownie.",
+    "VALIDATION_ERROR": "Nieprawidłowe żądanie. Sprawdź wprowadzone dane.",
+    "NOT_FOUND": "Nie znaleziono zasobu.",
+    "FORBIDDEN": "Nie masz uprawnień do wykonania tej czynności.",
+    "UNAUTHORIZED": "Nie jesteś autoryzowany. Zaloguj się ponownie.",
+    "TASK_NOT_FOUND": "Nie znaleziono zadania.",
+    "TASK_NOT_ALLOWED": "Nie możesz zmodyfikować tego zadania.",
+    "TASK_INVALID_STATUS": "Tego zadania nie można zaktualizować w bieżącym stanie.",
+    "TASK_ALREADY_EXISTS": "To zadanie już istnieje.",
+    "REWARD_NOT_ALLOWED": "Nie możesz zmodyfikować tej nagrody.",
+    "REWARD_INACTIVE": "Ta nagroda nie jest już dostępna.",
+    "REWARD_INSUFFICIENT_BALANCE": "Za mało gwiazdek na tę nagrodę.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Tej nagrody nie można zaktualizować w bieżącym stanie."
   }
 }

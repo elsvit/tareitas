@@ -113,7 +113,8 @@
       "sign_out": "Atsijungti",
       "session_expired": "Jūsų sesija baigėsi. Prisijunkite iš naujo, kad sinchronizuotumėte.",
       "login_screen_title": "Prisijungti",
-      "login_screen_subtitle": "Prisijunkite, kad sinchronizuotumėte šeimą tarp įrenginių."
+      "login_screen_subtitle": "Prisijunkite, kad sinchronizuotumėte šeimą tarp įrenginių.",
+      "sync_try_later": "Dabar nepavyko sinchronizuoti. Bandykite dar kartą po akimirkos."
     },
     "show_login_name": "Rodyti prisijungimo vardą",
     "parents": "Tėvai"
@@ -386,7 +387,7 @@
       "makeAnAppliqueDescription": "Padarykite paraišką",
       "playAnMusicInstrument": "Groti muzikos instrumentu",
       "playAnMusicInstrumentDescription": "Groti muzikos instrumentu bent 15 minučių per dieną arba vienu kūriniu 5 kartus",
-      "singASong": "dainuoti",
+      "singASong": "Dainuoti",
       "singASongDescription": "Padainuokite mėgstamą dainą arba tą, kurios buvo prašoma muzikos mokykloje",
       "musicTheory": "Muzikos teorija",
       "musicTheoryDescription": "Studijuokite muzikos teoriją, solfedžio, atlikite muzikos teorijos namų darbus",
@@ -447,7 +448,16 @@
       "pending": "Laukiama",
       "reject": "Atmesti",
       "rejected": "Atmesta"
-    }
+    },
+    "delete_only_pending": "Galima ištrinti tik laukiančias užduotis.",
+    "status_locked_closed_period": "Būsenos keisti negalima — šis mėnuo uždarytas apdovanojimų istorijoje",
+    "recurring_delete_title": "Ištrinti",
+    "recurring_delete_only_this": "Tik šią užduotį",
+    "recurring_delete_only_this_desc": "Ištrinti tik pasirinktą dieną",
+    "recurring_delete_following": "Šią užduotį ir vėlesnes",
+    "recurring_delete_following_desc": "Ištrinti nuo šios dienos",
+    "recurring_delete_all": "Visas užduotis",
+    "recurring_delete_all_desc": "Ištrinti visą seriją"
   },
   "habits": {
     "title": "Įpročiai",
@@ -493,7 +503,8 @@
       "selected": "Pasirinkta",
       "approved": "Patvirtinta",
       "rewards": "Apdovanojimai",
-      "history": "Istorija"
+      "history": "Istorija",
+      "completed": "Užbaigti"
     },
     "status": {
       "available": "Galima",
@@ -501,7 +512,8 @@
       "pending": "Laukiama",
       "selected": "Pasirinkta",
       "approved": "Patvirtinta",
-      "rejected": "Atmesta"
+      "rejected": "Atmesta",
+      "completed": "Užbaigta"
     },
     "action": {
       "select": "Pasirinkite",
@@ -511,7 +523,9 @@
       "reject": "Atmesti",
       "approve": "Patvirtinti",
       "complete": "Užbaigti"
-    }
+    },
+    "previous_reward_template": "Naudoti ankstesnį apdovanojimą",
+    "no_completed": "Dar nėra užbaigtų apdovanojimų"
   },
   "baseRewards": {
     "choose_desert": "Rinkitės šio vakaro desertą",
@@ -616,7 +630,8 @@
       "error_email_required": "El. paštas privalomas",
       "error_username_required": "Naudotojo vardas privalomas",
       "error_pin_required": "Įveskite 4 skaitmenų PIN",
-      "error_generic": "Nepavyko prisijungti. Patikrinkite duomenis ir bandykite dar kartą."
+      "error_generic": "Nepavyko prisijungti. Patikrinkite duomenis ir bandykite dar kartą.",
+      "error_empty_family": "Prisijungta, bet šeimos narių nerasta. Bandykite dar kartą."
     },
     "sign_up": {
       "admin_header": "Sukurti admin",
@@ -651,5 +666,21 @@
     "write_us": "Parašykite mums",
     "write_us_hint": "Bakstelėkite, kad atsiųstumėte mums el. laišką",
     "change_user": "Keisti vartotoją"
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Kažkas nutiko. Bandykite dar kartą.",
+    "INTERNAL_ERROR": "Kažkas nutiko. Bandykite dar kartą.",
+    "VALIDATION_ERROR": "Netinkama užklausa. Patikrinkite įvestus duomenis.",
+    "NOT_FOUND": "Išteklius nerastas.",
+    "FORBIDDEN": "Neturite leidimo atlikti šį veiksmą.",
+    "UNAUTHORIZED": "Nesate autorizuoti. Prisijunkite dar kartą.",
+    "TASK_NOT_FOUND": "Užduotis nerasta.",
+    "TASK_NOT_ALLOWED": "Negalite keisti šios užduoties.",
+    "TASK_INVALID_STATUS": "Šios užduoties negalima atnaujinti esama būsena.",
+    "TASK_ALREADY_EXISTS": "Ši užduotis jau egzistuoja.",
+    "REWARD_NOT_ALLOWED": "Negalite keisti šio apdovanojimo.",
+    "REWARD_INACTIVE": "Šis apdovanojimas nebepasiekiamas.",
+    "REWARD_INSUFFICIENT_BALANCE": "Nepakanka žvaigždučių šiam apdovanojimui.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Šio apdovanojimo negalima atnaujinti esama būsena."
   }
 }

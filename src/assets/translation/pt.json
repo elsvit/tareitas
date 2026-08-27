@@ -13,7 +13,12 @@
     "other": "Outro",
     "rating": "Avaliação",
     "required": "Obrigatório",
-    "search": "Pesquisar"
+    "search": "Pesquisar",
+    "step": "Step",
+    "stepIndicator": "Passo {{step}} de {{totalSteps}}",
+    "tags": "Tags",
+    "time": "Time",
+    "title": "Título"
   },
   "button": {
     "add": "Adicionar",
@@ -107,7 +112,8 @@
       "sign_out": "Terminar sessão",
       "session_expired": "A sua sessão expirou. Inicie sessão novamente para sincronizar.",
       "login_screen_title": "Iniciar sessão",
-      "login_screen_subtitle": "Inicie sessão para sincronizar a família entre dispositivos."
+      "login_screen_subtitle": "Inicie sessão para sincronizar a família entre dispositivos.",
+      "sync_try_later": "Não foi possível sincronizar agora. Tente novamente daqui a instantes."
     },
     "show_login_name": "Mostrar nome de acesso",
     "parents": "Pais"
@@ -117,13 +123,13 @@
     "add": "Adicionar Usuário",
     "add_child": "Adicionar Filho",
     "add_parent": "Adicionar Pai",
-    "admin": "Admin",
+    "admin": "Administrador",
     "avatar": "Avatar",
     "child": "Filho",
     "childs": "Filhos",
     "child_password": "Senha do Filho",
-    "children": "Children",
-    "color": "Color",
+    "children": "Crianças",
+    "color": "Cor",
     "complete_your_profile": "Complete seu perfil",
     "delete": "Deletar Usuário",
     "delete_confirm": "Tem certeza que deseja deletar este usuário?",
@@ -182,7 +188,7 @@
     "task_templates": "modelos de tarefas",
     "add_task": "Adicionar Tarefa",
     "edit_task": "Editar Tarefa",
-    "base_task_template": "Use base task",
+    "base_task_template": "Usar tarefa base",
     "repeats": "Repetições",
     "start_date": "Data de início",
     "end_date": "Data de término",
@@ -195,7 +201,7 @@
     "add_subtask": "Adicionar subtarefa",
     "subtasks_required": "Adicionar pelo menos uma subtarefa",
     "syncing": "A guardar…",
-    "done": "Done",
+    "done": "Concluído",
     "completed_history": "Tarefas Completadas",
     "no_filtered_tasks": "Nenhuma tarefa encontrada",
     "filter": "Filtrar",
@@ -216,7 +222,7 @@
     "recurring_edit_following_desc": "Dividir a série e aplicar alterações a partir deste dia em diante",
     "recurring_edit_all": "Todas as tarefas",
     "recurring_edit_all_desc": "Aplicar alterações a toda a série",
-    "cannot_edit_approved_period_fields": "Cannot change start date, reward, or bonus for tasks in approved months",
+    "cannot_edit_approved_period_fields": "Não é possível alterar a data de início, recompensa ou bónus de tarefas em meses aprovados",
     "empty_tasks_definition": "As tarefas são missões específicas e com prazo determinado, como arrumar o quarto à tarde ou aprender um poema.",
     "empty_habits_definition": "As rotinas são tarefas diárias obrigatórias que se repetem todos os dias para criar hábitos saudáveis, como escovar os dentes ou fazer exercícios.",
     "empty_tasks_habits_difference": "A principal diferença para o filho é que as rotinas automatizam ações úteis diárias, enquanto as tarefas ensinam a alcançar objetivos únicos.",
@@ -232,7 +238,7 @@
       "cleanDesk": "Limpe a área de trabalho",
       "cleanDeskDescription": "Remova todos os materiais escolares e de trabalho",
       "dirtyClothesToBin": "Colocar roupas sujas na caixa de roupas ou na máquina de lavar",
-      "dirtyClothesToBinDescription": "Put dirty clothes in the laundry basket or in the washing mashine",
+      "dirtyClothesToBinDescription": "Coloque roupa suja no cesto ou na máquina de lavar",
       "doEveningExercises": "Fazer exercícios à noite",
       "doEveningExercisesDescription": "Fazer exercícios à noite",
       "doHomework": "Faça a lição de casa",
@@ -380,7 +386,7 @@
       "makeAnAppliqueDescription": "Faça uma aplicação",
       "playAnMusicInstrument": "Toque um instrumento musical",
       "playAnMusicInstrumentDescription": "Toque um instrumento musical pelo menos 15 minutos por dia ou uma peça 5 vezes",
-      "singASong": "cantar",
+      "singASong": "Cantar",
       "singASongDescription": "Cante uma música favorita ou aquela que foi pedida na escola de música",
       "musicTheory": "Teoria musical",
       "musicTheoryDescription": "Estude teoria musical, solfejo, faça lição de casa sobre teoria musical",
@@ -434,14 +440,23 @@
       "approved": "Aprovado",
       "completed": "Completado",
       "expired": "Expirado",
-      "in_progress": "In Progress",
+      "in_progress": "Em progresso",
       "not_approved": "Não aprovado",
       "not_completed": "Não completado",
       "not_rejected": "Não rejeitado",
       "pending": "Pendente",
       "reject": "Rejeitar",
       "rejected": "Rejeitado"
-    }
+    },
+    "delete_only_pending": "Só podem ser eliminadas tarefas pendentes.",
+    "status_locked_closed_period": "Não é possível alterar o estado — este mês está fechado no histórico de recompensas",
+    "recurring_delete_title": "Eliminar",
+    "recurring_delete_only_this": "Só esta tarefa",
+    "recurring_delete_only_this_desc": "Eliminar apenas o dia selecionado",
+    "recurring_delete_following": "Esta tarefa e as seguintes",
+    "recurring_delete_following_desc": "Eliminar a partir deste dia",
+    "recurring_delete_all": "Todas as tarefas",
+    "recurring_delete_all_desc": "Eliminar toda a série"
   },
   "habits": {
     "title": "Hábitos",
@@ -455,7 +470,7 @@
     "title": "Recompensas",
     "add_reward": "Adicionar Recompensa",
     "base_rewards": "Recompensas Base",
-    "base_reward_template": "Use base reward",
+    "base_reward_template": "Usar recompensa base",
     "delete_reward": "Deletar Recompensa",
     "delete_reward_confirm": "Tem certeza que deseja deletar esta recompensa?",
     "edit_reward": "Editar Recompensa",
@@ -487,15 +502,17 @@
       "selected": "Selecionado",
       "approved": "Aprovado",
       "rewards": "Recompensas",
-      "history": "História"
+      "history": "História",
+      "completed": "Concluídas"
     },
     "status": {
-      "available": "Available",
+      "available": "Disponível",
       "not_enough_stars": "Não há estrelas suficientes",
       "pending": "Pendente",
       "selected": "Selecionado",
       "approved": "Aprovado",
-      "rejected": "Rejeitado"
+      "rejected": "Rejeitado",
+      "completed": "Concluída"
     },
     "action": {
       "select": "Selecionar",
@@ -505,7 +522,9 @@
       "reject": "Rejeitar",
       "approve": "Aprovar",
       "complete": "Completar"
-    }
+    },
+    "previous_reward_template": "Usar recompensa anterior",
+    "no_completed": "Ainda não há recompensas concluídas"
   },
   "baseRewards": {
     "choose_desert": "Escolher o sobremesa da noite",
@@ -517,16 +536,16 @@
     "choose_family_game": "Escolher o jogo familiar",
     "skip_one_chore": "Pular uma pequena tarefa doméstica",
     "choose_what_for_dinner": "Escolher o que é para o jantar",
-    "special_time_with_parents": "Special one-on-one time with parents",
+    "special_time_with_parents": "Momento especial a sós com os pais",
     "trip_to_playground": "Ir para o playground",
-    "ice_cream": "Go for ice cream",
+    "ice_cream": "Ir tomar gelado",
     "pizza_night": "Noite de pizza",
     "visit_favourite_cafe": "Visitar o café favorito",
     "small_toy": "Pequeno brinquedo",
     "new_book": "Novo livro",
     "new_sports_equipment": "Novo equipamento de esportes",
     "camping_movie_night_at_home": "Noite de cinema de camping em casa",
-    "playstation_30_min": "Playstation 30 min"
+    "playstation_30_min": "PlayStation 30 min"
   },
   "onboarding": {
     "header": "Bem-vindo ao Tareitas",
@@ -600,7 +619,7 @@
       "header": "Iniciar sessão",
       "title": "Bem-vindo de volta",
       "subtitle": "Inicie sessão com o email de admin ou o seu nome de utilizador único.",
-      "admin": "Admin",
+      "admin": "Administrador",
       "not_admin": "Não admin",
       "email": "E-mail",
       "username": "Nome de acesso único",
@@ -610,7 +629,8 @@
       "error_email_required": "O e-mail é obrigatório",
       "error_username_required": "O nome de utilizador é obrigatório",
       "error_pin_required": "Introduza um PIN de 4 dígitos",
-      "error_generic": "Não foi possível iniciar sessão. Verifique os dados e tente novamente."
+      "error_generic": "Não foi possível iniciar sessão. Verifique os dados e tente novamente.",
+      "error_empty_family": "Sessão iniciada, mas não foram encontrados membros da família. Tente novamente."
     },
     "sign_up": {
       "admin_header": "Criar admin",
@@ -645,5 +665,21 @@
     "write_us": "Escreva-nos",
     "write_us_hint": "Toque para nos enviar um e-mail",
     "change_user": "Mudar usuário"
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Algo correu mal. Tente novamente.",
+    "INTERNAL_ERROR": "Algo correu mal. Tente novamente.",
+    "VALIDATION_ERROR": "Pedido inválido. Verifique os dados introduzidos.",
+    "NOT_FOUND": "Recurso não encontrado.",
+    "FORBIDDEN": "Não tem permissão para realizar esta ação.",
+    "UNAUTHORIZED": "Não está autorizado. Inicie sessão novamente.",
+    "TASK_NOT_FOUND": "Tarefa não encontrada.",
+    "TASK_NOT_ALLOWED": "Não pode modificar esta tarefa.",
+    "TASK_INVALID_STATUS": "Esta tarefa não pode ser atualizada no estado atual.",
+    "TASK_ALREADY_EXISTS": "Esta tarefa já existe.",
+    "REWARD_NOT_ALLOWED": "Não pode modificar esta recompensa.",
+    "REWARD_INACTIVE": "Esta recompensa já não está disponível.",
+    "REWARD_INSUFFICIENT_BALANCE": "Não há estrelas suficientes para esta recompensa.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Esta recompensa não pode ser atualizada no estado atual."
   }
 }

@@ -113,7 +113,8 @@
       "sign_out": "Logga ut",
       "session_expired": "Din session har gått ut. Logga in igen för att synka.",
       "login_screen_title": "Logga in",
-      "login_screen_subtitle": "Logga in för att synka din familj mellan enheter."
+      "login_screen_subtitle": "Logga in för att synka din familj mellan enheter.",
+      "sync_try_later": "Kunde inte synka just nu. Försök igen om en stund."
     },
     "show_login_name": "Visa inloggningsnamn",
     "parents": "Föräldrar"
@@ -386,7 +387,7 @@
       "makeAnAppliqueDescription": "Gör en ansökan",
       "playAnMusicInstrument": "Spela ett musikinstrument",
       "playAnMusicInstrumentDescription": "Spela ett musikinstrument minst 15 minuter om dagen eller ett stycke 5 gånger",
-      "singASong": "att sjunga",
+      "singASong": "Att sjunga",
       "singASongDescription": "Sjung en favoritlåt eller den som tillfrågades i musikskolan",
       "musicTheory": "Musikteori",
       "musicTheoryDescription": "Studera musikteori, solfeggio, göra läxor om musikteori",
@@ -447,7 +448,16 @@
       "pending": "I avvaktan på",
       "reject": "Avvisa",
       "rejected": "Avvisad"
-    }
+    },
+    "delete_only_pending": "Endast väntande uppgifter kan raderas.",
+    "status_locked_closed_period": "Status kan inte ändras — den här månaden är stängd i belöningshistoriken",
+    "recurring_delete_title": "Radera",
+    "recurring_delete_only_this": "Endast denna uppgift",
+    "recurring_delete_only_this_desc": "Radera endast den valda dagen",
+    "recurring_delete_following": "Denna uppgift och följande",
+    "recurring_delete_following_desc": "Radera från denna dag och framåt",
+    "recurring_delete_all": "Alla uppgifter",
+    "recurring_delete_all_desc": "Radera hela serien"
   },
   "habits": {
     "title": "Vanor",
@@ -493,7 +503,8 @@
       "selected": "Vald",
       "approved": "Godkänd",
       "rewards": "Belöningar",
-      "history": "Historia"
+      "history": "Historia",
+      "completed": "Avslutade"
     },
     "status": {
       "available": "Tillgänglig",
@@ -501,7 +512,8 @@
       "pending": "I avvaktan på",
       "selected": "Vald",
       "approved": "Godkänd",
-      "rejected": "Avvisad"
+      "rejected": "Avvisad",
+      "completed": "Avslutad"
     },
     "action": {
       "select": "Välja",
@@ -511,7 +523,9 @@
       "reject": "Avvisa",
       "approve": "Godkänna",
       "complete": "Komplett"
-    }
+    },
+    "previous_reward_template": "Använd tidigare belöning",
+    "no_completed": "Inga avslutade belöningar ännu"
   },
   "baseRewards": {
     "choose_desert": "Välj kvällens efterrätt",
@@ -616,7 +630,8 @@
       "error_email_required": "E-post krävs",
       "error_username_required": "Användarnamn krävs",
       "error_pin_required": "Ange en 4-siffrig PIN",
-      "error_generic": "Inloggningen misslyckades. Kontrollera uppgifterna och försök igen."
+      "error_generic": "Inloggningen misslyckades. Kontrollera uppgifterna och försök igen.",
+      "error_empty_family": "Inloggad, men inga familjemedlemmar hittades. Försök igen."
     },
     "sign_up": {
       "admin_header": "Skapa admin",
@@ -651,5 +666,21 @@
     "write_us": "Skriv till oss",
     "write_us_hint": "Tryck för att skicka ett e-postmeddelande till oss",
     "change_user": "Byt användare"
+  },
+  "apiErrors": {
+    "UNKNOWN_ERROR": "Något gick fel. Försök igen.",
+    "INTERNAL_ERROR": "Något gick fel. Försök igen.",
+    "VALIDATION_ERROR": "Ogiltig begäran. Kontrollera dina uppgifter.",
+    "NOT_FOUND": "Resursen hittades inte.",
+    "FORBIDDEN": "Du har inte behörighet att utföra denna åtgärd.",
+    "UNAUTHORIZED": "Du är inte auktoriserad. Logga in igen.",
+    "TASK_NOT_FOUND": "Uppgift hittades inte.",
+    "TASK_NOT_ALLOWED": "Du kan inte ändra den här uppgiften.",
+    "TASK_INVALID_STATUS": "Den här uppgiften kan inte uppdateras i sitt nuvarande tillstånd.",
+    "TASK_ALREADY_EXISTS": "Den här uppgiften finns redan.",
+    "REWARD_NOT_ALLOWED": "Du kan inte ändra den här belöningen.",
+    "REWARD_INACTIVE": "Den här belöningen är inte längre tillgänglig.",
+    "REWARD_INSUFFICIENT_BALANCE": "Inte tillräckligt med stjärnor för den här belöningen.",
+    "REWARD_REDEMPTION_INVALID_STATUS": "Den här belöningen kan inte uppdateras i sitt nuvarande tillstånd."
   }
 }
