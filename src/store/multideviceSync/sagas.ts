@@ -289,7 +289,7 @@ export function* syncRewardsDataFromServerSaga(): Generator<
       picture: inferRewardAssignmentPicture(
         {
           title: mapped.title,
-          picture: existing?.picture,
+          picture: mapped.picture ?? existing?.picture,
         },
         rewardBase,
       ),

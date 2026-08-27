@@ -8,6 +8,7 @@ export type ServerFamilyReward = {
   familyId: string;
   title: string;
   description?: string;
+  picture?: string;
   cost: number;
   isActive: boolean;
   childUserIds?: string[];
@@ -38,6 +39,7 @@ export type ServerRewardRedemption = {
 type CreateRewardBody = {
   title: string;
   description?: string;
+  picture?: string;
   cost: number;
   childUserIds?: string[];
 };
@@ -45,6 +47,7 @@ type CreateRewardBody = {
 type UpdateRewardBody = {
   title?: string;
   description?: string;
+  picture?: string;
   cost?: number;
   isActive?: boolean;
   childUserIds?: string[];
@@ -196,6 +199,7 @@ export function mapServerFamilyRewardToAssignment(
     id: server.id,
     title: server.title,
     reward: server.cost,
+    picture: server.picture,
     createdBy: server.createdByUserId,
     createdAt: server.createdAt,
     updatedAt: server.updatedAt,
@@ -245,6 +249,7 @@ export function toCreateFamilyRewardBody(
   return {
     title: assignment.title,
     cost: assignment.reward,
+    picture: assignment.picture,
     childUserIds: assignment.childIds?.length ? assignment.childIds : [],
   };
 }
@@ -255,6 +260,7 @@ export function toUpdateFamilyRewardBody(
   return {
     title: assignment.title,
     cost: assignment.reward,
+    picture: assignment.picture,
     isActive: true,
     childUserIds: assignment.childIds?.length ? assignment.childIds : [],
   };
