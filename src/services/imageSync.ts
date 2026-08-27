@@ -87,6 +87,7 @@ export async function resolveImageRefForServer(
   const uploaded = await uploadFamilyImageWithSession(
     familyId,
     localUri,
+    kind,
   );
 
   return uploaded.path;

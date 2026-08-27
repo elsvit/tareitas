@@ -1,6 +1,7 @@
 import { call, put, select } from 'redux-saga/effects';
 
-import { resolveImageRefForServer } from '~/services/imageSync';
+import { resolveImageRefForServer, isRemoteImageRef } from '~/services/imageSync';
+import { toAbsoluteUploadUrl } from '~/services/api/uploadsApi';
 import {
   selectRewardImageUrls,
   selectTaskImageUrls,
@@ -67,6 +68,20 @@ export function* resolveAndCacheImageRef(
         localUrls[value],
       ),
     );
+  } else if (resolved && isRemoteImageRef(resolved)) {
+    const existingUri = localUrls[resolved];
+
+    if (!existingUri?.startsWith('file:')) {
+      yield put(
+        cacheResolvedImageUrl(
+          kind,
+          resolved,
+          existingUri ??
+            toAbsoluteUploadUrl(resolved) ??
+            resolved,
+        ),
+      );
+    }
   }
 
   return resolved;

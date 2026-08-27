@@ -1,4 +1,5 @@
 import { isRemoteImageRef } from '~/services/imageSync';
+import { toAbsoluteUploadUrl } from '~/services/api/uploadsApi';
 
 export function isUploadPathForFamily(
   imageRef: string,
@@ -66,4 +67,33 @@ export function filterFamilyImageEntries(
 
     return false;
   });
+}
+
+export function mergeFamilyUploadImageEntries(
+  urlMap: Record<string, string>,
+  usedIds: Set<string>,
+  familyId: string | null | undefined,
+): [string, string][] {
+  const entries = new Map<string, string>(
+    Object.entries(urlMap),
+  );
+
+  usedIds.forEach(id => {
+    if (!isRemoteImageRef(id)) {
+      return;
+    }
+
+    if (!isImageRefForFamily(id, familyId)) {
+      return;
+    }
+
+    if (!entries.has(id)) {
+      entries.set(
+        id,
+        urlMap[id] ?? toAbsoluteUploadUrl(id) ?? id,
+      );
+    }
+  });
+
+  return [...entries.entries()];
 }

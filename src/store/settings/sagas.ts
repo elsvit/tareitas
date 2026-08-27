@@ -13,6 +13,7 @@ import {
   syncRewardsDataFromServerSaga,
   syncTaskAssignmentsFromServerSaga,
 } from '~/store/multideviceSync/sagas';
+import { syncFamilyImagesFromServerSaga } from '~/store/images/sagas';
 import { updateParent } from '~/store/parents/slice';
 import type { IState } from '~/store/types';
 import { syncRewardBaseTranslations } from '~/store/rewardBase/slice';
@@ -32,6 +33,7 @@ import {
   syncFamilyMembers,
   syncRewardsData,
   syncTaskAssignments,
+  syncFamilyImages,
   touchSessionActivity,
 } from './slice';
 
@@ -102,6 +104,22 @@ function* syncRewardsDataSaga(): Generator<any, void, any> {
     yield call(syncRewardsDataFromServerSaga);
   } catch {
     // Keep local data if sync fails (offline, expired token, etc.)
+  }
+}
+
+function* syncFamilyImagesSaga(): Generator<any, void, any> {
+  const hasAuthSession: boolean = yield select(
+    selectHasAuthSession,
+  );
+
+  if (!hasAuthSession) {
+    return;
+  }
+
+  try {
+    yield call(syncFamilyImagesFromServerSaga);
+  } catch {
+    // Keep local image library if sync fails.
   }
 }
 
@@ -188,5 +206,9 @@ export default [
   takeLatestWithFetchable(
     syncRewardsData,
     syncRewardsDataSaga,
+  ),
+  takeLatestWithFetchable(
+    syncFamilyImages,
+    syncFamilyImagesSaga,
   ),
 ];

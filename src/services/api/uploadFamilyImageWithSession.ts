@@ -11,6 +11,7 @@ import {
   uploadFamilyImage,
   type UploadedImageResponse,
 } from './uploadsApi';
+import type { ImageStoreKind } from '~/store/images/types';
 
 async function resolveAuthToken(): Promise<string> {
   const state = store.getState();
@@ -40,6 +41,7 @@ async function resolveAuthToken(): Promise<string> {
 export async function uploadFamilyImageWithSession(
   familyId: string,
   localUri: string,
+  kind?: ImageStoreKind,
 ): Promise<UploadedImageResponse> {
   let authToken = await resolveAuthToken();
 
@@ -48,6 +50,7 @@ export async function uploadFamilyImageWithSession(
       familyId,
       authToken,
       localUri,
+      kind,
     );
   } catch (error) {
     if (
@@ -80,6 +83,7 @@ export async function uploadFamilyImageWithSession(
       familyId,
       authToken,
       localUri,
+      kind,
     );
   }
 }

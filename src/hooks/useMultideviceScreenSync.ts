@@ -11,6 +11,7 @@ import {
   syncFamilyMembers,
   syncRewardsData,
   syncTaskAssignments,
+  syncFamilyImages,
 } from '~/store/settings/slice';
 
 export type MultideviceScreenSyncScope =
@@ -22,6 +23,8 @@ function dispatchScopeSync(
   dispatch: ReturnType<typeof useDispatch>,
   scope: MultideviceScreenSyncScope,
 ) {
+  dispatch(syncFamilyImages());
+
   if (scope === 'tasks') {
     dispatch(syncTaskAssignments());
     return;
