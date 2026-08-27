@@ -30,6 +30,7 @@ import tasksSagas from './tasks/sagas';
 import rewardAssignmentSagas from './rewardAssignment/sagas';
 import rewardsSagas from './rewards/sagas';
 import { IStateImages, imagesSlice } from './images';
+import imagesSagas from './images/sagas';
 import { IStateTasks, tasksSlice } from './tasks';
 
 // Root saga
@@ -45,6 +46,7 @@ function* rootSaga() {
     ...rewardBaseSagas,
     ...settingsSagas,
     ...catalogSagas,
+    ...imagesSagas,
   ]);
 }
 

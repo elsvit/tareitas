@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 
 import { selectFamilyId } from '~/store/settings/selectors';
-import { filterFamilyImageEntries } from '~/utils/imageScope';
+import { filterFamilyImageEntries, mergeFamilyUploadImageEntries } from '~/utils/imageScope';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectAllParents } from '~/store/parents/selectors';
 import { selectAllRewardAssignment } from '~/store/rewardAssignment/selectors';
@@ -95,10 +95,13 @@ export const selectFamilyScopedUserImageEntries = createSelector(
     selectFamilyImageFilterOptions,
   ],
   (userUrls, usedIds, { familyId }) =>
-    filterFamilyImageEntries(Object.entries(userUrls), {
-      familyId,
-      usedIds,
-    }),
+    filterFamilyImageEntries(
+      mergeFamilyUploadImageEntries(userUrls, usedIds, familyId),
+      {
+        familyId,
+        usedIds,
+      },
+    ),
 );
 
 export const selectFamilyScopedTaskImageEntries = createSelector(
@@ -108,10 +111,13 @@ export const selectFamilyScopedTaskImageEntries = createSelector(
     selectFamilyImageFilterOptions,
   ],
   (taskUrls, usedIds, { familyId }) =>
-    filterFamilyImageEntries(Object.entries(taskUrls), {
-      familyId,
-      usedIds,
-    }),
+    filterFamilyImageEntries(
+      mergeFamilyUploadImageEntries(taskUrls, usedIds, familyId),
+      {
+        familyId,
+        usedIds,
+      },
+    ),
 );
 
 export const selectFamilyScopedRewardImageEntries = createSelector(
@@ -121,8 +127,11 @@ export const selectFamilyScopedRewardImageEntries = createSelector(
     selectFamilyImageFilterOptions,
   ],
   (rewardUrls, usedIds, { familyId }) =>
-    filterFamilyImageEntries(Object.entries(rewardUrls), {
-      familyId,
-      usedIds,
-    }),
+    filterFamilyImageEntries(
+      mergeFamilyUploadImageEntries(rewardUrls, usedIds, familyId),
+      {
+        familyId,
+        usedIds,
+      },
+    ),
 );

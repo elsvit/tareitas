@@ -219,6 +219,7 @@ export function SelectImageWithCustom({
         const uploaded = await uploadFamilyImageWithSession(
           familyId,
           savedUri,
+          kind,
         );
 
         saveCustomImageUrl(uploaded.path, savedUri);

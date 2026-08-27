@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { Image } from 'expo-image';
+import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CrossIcon from '~/assets/svg/common/cross.svg';
@@ -9,7 +10,9 @@ import { ConfirmModal } from '~/components/modals';
 import { ButtonColors, Text } from '~/components/ui';
 import { deleteImageFromDevice } from '~/components/ui/ImageLoader/ImageLoader.utils';
 import { t } from '~/services';
+import { isRemoteImageRef } from '~/services/imageSync';
 import {
+  deleteFamilyImage,
   removeRewardImageUrl,
   removeTaskImageUrl,
   removeUserImageUrl,
@@ -21,6 +24,11 @@ import {
   selectUsedUserImageIds,
 } from '~/store/images';
 import type { ImageStoreKind } from '~/store/images/types';
+import {
+  selectCanReviewTasks,
+  selectIsMultidevice,
+} from '~/store/settings/selectors';
+import { syncFamilyImages } from '~/store/settings/slice';
 import { Colors } from '~/styles';
 
 import { styles } from './styles';
@@ -34,12 +42,14 @@ type PendingDelete = {
 type ImageGridProps = {
   entries: [string, string][];
   usedIds: Set<string>;
+  canRemoveUnused: boolean;
   onRemovePress: (id: string, uri: string) => void;
 };
 
 const ImageGrid: React.FC<ImageGridProps> = ({
   entries,
   usedIds,
+  canRemoveUnused,
   onRemovePress,
 }) => {
   if (entries.length === 0) {
@@ -54,12 +64,13 @@ const ImageGrid: React.FC<ImageGridProps> = ({
     <View style={styles.grid}>
       {entries.map(([id, uri]) => {
         const isInUse = usedIds.has(id);
+        const showRemove = canRemoveUnused && !isInUse;
 
         return (
           <View key={id} style={styles.imageWrapper}>
             <Image source={{ uri }} style={styles.image} />
 
-            {!isInUse && (
+            {showRemove && (
               <Pressable
                 accessibilityRole="button"
                 accessibilityLabel={t('more.remove_loaded_image')}
@@ -81,6 +92,7 @@ type PhotoSectionProps = {
   titleColor: string;
   entries: [string, string][];
   usedIds: Set<string>;
+  canRemoveUnused: boolean;
   onRemovePress: (id: string, uri: string) => void;
 };
 
@@ -89,6 +101,7 @@ const PhotoSection: React.FC<PhotoSectionProps> = ({
   titleColor,
   entries,
   usedIds,
+  canRemoveUnused,
   onRemovePress,
 }) => (
   <View style={styles.section}>
@@ -98,6 +111,7 @@ const PhotoSection: React.FC<PhotoSectionProps> = ({
     <ImageGrid
       entries={entries}
       usedIds={usedIds}
+      canRemoveUnused={canRemoveUnused}
       onRemovePress={onRemovePress}
     />
   </View>
@@ -105,6 +119,9 @@ const PhotoSection: React.FC<PhotoSectionProps> = ({
 
 export function LoadedPhotosContent() {
   const dispatch = useDispatch();
+  const isMultidevice = useSelector(selectIsMultidevice);
+  const canManageImages = useSelector(selectCanReviewTasks);
+  const canRemoveUnused = !isMultidevice || canManageImages;
 
   const userEntries = useSelector(selectFamilyScopedUserImageEntries);
   const taskEntries = useSelector(selectFamilyScopedTaskImageEntries);
@@ -114,6 +131,14 @@ export function LoadedPhotosContent() {
   const usedRewardIds = useSelector(selectUsedRewardImageIds);
 
   const [pendingDelete, setPendingDelete] = useState<PendingDelete | null>(null);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (isMultidevice) {
+        dispatch(syncFamilyImages());
+      }
+    }, [dispatch, isMultidevice]),
+  );
 
   const handleRemovePress = useCallback(
     (kind: ImageStoreKind, id: string, uri: string) => {
@@ -129,17 +154,28 @@ export function LoadedPhotosContent() {
 
     const { kind, id, uri } = pendingDelete;
 
-    if (kind === 'task') {
-      dispatch(removeTaskImageUrl(id));
-    } else if (kind === 'reward') {
-      dispatch(removeRewardImageUrl(id));
+    if (isMultidevice && isRemoteImageRef(id)) {
+      dispatch(
+        deleteFamilyImage({
+          kind,
+          path: id,
+          uri,
+        }),
+      );
     } else {
-      dispatch(removeUserImageUrl(id));
+      if (kind === 'task') {
+        dispatch(removeTaskImageUrl(id));
+      } else if (kind === 'reward') {
+        dispatch(removeRewardImageUrl(id));
+      } else {
+        dispatch(removeUserImageUrl(id));
+      }
+
+      await deleteImageFromDevice(uri);
     }
 
-    await deleteImageFromDevice(uri);
     setPendingDelete(null);
-  }, [dispatch, pendingDelete]);
+  }, [dispatch, isMultidevice, pendingDelete]);
 
   return (
     <>
@@ -149,6 +185,7 @@ export function LoadedPhotosContent() {
           titleColor={Colors.blue500}
           entries={userEntries}
           usedIds={usedUserIds}
+          canRemoveUnused={canRemoveUnused}
           onRemovePress={(id, uri) => handleRemovePress('user', id, uri)}
         />
 
@@ -157,6 +194,7 @@ export function LoadedPhotosContent() {
           titleColor={Colors.green500}
           entries={taskEntries}
           usedIds={usedTaskIds}
+          canRemoveUnused={canRemoveUnused}
           onRemovePress={(id, uri) => handleRemovePress('task', id, uri)}
         />
 
@@ -165,6 +203,7 @@ export function LoadedPhotosContent() {
           titleColor={Colors.gold500}
           entries={rewardEntries}
           usedIds={usedRewardIds}
+          canRemoveUnused={canRemoveUnused}
           onRemovePress={(id, uri) => handleRemovePress('reward', id, uri)}
         />
       </View>

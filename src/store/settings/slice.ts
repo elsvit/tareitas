@@ -183,9 +183,10 @@ export const settingsSlice = createSlice({
     syncCatalog: () => {},
     refreshAuthSession: () => {},
     syncFamilyMembers: () => {},
-    syncTaskAssignments: () => {},
-    syncRewardsData: () => {},
-    setRequireLogin: (
+  syncTaskAssignments: () => {},
+  syncRewardsData: () => {},
+  syncFamilyImages: () => {},
+  setRequireLogin: (
       state,
       action: PayloadAction<boolean>,
     ) => {
@@ -241,6 +242,7 @@ export const {
   syncFamilyMembers,
   syncTaskAssignments,
   syncRewardsData,
+  syncFamilyImages,
   setRequireLogin,
   touchSessionActivity,
   setPendingReturnRoute,

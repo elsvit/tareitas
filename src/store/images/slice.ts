@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { EStateName } from '~/store/enums';
 
-import type { IStateImages } from './types';
+import type { IStateImages, ImageStoreKind } from './types';
 
 const initialState: IStateImages = {
   taskUrls: {},
@@ -46,6 +46,30 @@ export const imagesSlice = createSlice({
       state.rewardUrls = {};
       state.userUrls = {};
     },
+    mergeFamilyImagesFromServer: (
+      state,
+      action: PayloadAction<
+        Array<{
+          kind: ImageStoreKind;
+          path: string;
+          uri: string;
+        }>
+      >,
+    ) => {
+      action.payload.forEach(({ kind, path, uri }) => {
+        const target =
+          kind === 'task'
+            ? state.taskUrls
+            : kind === 'reward'
+              ? state.rewardUrls
+              : state.userUrls;
+        const existing = target[path];
+
+        target[path] =
+          existing?.startsWith('file:') ? existing : uri;
+      });
+    },
+    deleteFamilyImage: () => {},
   },
 });
 
@@ -57,4 +81,6 @@ export const {
   setUserImageUrl,
   removeUserImageUrl,
   clearAllImageUrls,
+  mergeFamilyImagesFromServer,
+  deleteFamilyImage,
 } = imagesSlice.actions;
