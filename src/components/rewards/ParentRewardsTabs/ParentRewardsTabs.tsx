@@ -21,10 +21,11 @@ import { Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
 import { t } from '~/services';
 import { RootStateT } from '~/store';
-import { ECommonActions } from '~/store/common/types';
-import { EStateName } from '~/store/enums';
 import { selectAllRewardAssignment } from '~/store/rewardAssignment/selectors';
-import { selectCanReviewTasks } from '~/store/settings/selectors';
+import { isDateInClosedRewardPeriod } from '~/store/rewards/earnedRewardPeriodUtils';
+import {
+  buildPeriodApprovalUpdates,
+} from '~/store/rewards/rewardCalculations';
 import {
   HistoryPeriodItem,
   selectApprovedRewardsByChildSections,
@@ -33,12 +34,9 @@ import {
   selectSelectedRewardsByChildSections,
   selectUnapprovedHistorySections,
 } from '~/store/rewards/selectors';
-import { isDateInClosedRewardPeriod } from '~/store/rewards/earnedRewardPeriodUtils';
-import {
-  buildPeriodApprovalUpdates,
-} from '~/store/rewards/rewardCalculations';
 import { approvePeriod, updateReward } from '~/store/rewards/slice';
-import { Colors } from '~/styles';
+import { selectCanReviewTasks } from '~/store/settings/selectors';
+import { Colors, spacing } from '~/styles';
 import { EScreens } from '~/types';
 import { ERewardStatus } from '~/types/EReward';
 import { IReward, IRewardAssignment } from '~/types/IReward';
@@ -492,7 +490,8 @@ const styles = StyleSheet.create({
   },
   listContent: {
     flexGrow: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing(4),
+    paddingTop: spacing(2),
     paddingBottom: 96,
   },
   separator: {
