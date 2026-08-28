@@ -75,13 +75,14 @@ const RowContent: React.FC<{
                 <Text
                   style={[styles.reward, styles.rewardCompact, styles.rewardLine]}
                 >
-                  ⭐ {rewardText.slice(0, 3)}
+                  ⭐ {rewardText.slice(0, 4)}
                 </Text>
-                <Text
+                {rewardText.slice(4) && (<Text
                   style={[styles.reward, styles.rewardCompact, styles.rewardLine]}
-                >
-                  {rewardText.slice(3)}
-                </Text>
+                  >
+                    {rewardText.slice(4)}
+                  </Text>
+                )}
               </>
             ) : (
               <Text style={styles.reward}>⭐ {rewardText}</Text>
@@ -237,6 +238,7 @@ const styles = StyleSheet.create({
   rewardBadge: {
     marginTop: 6,
     width: IMAGE_SIZE,
+    minHeight: 28,
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
     paddingHorizontal: 2,
