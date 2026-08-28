@@ -9,13 +9,14 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
+import { SceneMap, TabView } from 'react-native-tab-view';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 
 import PlusIcon from '~/assets/svg/common/plus.svg';
 import { ConfirmModal } from '~/components/modals';
 import { RewardHistoryItem } from '~/components/rewards/RewardHistoryItem';
 import { RewardItem } from '~/components/rewards/RewardItem';
+import { RewardsTabBar, RewardsTabRoute } from '~/components/rewards/RewardsTabBar';
 import { SegmentedSectionList } from '~/components/rewards/SegmentedSectionList';
 import { Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
@@ -31,6 +32,7 @@ import {
   selectApprovedRewardsByChildSections,
   selectCompletedRewardsByChildSections,
   selectEarnedRewardPeriods,
+  selectRewardsByStatus,
   selectSelectedRewardsByChildSections,
   selectUnapprovedHistorySections,
 } from '~/store/rewards/selectors';
@@ -41,9 +43,8 @@ import { EScreens } from '~/types';
 import { ERewardStatus } from '~/types/EReward';
 import { IReward, IRewardAssignment } from '~/types/IReward';
 
-type ParentTabRoute = {
+type ParentTabRoute = RewardsTabRoute & {
   key: 'selected' | 'approved' | 'completed' | 'rewards' | 'history';
-  title: string;
 };
 
 const parentTabRoutes: ParentTabRoute[] = [
@@ -440,14 +441,26 @@ const getTabTitle = (key: ParentTabRoute['key']) => {
 export function ParentRewardsTabs() {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
+  const selectedRewards = useSelector(selectRewardsByStatus(ERewardStatus.Selected));
+  const approvedRewards = useSelector(selectRewardsByStatus(ERewardStatus.Approved));
 
-  const routes = useMemo(
+  const routes = useMemo<RewardsTabRoute[]>(
     () =>
-      parentTabRoutes.map(route => ({
-        ...route,
-        title: getTabTitle(route.key),
-      })),
-    [],
+      parentTabRoutes.map(route => {
+        const badge =
+          route.key === 'selected' && selectedRewards.length > 0
+            ? selectedRewards.length
+            : route.key === 'approved' && approvedRewards.length > 0
+              ? approvedRewards.length
+              : undefined;
+
+        return {
+          key: route.key,
+          title: getTabTitle(route.key),
+          ...(badge !== undefined ? { badge } : {}),
+        };
+      }),
+    [approvedRewards.length, selectedRewards.length],
   );
 
   return (
@@ -456,35 +469,12 @@ export function ParentRewardsTabs() {
       renderScene={renderScene}
       onIndexChange={setIndex}
       initialLayout={{ width: layout.width }}
-      renderTabBar={props => (
-        <TabBar
-          {...props}
-          scrollEnabled
-          activeColor={Colors.blue500}
-          inactiveColor={Colors.blue500}
-          indicatorStyle={styles.tabIndicator}
-          style={styles.tabBar}
-          tabStyle={styles.tab}
-        />
-      )}
+      renderTabBar={props => <RewardsTabBar {...props} />}
     />
   );
 }
 
 const styles = StyleSheet.create({
-  tabBar: {
-    backgroundColor: 'transparent',
-    elevation: 0,
-    shadowOpacity: 0,
-  },
-  tabIndicator: {
-    backgroundColor: Colors.blue500,
-    height: 3,
-  },
-  tab: {
-    width: 'auto',
-    minWidth: 88,
-  },
   listTab: {
     flex: 1,
   },

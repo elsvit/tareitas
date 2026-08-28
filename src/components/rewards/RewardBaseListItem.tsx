@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     width: IMAGE_SIZE,
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
-    paddingHorizontal: 6,
+    paddingHorizontal: 2,
     paddingVertical: 4,
     alignItems: 'center',
     justifyContent: 'center',

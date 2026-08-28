@@ -6,11 +6,12 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import { TabBar, TabView } from 'react-native-tab-view';
+import { TabView } from 'react-native-tab-view';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { RewardItem } from '~/components/rewards/RewardItem';
+import { RewardsTabBar, RewardsTabRoute } from '~/components/rewards/RewardsTabBar';
 import { Text } from '~/components/ui';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { t } from '~/services';
@@ -27,12 +28,11 @@ import {
   removeReward,
   updateReward,
 } from '~/store/rewards/slice';
-import { Colors, spacing } from '~/styles';
+import { spacing } from '~/styles';
 import { ERewardStatus } from '~/types/EReward';
 
-type ChildTabRoute = {
+type ChildTabRoute = RewardsTabRoute & {
   key: 'rewards' | 'selected' | 'approved' | 'completed';
-  title: string;
 };
 
 const childTabRoutes: ChildTabRoute[] = [
@@ -252,14 +252,26 @@ export function ChildRewardsTabs() {
   const { currentUserId } = useCurrentUser();
   const childId = currentUserId ?? '';
   const [index, setIndex] = useState(0);
+  const selectedItems = useSelector(selectChildSelectedRewardItems(childId));
+  const approvedItems = useSelector(selectChildApprovedRewardItems(childId));
 
-  const routes = useMemo(
+  const routes = useMemo<RewardsTabRoute[]>(
     () =>
-      childTabRoutes.map(route => ({
-        ...route,
-        title: getTabTitle(route.key),
-      })),
-    [],
+      childTabRoutes.map(route => {
+        const badge =
+          route.key === 'selected' && selectedItems.length > 0
+            ? selectedItems.length
+            : route.key === 'approved' && approvedItems.length > 0
+              ? approvedItems.length
+              : undefined;
+
+        return {
+          key: route.key,
+          title: getTabTitle(route.key),
+          ...(badge !== undefined ? { badge } : {}),
+        };
+      }),
+    [approvedItems.length, selectedItems.length],
   );
 
   const renderScene = useCallback(
@@ -286,35 +298,12 @@ export function ChildRewardsTabs() {
       renderScene={renderScene}
       onIndexChange={setIndex}
       initialLayout={{ width: layout.width }}
-      renderTabBar={props => (
-        <TabBar
-          {...props}
-          scrollEnabled
-          activeColor={Colors.blue500}
-          inactiveColor={Colors.blue500}
-          indicatorStyle={styles.tabIndicator}
-          style={styles.tabBar}
-          tabStyle={styles.tab}
-        />
-      )}
+      renderTabBar={props => <RewardsTabBar {...props} />}
     />
   );
 }
 
 const styles = StyleSheet.create({
-  tabBar: {
-    backgroundColor: 'transparent',
-    elevation: 0,
-    shadowOpacity: 0,
-  },
-  tabIndicator: {
-    backgroundColor: Colors.blue500,
-    height: 3,
-  },
-  tab: {
-    width: 'auto',
-    minWidth: 88,
-  },
   listContent: {
     flexGrow: 1,
     paddingHorizontal: spacing(4),
