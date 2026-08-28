@@ -42,12 +42,12 @@ import { EFormMode, ERecurringEditScope, WeekDay } from '~/types/ECommon';
 import { ETaskRepeatType } from '~/types/ETask';
 import { ISubtask, ITaskAssignment, TaskAssignmentFormProps } from '~/types/ITask';
 import { capitalizeFirst } from '~/utils/string';
-import { validateTaskAssignmentDates } from '~/utils/tasks/taskAssignmentDateValidation';
-import { isNewTaskDurationWithinEndDate } from '~/utils/tasks/taskReward';
 import {
   getAssignmentFieldsForDate,
   shouldPromptRecurringEditScope,
 } from '~/utils/tasks/recurringTaskEdit';
+import { validateTaskAssignmentDates } from '~/utils/tasks/taskAssignmentDateValidation';
+import { isNewTaskDurationWithinEndDate } from '~/utils/tasks/taskReward';
 
 import { SelectDate } from '~/components/ui/SelectDate';
 import { SelectTime } from '~/components/ui/SelectTime';
@@ -434,9 +434,9 @@ export const AssignmentTaskForm: FC<Props> = ({
       replace(
         hasSubtasks
           ? subtasks.map(subtask => ({
-              value: subtask.value,
-              label: subtask.label,
-            }))
+            value: subtask.value,
+            label: subtask.label,
+          }))
           : [],
       );
     },
@@ -862,21 +862,6 @@ export const AssignmentTaskForm: FC<Props> = ({
 
             <Space size={3} />
 
-            <Controller
-              control={control}
-              name="picture"
-              render={({ field: { value, onChange } }) => (
-                <SelectImageWithCustom
-                  kind="task"
-                  options={taskImageOptions}
-                  value={value ?? ''}
-                  onChange={onChange}
-                />
-              )}
-            />
-
-            <Space size={4} />
-
             <View style={styles.switchRow}>
               <Text style={styles.switchLabel}>{t('tasks.subtasks')}</Text>
               <Controller
@@ -899,7 +884,7 @@ export const AssignmentTaskForm: FC<Props> = ({
 
             {withSubtasks && (
               <>
-                <Space size={4} />
+                <Space size={3} />
                 <View style={styles.subtasksContainer}>
                   {subtaskFields.map((field, index) => (
                     <View key={field.id} style={styles.subtaskFieldRow}>
@@ -953,7 +938,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               </>
             )}
 
-            <Space size={4} />
+            <Space size={3} />
 
             {!isHabit && (
               <>
@@ -1186,6 +1171,21 @@ export const AssignmentTaskForm: FC<Props> = ({
                 )}
               </>
             )}
+
+            <Space size={3} />
+
+            <Controller
+              control={control}
+              name="picture"
+              render={({ field: { value, onChange } }) => (
+                <SelectImageWithCustom
+                  kind="task"
+                  options={taskImageOptions}
+                  value={value ?? ''}
+                  onChange={onChange}
+                />
+              )}
+            />
 
             <Space size={3} />
 
