@@ -16,7 +16,6 @@ import cut_of_paper from '~/assets/img/tasks/cut_of_paper.jpg';
 import day_without_sweets from '~/assets/img/tasks/day_without_sweets.jpg';
 import dirty_clothes_to_bin from '~/assets/img/tasks/dirty_clothes_to_bin.jpg';
 import dish from '~/assets/img/tasks/dish.jpg';
-import drink_water from '~/assets/img/tasks/drink_water.jpg';
 import dust_furniture from '~/assets/img/tasks/dust_furniture.jpg';
 import foreign_language from '~/assets/img/tasks/foreign_language.jpg';
 import gather_clean_clothes from '~/assets/img/tasks/gather_clean_clothes.jpg';
@@ -62,9 +61,13 @@ import water_plants from '~/assets/img/tasks/water_plants.jpg';
 
 
 export const BASE_TASKS_IMAGES = {
-  active_game,
   alarm_morning,
   alarm_evening,
+  good_morning,
+  good_night,
+  get_up,
+  go_to_bed,
+  active_game,
   bike,
   brush_teeth,
   brush_hair,
@@ -81,15 +84,10 @@ export const BASE_TASKS_IMAGES = {
   dirty_clothes_to_bin,
   dish,
   homework,
-  drink_water,
   dust_furniture,
   foreign_language,
   gather_clean_clothes,
-  get_up,
   glass_of_water,
-  go_to_bed,
-  good_morning,
-  good_night,
   jumping,
   jogging,
   line_up_shoes,
@@ -111,7 +109,6 @@ export const BASE_TASKS_IMAGES = {
   sweep_floor,
   swim,
   take_shower,
-  tasks_done,
   tidy_up_pencil_case,
   tidy_up_room,
   trash,
@@ -123,4 +120,5 @@ export const BASE_TASKS_IMAGES = {
   wash_hair,
   water_for_pet,
   water_plants,
+  tasks_done,
 };
