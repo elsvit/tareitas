@@ -1,4 +1,3 @@
-import active_game from '~/assets/img/tasks/active_game.jpg';
 import alarm_evening from '~/assets/img/tasks/alarm_evening.jpg';
 import alarm_morning from '~/assets/img/tasks/alarm_morning.jpg';
 import bike from '~/assets/img/tasks/bike.jpg';
@@ -59,7 +58,6 @@ import wash_hands from '~/assets/img/tasks/wash_hands.jpg';
 import water_for_pet from '~/assets/img/tasks/water_for_pet.jpg';
 import water_plants from '~/assets/img/tasks/water_plants.jpg';
 
-
 export const BASE_TASKS_IMAGES = {
   alarm_morning,
   alarm_evening,
@@ -67,58 +65,69 @@ export const BASE_TASKS_IMAGES = {
   good_night,
   get_up,
   go_to_bed,
-  active_game,
-  bike,
+
   brush_teeth,
   brush_hair,
-  change_clothes,
-  clean_cage,
-  clean_desk,
-  clean_house,
-  clean_pet_toilet,
-  clean_shoes,
-  clean_floor,
+  wash_hair,
   cut_nails,
-  cut_of_paper,
-  day_without_sweets,
-  dirty_clothes_to_bin,
-  dish,
-  homework,
-  dust_furniture,
-  foreign_language,
-  gather_clean_clothes,
+  put_cream,
+  wash_hands,
+  take_shower,
   glass_of_water,
+  dish,
+  day_without_sweets,
+
+  // learning tasks
+  homework,
+  read_book,
+  foreign_language,
+  logic_games,
+  painting,
+  cut_of_paper,
+  music,
+
+  // activities
+  training,
   jumping,
   jogging,
-  line_up_shoes,
-  logic_games,
+  bike,
+  swim,
+
+  // in order
   make_bed,
-  music,
-  organize_clothes,
-  pack_backpack,
-  painting,
-  play_with_pet,
-  prepare_clothes,
-  put_away_toys,
-  put_cream,
+  change_clothes,
+  line_up_shoes,
   put_in_order_books,
   put_in_order_shoes,
-  read_book,
-  robot,
+  put_away_toys,
+  organize_clothes,
+  pack_backpack,
   serve_table,
+  prepare_clothes,
+
+  // clean up
+  clean_desk,
+  clean_house,
+  clean_shoes,
+  clean_floor,
+  dust_furniture,
+  dirty_clothes_to_bin,
+  gather_clean_clothes,
   sweep_floor,
-  swim,
-  take_shower,
   tidy_up_pencil_case,
   tidy_up_room,
   trash,
-  training,
   vacuum_cleaning,
-  walk_the_dog,
-  wash_dishes,
-  wash_hands,
-  wash_hair,
-  water_for_pet,
+  robot,
   water_plants,
+  wash_dishes,
+
+  // pet
+  clean_cage,
+  clean_pet_toilet,
+  water_for_pet,
+  play_with_pet,
+  walk_the_dog,
+  
   tasks_done,
 };
