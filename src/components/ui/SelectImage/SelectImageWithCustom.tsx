@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   Modal,
   Pressable,
+  ScrollView,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -20,10 +21,6 @@ import { useMediaSessionPause } from '~/hooks/useSessionPause';
 import { t } from '~/services';
 import { uploadFamilyImageWithSession } from '~/services/api/uploadFamilyImageWithSession';
 import {
-  selectFamilyId,
-  selectIsMultidevice,
-} from '~/store/settings/selectors';
-import {
   selectFamilyScopedRewardImageEntries,
   selectFamilyScopedTaskImageEntries,
   selectFamilyScopedUserImageEntries,
@@ -35,11 +32,44 @@ import {
   setUserImageUrl,
 } from '~/store/images';
 import type { ImageStoreKind } from '~/store/images/types';
-import { filterFamilyImageEntries } from '~/utils/imageScope';
+import {
+  selectFamilyId,
+  selectIsMultidevice,
+} from '~/store/settings/selectors';
+import { spacing } from '~/styles';
 import { IImageOption } from '~/types';
+import { filterFamilyImageEntries } from '~/utils/imageScope';
 
 import { styles } from './SelectImageWithCustom.styles';
 import { styles as baseStyles } from './styles';
+
+const AVATAR_SIZE = 40;
+const AVATAR_GAP = spacing(3);
+
+type AvatarGridProps = {
+  maxRows?: number;
+  children: React.ReactNode;
+};
+
+function AvatarGrid({ maxRows, children }: AvatarGridProps) {
+  if (!maxRows) {
+    return <View style={baseStyles.grid}>{children}</View>;
+  }
+
+  const maxHeight = maxRows * AVATAR_SIZE + (maxRows - 1) * AVATAR_GAP;
+
+  return (
+    <ScrollView
+      horizontal
+      nestedScrollEnabled
+      showsHorizontalScrollIndicator={false}
+      style={{ maxHeight }}
+      contentContainerStyle={[styles.scrollGridContent, { maxHeight }]}
+    >
+      {children}
+    </ScrollView>
+  );
+}
 
 type Props = {
   kind: ImageStoreKind;
@@ -48,6 +78,10 @@ type Props = {
   errorMessage?: string;
   onChange?: (value: string) => void;
   label?: string;
+  /** When set, avatars scroll horizontally with at most this many rows. */
+  avatarMaxRows?: number;
+  /** When set, loaded/custom photos scroll horizontally with at most this many rows. */
+  loadedPhotosMaxRows?: number;
 };
 
 export function SelectImageWithCustom({
@@ -57,6 +91,8 @@ export function SelectImageWithCustom({
   errorMessage,
   onChange,
   label,
+  avatarMaxRows,
+  loadedPhotosMaxRows,
 }: Props) {
   const dispatch = useDispatch();
   const isMultidevice = useSelector(selectIsMultidevice);
@@ -255,7 +291,7 @@ export function SelectImageWithCustom({
           {label ?? t('users.avatar')}
         </Text>
 
-        <View style={baseStyles.grid}>
+        <AvatarGrid maxRows={avatarMaxRows}>
           {options.map((opt, index) => {
             const isSelected = value === opt.value;
 
@@ -274,7 +310,7 @@ export function SelectImageWithCustom({
               </TouchableOpacity>
             );
           })}
-        </View>
+        </AvatarGrid>
 
         <Pressable
           accessibilityRole="button"
@@ -289,7 +325,7 @@ export function SelectImageWithCustom({
             <Text variant="bodyMedium" style={styles.customLabel}>
               {t('imageLoader.loaded_photos')}
             </Text>
-            <View style={baseStyles.grid}>
+            <AvatarGrid maxRows={loadedPhotosMaxRows ?? avatarMaxRows}>
               {customEntries.map(([id, uri]) => {
                 const isSelected = value === id;
 
@@ -308,7 +344,7 @@ export function SelectImageWithCustom({
                   </TouchableOpacity>
                 );
               })}
-            </View>
+            </AvatarGrid>
           </View>
         )}
 

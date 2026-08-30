@@ -23,6 +23,12 @@ export const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: spacing(3),
   },
+  scrollGridContent: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    alignContent: 'flex-start',
+    gap: spacing(3),
+  },
   avatarOuter: {
     width: AVATAR_SIZE,
     height: AVATAR_SIZE,
