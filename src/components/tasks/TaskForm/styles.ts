@@ -11,6 +11,9 @@ export const styles = StyleSheet.create({
   container: {
     padding: 16,
   },
+  formRoot: {
+    flex: 1,
+  },
   titleContainer: {
     margin: spacing(2),
     alignItems: 'center',

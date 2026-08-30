@@ -33,9 +33,26 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      "./plugins/withPlayServicesAdsKotlinFix.js",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "kotlinVersion": "2.3.0",
+            "usesCleartextTraffic": true
+          }
+        }
+      ],
       "expo-router",
       "@react-native-firebase/app",
       "@react-native-firebase/crashlytics",
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-5022414338280098~9698164642",
+          "iosAppId": "ca-app-pub-5022414338280098~6359002088"
+        }
+      ],
       [
         "expo-splash-screen",
         {

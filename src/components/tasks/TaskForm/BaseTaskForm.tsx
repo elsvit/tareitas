@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
 import CrossIcon from '~/assets/svg/common/cross.svg';
+import { BottomBanner, useBottomBannerScrollPadding } from '~/components/ads/BottomBanner';
 import { ScreenHeader } from '~/components/blocks';
 import { DeleteModal } from '~/components/modals';
 import {
@@ -122,6 +123,7 @@ export const BaseTaskForm: FC<Props> = ({
   const dispatch = useDispatch();
   const router = useRouter();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const bottomBannerScrollPadding = useBottomBannerScrollPadding();
 
   const {
     control,
@@ -233,10 +235,16 @@ export const BaseTaskForm: FC<Props> = ({
           containerStyle={styles.screenHeader}
         />
       )}
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled"
-      >
+      <View style={styles.formRoot}>
+        <ScrollView
+          contentContainerStyle={[
+            styles.container,
+            bottomBannerScrollPadding > 0 && {
+              paddingBottom: bottomBannerScrollPadding,
+            },
+          ]}
+          keyboardShouldPersistTaps="handled"
+        >
         <Card>
           {!!title && !showScreenHeader && (
             <View style={styles.titleContainer}>
@@ -450,7 +458,10 @@ export const BaseTaskForm: FC<Props> = ({
 
           </Card.Content>
         </Card>
-      </ScrollView>
+        </ScrollView>
+
+        <BottomBanner />
+      </View>
 
       <DeleteModal
         isVisible={isDeleteModalVisible}
