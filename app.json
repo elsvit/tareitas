@@ -40,11 +40,26 @@
           "android": {
             "kotlinVersion": "2.3.0",
             "usesCleartextTraffic": true
+          },
+          "ios": {
+            "useFrameworks": "static",
+            "forceStaticLinking": [
+              "RNFBApp",
+              "RNFBAnalytics",
+              "RNFBCrashlytics"
+            ]
           }
         }
       ],
       "expo-router",
-      "@react-native-firebase/app",
+      [
+        "@react-native-firebase/app",
+        {
+          "ios": {
+            "disableSPM": true
+          }
+        }
+      ],
       "@react-native-firebase/crashlytics",
       [
         "react-native-google-mobile-ads",

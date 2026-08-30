@@ -1191,6 +1191,8 @@ export const AssignmentTaskForm: FC<Props> = ({
                   options={taskImageOptions}
                   value={value ?? ''}
                   onChange={onChange}
+                  avatarMaxRows={4}
+                  loadedPhotosMaxRows={2}
                 />
               )}
             />

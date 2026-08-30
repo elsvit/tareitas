@@ -19,6 +19,7 @@
     "build-apk-preview": "eas build -p android --profile preview",
     "build-apk-prod": "eas build -p android --profile production",
     "prebuild": "npx expo prebuild",
+    "postinstall": "node ./scripts/patch-rnfb-turbo-constants.js",
     "lint": "expo lint",
     "translations:sync": "node ./scripts/sync-translations.js",
     "translations:watch": "node ./scripts/sync-translations.js --watch"
