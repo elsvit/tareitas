@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { z } from 'zod';
 
 import { ScreenHeader } from '~/components/blocks';
+import { BottomBanner, useBottomBannerScrollPadding } from '~/components/ads/BottomBanner';
 import { DeleteModal } from '~/components/modals';
 import {
   Button,
@@ -101,6 +102,7 @@ export const RewardForm: FC<Props> = ({
   const dispatch = useDispatch();
   const router = useRouter();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const bottomBannerScrollPadding = useBottomBannerScrollPadding();
 
   const children = useSelector(selectDedupedChildren);
   const baseRewards = useSelector(selectAllRewardBase);
@@ -266,10 +268,16 @@ export const RewardForm: FC<Props> = ({
           containerStyle={styles.screenHeader}
         />
       )}
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled"
-      >
+      <View style={styles.formRoot}>
+        <ScrollView
+          contentContainerStyle={[
+            styles.container,
+            bottomBannerScrollPadding > 0 && {
+              paddingBottom: bottomBannerScrollPadding,
+            },
+          ]}
+          keyboardShouldPersistTaps="handled"
+        >
         <Card>
           {!!title && !showScreenHeader && (
             <View style={styles.titleContainer}>
@@ -461,7 +469,10 @@ export const RewardForm: FC<Props> = ({
             <Space size={4} />
           </Card.Content>
         </Card>
-      </ScrollView>
+        </ScrollView>
+
+        <BottomBanner />
+      </View>
 
       <DeleteModal
         isVisible={isDeleteModalVisible}
