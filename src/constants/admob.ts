@@ -8,7 +8,7 @@ export const ADMOB_IOS_APP_ID =
 
 // Create a banner ad unit in AdMob for Android, or set EXPO_PUBLIC_ADMOB_BANNER_ID at build time.
 export const ADMOB_ANDROID_BANNER_ID =
-  'ca-app-pub-XXXXXXXXXXXXXXX/XXXXXXXXXX';
+  'ca-app-pub-5022414338280098/4140032856';
 
 export const ADMOB_IOS_BANNER_ID =
   'ca-app-pub-5022414338280098/5045920410';
@@ -19,4 +19,4 @@ export const ADMOB_BANNER_ID = Platform.select({
   default: '',
 })!;
 
-export const AD_TASK_AMOUNT_START = 20;
+export const AD_TASK_AMOUNT_START = 10;
