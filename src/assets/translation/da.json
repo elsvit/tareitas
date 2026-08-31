@@ -116,7 +116,8 @@
       "sync_try_later": "Kunne ikke synkronisere nu. Prøv igen om et øjeblik.",
       "login_screen_title": "Log ind",
       "login_screen_subtitle": "Log ind for at synkronisere din familie på tværs af enheder."
-    }
+    },
+    "child_has_change_family": "Tillad barn at skifte familie"
   },
   "users": {
     "title": "Brugere",
@@ -165,7 +166,8 @@
       "sister": "Søster",
       "uncle": "Onkel"
     },
-    "change_group": "Skift gruppe"
+    "change_group": "Skift gruppe",
+    "custom_family_role": "Brugerdefineret familierolle"
   },
   "tasks": {
     "title": "Opgaver",

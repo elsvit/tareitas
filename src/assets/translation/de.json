@@ -116,7 +116,8 @@
       "sync_try_later": "Synchronisierung gerade nicht möglich. Bitte versuchen Sie es gleich erneut.",
       "login_screen_title": "Anmelden",
       "login_screen_subtitle": "Melden Sie sich an, um Ihre Familie geräteübergreifend zu synchronisieren."
-    }
+    },
+    "child_has_change_family": "Kind darf Familie wechseln"
   },
   "users": {
     "title": "Benutzer",
@@ -165,7 +166,8 @@
       "sister": "Schwester",
       "uncle": "Onkel"
     },
-    "change_group": "Gruppe wechseln"
+    "change_group": "Gruppe wechseln",
+    "custom_family_role": "Benutzerdefinierte Familienrolle"
   },
   "tasks": {
     "title": "Aufgaben",

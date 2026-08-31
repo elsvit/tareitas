@@ -117,7 +117,8 @@
       "sync_try_later": "Kunde inte synka just nu. Försök igen om en stund."
     },
     "show_login_name": "Visa inloggningsnamn",
-    "parents": "Föräldrar"
+    "parents": "Föräldrar",
+    "child_has_change_family": "Tillåt barn att byta familj"
   },
   "users": {
     "title": "Användare",
@@ -166,7 +167,8 @@
       "sister": "Syster",
       "uncle": "Farbror"
     },
-    "change_group": "Byt grupp"
+    "change_group": "Byt grupp",
+    "custom_family_role": "Anpassad familjeroll"
   },
   "tasks": {
     "title": "Uppgifter",

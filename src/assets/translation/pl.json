@@ -117,7 +117,8 @@
       "sync_try_later": "Synchronizacja nie powiodła się. Spróbuj ponownie za chwilę."
     },
     "show_login_name": "Pokaż nazwę logowania",
-    "parents": "Rodzice"
+    "parents": "Rodzice",
+    "child_has_change_family": "Zezwól dziecku na zmianę rodziny"
   },
   "users": {
     "title": "Użytkownicy",
@@ -166,7 +167,8 @@
       "sister": "Siostra",
       "uncle": "Wujek"
     },
-    "change_group": "Zmień grupę"
+    "change_group": "Zmień grupę",
+    "custom_family_role": "Niestandardowa rola w rodzinie"
   },
   "tasks": {
     "title": "Zadania",

@@ -117,7 +117,8 @@
       "sync_try_later": "Sinkronizacija trenutno nije uspjela. Pokušajte ponovno za trenutak."
     },
     "show_login_name": "Prikaži ime za prijavu",
-    "parents": "Roditelji"
+    "parents": "Roditelji",
+    "child_has_change_family": "Dozvoli djetetu promjenu obitelji"
   },
   "users": {
     "title": "Korisnici",
@@ -166,7 +167,8 @@
       "sister": "Sestra",
       "uncle": "Ujak"
     },
-    "change_group": "Promijeni grupu"
+    "change_group": "Promijeni grupu",
+    "custom_family_role": "Prilagođena obiteljska uloga"
   },
   "tasks": {
     "title": "Zadaci",

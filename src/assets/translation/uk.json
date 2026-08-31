@@ -134,7 +134,8 @@
     },
     "show_login_name": "Показувати ім'я для входу",
     "parents": "Батьки",
-    "system_language": "Мова системи"
+    "system_language": "Мова системи",
+    "child_has_change_family": "Дозволити дитині змінити сім'ю"
   },
   "users": {
     "title": "Користувачі",
@@ -183,7 +184,8 @@
       "uncle": "Дядя"
     },
     "change_group": "Змінити групу",
-    "unique_username": "Унікальне ім'я для входу"
+    "unique_username": "Унікальне ім'я для входу",
+    "custom_family_role": "Власна роль у сім'ї"
   },
   "tasks": {
     "title": "Завдання",

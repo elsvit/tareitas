@@ -117,7 +117,8 @@
       "sync_try_later": "Nu s-a putut sincroniza acum. Încercați din nou peste un moment."
     },
     "show_login_name": "Afișează numele de autentificare",
-    "parents": "Părinți"
+    "parents": "Părinți",
+    "child_has_change_family": "Permite copilului să schimbe familia"
   },
   "users": {
     "title": "Utilizatori",
@@ -166,7 +167,8 @@
       "sister": "soră",
       "uncle": "unchiule"
     },
-    "change_group": "Schimbă grupul"
+    "change_group": "Schimbă grupul",
+    "custom_family_role": "Rol familial personalizat"
   },
   "tasks": {
     "title": "Sarcini",
