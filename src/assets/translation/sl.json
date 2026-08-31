@@ -459,7 +459,8 @@
     "recurring_delete_following": "To nalogo in naslednje",
     "recurring_delete_following_desc": "Izbriši od tega dne naprej",
     "recurring_delete_all": "Vse naloge",
-    "recurring_delete_all_desc": "Izbriši celotno serijo"
+    "recurring_delete_all_desc": "Izbriši celotno serijo",
+    "task_end_date_before_start_date": "Končni datum ne more biti pred začetnim datumom"
   },
   "habits": {
     "title": "Navade",

@@ -47,7 +47,10 @@ import {
   getAssignmentFieldsForDate,
   shouldPromptRecurringEditScope,
 } from '~/utils/tasks/recurringTaskEdit';
-import { validateTaskAssignmentDates } from '~/utils/tasks/taskAssignmentDateValidation';
+import {
+  getEarliestAllowedTaskStartDateForChildren,
+  validateTaskAssignmentDates,
+} from '~/utils/tasks/taskAssignmentDateValidation';
 import { isNewTaskDurationWithinEndDate } from '~/utils/tasks/taskReward';
 
 import { SelectDate } from '~/components/ui/SelectDate';
@@ -393,7 +396,20 @@ export const AssignmentTaskForm: FC<Props> = ({
   const withSubtasks = watch('withSubtasks');
   const hasNewTaskBonus = watch('hasNewTaskBonus');
   const selectedColor = watch('color');
+  const watchedChildIds = watch('childIds');
+  const watchedStartDate = watch('startDate');
   const effectiveRepeats = isHabit || repeats;
+
+  const earliestStartDate = useMemo(() => {
+    if (!isParentView) {
+      return null;
+    }
+
+    return getEarliestAllowedTaskStartDateForChildren(
+      earnedRewardPeriods,
+      watchedChildIds,
+    );
+  }, [earnedRewardPeriods, isParentView, watchedChildIds]);
 
   useEffect(() => {
     if (isEditMode || children.length !== 1 || !children[0]?.id) {
@@ -575,9 +591,9 @@ export const AssignmentTaskForm: FC<Props> = ({
     const dateError = validateClosedPeriodDates(parsed.data);
 
     if (dateError) {
-      setError('startDate', {
+      setError(dateError.field, {
         type: 'manual',
-        message: dateError,
+        message: dateError.message,
       });
 
       return;
@@ -986,7 +1002,21 @@ export const AssignmentTaskForm: FC<Props> = ({
                   <SelectDate
                     label={t('tasks.start_date')}
                     value={value}
-                    onChange={onChange}
+                    minimumDate={earliestStartDate ?? undefined}
+                    onChange={nextStartDate => {
+                      onChange(nextStartDate);
+
+                      const currentEndDate = getValues('endDate');
+
+                      if (
+                        currentEndDate &&
+                        currentEndDate < nextStartDate
+                      ) {
+                        setValue('endDate', nextStartDate, {
+                          shouldValidate: true,
+                        });
+                      }
+                    }}
                   />
                   {!!errors.startDate && (
                     <Text style={styles.errorText}>
@@ -1009,6 +1039,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                       <SelectDate
                         label={t('tasks.end_date')}
                         value={value ?? ''}
+                        minimumDate={watchedStartDate || undefined}
                         onChange={onChange}
                       />
                       {!!errors.endDate && (

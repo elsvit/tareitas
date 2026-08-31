@@ -459,7 +459,8 @@
     "recurring_delete_following": "Tento úkol a následující",
     "recurring_delete_following_desc": "Smazat od tohoto dne dále",
     "recurring_delete_all": "Všechny úkoly",
-    "recurring_delete_all_desc": "Smazat celou sérii"
+    "recurring_delete_all_desc": "Smazat celou sérii",
+    "task_end_date_before_start_date": "Datum ukončení nemůže být před datem zahájení"
   },
   "habits": {
     "title": "Zvyky",

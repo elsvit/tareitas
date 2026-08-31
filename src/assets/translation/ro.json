@@ -459,7 +459,8 @@
     "recurring_delete_following": "Această sarcină și următoarele",
     "recurring_delete_following_desc": "Șterge de la această zi înainte",
     "recurring_delete_all": "Toate sarcinile",
-    "recurring_delete_all_desc": "Șterge întreaga serie"
+    "recurring_delete_all_desc": "Șterge întreaga serie",
+    "task_end_date_before_start_date": "Data de încheiere nu poate fi anterioară datei de început"
   },
   "habits": {
     "title": "Obiceiuri",

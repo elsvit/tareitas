@@ -458,7 +458,8 @@
     "recurring_delete_following": "Questa attività e le successive",
     "recurring_delete_following_desc": "Elimina da questo giorno in poi",
     "recurring_delete_all": "Tutte le attività",
-    "recurring_delete_all_desc": "Elimina l'intera serie"
+    "recurring_delete_all_desc": "Elimina l'intera serie",
+    "task_end_date_before_start_date": "La data di fine non può essere precedente alla data di inizio"
   },
   "habits": {
     "title": "Abitudini",

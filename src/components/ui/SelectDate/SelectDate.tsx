@@ -19,11 +19,25 @@ import {
 } from './SelectDate.utils';
 import { styles } from './styles';
 
-export function SelectDate({ label, value, onChange }: SelectDateProps) {
+export function SelectDate({
+  label,
+  value,
+  onChange,
+  minimumDate,
+  maximumDate,
+}: SelectDateProps) {
   const [open, setOpen] = useState(false);
   const [draftDate, setDraftDate] = useState(() => dateStringToDate(value));
 
   const selectedDate = useMemo(() => dateStringToDate(value), [value]);
+  const pickerMinimumDate = useMemo(
+    () => (minimumDate ? dateStringToDate(minimumDate) : undefined),
+    [minimumDate],
+  );
+  const pickerMaximumDate = useMemo(
+    () => (maximumDate ? dateStringToDate(maximumDate) : undefined),
+    [maximumDate],
+  );
 
   useEffect(() => {
     if (open) {
@@ -96,6 +110,8 @@ export function SelectDate({ label, value, onChange }: SelectDateProps) {
           <DateTimePicker
             value={selectedDate}
             mode="date"
+            minimumDate={pickerMinimumDate}
+            maximumDate={pickerMaximumDate}
             onChange={handleAndroidChange}
           />
         ) : null
@@ -121,6 +137,8 @@ export function SelectDate({ label, value, onChange }: SelectDateProps) {
                 value={draftDate}
                 mode="date"
                 display="spinner"
+                minimumDate={pickerMinimumDate}
+                maximumDate={pickerMaximumDate}
                 onChange={handleDraftChange}
               />
             </View>

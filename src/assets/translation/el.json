@@ -458,7 +458,8 @@
     "recurring_delete_following": "Αυτή η εργασία και οι επόμενες",
     "recurring_delete_following_desc": "Διαγραφή από αυτή την ημέρα και μετά",
     "recurring_delete_all": "Όλες οι εργασίες",
-    "recurring_delete_all_desc": "Διαγραφή ολόκληρης της σειράς"
+    "recurring_delete_all_desc": "Διαγραφή ολόκληρης της σειράς",
+    "task_end_date_before_start_date": "Η ημερομηνία λήξης δεν μπορεί να είναι πριν από την ημερομηνία έναρξης"
   },
   "habits": {
     "title": "Συνήθειες",

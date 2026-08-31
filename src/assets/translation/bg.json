@@ -459,7 +459,8 @@
     "recurring_delete_following": "Тази задача и следващите",
     "recurring_delete_following_desc": "Изтриване от този ден нататък",
     "recurring_delete_all": "Всички задачи",
-    "recurring_delete_all_desc": "Изтриване на цялата серия"
+    "recurring_delete_all_desc": "Изтриване на цялата серия",
+    "task_end_date_before_start_date": "Крайната дата не може да бъде преди началната дата"
   },
   "habits": {
     "title": "навици",

@@ -459,7 +459,8 @@
     "recurring_delete_following": "Ovaj zadatak i sljedeći",
     "recurring_delete_following_desc": "Izbriši od ovog dana nadalje",
     "recurring_delete_all": "Svi zadaci",
-    "recurring_delete_all_desc": "Izbriši cijelu seriju"
+    "recurring_delete_all_desc": "Izbriši cijelu seriju",
+    "task_end_date_before_start_date": "Datum završetka ne može biti prije datuma početka"
   },
   "habits": {
     "title": "Navike",

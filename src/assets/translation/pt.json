@@ -458,7 +458,8 @@
     "recurring_delete_following": "Esta tarefa e as seguintes",
     "recurring_delete_following_desc": "Eliminar a partir deste dia",
     "recurring_delete_all": "Todas as tarefas",
-    "recurring_delete_all_desc": "Eliminar toda a série"
+    "recurring_delete_all_desc": "Eliminar toda a série",
+    "task_end_date_before_start_date": "A data de término não pode ser anterior à data de início"
   },
   "habits": {
     "title": "Hábitos",

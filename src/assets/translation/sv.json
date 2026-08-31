@@ -459,7 +459,8 @@
     "recurring_delete_following": "Denna uppgift och följande",
     "recurring_delete_following_desc": "Radera från denna dag och framåt",
     "recurring_delete_all": "Alla uppgifter",
-    "recurring_delete_all_desc": "Radera hela serien"
+    "recurring_delete_all_desc": "Radera hela serien",
+    "task_end_date_before_start_date": "Slutdatum kan inte vara före startdatum"
   },
   "habits": {
     "title": "Vanor",

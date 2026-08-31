@@ -459,7 +459,8 @@
     "recurring_delete_following": "Túto úlohu a nasledujúce",
     "recurring_delete_following_desc": "Odstrániť od tohto dňa",
     "recurring_delete_all": "Všetky úlohy",
-    "recurring_delete_all_desc": "Odstrániť celú sériu"
+    "recurring_delete_all_desc": "Odstrániť celú sériu",
+    "task_end_date_before_start_date": "Dátum ukončenia nemôže byť pred dátumom začiatku"
   },
   "habits": {
     "title": "Návyky",
