@@ -6,6 +6,7 @@ export interface IStateSettings {
   isLangInitiating: boolean | null;
   isHabitsTabSeparated: boolean;
   isChildPasswordObligatory: boolean;
+  isChildHasChangeFamily: boolean;
   showLoginName: boolean;
   showParentLoginName: boolean;
   currentUser: string | null;
