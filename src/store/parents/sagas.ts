@@ -131,6 +131,7 @@ function* updateParentSaga(
         name: entityForServer.name.trim(),
         color: entityForServer.color,
         avatar: entityForServer.avatar,
+        familyRole: entityForServer.familyRole,
       }),
     );
 
@@ -140,6 +141,7 @@ function* updateParentSaga(
         name: profile.name,
         color: profile.color ?? entityForServer.color,
         avatar: profile.avatar ?? entityForServer.avatar,
+        familyRole: profile.familyRole ?? entityForServer.familyRole,
         role: ERole.admin,
       }),
     );

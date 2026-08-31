@@ -8,7 +8,7 @@ import { z } from 'zod';
 
 import { ScreenHeader } from '~/components/blocks';
 import { DeleteModal } from '~/components/modals';
-import { Button, ButtonColors, Card, Select, Space, Text, TextInput } from '~/components/ui';
+import { Button, ButtonColors, Card, SelectOrEdit, Space, Text, TextInput } from '~/components/ui';
 import { OTPInputIconButton } from '~/components/ui/OTPInputIconButton';
 import { SelectColor } from '~/components/ui/SelectColor';
 import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWithCustom';
@@ -19,12 +19,17 @@ import { removeParent } from '~/store/parents/slice';
 import { EFamilyRole, ERole } from '~/store/settings/enums';
 import { selectCurrentRole } from '~/store/settings/selectors';
 import { userColors } from '~/styles';
-import { IOptions, IParent, ParentFormProps } from '~/types';
+import { IParent, ParentFormProps } from '~/types';
 import { EFormMode } from '~/types/ECommon';
 import { capitalizeFirst } from '~/utils/string';
+import {
+  FAMILY_ROLE_OPTIONS,
+  parseFamilyRoleFormValues,
+  resolveFamilyRoleValue,
+} from '~/utils/users/familyRole';
 
-import { styles } from './styles';
 import type { UserFormHandle } from './types';
+import { styles } from './styles';
 
 // export const AVATAR_OPTIONS = [
 //   { label: 'Man 1', value: 'man1' },
@@ -67,7 +72,8 @@ type FormValues = {
   name: string;
   username?: string;
   color: string;
-  familyRole: EFamilyRole;
+  familyRolePreset: EFamilyRole;
+  customFamilyRole: string;
   role: ERole;
   avatar?: string;
   passwordPattern?: string;
@@ -119,74 +125,39 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
 
   const schema = useMemo(
     () =>
-      z.object({
-        ...(showUsernameField
-          ? {
-              username: z.string().trim().min(1, requiredMessage),
-            }
-          : {}),
-        name: z.string().trim().min(1, requiredMessage),
-        color: z.string().trim().min(1, requiredMessage),
-        familyRole: z.nativeEnum(EFamilyRole),
-        role: z.nativeEnum(ERole),
-        avatar: z.string().trim().min(1, requiredMessage),
-        passwordPattern: isEditMode
-          ? z.string().trim().optional()
-          : z.string().trim().min(1, requiredMessage),
-      }),
+      z
+        .object({
+          ...(showUsernameField
+            ? {
+                username: z.string().trim().min(1, requiredMessage),
+              }
+            : {}),
+          name: z.string().trim().min(1, requiredMessage),
+          color: z.string().trim().min(1, requiredMessage),
+          familyRolePreset: z.nativeEnum(EFamilyRole),
+          customFamilyRole: z.string().trim(),
+          role: z.nativeEnum(ERole),
+          avatar: z.string().trim().min(1, requiredMessage),
+          passwordPattern: isEditMode
+            ? z.string().trim().optional()
+            : z.string().trim().min(1, requiredMessage),
+        })
+        .superRefine((data, ctx) => {
+          if (
+            data.familyRolePreset === EFamilyRole.other &&
+            !data.customFamilyRole.trim()
+          ) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: requiredMessage,
+              path: ['customFamilyRole'],
+            });
+          }
+        }),
     [isEditMode, requiredMessage, showUsernameField],
   );
 
-  const FAMILY_ROLE_OPTIONS: IOptions<EFamilyRole>[] = [
-    {
-      value: EFamilyRole.mother,
-      label: t('users.familyRole.mother'),
-    },
-    {
-      value: EFamilyRole.father,
-      label: t('users.familyRole.father'),
-    },
-    {
-      value: EFamilyRole.grandmother,
-      label: t('users.familyRole.grandmother'),
-    },
-    {
-      value: EFamilyRole.grandfather,
-      label: t('users.familyRole.grandfather'),
-    },
-    {
-      value: EFamilyRole.sister,
-      label: t('users.familyRole.sister'),
-    },
-    {
-      value: EFamilyRole.brother,
-      label: t('users.familyRole.brother'),
-    },
-    {
-      value: EFamilyRole.nanny,
-      label: t('users.familyRole.nanny'),
-    },
-    {
-      value: EFamilyRole.aunt,
-      label: t('users.familyRole.aunt'),
-    },
-    {
-      value: EFamilyRole.uncle,
-      label: t('users.familyRole.uncle'),
-    },
-    {
-      value: EFamilyRole.reviewer,
-      label: t('users.familyRole.reviewer'),
-    },
-    {
-      value: EFamilyRole.reviewee,
-      label: t('users.familyRole.reviewee'),
-    },
-    {
-      value: EFamilyRole.other,
-      label: t('common.other'),
-    },
-  ];
+  const initialFamilyRole = parseFamilyRoleFormValues(parent?.familyRole);
 
   const {
     control,
@@ -201,7 +172,8 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
       username: parent?.username ?? '',
       name: parent?.name ?? '',
       color: parent?.color ?? userColors.pink,
-      familyRole: parent?.familyRole ?? EFamilyRole.mother,
+      familyRolePreset: initialFamilyRole.preset,
+      customFamilyRole: initialFamilyRole.customRole,
       role: parent?.role ?? ERole.parent,
       avatar: parent?.avatar ?? '',
       passwordPattern: parent?.passwordPattern ?? '',
@@ -211,11 +183,14 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
   });
 
   useEffect(() => {
+    const nextFamilyRole = parseFamilyRoleFormValues(parent?.familyRole);
+
     reset({
       username: parent?.username ?? '',
       name: parent?.name ?? '',
       color: parent?.color ?? userColors.pink,
-      familyRole: parent?.familyRole ?? EFamilyRole.mother,
+      familyRolePreset: nextFamilyRole.preset,
+      customFamilyRole: nextFamilyRole.customRole,
       role: parent?.role ?? ERole.parent,
       avatar: parent?.avatar ?? '',
       passwordPattern: parent?.passwordPattern ?? '',
@@ -266,7 +241,10 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
     const newParent: ParentFormProps = {
       name: data.name,
       color: data.color,
-      familyRole: data.familyRole,
+      familyRole: resolveFamilyRoleValue(
+        data.familyRolePreset,
+        data.customFamilyRole,
+      ),
       role: data.role,
       avatar: data.avatar,
       passwordPattern: data.passwordPattern?.trim()
@@ -384,24 +362,54 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
 
             <Space size={3} />
 
-            {/* Family Role + Role */}
+            {/* Family Role */}
             <Controller
               control={control}
-              name="familyRole"
-              render={({ field: { value, onChange } }) => (
-                <>
-                  <Select
-                    label={t('users.family_role') || 'Family role'}
-                    value={value}
-                    onChange={v => onChange(v as EFamilyRole)}
-                    options={FAMILY_ROLE_OPTIONS}
-                  />
-                  {!!errors.familyRole && (
-                    <Text style={styles.errorText}>
-                      {errors.familyRole.message}
-                    </Text>
-                  )}
-                </>
+              name="familyRolePreset"
+              render={({ field: { value: preset, onChange: onPresetChange } }) => (
+                <Controller
+                  control={control}
+                  name="customFamilyRole"
+                  render={({
+                    field: { value: customRole, onChange: onCustomRoleChange },
+                  }) => {
+                    const familyRoleText =
+                      preset !== EFamilyRole.other
+                        ? FAMILY_ROLE_OPTIONS.find(
+                            option => option.value === preset,
+                          )?.label ?? ''
+                        : customRole;
+
+                    return (
+                      <SelectOrEdit
+                        label={t('users.family_role') || 'Family role'}
+                        options={FAMILY_ROLE_OPTIONS}
+                        text={familyRoleText}
+                        onTextChange={text => {
+                          onCustomRoleChange(text);
+                          if (preset !== EFamilyRole.other) {
+                            onPresetChange(EFamilyRole.other);
+                          }
+                        }}
+                        selectedValue={preset}
+                        onSelect={value => {
+                          onPresetChange(value);
+                          if (value === EFamilyRole.other) {
+                            onCustomRoleChange(
+                              preset === EFamilyRole.other ? customRole : '',
+                            );
+                          } else {
+                            onCustomRoleChange('');
+                          }
+                        }}
+                        error={
+                          errors.customFamilyRole?.message ??
+                          errors.familyRolePreset?.message
+                        }
+                      />
+                    );
+                  }}
+                />
               )}
             />
 
