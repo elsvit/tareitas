@@ -459,7 +459,8 @@
     "recurring_delete_following": "Ez a feladat és a következők",
     "recurring_delete_following_desc": "Törlés ettől a naptól",
     "recurring_delete_all": "Minden feladat",
-    "recurring_delete_all_desc": "Az egész sorozat törlése"
+    "recurring_delete_all_desc": "Az egész sorozat törlése",
+    "task_end_date_before_start_date": "A befejezési dátum nem lehet korábbi, mint a kezdési dátum"
   },
   "habits": {
     "title": "Szokások",

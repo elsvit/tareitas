@@ -458,7 +458,8 @@
     "recurring_delete_following": "Diese Aufgabe und folgende",
     "recurring_delete_following_desc": "Ab diesem Tag löschen",
     "recurring_delete_all": "Alle Aufgaben",
-    "recurring_delete_all_desc": "Die gesamte Serie löschen"
+    "recurring_delete_all_desc": "Die gesamte Serie löschen",
+    "task_end_date_before_start_date": "Das Enddatum darf nicht vor dem Startdatum liegen"
   },
   "habits": {
     "title": "Gewohnheiten",

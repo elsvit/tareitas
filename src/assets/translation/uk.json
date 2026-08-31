@@ -476,7 +476,8 @@
     "recurring_delete_following": "Це завдання та наступні",
     "recurring_delete_following_desc": "Видалити з цього дня",
     "recurring_delete_all": "Усі завдання",
-    "recurring_delete_all_desc": "Видалити всю серію"
+    "recurring_delete_all_desc": "Видалити всю серію",
+    "task_end_date_before_start_date": "Дата закінчення не може бути раніше дати початку"
   },
   "habits": {
     "title": "Звички",

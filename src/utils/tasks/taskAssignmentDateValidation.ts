@@ -1,36 +1,58 @@
-import { format } from 'date-fns';
+import { addMonths, format, parseISO, startOfMonth } from 'date-fns';
 
 import { t } from '~/services';
-import {
-  findEarnedPeriod,
-  getLastApprovedMonth,
-  isPeriodClosed,
-} from '~/store/rewards/earnedRewardPeriodUtils';
+import { getLastApprovedMonth } from '~/store/rewards/earnedRewardPeriodUtils';
 import { IEarnedRewardPeriods } from '~/types/IReward';
 
-const getYearMonthFromDate = (date: string) => date.slice(0, 7);
+export type TaskAssignmentDateValidationError = {
+  field: 'startDate' | 'endDate';
+  message: string;
+};
 
-export const getEarliestAllowedTaskYearMonth = (
+export const getEarliestAllowedTaskStartDate = (
   periods: IEarnedRewardPeriods,
   childId: string,
 ): string | null => {
-  const currentYearMonth = format(new Date(), 'yyyy-MM');
-  const currentPeriod = findEarnedPeriod(periods, childId, currentYearMonth);
+  const lastApprovedMonth = getLastApprovedMonth(periods, childId);
 
-  if (!currentPeriod || !isPeriodClosed(currentPeriod)) {
+  if (!lastApprovedMonth) {
     return null;
   }
 
-  return getLastApprovedMonth(periods, childId);
+  return format(
+    startOfMonth(addMonths(parseISO(`${lastApprovedMonth}-01`), 1)),
+    'yyyy-MM-dd',
+  );
+};
+
+export const getEarliestAllowedTaskStartDateForChildren = (
+  periods: IEarnedRewardPeriods,
+  childIds: string[],
+): string | null => {
+  let earliest: string | null = null;
+
+  for (const childId of childIds) {
+    const childEarliest = getEarliestAllowedTaskStartDate(periods, childId);
+
+    if (!childEarliest) {
+      continue;
+    }
+
+    if (!earliest || childEarliest > earliest) {
+      earliest = childEarliest;
+    }
+  }
+
+  return earliest;
 };
 
 const isDateAllowed = (
   date: string | undefined,
-  earliestYearMonth: string | null,
+  earliestDate: string | null,
   originalDate: string | undefined,
   isEditMode: boolean,
 ): boolean => {
-  if (!date || !earliestYearMonth) {
+  if (!date || !earliestDate) {
     return true;
   }
 
@@ -38,7 +60,7 @@ const isDateAllowed = (
     return true;
   }
 
-  return getYearMonthFromDate(date) >= earliestYearMonth;
+  return date >= earliestDate;
 };
 
 export const validateTaskAssignmentDates = (params: {
@@ -51,7 +73,7 @@ export const validateTaskAssignmentDates = (params: {
   isEditMode?: boolean;
   originalStartDate?: string;
   originalEndDate?: string;
-}): string | null => {
+}): TaskAssignmentDateValidationError | null => {
   const {
     periods,
     childIds,
@@ -64,39 +86,63 @@ export const validateTaskAssignmentDates = (params: {
     originalEndDate,
   } = params;
 
-  for (const childId of childIds) {
-    const earliestYearMonth = getEarliestAllowedTaskYearMonth(periods, childId);
+  if (repeats && endDate && endDate < startDate) {
+    return {
+      field: 'endDate',
+      message:
+        t('tasks.task_end_date_before_start_date') ||
+        'End date cannot be before start date',
+    };
+  }
 
-    if (!earliestYearMonth) {
+  for (const childId of childIds) {
+    const earliestStartDate = getEarliestAllowedTaskStartDate(periods, childId);
+
+    if (!earliestStartDate) {
       continue;
     }
 
     const childName = childNamesById[childId] ?? '';
+    const earliestMonth = earliestStartDate.slice(0, 7);
 
     if (
-      !isDateAllowed(startDate, earliestYearMonth, originalStartDate, isEditMode)
+      !isDateAllowed(
+        startDate,
+        earliestStartDate,
+        originalStartDate,
+        isEditMode,
+      )
     ) {
-      return (
-        t('tasks.task_date_before_closed_period', {
-          month: earliestYearMonth,
-          childName,
-        }) ||
-        `Tasks for ${childName} must start in ${earliestYearMonth} or later`
-      );
+      return {
+        field: 'startDate',
+        message:
+          t('tasks.task_date_before_closed_period', {
+            month: earliestMonth,
+            childName,
+          }) ||
+          `Tasks for ${childName} must start in ${earliestMonth} or later`,
+      };
     }
 
     if (
       repeats &&
       endDate &&
-      !isDateAllowed(endDate, earliestYearMonth, originalEndDate, isEditMode)
+      !isDateAllowed(
+        endDate,
+        earliestStartDate,
+        originalEndDate,
+        isEditMode,
+      )
     ) {
-      return (
-        t('tasks.task_end_date_before_closed_period', {
-          month: earliestYearMonth,
-          childName,
-        }) ||
-        `Task end date for ${childName} must be in ${earliestYearMonth} or later`
-      );
+      return {
+        field: 'endDate',
+        message:
+          t('tasks.task_end_date_before_closed_period', {
+            month: earliestMonth,
+            childName,
+          }) ||
+          `Task end date for ${childName} must be in ${earliestMonth} or later`,
+      };
     }
   }
 

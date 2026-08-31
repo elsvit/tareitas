@@ -4,6 +4,8 @@ export type SelectDateProps = {
   label?: string;
   value?: string;
   onChange: (date: string) => void;
+  minimumDate?: string;
+  maximumDate?: string;
 };
 
 export const dateStringToDate = (value?: string): Date => {

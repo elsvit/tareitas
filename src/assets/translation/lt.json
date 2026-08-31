@@ -459,7 +459,8 @@
     "recurring_delete_following": "Šią užduotį ir vėlesnes",
     "recurring_delete_following_desc": "Ištrinti nuo šios dienos",
     "recurring_delete_all": "Visas užduotis",
-    "recurring_delete_all_desc": "Ištrinti visą seriją"
+    "recurring_delete_all_desc": "Ištrinti visą seriją",
+    "task_end_date_before_start_date": "Pabaigos data negali būti ankstesnė už pradžios datą"
   },
   "habits": {
     "title": "Įpročiai",

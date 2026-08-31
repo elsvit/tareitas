@@ -459,7 +459,8 @@
     "recurring_delete_following": "To zadanie i kolejne",
     "recurring_delete_following_desc": "Usuń od tego dnia",
     "recurring_delete_all": "Wszystkie zadania",
-    "recurring_delete_all_desc": "Usuń całą serię"
+    "recurring_delete_all_desc": "Usuń całą serię",
+    "task_end_date_before_start_date": "Data zakończenia nie może być wcześniejsza niż data rozpoczęcia"
   },
   "habits": {
     "title": "Nawyki",

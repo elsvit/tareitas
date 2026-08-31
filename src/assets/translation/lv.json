@@ -459,7 +459,8 @@
     "recurring_delete_following": "Šo uzdevumu un nākamos",
     "recurring_delete_following_desc": "Dzēst no šīs dienas",
     "recurring_delete_all": "Visus uzdevumus",
-    "recurring_delete_all_desc": "Dzēst visu sēriju"
+    "recurring_delete_all_desc": "Dzēst visu sēriju",
+    "task_end_date_before_start_date": "Beigu datumam nevar būt agrāks par sākuma datumu"
   },
   "habits": {
     "title": "Ieradumi",

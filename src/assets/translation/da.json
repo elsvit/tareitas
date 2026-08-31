@@ -458,7 +458,8 @@
     "recurring_delete_following": "Denne opgave og følgende",
     "recurring_delete_following_desc": "Slet fra denne dag og frem",
     "recurring_delete_all": "Alle opgaver",
-    "recurring_delete_all_desc": "Slet hele serien"
+    "recurring_delete_all_desc": "Slet hele serien",
+    "task_end_date_before_start_date": "Slutdato kan ikke være før startdato"
   },
   "habits": {
     "title": "Vaner",

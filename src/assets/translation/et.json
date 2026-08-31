@@ -458,7 +458,8 @@
     "recurring_delete_following": "See ülesanne ja järgmised",
     "recurring_delete_following_desc": "Kustuta alates sellest päevast",
     "recurring_delete_all": "Kõik ülesanded",
-    "recurring_delete_all_desc": "Kustuta kogu seeria"
+    "recurring_delete_all_desc": "Kustuta kogu seeria",
+    "task_end_date_before_start_date": "Lõppkuupäev ei saa olla alguskuupäevast varasem"
   },
   "habits": {
     "title": "Harjumused",

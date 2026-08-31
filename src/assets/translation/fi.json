@@ -459,7 +459,8 @@
     "recurring_delete_following": "Tämä tehtävä ja seuraavat",
     "recurring_delete_following_desc": "Poista tästä päivästä eteenpäin",
     "recurring_delete_all": "Kaikki tehtävät",
-    "recurring_delete_all_desc": "Poista koko sarja"
+    "recurring_delete_all_desc": "Poista koko sarja",
+    "task_end_date_before_start_date": "Päättymispäivä ei voi olla ennen alkupäivää"
   },
   "habits": {
     "title": "Tottumukset",

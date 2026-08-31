@@ -459,7 +459,8 @@
     "recurring_delete_following": "Deze taak en volgende",
     "recurring_delete_following_desc": "Verwijderen vanaf deze dag",
     "recurring_delete_all": "Alle taken",
-    "recurring_delete_all_desc": "De hele reeks verwijderen"
+    "recurring_delete_all_desc": "De hele reeks verwijderen",
+    "task_end_date_before_start_date": "Einddatum kan niet vóór de startdatum liggen"
   },
   "habits": {
     "title": "Gebruiken",
