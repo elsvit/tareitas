@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import { FORM_FIELD } from '~/constants/formField';
 import { INPUT_HEIGHT } from '~/constants/sizes';
+import { Colors } from '~/styles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -80,5 +81,9 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     color: FORM_FIELD.label,
     textAlign: 'center',
+  },
+  errorText: {
+    color: Colors.red500,
+    marginTop: 4,
   },
 });

@@ -1,4 +1,4 @@
-import { EFamilyRole, ERole } from '~/store/settings/enums';
+import { ERole } from '~/store/settings/enums';
 import type { ChildFormProps, IChild } from '~/types/IChild';
 import type { IParent, ParentFormProps } from '~/types/IParent';
 
@@ -20,8 +20,7 @@ export function mapServerParentToLocal(
     color: server.color ?? existing?.color,
     avatar: server.avatar ?? existing?.avatar,
     familyRole:
-      (server.familyRole as EFamilyRole | undefined) ??
-      existing?.familyRole,
+      server.familyRole ?? existing?.familyRole,
     role: server.role === 'admin' ? ERole.admin : ERole.parent,
     passwordPattern:
       passwordPattern ?? existing?.passwordPattern,
@@ -78,7 +77,7 @@ export function toUpdateParentPayload(parent: ParentFormProps) {
     name?: string;
     username?: string;
     pin?: string;
-    familyRole?: EFamilyRole;
+    familyRole?: string;
     color?: string;
     avatar?: string;
   } = {

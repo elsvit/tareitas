@@ -7,9 +7,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { CHILDREN_AVATARS, PARENT_AVATARS } from '~/assets/img/users/users';
 import { Text } from '~/components/ui';
 import { UserAvatar } from '~/components/users/UserAvatar';
-import { t } from '~/services';
 import { selectUserImageUrls } from '~/store/images';
-import { EFamilyRole } from '~/store/settings/enums';
+import { getFamilyRoleLabel } from '~/utils/users';
 import { lightenColor } from '~/utils/color';
 
 const USER_AVATAR_MAP = Object.fromEntries(
@@ -136,36 +135,10 @@ const RowContent: React.FC<RowProps> = ({
   familyRole,
   textColor,
 }) => {
-  const familyRoleText = React.useMemo(() => {
-    switch (familyRole) {
-      case EFamilyRole.mother:
-        return t('users.familyRole.mother');
-      case EFamilyRole.father:
-        return t('users.familyRole.father');
-      case EFamilyRole.grandmother:
-        return t('users.familyRole.grandmother');
-      case EFamilyRole.grandfather:
-        return t('users.familyRole.grandfather');
-      case EFamilyRole.sister:
-        return t('users.familyRole.sister');
-      case EFamilyRole.brother:
-        return t('users.familyRole.brother');
-      case EFamilyRole.nanny:
-        return t('users.familyRole.nanny');
-      case EFamilyRole.aunt:
-        return t('users.familyRole.aunt');
-      case EFamilyRole.uncle:
-        return t('users.familyRole.uncle');
-      case EFamilyRole.reviewer:
-        return t('users.familyRole.reviewer');
-      case EFamilyRole.reviewee:
-        return t('users.familyRole.reviewee');
-      case EFamilyRole.other:
-        return t('common.other');
-      default:
-        return '';
-    }
-  }, [familyRole]);
+  const familyRoleText = React.useMemo(
+    () => getFamilyRoleLabel(familyRole),
+    [familyRole],
+  );
 
   const subtitle = React.useMemo(() => {
     const loginName = showLoginName ? username?.trim() : '';

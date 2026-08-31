@@ -169,6 +169,7 @@
     "edit_parent": "Edit Parent",
     "family": "Family",
     "family_role": "Family Role",
+    "custom_family_role": "Custom family role",
     "login": "Login",
     "logout": "Logout",
     "change_group": "Change family",

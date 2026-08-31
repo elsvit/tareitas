@@ -84,6 +84,7 @@ export type ServerMemberProfile = {
   name: string;
   color?: string;
   avatar?: string;
+  familyRole?: string;
 };
 
 export async function updateMyMemberProfile(
@@ -93,6 +94,7 @@ export async function updateMyMemberProfile(
     name?: string;
     color?: string;
     avatar?: string;
+    familyRole?: string;
   },
 ) {
   const response = await apiFetch(
