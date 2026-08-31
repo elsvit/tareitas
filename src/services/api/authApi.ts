@@ -1,7 +1,9 @@
 import {
   IAuthTokens,
+  IForgotPasswordPayload,
   ILoginPayload,
   IRegisterUserPayload,
+  IResetPasswordPayload,
 } from '~/types/IAuth';
 
 import { apiFetch, parseApiJson } from './client';
@@ -46,4 +48,26 @@ export async function logoutUser(refreshToken: string) {
   });
 
   return parseApiJson(response);
+}
+
+export async function forgotPassword(
+  payload: IForgotPasswordPayload,
+) {
+  const response = await apiFetch('/auth/forgot-password', {
+    method: 'POST',
+    body: payload,
+  });
+
+  return parseApiJson<{ success: boolean }>(response);
+}
+
+export async function resetPassword(
+  payload: IResetPasswordPayload,
+) {
+  const response = await apiFetch('/auth/reset-password', {
+    method: 'POST',
+    body: payload,
+  });
+
+  return parseApiJson<{ success: boolean }>(response);
 }

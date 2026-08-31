@@ -26,6 +26,18 @@ export interface ILoginPayload {
   lang?: string;
 }
 
+export interface IForgotPasswordPayload {
+  email: string;
+  lang?: string;
+}
+
+export interface IResetPasswordPayload {
+  email: string;
+  code: string;
+  newPin: string;
+  lang?: string;
+}
+
 export interface IFamilySummary {
   family: {
     id: string;

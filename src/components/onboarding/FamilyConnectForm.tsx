@@ -4,6 +4,7 @@ import { Pressable, View } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 
+import { ForgotPasswordModal } from '~/components/modals';
 import {
   Button,
   ButtonColors,
@@ -49,6 +50,11 @@ export function FamilyConnectForm({
   const [pin, setPin] = useState('');
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [forgotPasswordVisible, setForgotPasswordVisible] =
+    useState(false);
+  const [resetSuccessMessage, setResetSuccessMessage] = useState<
+    string | null
+  >(null);
 
   const handleLoginModeChange = (
     nextMode: ConnectLoginMode,
@@ -56,6 +62,7 @@ export function FamilyConnectForm({
     setLoginMode(nextMode);
     setIdentifier('');
     setLoginError(null);
+    setResetSuccessMessage(null);
   };
 
   const handleLogin = async () => {
@@ -205,6 +212,34 @@ export function FamilyConnectForm({
       >
         {t('onboarding.login.submit')}
       </Button>
+      {loginMode === 'admin' ? (
+        <>
+          <Space size={2} />
+          <Pressable
+            onPress={() => {
+              setForgotPasswordVisible(true);
+              setResetSuccessMessage(null);
+            }}
+            style={styles.signUpLink}
+          >
+            <Text
+              variant="bodyMedium"
+              color={Colors.blue600}
+              weight="bold"
+            >
+              {t('onboarding.login.forgot_pin')}
+            </Text>
+          </Pressable>
+        </>
+      ) : null}
+      {resetSuccessMessage ? (
+        <>
+          <Space size={2} />
+          <Text variant="bodyMedium" color={Colors.green600}>
+            {resetSuccessMessage}
+          </Text>
+        </>
+      ) : null}
       {showSignUpLink && onSignUpPress ? (
         <>
           <Space size={2} />
@@ -222,6 +257,14 @@ export function FamilyConnectForm({
           </Pressable>
         </>
       ) : null}
+      <ForgotPasswordModal
+        isVisible={forgotPasswordVisible}
+        onRequestClose={() => setForgotPasswordVisible(false)}
+        initialEmail={identifier}
+        onSuccess={() =>
+          setResetSuccessMessage(t('onboarding.login.forgot_success'))
+        }
+      />
     </View>
   );
 }

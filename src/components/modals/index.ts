@@ -1,4 +1,5 @@
 export { OTPInputModal } from './OTPInputModal';
+export { ForgotPasswordModal } from './ForgotPasswordModal';
 export { GesturePasswordModal } from './GesturePasswordModal';
 export { ConfirmModal } from './ConfirmModal';
 export type { ConfirmModalProps } from './ConfirmModal';

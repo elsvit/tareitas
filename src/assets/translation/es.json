@@ -663,7 +663,20 @@
       "error_username_required": "El nombre de usuario es obligatorio",
       "error_pin_required": "Introduce un PIN de 4 dígitos",
       "error_generic": "No se pudo iniciar sesión. Comprueba tus datos e inténtalo de nuevo.",
-      "error_empty_family": "Sesión iniciada, pero no se encontraron miembros de la familia. Inténtalo de nuevo."
+      "error_empty_family": "Sesión iniciada, pero no se encontraron miembros de la familia. Inténtalo de nuevo.",
+      "forgot_pin": "¿Olvidaste el PIN?",
+      "forgot_title": "Restablecer PIN",
+      "forgot_subtitle": "Introduce el email del admin y te enviaremos un código de 6 dígitos.",
+      "forgot_send_code": "Enviar código",
+      "forgot_code_sent": "Si existe una cuenta con {{email}}, se ha enviado un código.",
+      "forgot_enter_code": "Introduce el código de 6 dígitos",
+      "forgot_new_pin": "Nuevo PIN de 4 dígitos",
+      "forgot_reset": "Restablecer PIN",
+      "forgot_error_email_invalid": "Introduce un email válido",
+      "forgot_error_code_required": "Introduce el código de 6 dígitos",
+      "forgot_error_pin_required": "Introduce un PIN de 4 dígitos",
+      "forgot_error_generic": "No se pudo restablecer el PIN. Inténtalo de nuevo.",
+      "forgot_success": "PIN actualizado. Ya puedes iniciar sesión."
     },
     "sign_up": {
       "admin_header": "Crear admin",

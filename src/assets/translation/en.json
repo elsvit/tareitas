@@ -663,7 +663,20 @@
       "error_username_required": "Username is required",
       "error_pin_required": "Enter a 4-digit PIN",
       "error_generic": "Could not sign in. Check your details and try again.",
-      "error_empty_family": "Signed in, but no family members were found. Try again or contact support."
+      "error_empty_family": "Signed in, but no family members were found. Try again or contact support.",
+      "forgot_pin": "Forgot PIN?",
+      "forgot_title": "Reset PIN",
+      "forgot_subtitle": "Enter your admin email and we'll send you a 6-digit code.",
+      "forgot_send_code": "Send code",
+      "forgot_code_sent": "If an account exists with {{email}}, a code has been sent.",
+      "forgot_enter_code": "Enter the 6-digit code",
+      "forgot_new_pin": "New 4-digit PIN",
+      "forgot_reset": "Reset PIN",
+      "forgot_error_email_invalid": "Enter a valid email",
+      "forgot_error_code_required": "Enter the 6-digit code",
+      "forgot_error_pin_required": "Enter a 4-digit PIN",
+      "forgot_error_generic": "Could not reset PIN. Try again.",
+      "forgot_success": "PIN updated. You can sign in now."
     },
     "sign_up": {
       "admin_header": "Create admin",
