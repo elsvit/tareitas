@@ -139,18 +139,28 @@ export const onboardingStyles = StyleSheet.create({
     flex: 1,
   },
   loginModeOptions: {
-    gap: spacing(1),
+    flexDirection: 'row',
+    gap: spacing(2),
     marginBottom: spacing(1),
   },
   loginModeOption: {
-    paddingVertical: 0,
-    paddingHorizontal: spacing(2),
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: spacing(0.5),
+    paddingHorizontal: spacing(1),
     backgroundColor: 'rgba(255, 255, 255, 0.45)',
     borderRadius: 12,
+    borderWidth: 2,
+    borderColor: Colors.blue200,
+  },
+  loginModeOptionSelected: {
+    borderColor: Colors.blue600,
+    backgroundColor: 'rgba(255, 255, 255, 0.72)',
   },
   loginModeOptionLabel: {
+    flex: 1,
     fontFamily: 'Fredoka_500Medium',
-    color: Colors.grey900,
   },
   loginFormCard: {
     padding: spacing(2),

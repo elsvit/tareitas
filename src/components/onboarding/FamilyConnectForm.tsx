@@ -131,18 +131,37 @@ export function FamilyConnectForm({
         value={loginMode}
       >
         <View style={styles.loginModeOptions}>
-          <RadioButton.Item
-            label={t('onboarding.login.admin')}
-            value="admin"
-            style={styles.loginModeOption}
-            labelStyle={styles.loginModeOptionLabel}
-          />
-          <RadioButton.Item
-            label={t('onboarding.login.not_admin')}
-            value="member"
-            style={styles.loginModeOption}
-            labelStyle={styles.loginModeOptionLabel}
-          />
+          {(
+            [
+              { value: 'admin', label: t('onboarding.login.admin') },
+              { value: 'member', label: t('onboarding.login.not_admin') },
+            ] as const
+          ).map(option => {
+            const selected = loginMode === option.value;
+
+            return (
+              <Pressable
+                key={option.value}
+                onPress={() => handleLoginModeChange(option.value)}
+                style={[
+                  styles.loginModeOption,
+                  selected && styles.loginModeOptionSelected,
+                ]}
+                accessibilityRole="radio"
+                accessibilityState={{ selected }}
+              >
+                <RadioButton value={option.value} color={Colors.blue600} />
+                <Text
+                  variant="bodyMedium"
+                  weight="bold"
+                  color={selected ? Colors.blue600 : Colors.grey700}
+                  style={styles.loginModeOptionLabel}
+                >
+                  {option.label}
+                </Text>
+              </Pressable>
+            );
+          })}
         </View>
       </RadioButton.Group>
 
