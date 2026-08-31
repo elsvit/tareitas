@@ -653,7 +653,7 @@
       "title": "Welcome back",
       "subtitle": "Sign in with your admin email or your unique username.",
       "admin": "Admin",
-      "not_admin": "Not admin",
+      "not_admin": "No admin",
       "email": "Email",
       "username": "Unique Login Name",
       "pin": "4-digit PIN",
