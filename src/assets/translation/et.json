@@ -116,7 +116,8 @@
       "sync_try_later": "Sünkroniseerimine ebaõnnestus. Proovige hetke pärast uuesti."
     },
     "show_login_name": "Kuva sisselogimisnimi",
-    "parents": "Lapsevanemad"
+    "parents": "Lapsevanemad",
+    "child_has_change_family": "Luba lapsel peret vahetada"
   },
   "users": {
     "title": "Kasutajad",
@@ -165,7 +166,8 @@
       "sister": "õde",
       "uncle": "Onu"
     },
-    "change_group": "Vaheta gruppi"
+    "change_group": "Vaheta gruppi",
+    "custom_family_role": "Kohandatud perekonnaroll"
   },
   "tasks": {
     "title": "Ülesanded",

@@ -116,7 +116,8 @@
       "sync_try_later": "Não foi possível sincronizar agora. Tente novamente daqui a instantes."
     },
     "show_login_name": "Mostrar nome de acesso",
-    "parents": "Pais"
+    "parents": "Pais",
+    "child_has_change_family": "Permitir que a criança mude de família"
   },
   "users": {
     "title": "Usuários",
@@ -165,7 +166,8 @@
       "sister": "Irmã",
       "uncle": "Tio"
     },
-    "change_group": "Mudar grupo"
+    "change_group": "Mudar grupo",
+    "custom_family_role": "Papel familiar personalizado"
   },
   "tasks": {
     "title": "Tarefas",

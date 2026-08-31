@@ -117,7 +117,8 @@
       "sync_try_later": "Tagad neizdevās sinhronizēt. Mēģiniet vēlreiz pēc brīža."
     },
     "show_login_name": "Rādīt pieteikšanās vārdu",
-    "parents": "Vecāki"
+    "parents": "Vecāki",
+    "child_has_change_family": "Atļaut bērnam mainīt ģimeni"
   },
   "users": {
     "title": "Lietotāji",
@@ -166,7 +167,8 @@
       "sister": "Māsa",
       "uncle": "Tēvocis"
     },
-    "change_group": "Mainīt grupu"
+    "change_group": "Mainīt grupu",
+    "custom_family_role": "Pielāgota ģimenes loma"
   },
   "tasks": {
     "title": "Uzdevumi",

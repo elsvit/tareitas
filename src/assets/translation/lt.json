@@ -117,7 +117,8 @@
       "sync_try_later": "Dabar nepavyko sinchronizuoti. Bandykite dar kartą po akimirkos."
     },
     "show_login_name": "Rodyti prisijungimo vardą",
-    "parents": "Tėvai"
+    "parents": "Tėvai",
+    "child_has_change_family": "Leisti vaikui keisti šeimą"
   },
   "users": {
     "title": "Vartotojai",
@@ -166,7 +167,8 @@
       "sister": "Sesuo",
       "uncle": "Dėdė"
     },
-    "change_group": "Keisti grupę"
+    "change_group": "Keisti grupę",
+    "custom_family_role": "Individualus šeimos vaidmuo"
   },
   "tasks": {
     "title": "Užduotys",
