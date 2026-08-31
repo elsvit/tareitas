@@ -634,7 +634,20 @@
       "error_username_required": "Numele de utilizator este obligatoriu",
       "error_pin_required": "Introdu un PIN din 4 cifre",
       "error_generic": "Autentificarea a eșuat. Verifică datele și încearcă din nou.",
-      "error_empty_family": "Autentificat, dar nu s-au găsit membri ai familiei. Încercați din nou."
+      "error_empty_family": "Autentificat, dar nu s-au găsit membri ai familiei. Încercați din nou.",
+      "forgot_pin": "Forgot PIN?",
+      "forgot_title": "Reset PIN",
+      "forgot_subtitle": "Enter your admin email and we'll send you a 6-digit code.",
+      "forgot_send_code": "Send code",
+      "forgot_code_sent": "If an account exists with {{email}}, a code has been sent.",
+      "forgot_enter_code": "Enter the 6-digit code",
+      "forgot_new_pin": "New 4-digit PIN",
+      "forgot_reset": "Reset PIN",
+      "forgot_error_email_invalid": "Enter a valid email",
+      "forgot_error_code_required": "Enter the 6-digit code",
+      "forgot_error_pin_required": "Enter a 4-digit PIN",
+      "forgot_error_generic": "Could not reset PIN. Try again.",
+      "forgot_success": "PIN updated. You can sign in now."
     },
     "sign_up": {
       "admin_header": "Creează admin",
