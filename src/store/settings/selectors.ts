@@ -52,6 +52,10 @@ export const selectIsChildPasswordObligatory = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>)
     .isChildPasswordObligatory ?? true;
 
+export const selectIsChildHasChangeFamily = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .isChildHasChangeFamily ?? false;
+
 export const selectShowLoginName = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>).showLoginName ??
   false;

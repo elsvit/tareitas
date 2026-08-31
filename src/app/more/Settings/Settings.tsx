@@ -13,6 +13,7 @@ import { AvailableLanguages, LocalizationService, t } from '~/services/localizat
 import {
   selectHasAuthSession,
   selectIsAdmin,
+  selectIsChildHasChangeFamily,
   selectIsChildPasswordObligatory,
   selectIsMultidevice,
   selectLang,
@@ -23,6 +24,7 @@ import {
 } from '~/store/settings/selectors';
 import {
   clearAuthSession,
+  setIsChildHasChangeFamily,
   setIsChildPasswordObligatory,
   setLanguage,
   setRequireLogin,
@@ -44,6 +46,7 @@ export default function Settings() {
   const storedLang = useSelector(selectLang);
   const isAdmin = useSelector(selectIsAdmin);
   const isChildPasswordObligatory = useSelector(selectIsChildPasswordObligatory);
+  const isChildHasChangeFamily = useSelector(selectIsChildHasChangeFamily);
   const showLoginName = useSelector(selectShowLoginName);
   const showParentLoginName = useSelector(selectShowParentLoginName);
   const isMultidevice = useSelector(selectIsMultidevice);
@@ -86,6 +89,13 @@ export default function Settings() {
   const handleChildPasswordObligatoryChange = useCallback(
     (value: boolean) => {
       dispatch(setIsChildPasswordObligatory(value));
+    },
+    [dispatch],
+  );
+
+  const handleChildHasChangeFamilyChange = useCallback(
+    (value: boolean) => {
+      dispatch(setIsChildHasChangeFamily(value));
     },
     [dispatch],
   );
@@ -209,6 +219,13 @@ export default function Settings() {
             value: showLoginName,
             onValueChange: handleShowLoginNameChange,
           },
+          {
+            type: 'switch' as const,
+            id: 'child-has-change-family',
+            title: t('settings.child_has_change_family'),
+            value: isChildHasChangeFamily,
+            onValueChange: handleChildHasChangeFamilyChange,
+          },
         ],
       },
     ];
@@ -218,6 +235,7 @@ export default function Settings() {
     activeLang,
     activeLanguageName,
     handleChildPasswordObligatoryChange,
+    handleChildHasChangeFamilyChange,
     handleShowLoginNameChange,
     handleShowParentLoginNameChange,
     handleLanguageChange,
@@ -225,6 +243,7 @@ export default function Settings() {
     hasAuthSession,
     isAdmin,
     isChildPasswordObligatory,
+    isChildHasChangeFamily,
     isMultidevice,
     needsAuthLogin,
     router,

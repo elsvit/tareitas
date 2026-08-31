@@ -135,6 +135,7 @@
     "language": "Language",
     "children": "Children",
     "child_password_obligatory": "Child password required",
+    "child_has_change_family": "Allow child to change family",
     "account": {
       "title": "Cloud sync",
       "signed_in": "Signed in",

@@ -15,6 +15,8 @@ import {
 } from '~/services/familySync';
 import type { AppDispatch } from '~/store';
 import {
+  selectIsChild,
+  selectIsChildHasChangeFamily,
   selectIsChildPasswordObligatory,
   selectIsMultidevice,
 } from '~/store/settings/selectors';
@@ -37,9 +39,12 @@ export function useUserSwitch() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const isMultidevice = useSelector(selectIsMultidevice);
+  const isChild = useSelector(selectIsChild);
+  const isChildHasChangeFamily = useSelector(selectIsChildHasChangeFamily);
   const isChildPasswordObligatory = useSelector(
     selectIsChildPasswordObligatory,
   );
+  const showChangeGroup = !isChild || isChildHasChangeFamily;
   const [isSelectUsersVisible, setIsSelectUsersVisible] = useState(false);
   const [pendingUser, setPendingUser] = useState<SelectedUser | null>(null);
   const [isPinModalVisible, setIsPinModalVisible] = useState(false);
@@ -211,7 +216,7 @@ export function useUserSwitch() {
         onSelectUser={handleSelectUser}
         onLogout={handleLogout}
         onChangeGroup={handleChangeGroup}
-        showChangeGroup
+        showChangeGroup={showChangeGroup}
       />
 
       <OTPInputModal

@@ -12,6 +12,7 @@ const initialState: IStateSettings = {
   isLangInitiating: true, // TODO Change from null to true
   isHabitsTabSeparated: true,
   isChildPasswordObligatory: true,
+  isChildHasChangeFamily: false,
   showLoginName: false,
   showParentLoginName: false,
   currentUser: null,
@@ -50,6 +51,9 @@ export const settingsSlice = createSlice({
     },
     setIsChildPasswordObligatory: (state, action: PayloadAction<boolean>) => {
       state.isChildPasswordObligatory = action.payload;
+    },
+    setIsChildHasChangeFamily: (state, action: PayloadAction<boolean>) => {
+      state.isChildHasChangeFamily = action.payload;
     },
     setShowLoginName: (state, action: PayloadAction<boolean>) => {
       state.showLoginName = action.payload;
@@ -221,6 +225,7 @@ export const {
   setLanguage,
   setIsRecurringTabSeparated,
   setIsChildPasswordObligatory,
+  setIsChildHasChangeFamily,
   setShowLoginName,
   setShowParentLoginName,
   setCurrentRole,

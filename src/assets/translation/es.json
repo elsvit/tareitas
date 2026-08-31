@@ -135,6 +135,7 @@
     "language": "Idioma",
     "children": "Hijos",
     "child_password_obligatory": "Contraseña del hijo obligatoria",
+    "child_has_change_family": "Permitir al hijo cambiar de familia",
     "account": {
       "title": "Sincronización en la nube",
       "signed_in": "Sesión iniciada",
@@ -169,7 +170,6 @@
     "edit_parent": "Editar Padre",
     "family": "Familia",
     "family_role": "Rol de la Familia",
-    "custom_family_role": "Rol familiar personalizado",
     "custom_family_role": "[TODO: es] Custom family role",
     "login": "Iniciar sesión",
     "logout": "Cerrar sesión",
