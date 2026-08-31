@@ -45,3 +45,4 @@ app-example
 # generated native folders
 /ios
 /android
+android/app/tareitas-upload-key.keystore
