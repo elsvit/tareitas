@@ -3,9 +3,9 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { GoogleMobileBannerAdFromConfig } from '~/components/ads/GoogleMobileBannerAd';
+import { GoogleMobileBannerAdFromConfig } from '~/components/ads/GoogleMobileBannerAd.native';
 import { AD_TASK_AMOUNT_START } from '~/constants/admob';
-import { isGoogleMobileAdsNativeModuleAvailable } from '~/services/ads/googleMobileAds';
+import { isGoogleMobileAdsNativeModuleAvailable } from '~/services/ads/googleMobileAds.native';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
 
 export const BOTTOM_BANNER_HEIGHT = 50;
