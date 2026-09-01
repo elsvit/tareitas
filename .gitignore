@@ -46,3 +46,7 @@ app-example
 /ios
 /android
 android/app/tareitas-upload-key.keystore
+
+# Android signing
+product.keystore
+product-upload-certificate.pem
