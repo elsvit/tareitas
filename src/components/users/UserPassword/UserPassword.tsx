@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Text } from '~/components/ui';
+import { Text } from '~/components/ui/Text';
 import { GesturePassword } from '~/components/ui/GesturePassword';
 import { t } from '~/services';
 

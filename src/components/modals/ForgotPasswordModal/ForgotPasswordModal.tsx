@@ -3,13 +3,10 @@ import { Modal, Pressable, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import CloseIcon from '~/assets/svg/common/cross.svg';
-import {
-  Button,
-  ButtonColors,
-  Space,
-  Text,
-  TextInput,
-} from '~/components/ui';
+import { Button, ButtonColors } from '~/components/ui/Button';
+import { Space } from '~/components/ui/Space';
+import { Text } from '~/components/ui/Text';
+import { TextInput } from '~/components/ui/TextInput';
 import { IconButton } from '~/components/ui/IconButton';
 import { OTPInput } from '~/components/ui/OTPInput';
 import { t } from '~/services';

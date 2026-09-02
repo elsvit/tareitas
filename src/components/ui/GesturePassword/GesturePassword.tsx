@@ -9,8 +9,8 @@ import {
   View,
 } from 'react-native';
 
-import { Button, Text } from '~/components/ui';
-import { ButtonColors } from '~/components/ui/Button';
+import { Button, ButtonColors } from '~/components/ui/Button';
+import { Text } from '~/components/ui/Text';
 import { t } from '~/services';
 
 type Props = {

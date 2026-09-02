@@ -1,8 +1,8 @@
 import { useColorScheme } from 'react-native';
 
-import { darkPalette, lightPalette } from '~/styles';
+import { darkPalette, lightPalette } from '../palette';
 
-import { registerThemes } from '~/styles/services';
+import { registerThemes } from './registerThemes';
 
 const getAppearance = (): 'light' | 'dark' => useColorScheme() ?? 'light';
 

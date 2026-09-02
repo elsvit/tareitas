@@ -3,10 +3,10 @@ import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import {
-    getBannerAdUnitId,
-    getGoogleMobileAdsModule,
-    initializeGoogleMobileAds,
-    isGoogleMobileAdsNativeModuleAvailable,
+  getBannerAdUnitId,
+  getGoogleMobileAdsModule,
+  initializeGoogleMobileAds,
+  isGoogleMobileAdsNativeModuleAvailable,
 } from '~/services/ads/googleMobileAds.native';
 
 export function GoogleMobileBannerAd({ unitId }: { unitId: string }) {

@@ -15,6 +15,9 @@ config.resolver.assetExts = config.resolver.assetExts.filter(
 // 3️⃣ Add svg to sourceExts
 config.resolver.sourceExts.push('svg');
 
+// Native-only app — do not resolve the web platform in Metro.
+config.resolver.platforms = ['ios', 'android', 'native'];
+
 // 4️⃣ (Optional) Keep your minifier config
 config.transformer.minifierConfig = {
   keep_classnames: true,

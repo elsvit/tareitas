@@ -10,6 +10,7 @@ export enum EScreens {
   Settings = 'more/Settings/Settings',
   AccountLogin = 'more/Settings/AccountLogin',
   LoadedPhotos = 'more/LoadedPhotos/LoadedPhotos',
+  Subscription = 'more/Subscription/Subscription',
   HelpCenter = 'more/HelpCenter/HelpCenter',
   Users = 'users/Users',
   UserAdd = 'users/UserAdd',

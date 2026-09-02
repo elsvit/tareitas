@@ -3,7 +3,9 @@ import { Pressable, ScrollView, View } from 'react-native';
 
 import { Icon, Menu, TextInput as PaperTextInput } from 'react-native-paper';
 
-import { Search, Text, TextInput } from '~/components/ui';
+import { Search } from '~/components/ui/Search';
+import { Text } from '~/components/ui/Text';
+import { TextInput } from '~/components/ui/TextInput';
 import { FORM_FIELD, FORM_FIELD_MENU_THEME } from '~/constants/formField';
 import { t } from '~/services';
 import { IOptions } from '~/types/ICommon';

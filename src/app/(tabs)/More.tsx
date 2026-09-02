@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { ScrollView } from 'react-native';
 
 import { useRouter } from 'expo-router';
@@ -7,17 +7,19 @@ import { SvgProps } from 'react-native-svg';
 
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
+import CheckCircleIcon from '~/assets/svg/common/check-circle-outline.svg';
 import ImageXIcon from '~/assets/svg/more/image-x.svg';
 import InfoIcon from '~/assets/svg/common/info.svg';
 import SettingsIcon from '~/assets/svg/more/settings.svg';
 import RewardsIcon from '~/assets/svg/rewards/rewards.svg';
 import TasksIcon from '~/assets/svg/tasks/tasks-open.svg';
-import HelpQuestionIcon from '~/assets/svg/more/help-question.svg';
 import UsersIcon from '~/assets/svg/users/users.svg';
 import { ScreenHeaderWithLogo, SelectUserPrompt } from "~/components/blocks";
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { SCREEN_TEXT } from '~/constants/formField';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
+import { useIsPro } from '~/hooks/useIsPro';
+import { useSubscription } from '~/hooks/useSubscription';
 import { t } from '~/services';
 import { spacing, styleSheetFactory } from '~/styles';
 import { useStyle } from '~/styles/hooks';
@@ -25,52 +27,79 @@ import { EScreens } from '~/types/ENavigation';
 
 export interface IMoreItem {
   title: string;
+  description?: string;
   Icon: FC<SvgProps>;
   fill?: string;
   navigateTo?: EScreens;
   navigateToParams?: any;
   onPress?: () => void;
   items?: IMoreItem[];
+  visible?: boolean;
 }
 
 export default function More() {
   const router = useRouter();
-  const { user: currentUser } = useCurrentUser();
+  const { user: currentUser, isParent } = useCurrentUser();
+  const { isPro } = useIsPro();
+  const { yearlyPrice, isLoading: isSubscriptionLoading } = useSubscription();
 
   const [styles] = useStyle(themedStyles);
 
-  const MORE_ITEMS: IMoreItem[] = [
-    {
-      title: t('settings.title'),
-      Icon: SettingsIcon,
-      navigateTo: EScreens.Settings,
-    },
-    {
-      title: t('users.title'),
-      Icon: UsersIcon,
-      navigateTo: EScreens.Users,
-    },
-    {
-      title: t('tasks.base_tasks'),
-      Icon: TasksIcon,
-      navigateTo: EScreens.BaseTasks,
-    },
-    {
-      title: t('rewards.base_rewards'),
-      Icon: RewardsIcon,
-      navigateTo: EScreens.BaseRewards,
-    },
-    {
-      title: t('more.loaded_images'),
-      Icon: ImageXIcon,
-      navigateTo: EScreens.LoadedPhotos,
-    },
-    {
-      title: t('more.help_center'),
-      Icon: InfoIcon,
-      navigateTo: EScreens.HelpCenter,
-    },
-  ];
+  const subscriptionDescription = useMemo(
+    () =>
+      isPro
+        ? t('subscription.already_pro')
+        : isSubscriptionLoading
+          ? t('subscription.loading_price')
+          : yearlyPrice
+            ? t('subscription.yearly_price', { price: yearlyPrice })
+            : t('subscription.subscribe'),
+    [isPro, isSubscriptionLoading, yearlyPrice],
+  );
+
+  const MORE_ITEMS = useMemo(
+    (): IMoreItem[] =>
+      [
+        {
+          title: t('settings.title'),
+          Icon: SettingsIcon,
+          navigateTo: EScreens.Settings,
+        },
+        {
+          title: t('users.title'),
+          Icon: UsersIcon,
+          navigateTo: EScreens.Users,
+        },
+        {
+          title: t('tasks.base_tasks'),
+          Icon: TasksIcon,
+          navigateTo: EScreens.BaseTasks,
+        },
+        {
+          title: t('rewards.base_rewards'),
+          Icon: RewardsIcon,
+          navigateTo: EScreens.BaseRewards,
+        },
+        {
+          title: t('more.loaded_images'),
+          Icon: ImageXIcon,
+          navigateTo: EScreens.LoadedPhotos,
+        },
+        {
+          title: t('subscription.menu_title'),
+          description: subscriptionDescription,
+          Icon: CheckCircleIcon,
+          navigateTo: EScreens.Subscription,
+          visible: isParent,
+        },
+        {
+          title: t('more.help_center'),
+          Icon: InfoIcon,
+          navigateTo: EScreens.HelpCenter,
+        },
+      ].filter(item => item.visible !== false),
+    [isParent, subscriptionDescription],
+  );
 
   const title = t('more.title');
 
@@ -151,6 +180,8 @@ export default function More() {
               <React.Fragment key={keyExtractor(item, index)}>
                 <List.Item
                   title={item.title}
+                  description={item.description}
+                  descriptionStyle={styles.description}
                   left={props => (
                     <item.Icon
                       {...props}

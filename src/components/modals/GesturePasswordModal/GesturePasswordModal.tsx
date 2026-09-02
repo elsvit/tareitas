@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Text } from '~/components/ui';
+import { Text } from '~/components/ui/Text';
 import { GesturePassword } from '~/components/ui/GesturePassword';
 import { IconButton } from '~/components/ui/IconButton';
 import { t } from '~/services';
