@@ -1,9 +1,20 @@
 import Constants from 'expo-constants';
+import type { ComponentType } from 'react';
 import { NativeModules, Platform, TurboModuleRegistry } from 'react-native';
 
 import { ADMOB_BANNER_ID } from '~/constants/admob';
 
-type GoogleMobileAdsModule = typeof import('react-native-google-mobile-ads');
+type BannerAdProps = {
+  unitId: string;
+  size: string;
+};
+
+type GoogleMobileAdsModule = {
+  default: () => { initialize: () => Promise<void> };
+  TestIds: { BANNER: string };
+  BannerAd: ComponentType<BannerAdProps>;
+  BannerAdSize: { ANCHORED_ADAPTIVE_BANNER: string };
+};
 
 let cachedModule: GoogleMobileAdsModule | null | undefined;
 let initPromise: Promise<void> | null = null;

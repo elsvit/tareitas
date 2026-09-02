@@ -116,6 +116,22 @@
     "remove_loaded_image_message": "This photo will be deleted from your phone and cannot be undone.",
     "help_center": "Help Center"
   },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Remove ads",
+    "modal_title": "Go ad-free",
+    "modal_description": "Subscribe to remove ads and support Tareitas.",
+    "description": "Enjoy Tareitas without ads. Your subscription helps us keep improving the app for your family.",
+    "yearly_price": "{{price}} / year",
+    "subscribe": "Subscribe",
+    "restore": "Restore purchases",
+    "remove_ads": "Remove ads",
+    "loading_price": "Loading price...",
+    "unavailable": "Subscriptions are not available on this device.",
+    "purchase_error": "Could not complete purchase. Please try again.",
+    "restore_error": "Could not restore purchases. Please try again.",
+    "already_pro": "You already have Tareitas Pro. Thank you!"
+  },
   "helpCenter": {
     "title": "Help Center",
     "flow": "Flow",

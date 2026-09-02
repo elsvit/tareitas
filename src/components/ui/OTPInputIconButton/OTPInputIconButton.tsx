@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { StyleProp, ViewStyle } from 'react-native';
 
 import OTPInputIcon from '~/assets/svg/users/password-pin.svg';
-import { OTPInputModal } from '~/components/modals';
+import { OTPInputModal } from '~/components/modals/OTPInputModal';
 import { ButtonColors } from '~/components/ui/Button';
 import { IconButton } from '~/components/ui/IconButton';
 import { t } from '~/services';

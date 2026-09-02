@@ -116,6 +116,22 @@
     "remove_loaded_image_message": "Esta foto se eliminará del teléfono y no se puede deshacer.",
     "help_center": "Centro de ayuda"
   },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Quitar anuncios",
+    "modal_title": "Sin anuncios",
+    "modal_description": "Suscríbete para quitar los anuncios y apoyar Tareitas.",
+    "description": "Disfruta de Tareitas sin anuncios. Tu suscripción nos ayuda a seguir mejorando la app para tu familia.",
+    "yearly_price": "{{price}} / año",
+    "subscribe": "Suscribirse",
+    "restore": "Restaurar compras",
+    "remove_ads": "Quitar anuncios",
+    "loading_price": "Cargando precio...",
+    "unavailable": "Las suscripciones no están disponibles en este dispositivo.",
+    "purchase_error": "No se pudo completar la compra. Inténtalo de nuevo.",
+    "restore_error": "No se pudieron restaurar las compras. Inténtalo de nuevo.",
+    "already_pro": "Ya tienes Tareitas Pro. ¡Gracias!"
+  },
   "helpCenter": {
     "title": "Centro de ayuda",
     "flow": "Fluir",

@@ -1,4 +1,4 @@
-import type { AppearanceProvider, NamedStyles, StyleSheetData } from '~/styles';
+import type { AppearanceProvider, NamedStyles, StyleSheetData } from '../types';
 
 export const registerThemes =
   <N extends string, T, R extends N>(

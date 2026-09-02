@@ -3,7 +3,8 @@ import { Keyboard, View } from 'react-native';
 
 import { OTPInput as OTPInputNative, type OTPInputRef } from 'input-otp-native';
 
-import { Button, ButtonColors, Text } from '~/components/ui';
+import { Button, ButtonColors } from '~/components/ui/Button';
+import { Text } from '~/components/ui/Text';
 import { t } from '~/services';
 
 import { styles } from './styles';

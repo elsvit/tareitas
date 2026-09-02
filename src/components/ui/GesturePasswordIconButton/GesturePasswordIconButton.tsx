@@ -4,7 +4,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import GesturePasswordIcon from '~/assets/svg/users/password-gesture.svg';
 import { ButtonColors } from '~/components/ui/Button';
 import { IconButton } from '~/components/ui/IconButton';
-import { GesturePasswordModal } from '~/components/users/UserPassword';
+import { GesturePasswordModal } from '~/components/modals/GesturePasswordModal';
 import { t } from '~/services';
 
 type Props = {
