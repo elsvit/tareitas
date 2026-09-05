@@ -18,13 +18,10 @@ import { BottomTab } from '~/components/ui/BottomTab/BottomTab';
 import { IS_ANDROID } from '~/constants/settings';
 import { ThemeColors } from '~/constants/theme';
 import { useColorScheme } from '~/hooks/use-color-scheme';
-import { useTabBarBottomInset } from '~/hooks/useTabBarBottomInset';
+import { useTabBarBottomInset, TAB_BAR_MIN_PADDING_BOTTOM, TAB_BAR_PADDING_TOP, TAB_BAR_CONTENT_HEIGHT } from '~/hooks/useTabBarBottomInset';
 import { selectIsRecurringTabSeparated } from '~/store/settings/selectors';
 import { EMainTabs } from '~/types/ENavigation';
 
-const TAB_BAR_PADDING_TOP = 16;
-const TAB_BAR_MIN_PADDING_BOTTOM = 12;
-const TAB_BAR_CONTENT_HEIGHT = 60;
 const TAB_BAR_COLOR = '#016FE8';
 
 function TabBarBackground() {

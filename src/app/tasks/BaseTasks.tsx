@@ -18,7 +18,7 @@ import { TaskBaseListItem } from '~/components/tasks/TaskBaseListItem';
 import { Button, Search, Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
 import { t } from '~/services';
-import { selectIsAdmin, selectIsParent } from '~/store/settings/selectors';
+import { selectIsAdmin, selectIsParent, selectLang } from '~/store/settings/selectors';
 import { selectAllTaskBaseInDefaultOrder } from '~/store/taskBase/selectors';
 import { resetTaskBase, syncTaskBaseTranslations } from '~/store/taskBase/slice';
 import { Colors } from '~/styles';
@@ -35,10 +35,11 @@ export default function BaseTasks() {
   const taskBaseList = useSelector(selectAllTaskBaseInDefaultOrder);
   const canManageBaseTasks = useSelector(selectIsParent);
   const isAdmin = useSelector(selectIsAdmin);
+  const lang = useSelector(selectLang);
 
   useEffect(() => {
     dispatch(syncTaskBaseTranslations());
-  }, [dispatch]);
+  }, [dispatch, lang]);
 
   const normalizedSearchQuery = useMemo(
     () => searchQuery.trim().toLowerCase(),

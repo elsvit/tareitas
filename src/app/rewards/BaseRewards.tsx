@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   FlatList,
   ListRenderItem,
@@ -19,8 +19,8 @@ import { Button, Search, Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
 import { t } from '~/services';
 import { selectAllRewardBase } from '~/store/rewardBase/selectors';
-import { resetRewardBase } from '~/store/rewardBase/slice';
-import { selectIsAdmin, selectIsParent } from '~/store/settings/selectors';
+import { resetRewardBase, syncRewardBaseTranslations } from '~/store/rewardBase/slice';
+import { selectIsAdmin, selectIsParent, selectLang } from '~/store/settings/selectors';
 import { Colors } from '~/styles';
 import { EScreens } from '~/types';
 import { IRewardBase } from '~/types/IReward';
@@ -35,6 +35,11 @@ export default function BaseRewards() {
   const rewardBaseList = useSelector(selectAllRewardBase);
   const canManageBaseRewards = useSelector(selectIsParent);
   const isAdmin = useSelector(selectIsAdmin);
+  const lang = useSelector(selectLang);
+
+  useEffect(() => {
+    dispatch(syncRewardBaseTranslations());
+  }, [dispatch, lang]);
 
   const normalizedSearchQuery = useMemo(
     () => searchQuery.trim().toLowerCase(),

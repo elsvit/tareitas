@@ -31,6 +31,7 @@ import {
   setShowLoginName,
   setShowParentLoginName,
 } from '~/store/settings/slice';
+import { syncRewardBaseTranslations } from '~/store/rewardBase/slice';
 import { syncTaskBaseTranslations } from '~/store/taskBase/slice';
 import { useStyle } from '~/styles';
 import { ELang } from '~/types/ELang';
@@ -79,6 +80,7 @@ export default function Settings() {
         const resolvedLang = await LocalizationService.changeLanguage(selectedLang);
         dispatch(setLanguage(resolvedLang));
         dispatch(syncTaskBaseTranslations());
+        dispatch(syncRewardBaseTranslations());
       } catch (error) {
         console.error('Language change failed:', error);
       }
