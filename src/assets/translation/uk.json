@@ -185,6 +185,7 @@
     },
     "change_group": "Змінити групу",
     "unique_username": "Унікальне ім'я для входу",
+    "username_invalid": "Використовуйте лише A–Z, a-z, цифри, _ та -",
     "custom_family_role": "Власна роль у сім'ї"
   },
   "tasks": {

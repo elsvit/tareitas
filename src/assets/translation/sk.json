@@ -145,6 +145,7 @@
     "logout": "Odhlásiť sa",
     "name": "Meno",
     "unique_username": "Jedinečné prihlasovacie meno",
+    "username_invalid": "Používajte iba A–Z, a-z, číslice, _ a -",
     "no_children": "Zatiaľ žiadne deti",
     "no_parents": "Zatiaľ bez rodičov",
     "parent": "Rodič",

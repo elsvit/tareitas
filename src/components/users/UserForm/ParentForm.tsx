@@ -27,6 +27,7 @@ import {
   parseFamilyRoleFormValues,
   resolveFamilyRoleValue,
 } from '~/utils/users/familyRole';
+import { sanitizeUsernameInput, usernameSchema } from '~/utils/users/username';
 
 import type { UserFormHandle } from './types';
 import { styles } from './styles';
@@ -127,6 +128,9 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
     (mode === EFormMode.Add ? t('users.add_parent') : t('users.edit_parent'));
 
   const requiredMessage = t('common.required') || 'Required';
+  const usernameInvalidMessage =
+    t('users.username_invalid') ||
+    'Use only letters A–Z, numbers, underscore (_) and hyphen (-)';
 
   const schema = useMemo(
     () =>
@@ -134,7 +138,10 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
         .object({
           ...(showUsernameField
             ? {
-                username: z.string().trim().min(1, requiredMessage),
+                username: usernameSchema({
+                  requiredMessage,
+                  invalidMessage: usernameInvalidMessage,
+                }),
               }
             : {}),
           name: z.string().trim().min(1, requiredMessage),
@@ -159,7 +166,7 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
             });
           }
         }),
-    [isEditMode, requiredMessage, showUsernameField],
+    [isEditMode, requiredMessage, showUsernameField, usernameInvalidMessage],
   );
 
   const initialFamilyRole = parseFamilyRoleFormValues(parent?.familyRole);
@@ -331,7 +338,7 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
                       <TextInput
                         label={t('users.unique_username')}
                         value={value ?? ''}
-                        onChangeText={onChange}
+                        onChangeText={text => onChange(sanitizeUsernameInput(text))}
                         autoCapitalize="none"
                         mode="outlined"
                       />

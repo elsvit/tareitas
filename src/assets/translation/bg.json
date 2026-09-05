@@ -145,6 +145,7 @@
     "logout": "Изход",
     "name": "Име",
     "unique_username": "Уникално име за вход",
+    "username_invalid": "Използвайте само A–Z, a-z, цифри, _ и -",
     "no_children": "Все още няма деца",
     "no_parents": "Все още няма родители",
     "parent": "Родител",

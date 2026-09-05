@@ -144,6 +144,7 @@
     "logout": "Esci",
     "name": "Nome",
     "unique_username": "Nome di accesso univoco",
+    "username_invalid": "Usa solo A–Z, a-z, numeri, _ e -",
     "no_children": "Nessun figlio ancora",
     "no_parents": "Nessun parente ancora",
     "parent": "Parente",

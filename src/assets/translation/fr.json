@@ -145,6 +145,7 @@
     "logout": "Déconnexion",
     "name": "Nom",
     "unique_username": "Nom de connexion unique",
+    "username_invalid": "Utilisez uniquement A–Z, a-z, chiffres, _ et -",
     "no_children": "Pas encore d'enfants",
     "no_parents": "Pas encore de parents",
     "parent": "Mère",
@@ -471,7 +472,7 @@
     "completed_history": "Habitudes terminées"
   },
   "rewards": {
-    "title": "Récompenses",
+    "title": "Gains",
     "add_reward": "Ajouter une récompense",
     "base_rewards": "Récompenses de base",
     "base_reward_template": "Utiliser la récompense de base",

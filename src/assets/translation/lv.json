@@ -145,6 +145,7 @@
     "logout": "Atteikties",
     "name": "Vārds",
     "unique_username": "Unikāls pieteikšanās vārds",
+    "username_invalid": "Izmantojiet tikai A–Z, a-z, ciparus, _ un -",
     "no_children": "Bērnu vēl nav",
     "no_parents": "Vecāku vēl nav",
     "parent": "Vecāks",
@@ -471,7 +472,7 @@
     "completed_history": "Pabeigtie ieradumi"
   },
   "rewards": {
-    "title": "Atlīdzības",
+    "title": "Balvas",
     "add_reward": "Pievienot atlīdzību",
     "base_rewards": "Pamata balvas",
     "base_reward_template": "Izmantojiet pamata atlīdzību",

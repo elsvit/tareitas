@@ -9,6 +9,11 @@ export {
   parseFamilyRoleFormValues,
   resolveFamilyRoleValue,
 } from '~/utils/users/familyRole';
+export {
+  sanitizeUsernameInput,
+  usernameSchema,
+  USERNAME_PATTERN,
+} from '~/utils/users/username';
 
 export const ROLE_OPTIONS: IOptions<ERole>[] = [
   {

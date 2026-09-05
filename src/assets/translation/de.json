@@ -144,6 +144,7 @@
     "logout": "Abmelden",
     "name": "Name",
     "unique_username": "Eindeutiger Anmeldename",
+    "username_invalid": "Nur A–Z, a-z, Ziffern, _ und - verwenden",
     "no_children": "Noch keine Kinder",
     "no_parents": "Noch keine Eltern",
     "parent": "Elternteil",

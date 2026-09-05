@@ -145,6 +145,7 @@
     "logout": "Kirjaudu ulos",
     "name": "Nimi",
     "unique_username": "Yksilöllinen kirjautumisnimi",
+    "username_invalid": "Käytä vain A–Z, a-z, numeroita, _ ja -",
     "no_children": "Ei vielä lapsia",
     "no_parents": "Ei vielä vanhempia",
     "parent": "Vanhempi",

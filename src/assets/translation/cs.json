@@ -145,6 +145,7 @@
     "logout": "Odhlášení",
     "name": "Jméno",
     "unique_username": "Unikátní přihlašovací jméno",
+    "username_invalid": "Používejte pouze A–Z, a-z, číslice, _ a -",
     "no_children": "Zatím žádné děti",
     "no_parents": "Zatím bez rodičů",
     "parent": "Rodič",

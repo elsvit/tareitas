@@ -144,6 +144,7 @@
     "logout": "Sair",
     "name": "Nome",
     "unique_username": "Nome de acesso único",
+    "username_invalid": "Use apenas A–Z, a-z, números, _ e -",
     "no_children": "Nenhum filho ainda",
     "no_parents": "Nenhum pai ainda",
     "parent": "Pai",
@@ -470,7 +471,7 @@
     "completed_history": "Hábitos Completados"
   },
   "rewards": {
-    "title": "Recompensas",
+    "title": "Prémios",
     "add_reward": "Adicionar Recompensa",
     "base_rewards": "Recompensas Base",
     "base_reward_template": "Usar recompensa base",

@@ -145,6 +145,7 @@
     "logout": "Utloggning",
     "name": "Namn",
     "unique_username": "Unikt inloggningsnamn",
+    "username_invalid": "Använd endast A–Z, a-z, siffror, _ och -",
     "no_children": "Inga barn än",
     "no_parents": "Inga föräldrar än",
     "parent": "Förälder",
