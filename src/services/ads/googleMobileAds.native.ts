@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 import type { ComponentType } from 'react';
 import { NativeModules, Platform, TurboModuleRegistry } from 'react-native';
 
-import { ADMOB_BANNER_ID } from '~/constants/admob';
+import { ADMOB_BANNER_ID } from '~/constants/ads';
 
 type BannerAdProps = {
   unitId: string;
@@ -103,7 +103,7 @@ export function getBannerAdUnitId(): string | null {
   const configuredBannerId = envBannerId || ADMOB_BANNER_ID;
 
   if (!configuredBannerId || isPlaceholderAdUnitId(configuredBannerId)) {
-    // Release builds need a real ad unit ID in admob.ts or EXPO_PUBLIC_ADMOB_BANNER_ID.
+    // Release builds need a real ad unit ID in ads.ts or EXPO_PUBLIC_ADMOB_BANNER_ID.
     return adsModule.TestIds.BANNER;
   }
 

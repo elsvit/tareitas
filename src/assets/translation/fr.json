@@ -411,7 +411,7 @@
       "pushUpsDescription": "Poussez au moins 20 fois",
       "walk": "Marcher",
       "walkDescription": "Faites une promenade, au moins 30 minutes",
-      "hike": "Campagne",
+      "hike": "Randonnée",
       "hikeDescription": "Randonnée, minimum 5 km",
       "playOutside": "Jouer dehors",
       "playOutsideDescription": "Jouez à un jeu actif en plein air",
@@ -667,7 +667,8 @@
       "error_admin_incomplete": "Complétez d’abord le profil admin",
       "error_generic": "Impossible de créer la famille. Veuillez réessayer.",
       "error_family_name_required": "Le nom de la famille est requis",
-      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
+      "error_already_exists": "Cet e-mail ou ce nom d’utilisateur enfant est déjà enregistré. Essayez de vous connecter ou utilisez d’autres identifiants."
     }
   },
   "welcome": {
@@ -747,5 +748,21 @@
     "REWARD_INACTIVE": "Cette récompense n'est plus disponible.",
     "REWARD_INSUFFICIENT_BALANCE": "Pas assez d'étoiles pour cette récompense.",
     "REWARD_REDEMPTION_INVALID_STATUS": "Cette récompense ne peut pas être mise à jour dans son état actuel."
+  },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Supprimer les publicités",
+    "modal_title": "Sans publicité",
+    "modal_description": "Abonnez-vous pour supprimer les publicités et soutenir Tareitas.",
+    "description": "Profitez de Tareitas sans publicité. Votre abonnement nous aide à améliorer l’application pour votre famille.",
+    "yearly_price": "{{price}} / an",
+    "subscribe": "S’abonner",
+    "restore": "Restaurer les achats",
+    "remove_ads": "Supprimer les publicités",
+    "loading_price": "Chargement du prix...",
+    "unavailable": "Les abonnements ne sont pas disponibles sur cet appareil.",
+    "purchase_error": "Impossible de finaliser l’achat. Réessayez.",
+    "restore_error": "Impossible de restaurer les achats. Réessayez.",
+    "already_pro": "Vous avez déjà Tareitas Pro. Merci !"
   }
 }

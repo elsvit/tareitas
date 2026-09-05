@@ -17,13 +17,13 @@ import { PARENT_AVATARS } from '~/assets/img/users/users';
 import { t } from '~/services';
 import { removeParent } from '~/store/parents/slice';
 import { EFamilyRole, ERole } from '~/store/settings/enums';
-import { selectCurrentRole } from '~/store/settings/selectors';
+import { selectCurrentRole, selectLang } from '~/store/settings/selectors';
 import { userColors } from '~/styles';
 import { IParent, ParentFormProps } from '~/types';
 import { EFormMode } from '~/types/ECommon';
 import { capitalizeFirst } from '~/utils/string';
 import {
-  FAMILY_ROLE_OPTIONS,
+  getFamilyRoleOptions,
   parseFamilyRoleFormValues,
   resolveFamilyRoleValue,
 } from '~/utils/users/familyRole';
@@ -106,6 +106,11 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   const currentRole = useSelector(selectCurrentRole);
+  const lang = useSelector(selectLang);
+  const familyRoleOptions = useMemo(
+    () => getFamilyRoleOptions(),
+    [lang],
+  );
   const isAdmin = currentRole === ERole.admin;
   const isEditMode = mode === EFormMode.Edit;
   const isParentAdmin = parent?.role === ERole.admin;
@@ -375,7 +380,7 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
                   }) => {
                     const familyRoleText =
                       preset !== EFamilyRole.other
-                        ? FAMILY_ROLE_OPTIONS.find(
+                        ? familyRoleOptions.find(
                             option => option.value === preset,
                           )?.label ?? ''
                         : customRole;
@@ -383,7 +388,7 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
                     return (
                       <SelectOrEdit
                         label={t('users.family_role') || 'Family role'}
-                        options={FAMILY_ROLE_OPTIONS}
+                        options={familyRoleOptions}
                         text={familyRoleText}
                         onTextChange={text => {
                           onCustomRoleChange(text);

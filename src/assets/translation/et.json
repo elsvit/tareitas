@@ -410,7 +410,7 @@
       "pushUpsDescription": "Suruge üles vähemalt 20 korda",
       "walk": "Jalutage",
       "walkDescription": "Jalutage, vähemalt 30 minutit",
-      "hike": "Kampaania",
+      "hike": "Matk",
       "hikeDescription": "Matk, minimaalselt 5 km",
       "playOutside": "Mängi väljas",
       "playOutsideDescription": "Mängige aktiivset mängu õues",
@@ -666,7 +666,8 @@
       "error_admin_incomplete": "Täitke esmalt admini profiil",
       "error_generic": "Pere loomine ebaõnnestus. Proovige uuesti.",
       "error_family_name_required": "Perekonnanimi on kohustuslik",
-      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
+      "error_already_exists": "See e-post või lapse kasutajanimi on juba registreeritud. Proovi sisse logida või kasuta teisi andmeid."
     }
   },
   "welcome": {
@@ -746,5 +747,21 @@
     "REWARD_INACTIVE": "See auhind pole enam saadaval.",
     "REWARD_INSUFFICIENT_BALANCE": "Selle auhinna jaoks pole piisavalt tähti.",
     "REWARD_REDEMPTION_INVALID_STATUS": "Seda auhinda ei saa praeguses olekus uuendada."
+  },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Eemalda reklaamid",
+    "modal_title": "Reklaamideta",
+    "modal_description": "Telli, et eemaldada reklaamid ja toetada Tareitast.",
+    "description": "Nauti Tareitast ilma reklaamideta. Sinu tellimus aitab meil rakendust sinu pere jaoks paremaks muuta.",
+    "yearly_price": "{{price}} / aasta",
+    "subscribe": "Telli",
+    "restore": "Taasta ostud",
+    "remove_ads": "Eemalda reklaamid",
+    "loading_price": "Hinna laadimine...",
+    "unavailable": "Tellimused pole selles seadmes saadaval.",
+    "purchase_error": "Ostu ei saanud lõpule viia. Proovi uuesti.",
+    "restore_error": "Oste ei saanud taastada. Proovi uuesti.",
+    "already_pro": "Sul on juba Tareitas Pro. Aitäh!"
   }
 }

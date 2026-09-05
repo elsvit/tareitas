@@ -684,7 +684,8 @@
       "error_admin_incomplete": "Първо попълнете профила на админа",
       "error_generic": "Неуспешно създаване на семейство. Опитайте отново.",
       "error_family_name_required": "Името на семейството е задължително",
-      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
+      "error_already_exists": "Цей email або ім’я користувача дитини вже зареєстровано. Спробуйте увійти або використайте інші дані."
     }
   },
   "helpCenter": {
@@ -700,5 +701,21 @@
     "write_us": "Напишіть нам",
     "write_us_hint": "Натисніть, щоб надіслати нам електронний лист",
     "change_user": "Змінити користувача"
+  },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Прибрати рекламу",
+    "modal_title": "Без реклами",
+    "modal_description": "Оформіть підписку, щоб прибрати рекламу та підтримати Tareitas.",
+    "description": "Користуйтеся Tareitas без реклами. Ваша підписка допомагає нам покращувати застосунок для вашої родини.",
+    "yearly_price": "{{price}} / рік",
+    "subscribe": "Підписатися",
+    "restore": "Відновити покупки",
+    "remove_ads": "Прибрати рекламу",
+    "loading_price": "Завантаження ціни...",
+    "unavailable": "Підписки недоступні на цьому пристрої.",
+    "purchase_error": "Не вдалося завершити покупку. Спробуйте ще раз.",
+    "restore_error": "Не вдалося відновити покупки. Спробуйте ще раз.",
+    "already_pro": "У вас уже є Tareitas Pro. Дякуємо!"
   }
 }

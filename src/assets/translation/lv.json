@@ -411,7 +411,7 @@
       "pushUpsDescription": "Piespiediet uz augšu vismaz 20 reizes",
       "walk": "Staigāt",
       "walkDescription": "Pastaigājieties, vismaz 30 minūtes",
-      "hike": "Kampaņa",
+      "hike": "Pārgājiens",
       "hikeDescription": "Pārgājiens, vismaz 5 km",
       "playOutside": "Spēlējiet ārā",
       "playOutsideDescription": "Spēlējiet aktīvu spēli ārā",
@@ -667,7 +667,8 @@
       "error_admin_incomplete": "Vispirms aizpildiet admin profilu",
       "error_generic": "Neizdevās izveidot ģimeni. Mēģiniet vēlreiz.",
       "error_family_name_required": "Ģimenes nosaukums ir obligāts",
-      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
+      "error_already_exists": "Šī e-pasta adrese vai bērna lietotājvārds jau ir reģistrēts. Mēģiniet pieteikties vai izmantojiet citus datus."
     }
   },
   "helpCenter": {
@@ -699,5 +700,21 @@
     "REWARD_INACTIVE": "Šī balva vairs nav pieejama.",
     "REWARD_INSUFFICIENT_BALANCE": "Nav pietiekami daudz zvaigžņu šai balvai.",
     "REWARD_REDEMPTION_INVALID_STATUS": "Šo balvu nevar atjaunināt tā pašreizējā stāvoklī."
+  },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Noņemt reklāmas",
+    "modal_title": "Bez reklāmām",
+    "modal_description": "Abonējiet, lai noņemtu reklāmas un atbalstītu Tareitas.",
+    "description": "Izbaudiet Tareitas bez reklāmām. Jūsu abonements palīdz mums uzlabot lietotni jūsu ģimenei.",
+    "yearly_price": "{{price}} / gads",
+    "subscribe": "Abonēt",
+    "restore": "Atjaunot pirkumus",
+    "remove_ads": "Noņemt reklāmas",
+    "loading_price": "Ielādē cenu...",
+    "unavailable": "Abonementi šajā ierīcē nav pieejami.",
+    "purchase_error": "Pirkumu nevarēja pabeigt. Mēģiniet vēlreiz.",
+    "restore_error": "Pirkumus nevarēja atjaunot. Mēģiniet vēlreiz.",
+    "already_pro": "Jums jau ir Tareitas Pro. Paldies!"
   }
 }

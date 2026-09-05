@@ -411,7 +411,7 @@
       "pushUpsDescription": "Натиснете нагоре поне 20 пъти",
       "walk": "Разходка",
       "walkDescription": "Разходете се, поне 30 минути",
-      "hike": "Кампания",
+      "hike": "Поход",
       "hikeDescription": "Поход, минимум 5 км",
       "playOutside": "Играйте навън",
       "playOutsideDescription": "Играйте активна игра на открито",
@@ -667,7 +667,8 @@
       "error_admin_incomplete": "Първо попълнете профила на админа",
       "error_generic": "Неуспешно създаване на семейство. Опитайте отново.",
       "error_family_name_required": "Името на семейството е задължително",
-      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
+      "error_already_exists": "Този имейл или потребителското име на детето вече е регистрирано. Опитайте да влезете или използвайте други данни."
     }
   },
   "helpCenter": {
@@ -699,5 +700,21 @@
     "REWARD_INACTIVE": "Тази награда вече не е налична.",
     "REWARD_INSUFFICIENT_BALANCE": "Няма достатъчно звезди за тази награда.",
     "REWARD_REDEMPTION_INVALID_STATUS": "Тази награда не може да бъде актуализирана в текущото ѝ състояние."
+  },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Премахни рекламите",
+    "modal_title": "Без реклами",
+    "modal_description": "Абонирай се, за да премахнеш рекламите и да подкрепиш Tareitas.",
+    "description": "Ползвай Tareitas без реклами. Абонаментът ти ни помага да подобряваме приложението за семейството ти.",
+    "yearly_price": "{{price}} / година",
+    "subscribe": "Абонирай се",
+    "restore": "Възстанови покупките",
+    "remove_ads": "Премахни рекламите",
+    "loading_price": "Зареждане на цена...",
+    "unavailable": "Абонаментите не са налични на това устройство.",
+    "purchase_error": "Покупката не можа да бъде завършена. Опитай отново.",
+    "restore_error": "Покупките не можаха да бъдат възстановени. Опитай отново.",
+    "already_pro": "Вече имаш Tareitas Pro. Благодарим!"
   }
 }

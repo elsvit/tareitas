@@ -410,7 +410,7 @@
       "pushUpsDescription": "Empurre para cima pelo menos 20 vezes",
       "walk": "Andar",
       "walkDescription": "Faça uma caminhada, pelo menos 30 minutos",
-      "hike": "Campanha",
+      "hike": "Caminhada",
       "hikeDescription": "Caminhada, mínimo 5 km",
       "playOutside": "Brinque lá fora",
       "playOutsideDescription": "Jogue um jogo ativo ao ar livre",
@@ -666,7 +666,8 @@
       "error_admin_incomplete": "Complete primeiro o perfil de admin",
       "error_generic": "Não foi possível criar a família. Tente novamente.",
       "error_family_name_required": "O nome da família é obrigatório",
-      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
+      "error_already_exists": "Este e-mail ou nome de usuário da criança já está registrado. Tente entrar ou use outras credenciais."
     }
   },
   "helpCenter": {
@@ -698,5 +699,21 @@
     "REWARD_INACTIVE": "Esta recompensa já não está disponível.",
     "REWARD_INSUFFICIENT_BALANCE": "Não há estrelas suficientes para esta recompensa.",
     "REWARD_REDEMPTION_INVALID_STATUS": "Esta recompensa não pode ser atualizada no estado atual."
+  },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Remover anúncios",
+    "modal_title": "Sem anúncios",
+    "modal_description": "Assine para remover anúncios e apoiar o Tareitas.",
+    "description": "Aproveite o Tareitas sem anúncios. Sua assinatura nos ajuda a melhorar o app para sua família.",
+    "yearly_price": "{{price}} / ano",
+    "subscribe": "Assinar",
+    "restore": "Restaurar compras",
+    "remove_ads": "Remover anúncios",
+    "loading_price": "Carregando preço...",
+    "unavailable": "As assinaturas não estão disponíveis neste dispositivo.",
+    "purchase_error": "Não foi possível concluir a compra. Tente novamente.",
+    "restore_error": "Não foi possível restaurar as compras. Tente novamente.",
+    "already_pro": "Você já tem Tareitas Pro. Obrigado!"
   }
 }

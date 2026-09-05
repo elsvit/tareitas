@@ -411,7 +411,7 @@
       "pushUpsDescription": "Zatlačte nahoru alespoň 20krát",
       "walk": "Chůze",
       "walkDescription": "Udělejte si procházku, alespoň 30 minut",
-      "hike": "Kampaň",
+      "hike": "Túra",
       "hikeDescription": "Túra, minimálně 5 km",
       "playOutside": "Hrát venku",
       "playOutsideDescription": "Zahrajte si aktivní hru venku",
@@ -667,7 +667,8 @@
       "error_admin_incomplete": "Nejprve dokončete profil admina",
       "error_generic": "Rodinu se nepodařilo vytvořit. Zkuste to znovu.",
       "error_family_name_required": "Název rodiny je povinný",
-      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
+      "error_already_exists": "Tento e-mail nebo uživatelské jméno dítěte je již registrováno. Zkuste se přihlásit nebo použijte jiné údaje."
     }
   },
   "helpCenter": {
@@ -699,5 +700,21 @@
     "REWARD_INACTIVE": "Tato odměna již není k dispozici.",
     "REWARD_INSUFFICIENT_BALANCE": "Na tuto odměnu nemáte dost hvězdiček.",
     "REWARD_REDEMPTION_INVALID_STATUS": "Tuto odměnu nelze v aktuálním stavu aktualizovat."
+  },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Odstranit reklamy",
+    "modal_title": "Bez reklam",
+    "modal_description": "Přihlaste se k odběru a odstraňte reklamy a podpořte Tareitas.",
+    "description": "Užívejte si Tareitas bez reklam. Vaše předplatné nám pomáhá aplikaci dál zlepšovat pro vaši rodinu.",
+    "yearly_price": "{{price}} / rok",
+    "subscribe": "Předplatit",
+    "restore": "Obnovit nákupy",
+    "remove_ads": "Odstranit reklamy",
+    "loading_price": "Načítání ceny...",
+    "unavailable": "Předplatné není na tomto zařízení k dispozici.",
+    "purchase_error": "Nákup se nepodařilo dokončit. Zkuste to znovu.",
+    "restore_error": "Nákupy se nepodařilo obnovit. Zkuste to znovu.",
+    "already_pro": "Již máte Tareitas Pro. Děkujeme!"
   }
 }

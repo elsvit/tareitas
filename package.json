@@ -27,7 +27,9 @@
     "postinstall": "node ./scripts/patch-rnfb-turbo-constants.js",
     "lint": "expo lint",
     "translations:sync": "node ./scripts/sync-translations.js",
-    "translations:watch": "node ./scripts/sync-translations.js --watch"
+    "translations:watch": "node ./scripts/sync-translations.js --watch",
+    "translations:audit": "node ./scripts/audit-translations.js",
+    "translations:repair": "node ./scripts/apply-translation-repairs.js && node ./scripts/fix-remaining-translations.js"
   },
   "dependencies": {
     "@expo-google-fonts/fredoka": "^0.4.1",

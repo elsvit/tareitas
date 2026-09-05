@@ -411,7 +411,7 @@
       "pushUpsDescription": "Työnnä ylös vähintään 20 kertaa",
       "walk": "Kävellä",
       "walkDescription": "Kävele, vähintään 30 minuuttia",
-      "hike": "Kampanja",
+      "hike": "Vaellus",
       "hikeDescription": "Vaellus, vähintään 5 km",
       "playOutside": "Leikkiä ulkona",
       "playOutsideDescription": "Pelaa aktiivista peliä ulkona",
@@ -667,7 +667,8 @@
       "error_admin_incomplete": "Täytä admin-profiili ensin",
       "error_generic": "Perheen luominen epäonnistui. Yritä uudelleen.",
       "error_family_name_required": "Perheen nimi on pakollinen",
-      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
+      "error_already_exists": "Tämä sähköposti tai lapsen käyttäjänimi on jo rekisteröity. Yritä kirjautua sisään tai käytä muita tietoja."
     }
   },
   "welcome": {
@@ -747,5 +748,21 @@
     "REWARD_INACTIVE": "Tämä palkinto ei ole enää saatavilla.",
     "REWARD_INSUFFICIENT_BALANCE": "Tähän palkintoon ei ole tarpeeksi tähtiä.",
     "REWARD_REDEMPTION_INVALID_STATUS": "Tätä palkintoa ei voi päivittää sen nykyisessä tilassa."
+  },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Poista mainokset",
+    "modal_title": "Ilman mainoksia",
+    "modal_description": "Tilaa poistaaksesi mainokset ja tukeaksesi Tareitasta.",
+    "description": "Nauti Tareitasta ilman mainoksia. Tilauksesi auttaa meitä parantamaan sovellusta perheellesi.",
+    "yearly_price": "{{price}} / vuosi",
+    "subscribe": "Tilaa",
+    "restore": "Palauta ostot",
+    "remove_ads": "Poista mainokset",
+    "loading_price": "Ladataan hintaa...",
+    "unavailable": "Tilaukset eivät ole saatavilla tällä laitteella.",
+    "purchase_error": "Ostoa ei voitu suorittaa. Yritä uudelleen.",
+    "restore_error": "Ostoja ei voitu palauttaa. Yritä uudelleen.",
+    "already_pro": "Sinulla on jo Tareitas Pro. Kiitos!"
   }
 }

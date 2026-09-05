@@ -411,7 +411,7 @@
       "pushUpsDescription": "Tryck upp minst 20 gånger",
       "walk": "Promenad",
       "walkDescription": "Ta en promenad, minst 30 minuter",
-      "hike": "Kampanj",
+      "hike": "Vandring",
       "hikeDescription": "Vandring, minst 5 km",
       "playOutside": "Lek ute",
       "playOutsideDescription": "Spela ett aktivt spel utomhus",
@@ -667,7 +667,8 @@
       "error_admin_incomplete": "Fyll i adminprofilen först",
       "error_generic": "Familjen kunde inte skapas. Försök igen.",
       "error_family_name_required": "Familjenamn krävs",
-      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
+      "error_already_exists": "Den här e-posten eller barnets användarnamn är redan registrerat. Försök logga in eller använd andra uppgifter."
     }
   },
   "helpCenter": {
@@ -699,5 +700,21 @@
     "REWARD_INACTIVE": "Den här belöningen är inte längre tillgänglig.",
     "REWARD_INSUFFICIENT_BALANCE": "Inte tillräckligt med stjärnor för den här belöningen.",
     "REWARD_REDEMPTION_INVALID_STATUS": "Den här belöningen kan inte uppdateras i sitt nuvarande tillstånd."
+  },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Ta bort annonser",
+    "modal_title": "Utan annonser",
+    "modal_description": "Prenumerera för att ta bort annonser och stödja Tareitas.",
+    "description": "Njut av Tareitas utan annonser. Din prenumeration hjälper oss att förbättra appen för din familj.",
+    "yearly_price": "{{price}} / år",
+    "subscribe": "Prenumerera",
+    "restore": "Återställ köp",
+    "remove_ads": "Ta bort annonser",
+    "loading_price": "Laddar pris...",
+    "unavailable": "Prenumerationer är inte tillgängliga på den här enheten.",
+    "purchase_error": "Köpet kunde inte slutföras. Försök igen.",
+    "restore_error": "Köpen kunde inte återställas. Försök igen.",
+    "already_pro": "Du har redan Tareitas Pro. Tack!"
   }
 }

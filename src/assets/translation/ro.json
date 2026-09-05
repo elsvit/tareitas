@@ -411,7 +411,7 @@
       "pushUpsDescription": "Împingeți în sus de cel puțin 20 de ori",
       "walk": "Plimbare",
       "walkDescription": "Fă o plimbare, cel puțin 30 de minute",
-      "hike": "Campanie",
+      "hike": "Drumeție",
       "hikeDescription": "Drumeție, minim 5 km",
       "playOutside": "Joacă-te afară",
       "playOutsideDescription": "Joacă un joc activ în aer liber",
@@ -667,7 +667,8 @@
       "error_admin_incomplete": "Completează mai întâi profilul admin",
       "error_generic": "Nu s-a putut crea familia. Încearcă din nou.",
       "error_family_name_required": "Numele familiei este obligatoriu",
-      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
+      "error_already_exists": "Acest e-mail sau numele de utilizator al copilului este deja înregistrat. Încearcă să te conectezi sau folosește alte date."
     }
   },
   "helpCenter": {
@@ -699,5 +700,21 @@
     "REWARD_INACTIVE": "Această recompensă nu mai este disponibilă.",
     "REWARD_INSUFFICIENT_BALANCE": "Nu sunt suficiente stele pentru această recompensă.",
     "REWARD_REDEMPTION_INVALID_STATUS": "Această recompensă nu poate fi actualizată în starea actuală."
+  },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Elimină reclamele",
+    "modal_title": "Fără reclame",
+    "modal_description": "Abonează-te pentru a elimina reclamele și a susține Tareitas.",
+    "description": "Bucură-te de Tareitas fără reclame. Abonamentul tău ne ajută să îmbunătățim aplicația pentru familia ta.",
+    "yearly_price": "{{price}} / an",
+    "subscribe": "Abonează-te",
+    "restore": "Restaurează achizițiile",
+    "remove_ads": "Elimină reclamele",
+    "loading_price": "Se încarcă prețul...",
+    "unavailable": "Abonamentele nu sunt disponibile pe acest dispozitiv.",
+    "purchase_error": "Achiziția nu a putut fi finalizată. Încearcă din nou.",
+    "restore_error": "Achizițiile nu au putut fi restaurate. Încearcă din nou.",
+    "already_pro": "Ai deja Tareitas Pro. Mulțumim!"
   }
 }
