@@ -711,6 +711,8 @@
       "error_child_pin_required": "Enter a 4-digit child PIN",
       "error_admin_incomplete": "Complete the admin profile first",
       "error_generic": "Could not create the family. Please try again.",
+      "error_already_exists": "This email or child username is already registered. Try signing in instead, or use different credentials.",
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
       "error_family_name_required": "Family name is required"
     }
   }

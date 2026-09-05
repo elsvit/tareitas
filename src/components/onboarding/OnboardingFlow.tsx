@@ -12,9 +12,12 @@ import { ButtonColors } from '~/components/ui/Button';
 import { ChildForm } from '~/components/users/UserForm/ChildForm';
 import { ParentForm } from '~/components/users/UserForm/ParentForm';
 import { t } from '~/services';
+import {
+  buildSignupFamilyPayload,
+  formatOnboardingSignupError,
+} from '~/services/onboardingSignup';
 import { signupAndLoadFamily } from '~/services/multideviceSetup';
 import { clearFamilyStore, hydrateFamilyStore } from '~/services/familySync';
-import { ApiError } from '~/services/api/client';
 import type { AppDispatch } from '~/store';
 import { addChild, clearChildren } from '~/store/children/slice';
 import { addParent, clearParents } from '~/store/parents/slice';
@@ -377,23 +380,25 @@ export function OnboardingFlow({
     setIsSubmittingSignUp(true);
 
     try {
-      const result = await signupAndLoadFamily({
-        familyName: adminData.familyName.trim(),
-        admin: {
-          email: adminData.email,
-          pin: adminData.pin,
-          name: adminData.name,
-          avatar: adminData.avatar,
-          color: adminData.color,
-        },
-        child: {
-          username: credentials.username,
-          pin: credentials.pin,
-          name: value.name,
-          avatar: value.avatar,
-          color: value.color,
-        },
-      });
+      const result = await signupAndLoadFamily(
+        buildSignupFamilyPayload({
+          familyName: adminData.familyName.trim(),
+          admin: {
+            email: adminData.email,
+            pin: adminData.pin,
+            name: adminData.name,
+            avatar: adminData.avatar,
+            color: adminData.color,
+          },
+          child: {
+            username: credentials.username,
+            pin: credentials.pin,
+            name: value.name,
+            avatar: value.avatar,
+            color: value.color,
+          },
+        }),
+      );
 
       dispatch(setSyncMode(ESyncMode.multidevice));
 
@@ -414,13 +419,7 @@ export function OnboardingFlow({
 
       enterApp();
     } catch (caught) {
-      setSignUpError(
-        caught instanceof ApiError
-          ? caught.message
-          : caught instanceof Error
-            ? caught.message
-            : t('onboarding.sign_up.error_generic'),
-      );
+      setSignUpError(formatOnboardingSignupError(caught));
     } finally {
       setIsSubmittingSignUp(false);
     }

@@ -665,7 +665,8 @@
       "error_child_pin_required": "Ange en 4-siffrig barn-PIN",
       "error_admin_incomplete": "Fyll i adminprofilen först",
       "error_generic": "Familjen kunde inte skapas. Försök igen.",
-      "error_family_name_required": "Familjenamn krävs"
+      "error_family_name_required": "Familjenamn krävs",
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
     }
   },
   "welcome": {

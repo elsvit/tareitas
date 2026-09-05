@@ -665,7 +665,8 @@
       "error_child_pin_required": "Inserisci un PIN bambino a 4 cifre",
       "error_admin_incomplete": "Completa prima il profilo admin",
       "error_generic": "Impossibile creare la famiglia. Riprova.",
-      "error_family_name_required": "Il nome della famiglia è obbligatorio"
+      "error_family_name_required": "Il nome della famiglia è obbligatorio",
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
     }
   },
   "helpCenter": {

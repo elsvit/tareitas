@@ -666,7 +666,8 @@
       "error_child_pin_required": "Unesite 4-znamenkasti PIN djeteta",
       "error_admin_incomplete": "Prvo dovršite admin profil",
       "error_generic": "Obitelj nije stvorena. Pokušajte ponovno.",
-      "error_family_name_required": "Ime obitelji je obavezno"
+      "error_family_name_required": "Ime obitelji je obavezno",
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
     }
   },
   "helpCenter": {

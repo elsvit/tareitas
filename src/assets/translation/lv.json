@@ -666,7 +666,8 @@
       "error_child_pin_required": "Ievadiet 4 ciparu bērna PIN",
       "error_admin_incomplete": "Vispirms aizpildiet admin profilu",
       "error_generic": "Neizdevās izveidot ģimeni. Mēģiniet vēlreiz.",
-      "error_family_name_required": "Ģimenes nosaukums ir obligāts"
+      "error_family_name_required": "Ģimenes nosaukums ir obligāts",
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
     }
   },
   "helpCenter": {

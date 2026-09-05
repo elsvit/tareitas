@@ -666,7 +666,8 @@
       "error_child_pin_required": "Zadajte 4-miestny PIN dieťaťa",
       "error_admin_incomplete": "Najprv dokončite admin profil",
       "error_generic": "Rodinu sa nepodarilo vytvoriť. Skúste znova.",
-      "error_family_name_required": "Názov rodiny je povinný"
+      "error_family_name_required": "Názov rodiny je povinný",
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
     }
   },
   "helpCenter": {

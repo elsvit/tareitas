@@ -683,7 +683,8 @@
       "error_child_pin_required": "Въведете 4-цифрен PIN на детето",
       "error_admin_incomplete": "Първо попълнете профила на админа",
       "error_generic": "Неуспешно създаване на семейство. Опитайте отново.",
-      "error_family_name_required": "Името на семейството е задължително"
+      "error_family_name_required": "Името на семейството е задължително",
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
     }
   },
   "helpCenter": {

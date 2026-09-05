@@ -25,6 +25,7 @@ import { EMainTabs } from '~/types/ENavigation';
 const TAB_BAR_PADDING_TOP = 16;
 const TAB_BAR_MIN_PADDING_BOTTOM = 12;
 const TAB_BAR_CONTENT_HEIGHT = 60;
+const TAB_BAR_MAX_HEIGHT = 88;
 const TAB_BAR_COLOR = '#016FE8';
 
 function TabBarBackground() {
@@ -40,9 +41,16 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
   const insets = useSafeAreaInsets();
   const tabBarBottomInset = useTabBarBottomInset(TAB_BAR_MIN_PADDING_BOTTOM);
-  const tabBarPaddingBottom = IS_ANDROID
+  const resolvedTabBarPaddingBottom = IS_ANDROID
     ? tabBarBottomInset
     : Math.max(insets.bottom, TAB_BAR_MIN_PADDING_BOTTOM);
+  const maxBottomPadding = Math.max(
+    TAB_BAR_MAX_HEIGHT - TAB_BAR_PADDING_TOP - TAB_BAR_CONTENT_HEIGHT,
+    TAB_BAR_MIN_PADDING_BOTTOM,
+  );
+  const tabBarPaddingBottom = IS_ANDROID
+    ? Math.min(resolvedTabBarPaddingBottom, maxBottomPadding)
+    : resolvedTabBarPaddingBottom;
   const tabBarHeight =
     TAB_BAR_PADDING_TOP + TAB_BAR_CONTENT_HEIGHT + tabBarPaddingBottom;
 
@@ -88,11 +96,13 @@ export default function TabLayout() {
 
         tabBarStyle: {
           height: tabBarHeight,
+          ...(IS_ANDROID ? { maxHeight: TAB_BAR_MAX_HEIGHT } : null),
           paddingTop: TAB_BAR_PADDING_TOP,
           paddingBottom: tabBarPaddingBottom,
           paddingHorizontal: 8,
           backgroundColor: IS_ANDROID ? 'transparent' : TAB_BAR_COLOR,
           borderTopWidth: 0,
+          overflow: 'visible',
         },
 
         tabBarBackground: () => <TabBarBackground />,
