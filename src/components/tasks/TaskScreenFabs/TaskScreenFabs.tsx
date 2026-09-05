@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import PlusIcon from '~/assets/svg/common/plus.svg';
 import CheckDoneIcon from '~/assets/svg/tasks/check-done.svg';
 import { IconButton } from '~/components/ui/IconButton';
+import { useTabScreenFabBottom } from '~/hooks/useTabBarBottomInset';
 import { Colors } from '~/styles';
 
 type Props = {
@@ -19,12 +20,14 @@ export const TaskScreenFabs: React.FC<Props> = ({
   showCompletedHistory = false,
   onOpenCompletedHistory,
 }) => {
+  const fabBottom = useTabScreenFabBottom();
+
   if (!showAdd && !showCompletedHistory) {
     return null;
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { bottom: fabBottom }]}>
       {showCompletedHistory && onOpenCompletedHistory && (
         <IconButton
           Icon={<CheckDoneIcon width={28} height={28} stroke="#FFFFFF" />}
@@ -50,7 +53,6 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     right: 16,
-    bottom: 8,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,

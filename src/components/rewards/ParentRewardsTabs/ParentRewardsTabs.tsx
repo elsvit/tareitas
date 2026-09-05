@@ -20,6 +20,7 @@ import { RewardsTabBar, RewardsTabRoute } from '~/components/rewards/RewardsTabB
 import { SegmentedSectionList } from '~/components/rewards/SegmentedSectionList';
 import { Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
+import { useTabScreenFabBottom } from '~/hooks/useTabBarBottomInset';
 import { t } from '~/services';
 import { RootStateT } from '~/store';
 import { selectAllRewardAssignment } from '~/store/rewardAssignment/selectors';
@@ -287,6 +288,7 @@ function CompletedRewardsTab() {
 
 function RewardsListTab() {
   const router = useRouter();
+  const fabBottom = useTabScreenFabBottom(16);
   const rewardAssignments = useSelector(selectAllRewardAssignment);
 
   const handleAddReward = useCallback(() => {
@@ -325,7 +327,7 @@ function RewardsListTab() {
           <Text style={styles.emptyText}>{t('rewards.no_rewards')}</Text>
         }
       />
-      <View style={styles.fab}>
+      <View style={[styles.fab, { bottom: fabBottom }]}>
         <IconButton
           Icon={<PlusIcon width={32} height={32} fill="#FFFFFF" />}
           onPress={handleAddReward}
@@ -495,7 +497,6 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     right: 16,
-    bottom: 24,
     width: 56,
     height: 56,
     borderRadius: 28,
