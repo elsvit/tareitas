@@ -86,6 +86,9 @@ export const styles = StyleSheet.create({
     height: 240,
     borderRadius: 12,
   },
+  uploadError: {
+    color: Colors.red500,
+  },
   actions: {
     flexDirection: 'row',
     gap: 12,
