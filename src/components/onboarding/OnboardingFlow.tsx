@@ -12,6 +12,9 @@ import { ButtonColors } from '~/components/ui/Button';
 import { ChildForm } from '~/components/users/UserForm/ChildForm';
 import { ParentForm } from '~/components/users/UserForm/ParentForm';
 import { t } from '~/services';
+import { mapServerChildToLocal } from '~/services/api/memberMappers';
+import { clearFamilyStore, hydrateFamilyStore } from '~/services/familySync';
+import { signupAndLoadFamily } from '~/services/multideviceSetup';
 import {
   buildSignupFamilyPayload,
   createPlaceholderChildSignupData,
@@ -19,24 +22,19 @@ import {
   syncOnboardingAdminProfile,
   syncOnboardingChildProfile,
 } from '~/services/onboardingSignup';
-import { signupAndLoadFamily } from '~/services/multideviceSetup';
-import { clearFamilyStore, hydrateFamilyStore } from '~/services/familySync';
-import { mapServerChildToLocal } from '~/services/api/memberMappers';
 import type { AppDispatch } from '~/store';
-import { updateChildSuccess } from '~/store/children/slice';
-import { addChild, clearChildren } from '~/store/children/slice';
-import { addParent, clearParents, updateParentSuccess } from '~/store/parents/slice';
+import { addChild, clearChildren, updateChildSuccess } from '~/store/children/slice';
 import { selectUserImageUrls, setUserImageUrl } from '~/store/images';
-import { store } from '~/store/store';
 import { selectParentIds } from '~/store/parents/selectors';
-import { ERole, ESyncMode } from '~/store/settings/enums';
+import { addParent, clearParents, updateParentSuccess } from '~/store/parents/slice';
+import { EFamilyRole, ERole, ESyncMode } from '~/store/settings/enums';
 import {
-  selectPendingReturnRoute,
-  selectRequireLogin,
-  selectSyncMode,
   selectAuthToken,
   selectAuthUserId,
   selectFamilyId,
+  selectPendingReturnRoute,
+  selectRequireLogin,
+  selectSyncMode,
 } from '~/store/settings/selectors';
 import {
   setCurrentRole,
@@ -45,6 +43,7 @@ import {
   setRequireLogin,
   setSyncMode,
 } from '~/store/settings/slice';
+import { store } from '~/store/store';
 import { Colors, spacing } from '~/styles';
 import { EFormMode } from '~/types/ECommon';
 import type { ChildFormProps } from '~/types/IChild';
@@ -54,15 +53,15 @@ import { OnboardingComplete } from './OnboardingComplete';
 import { OnboardingIntroSlide } from './OnboardingIntroSlide';
 import { OnboardingSignUpAdminStep } from './OnboardingSignUpAdminStep';
 import { OnboardingSignUpChildStep } from './OnboardingSignUpChildStep';
-import {
-  OnboardingSyncModeStep,
-  type OnboardingSetupPath,
-} from './OnboardingSyncModeStep';
 import { OnboardingStepHeader } from './OnboardingStepHeader';
 import {
   OnboardingStepTransition,
   type OnboardingTransitionDirection,
 } from './OnboardingStepTransition';
+import {
+  OnboardingSyncModeStep,
+  type OnboardingSetupPath,
+} from './OnboardingSyncModeStep';
 import {
   ONBOARDING_DEVICE_ONLY_TOTAL,
   ONBOARDING_INTRO_SLIDES_COUNT,
@@ -403,7 +402,7 @@ export function OnboardingFlow({
             name: profile.name,
             color: profile.color ?? adminData.color,
             avatar: profile.avatar ?? adminData.avatar,
-            familyRole: profile.familyRole ?? adminData.familyRole,
+            familyRole: profile.familyRole ?? adminData.familyRole ?? EFamilyRole.mother,
             role: ERole.admin,
             passwordPattern: adminData.pin,
             createdAt: new Date().toISOString(),
