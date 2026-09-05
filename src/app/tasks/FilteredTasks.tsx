@@ -1,5 +1,4 @@
 import { format, parseISO, subDays } from 'date-fns';
-import { enUS } from 'date-fns/locale';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { useCallback, useMemo } from 'react';
 import {
@@ -15,8 +14,8 @@ import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { TaskListItem } from '~/components/tasks/TaskListItem';
 import { Text } from '~/components/ui';
-import { DEFAULT_DATE_LOCALE, DEFAULT_LANG } from '~/constants/settings';
-import { t } from '~/services';
+import { DEFAULT_LANG } from '~/constants/settings';
+import { getDateLocaleForLang, t } from '~/services';
 import { RootStateT } from '~/store';
 import {
   selectCurrentUser,
@@ -30,7 +29,6 @@ import {
 import { ITaskFilters } from '~/store/tasks/types';
 import { ScheduledTaskItem } from '~/store/tasks/selectors';
 import { Colors } from '~/styles';
-import { ELang } from '~/types/ELang';
 import { ETaskStatus } from '~/types/ETask';
 
 type RouteParams = {
@@ -77,7 +75,7 @@ export default function FilteredTasks() {
 
   const formatSectionTitle = useCallback(
     (date: string) => {
-      const locale = lang === ELang.en ? enUS : DEFAULT_DATE_LOCALE;
+      const locale = getDateLocaleForLang(lang);
 
       return format(parseISO(date), 'EEEE, MMM d', { locale });
     },

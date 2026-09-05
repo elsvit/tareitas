@@ -3,16 +3,15 @@ import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { format, isToday, parseISO } from 'date-fns';
-import { enUS } from 'date-fns/locale';
 
 import ChevronRightIcon from '~/assets/svg/common/chevron-right.svg';
 import FilterIcon from '~/assets/svg/common/filter.svg';
 import SearchCrossIcon from '~/assets/svg/common/search-cross.svg';
 import SearchIcon from '~/assets/svg/common/search.svg';
 import { Search, Text } from '~/components/ui';
-import { DEFAULT_DATE_LOCALE, DEFAULT_LANG } from '~/constants/settings';
+import { DEFAULT_LANG } from '~/constants/settings';
+import { getDateLocaleForLang } from '~/services/localization/localization';
 import { selectLang } from '~/store/settings/selectors';
-import { ELang } from '~/types/ELang';
 
 import { styles } from './styles';
 
@@ -51,7 +50,7 @@ export const TaskCalendarHeader: React.FC<Props> = ({
   const lang = useSelector(selectLang) ?? DEFAULT_LANG;
 
   const formattedDate = useMemo(() => {
-    const locale = lang === ELang.en ? enUS : DEFAULT_DATE_LOCALE;
+    const locale = getDateLocaleForLang(lang);
 
     return format(parseISO(date), 'EEEE, MMM d', { locale });
   }, [date, lang]);
