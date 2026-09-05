@@ -1,9 +1,20 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import { API_CONFIG } from '~/services/api/config';
 import { getApiLang } from '~/services/api/lang';
 import { ApiError } from '~/services/api/client';
-import { isBuiltinAvatarId } from '~/services/imageSync';
+import {
+  updateChildMember,
+  updateMyMemberProfile,
+} from '~/services/api/membersApi';
+import {
+  isBuiltinAvatarId,
+  resolveImageRefForServer,
+} from '~/services/imageSync';
 import { t } from '~/services';
 import type { ISignupFamilyPayload } from '~/types/IAuth';
+import type { ChildFormProps } from '~/types/IChild';
+import type { ParentFormProps } from '~/types/IParent';
 
 export function sanitizeSignupAvatar(
   avatar: string | undefined,
@@ -23,6 +34,18 @@ export type SignupProfileInput = {
   avatar?: string;
   username?: string;
 };
+
+export function createPlaceholderChildSignupData(): SignupProfileInput & {
+  username: string;
+} {
+  const suffix = uuidv4().replace(/-/g, '').slice(0, 10);
+
+  return {
+    username: `ob${suffix}`,
+    pin: String(Math.floor(1000 + Math.random() * 9000)),
+    name: 'Child',
+  };
+}
 
 export function buildSignupFamilyPayload(input: {
   familyName: string;
@@ -113,4 +136,53 @@ export function formatOnboardingSignupError(error: unknown): string {
   }
 
   return t('onboarding.sign_up.error_generic');
+}
+
+export async function syncOnboardingAdminProfile(
+  accessToken: string,
+  familyId: string,
+  admin: ParentFormProps,
+  localUserUrls: Record<string, string>,
+) {
+  const avatar = await resolveImageRefForServer(
+    admin.avatar,
+    localUserUrls,
+    familyId,
+    accessToken,
+    'user',
+  );
+
+  return updateMyMemberProfile(accessToken, familyId, {
+    name: admin.name.trim(),
+    color: admin.color,
+    avatar,
+    familyRole: admin.familyRole,
+  });
+}
+
+export async function syncOnboardingChildProfile(
+  accessToken: string,
+  familyId: string,
+  childUserId: string,
+  child: ChildFormProps,
+  credentials: { username: string; pin: string },
+  localUserUrls: Record<string, string>,
+) {
+  const avatar = await resolveImageRefForServer(
+    child.avatar,
+    localUserUrls,
+    familyId,
+    accessToken,
+    'user',
+  );
+
+  return updateChildMember(accessToken, familyId, childUserId, {
+    name: child.name.trim(),
+    username: credentials.username,
+    pin: credentials.pin,
+    color: child.color,
+    avatar,
+    birthday: child.birthday,
+    reward: child.reward,
+  });
 }

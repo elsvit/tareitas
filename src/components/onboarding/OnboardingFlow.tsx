@@ -14,19 +14,29 @@ import { ParentForm } from '~/components/users/UserForm/ParentForm';
 import { t } from '~/services';
 import {
   buildSignupFamilyPayload,
+  createPlaceholderChildSignupData,
   formatOnboardingSignupError,
+  syncOnboardingAdminProfile,
+  syncOnboardingChildProfile,
 } from '~/services/onboardingSignup';
 import { signupAndLoadFamily } from '~/services/multideviceSetup';
 import { clearFamilyStore, hydrateFamilyStore } from '~/services/familySync';
+import { mapServerChildToLocal } from '~/services/api/memberMappers';
 import type { AppDispatch } from '~/store';
+import { updateChildSuccess } from '~/store/children/slice';
 import { addChild, clearChildren } from '~/store/children/slice';
-import { addParent, clearParents } from '~/store/parents/slice';
+import { addParent, clearParents, updateParentSuccess } from '~/store/parents/slice';
+import { selectUserImageUrls, setUserImageUrl } from '~/store/images';
+import { store } from '~/store/store';
 import { selectParentIds } from '~/store/parents/selectors';
 import { ERole, ESyncMode } from '~/store/settings/enums';
 import {
   selectPendingReturnRoute,
   selectRequireLogin,
   selectSyncMode,
+  selectAuthToken,
+  selectAuthUserId,
+  selectFamilyId,
 } from '~/store/settings/selectors';
 import {
   setCurrentRole,
@@ -104,7 +114,13 @@ export function OnboardingFlow({
   );
   const [signUpAdmin, setSignUpAdmin] =
     useState<Partial<SignUpAdminData>>({ role: ERole.admin });
+  const [signUpChild, setSignUpChild] =
+    useState<Partial<ChildFormProps>>();
+  const [placeholderChildUserId, setPlaceholderChildUserId] =
+    useState<string | null>(null);
   const [signUpError, setSignUpError] = useState<string | null>(null);
+  const [isSubmittingAdminSignUp, setIsSubmittingAdminSignUp] =
+    useState(false);
   const [isSubmittingSignUp, setIsSubmittingSignUp] = useState(false);
   const [keyboardInset, setKeyboardInset] = useState(0);
 
@@ -341,7 +357,7 @@ export function OnboardingFlow({
     goToStep(ONBOARDING_STEP.complete);
   };
 
-  const onSignUpAdminContinue = (
+  const onSignUpAdminSubmit = async (
     value: ParentFormProps,
     credentials: {
       email: string;
@@ -349,37 +365,56 @@ export function OnboardingFlow({
       pin: string;
     },
   ) => {
-    setSignUpError(null);
-    setSignUpAdmin({
+    const adminData: SignUpAdminData = {
       ...value,
       email: credentials.email,
       familyName: credentials.familyName,
       pin: credentials.pin,
       passwordPattern: credentials.pin,
-    });
-    goToStep(ONBOARDING_STEP.signUpChild);
-  };
+      role: ERole.admin,
+    };
 
-  const onSignUpChildSubmit = async (
-    value: ChildFormProps,
-    credentials: { username: string; pin: string },
-  ) => {
-    const adminData = signUpAdmin as SignUpAdminData;
-
-    if (!adminData?.name || !adminData.email || !adminData.pin) {
-      setSignUpError(t('onboarding.sign_up.error_admin_incomplete'));
-      return;
-    }
-
-    if (!adminData.familyName?.trim()) {
-      setSignUpError(t('onboarding.sign_up.error_family_name_required'));
-      return;
-    }
-
+    setSignUpAdmin(adminData);
     setSignUpError(null);
-    setIsSubmittingSignUp(true);
+    setIsSubmittingAdminSignUp(true);
 
     try {
+      const localUserUrls = selectUserImageUrls(store.getState());
+      const existingFamilyId = selectFamilyId(store.getState());
+      const existingToken = selectAuthToken(store.getState());
+      const existingAdminId = selectAuthUserId(store.getState());
+
+      if (
+        placeholderChildUserId &&
+        existingFamilyId &&
+        existingToken &&
+        existingAdminId
+      ) {
+        const profile = await syncOnboardingAdminProfile(
+          existingToken,
+          existingFamilyId,
+          adminData,
+          localUserUrls,
+        );
+
+        dispatch(
+          updateParentSuccess({
+            id: existingAdminId,
+            name: profile.name,
+            color: profile.color ?? adminData.color,
+            avatar: profile.avatar ?? adminData.avatar,
+            familyRole: profile.familyRole ?? adminData.familyRole,
+            role: ERole.admin,
+            passwordPattern: adminData.pin,
+            createdAt: new Date().toISOString(),
+            createdBy: existingAdminId,
+          }),
+        );
+        goToStep(ONBOARDING_STEP.signUpChild);
+        return;
+      }
+
+      const placeholderChild = createPlaceholderChildSignupData();
       const result = await signupAndLoadFamily(
         buildSignupFamilyPayload({
           familyName: adminData.familyName.trim(),
@@ -390,15 +425,15 @@ export function OnboardingFlow({
             avatar: adminData.avatar,
             color: adminData.color,
           },
-          child: {
-            username: credentials.username,
-            pin: credentials.pin,
-            name: value.name,
-            avatar: value.avatar,
-            color: value.color,
-          },
+          child: placeholderChild,
         }),
       );
+
+      const childUserId = result.family.children[0]?.userId;
+
+      if (!childUserId) {
+        throw new Error(t('onboarding.sign_up.error_generic'));
+      }
 
       dispatch(setSyncMode(ESyncMode.multidevice));
 
@@ -415,6 +450,119 @@ export function OnboardingFlow({
       } catch (hydrateError) {
         clearFamilyStore(dispatch);
         throw hydrateError;
+      }
+
+      setPlaceholderChildUserId(childUserId);
+
+      const profile = await syncOnboardingAdminProfile(
+        result.accessToken,
+        result.familyId,
+        adminData,
+        localUserUrls,
+      );
+
+      dispatch(
+        updateParentSuccess({
+          id: result.user.id,
+          name: profile.name,
+          color: profile.color ?? adminData.color,
+          avatar: profile.avatar ?? adminData.avatar,
+          familyRole: profile.familyRole ?? adminData.familyRole,
+          role: ERole.admin,
+          passwordPattern: adminData.pin,
+          createdAt: new Date().toISOString(),
+          createdBy: result.user.id,
+        }),
+      );
+
+      if (
+        profile.avatar &&
+        adminData.avatar &&
+        profile.avatar !== adminData.avatar &&
+        localUserUrls[adminData.avatar]
+      ) {
+        dispatch(
+          setUserImageUrl({
+            id: profile.avatar,
+            uri: localUserUrls[adminData.avatar],
+          }),
+        );
+      }
+
+      goToStep(ONBOARDING_STEP.signUpChild);
+    } catch (caught) {
+      setSignUpError(formatOnboardingSignupError(caught));
+    } finally {
+      setIsSubmittingAdminSignUp(false);
+    }
+  };
+
+  const onSignUpChildSubmit = async (
+    value: ChildFormProps,
+    credentials: { username: string; pin: string },
+  ) => {
+    if (!placeholderChildUserId) {
+      setSignUpError(t('onboarding.sign_up.error_admin_incomplete'));
+      goToStep(ONBOARDING_STEP.signUpAdmin);
+      return;
+    }
+
+    const familyId = selectFamilyId(store.getState());
+    const accessToken = selectAuthToken(store.getState());
+    const adminUserId = selectAuthUserId(store.getState());
+
+    if (!familyId || !accessToken || !adminUserId) {
+      setSignUpError(t('onboarding.sign_up.error_admin_incomplete'));
+      goToStep(ONBOARDING_STEP.signUpAdmin);
+      return;
+    }
+
+    setSignUpChild({
+      ...value,
+      username: credentials.username,
+      passwordPattern: credentials.pin,
+    });
+    setSignUpError(null);
+    setIsSubmittingSignUp(true);
+
+    try {
+      const localUserUrls = selectUserImageUrls(store.getState());
+      const serverChild = await syncOnboardingChildProfile(
+        accessToken,
+        familyId,
+        placeholderChildUserId,
+        value,
+        credentials,
+        localUserUrls,
+      );
+
+      dispatch(
+        updateChildSuccess(
+          mapServerChildToLocal(
+            serverChild,
+            adminUserId,
+            credentials.pin,
+            {
+              ...value,
+              username: credentials.username,
+              passwordPattern: credentials.pin,
+            },
+          ),
+        ),
+      );
+
+      if (
+        serverChild.avatar &&
+        value.avatar &&
+        serverChild.avatar !== value.avatar &&
+        localUserUrls[value.avatar]
+      ) {
+        dispatch(
+          setUserImageUrl({
+            id: serverChild.avatar,
+            uri: localUserUrls[value.avatar],
+          }),
+        );
       }
 
       enterApp();
@@ -454,7 +602,9 @@ export function OnboardingFlow({
           parent={signUpAdmin}
           initialFamilyName={signUpAdmin.familyName}
           initialEmail={signUpAdmin.email}
-          onContinue={onSignUpAdminContinue}
+          isSubmitting={isSubmittingAdminSignUp}
+          externalError={signUpError}
+          onContinue={onSignUpAdminSubmit}
         />
       );
     }
@@ -462,6 +612,7 @@ export function OnboardingFlow({
     if (isSignUpChildStep) {
       return (
         <OnboardingSignUpChildStep
+          child={signUpChild}
           isSubmitting={isSubmittingSignUp}
           externalError={signUpError}
           onSubmit={onSignUpChildSubmit}

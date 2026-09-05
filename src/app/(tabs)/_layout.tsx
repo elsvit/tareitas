@@ -1,7 +1,8 @@
 import { Tabs } from 'expo-router';
 import { t } from 'i18next';
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
 import RoutinesIcon from '~/assets/img/tabs/tab_habits.webp';
@@ -27,10 +28,15 @@ const TAB_BAR_CONTENT_HEIGHT = 60;
 const TAB_BAR_COLOR = '#016FE8';
 
 function TabBarBackground() {
+  const { bottom } = useSafeAreaInsets();
+
   return (
     <View
       pointerEvents="none"
-      style={{ flex: 1, backgroundColor: TAB_BAR_COLOR }}
+      style={[
+        styles.tabBarBackground,
+        IS_ANDROID && bottom > 0 ? { bottom: -bottom } : null,
+      ]}
     />
   );
 }
@@ -90,9 +96,17 @@ export default function TabLayout() {
           paddingTop: TAB_BAR_PADDING_TOP,
           paddingBottom: tabBarPaddingBottom,
           paddingHorizontal: 8,
-          backgroundColor: IS_ANDROID ? 'transparent' : TAB_BAR_COLOR,
+          backgroundColor: TAB_BAR_COLOR,
           borderTopWidth: 0,
           overflow: 'visible',
+          ...(IS_ANDROID
+            ? {
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0,
+              }
+            : null),
         },
 
         tabBarBackground: () => <TabBarBackground />,
@@ -131,3 +145,10 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBarBackground: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: TAB_BAR_COLOR,
+  },
+});
