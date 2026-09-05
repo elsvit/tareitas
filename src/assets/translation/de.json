@@ -462,7 +462,7 @@
     "task_end_date_before_start_date": "Das Enddatum darf nicht vor dem Startdatum liegen"
   },
   "habits": {
-    "title": "Gewohnheiten",
+    "title": "Routinen",
     "no_habits": "Noch keine Gewohnheiten",
     "push_to_add_habit": "Drücken Sie die Taste, um eine Gewohnheit hinzuzufügen",
     "add_habit": "Gewohnheit hinzufügen",
@@ -470,7 +470,7 @@
     "completed_history": "Abgeschlossene Gewohnheiten"
   },
   "rewards": {
-    "title": "Belohnungen",
+    "title": "Prämien",
     "add_reward": "Belohnung hinzufügen",
     "base_rewards": "Basisbelohnungen",
     "base_reward_template": "Basisbelohnung verwenden",

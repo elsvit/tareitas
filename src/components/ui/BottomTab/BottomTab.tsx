@@ -15,6 +15,7 @@ export type BottomTabProps = {
   ActiveIcon: ImageSourcePropType;
   focused?: boolean;
   label?: string;
+  compactLabel?: boolean;
   badge?: number | string;
   badgeBackgroundColor?: string;
   badgeTextColor?: string;
@@ -22,6 +23,8 @@ export type BottomTabProps = {
 
 const TABLET_MIN_WIDTH = 600;
 const PHONE_FALLBACK_WIDTH = 390;
+const COMPACT_PHONE_LABEL_FONT_SIZE = 13;
+const COMPACT_TABLET_LABEL_FONT_SIZE = 12;
 
 const getTabMetrics = (screenWidth: number) => {
   const width = screenWidth > 0 ? screenWidth : PHONE_FALLBACK_WIDTH;
@@ -53,6 +56,7 @@ export const BottomTab: React.FC<BottomTabProps> = ({
   ActiveIcon,
   focused = false,
   label,
+  compactLabel = false,
   badge,
   badgeBackgroundColor = '#FF3B30',
   badgeTextColor = '#fff',
@@ -64,6 +68,11 @@ export const BottomTab: React.FC<BottomTabProps> = ({
     () => getTabMetrics(layoutWidth),
     [layoutWidth],
   );
+  const labelFontSize = compactLabel
+    ? layoutWidth >= TABLET_MIN_WIDTH
+      ? COMPACT_TABLET_LABEL_FONT_SIZE
+      : COMPACT_PHONE_LABEL_FONT_SIZE
+    : metrics.labelFontSize;
 
   return (
     <View style={styles.container}>
@@ -100,8 +109,8 @@ export const BottomTab: React.FC<BottomTabProps> = ({
                   styles.labelText,
                   {
                     color: focused ? ACTIVE_COLOR : INACTIVE_COLOR,
-                    fontSize: metrics.labelFontSize,
-                    lineHeight: metrics.labelFontSize + 2,
+                    fontSize: labelFontSize,
+                    lineHeight: labelFontSize + 2,
                   },
                 ]}
                 numberOfLines={1}

@@ -463,7 +463,7 @@
     "task_end_date_before_start_date": "Päättymispäivä ei voi olla ennen alkupäivää"
   },
   "habits": {
-    "title": "Tottumukset",
+    "title": "Tavat",
     "no_habits": "Ei tottumuksia vielä",
     "push_to_add_habit": "Lisää tapa painamalla painiketta",
     "add_habit": "Lisää tapa",

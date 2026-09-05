@@ -7,13 +7,13 @@ import CloseIcon from '~/assets/svg/common/cross.svg';
 import { GoogleMobileBannerAdFromConfig } from '~/components/ads/GoogleMobileBannerAd.native';
 import { SubscriptionModal } from '~/components/subscriptions/SubscriptionModal';
 import { IconButton } from '~/components/ui/IconButton';
-import { AD_TASK_AMOUNT_START } from '~/constants/admob';
+import { AD_TASK_AMOUNT_START } from '~/constants/ads';
 import { useIsPro } from '~/hooks/useIsPro';
 import { useSubscription } from '~/hooks/useSubscription';
-import { isGoogleMobileAdsNativeModuleAvailable } from '~/services/ads/googleMobileAds.native';
 import { t } from '~/services';
-import { Colors } from '~/styles';
+import { isGoogleMobileAdsNativeModuleAvailable } from '~/services/ads/googleMobileAds.native';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
+import { Colors } from '~/styles';
 
 export const BOTTOM_BANNER_HEIGHT = 50;
 

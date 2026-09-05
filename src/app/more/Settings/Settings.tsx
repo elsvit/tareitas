@@ -33,7 +33,6 @@ import {
 } from '~/store/settings/slice';
 import { syncTaskBaseTranslations } from '~/store/taskBase/slice';
 import { useStyle } from '~/styles';
-import { EScreens } from '~/types';
 import { ELang } from '~/types/ELang';
 
 import themedStyles from './styles';
@@ -53,6 +52,7 @@ export default function Settings() {
   const hasAuthSession = useSelector(selectHasAuthSession);
   const needsAuthLogin = useSelector(selectNeedsAuthLogin);
   const refreshToken = useSelector(selectRefreshToken);
+  const currentLang = useSelector(selectLang);
 
   const activeLang = useMemo((): ELang => {
     if (storedLang && AvailableLanguages.some(language => language.code === storedLang)) {
@@ -127,47 +127,16 @@ export default function Settings() {
     dispatch(setRequireLogin(true));
   }, [dispatch, refreshToken]);
 
+  const languageName = useMemo(() => {
+    const additionalText = currentLang === 'en' || currentLang === 'es' ? '' : ' (Language)';
+    return t('settings.language') + additionalText;
+  }, [currentLang]);
+
   const sections = useMemo((): SettingsSection[] => {
     const allSections: SettingsSection[] = [
       {
-        id: 'account',
-        title: t('settings.account.title'),
-        description: needsAuthLogin
-          ? t('settings.account.session_expired')
-          : hasAuthSession
-            ? t('settings.account.signed_in')
-            : undefined,
-        defaultExpanded: needsAuthLogin,
-        visible: isMultidevice && isAdmin,
-        items: needsAuthLogin
-          ? [
-              {
-                type: 'select' as const,
-                id: 'sign-in',
-                title: t('settings.account.sign_in'),
-                selected: false,
-                onPress: () => {
-                  router.push('/(onboarding)?setup=1');
-                },
-              },
-            ]
-          : hasAuthSession
-            ? [
-                {
-                  type: 'select' as const,
-                  id: 'sign-out',
-                  title: t('settings.account.sign_out'),
-                  selected: false,
-                  onPress: () => {
-                    void handleSignOut();
-                  },
-                },
-              ]
-            : [],
-      },
-      {
         id: 'language',
-        title: t('settings.language'),
+        title: languageName,
         description: activeLanguageName,
         defaultExpanded: false,
         items: AvailableLanguages.map(language => ({
@@ -227,6 +196,42 @@ export default function Settings() {
             onValueChange: handleChildHasChangeFamilyChange,
           },
         ],
+      },
+      {
+        id: 'account',
+        title: t('settings.account.title'),
+        description: needsAuthLogin
+          ? t('settings.account.session_expired')
+          : hasAuthSession
+            ? t('settings.account.signed_in')
+            : undefined,
+        defaultExpanded: needsAuthLogin,
+        visible: isMultidevice && isAdmin,
+        items: needsAuthLogin
+          ? [
+              {
+                type: 'select' as const,
+                id: 'sign-in',
+                title: t('settings.account.sign_in'),
+                selected: false,
+                onPress: () => {
+                  router.push('/(onboarding)?setup=1');
+                },
+              },
+            ]
+          : hasAuthSession
+            ? [
+                {
+                  type: 'select' as const,
+                  id: 'sign-out',
+                  title: t('settings.account.sign_out'),
+                  selected: false,
+                  onPress: () => {
+                    void handleSignOut();
+                  },
+                },
+              ]
+            : [],
       },
     ];
 
