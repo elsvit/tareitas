@@ -4,12 +4,12 @@ import { ActivityIndicator, Pressable, View } from 'react-native';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
 
 import PlusIcon from '~/assets/svg/common/plus.svg';
 import { Button, ButtonColors, Text } from '~/components/ui';
 import { SCREEN_TEXT } from '~/constants/formField';
 import { t } from '~/services';
+import { createId } from '~/utils/createId';
 import {
   removeRewardImageUrl,
   removeTaskImageUrl,
@@ -110,7 +110,7 @@ export function ImageLoader({
     setIsLoading(true);
 
     try {
-      const nextId = uuidv4();
+      const nextId = createId();
       const savedUri = await saveImageToDevice(
         result.assets[0].uri,
         kind,

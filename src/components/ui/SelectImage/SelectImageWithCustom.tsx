@@ -12,7 +12,6 @@ import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
 
 import { Button, ButtonColors, Text } from '~/components/ui';
 import { saveImageToDevice } from '~/components/ui/ImageLoader/ImageLoader.utils';
@@ -20,6 +19,7 @@ import { SCREEN_TEXT } from '~/constants/formField';
 import { useMediaSessionPause } from '~/hooks/useSessionPause';
 import { t } from '~/services';
 import { uploadFamilyImageWithSession } from '~/services/api/uploadFamilyImageWithSession';
+import { createId } from '~/utils/createId';
 import {
   selectFamilyScopedRewardImageEntries,
   selectFamilyScopedTaskImageEntries,
@@ -248,7 +248,7 @@ export function SelectImageWithCustom({
     setUploadError(null);
 
     try {
-      const nextId = uuidv4();
+      const nextId = createId();
       const savedUri = await saveImageToDevice(draftUri, kind, nextId);
 
       if (isMultidevice && familyId) {
@@ -424,12 +424,13 @@ export function SelectImageWithCustom({
               {t('imageLoader.adjust_crop')}
             </Button>
 
+            {uploadError ? (
+              <Text variant="bodyMedium" style={styles.uploadError}>
+                {uploadError}
+              </Text>
+            ) : null}
+
             <View style={styles.actions}>
-              {uploadError ? (
-                <Text variant="bodyMedium" style={baseStyles.errorText}>
-                  {uploadError}
-                </Text>
-              ) : null}
               <Button
                 mode="contained"
                 bgColor={ButtonColors.Gray}
