@@ -73,6 +73,17 @@ export const AvailableLanguages: IAvailableLanguages[] = [...LANGUAGE_DEFINITION
   (left, right) => left.name.localeCompare(right.name),
 );
 
+export const getDateLocaleForLang = (lang: ELang | null | undefined): Locale => {
+  if (!lang) {
+    return DEFAULT_DATE_LOCALE;
+  }
+
+  return (
+    AvailableLanguages.find(language => language.code === lang)?.dateLocale ??
+    DEFAULT_DATE_LOCALE
+  );
+};
+
 const buildI18nResources = () =>
   Object.fromEntries(
     Object.entries(translations).map(([code, translation]) => [
@@ -103,13 +114,7 @@ class LocalizationServiceClass {
   };
 
   private getDateLocale = (lang: string | undefined) => {
-    if (!lang || !this.checkIfLangAvailable(lang)) {
-      return DEFAULT_DATE_LOCALE;
-    }
-
-    const locale = AvailableLanguages.find(val => val.code === lang);
-
-    return locale?.dateLocale ?? DEFAULT_DATE_LOCALE;
+    return getDateLocaleForLang(lang as ELang | undefined);
   };
 
   private getLangJSON = (lang: ELang) => translations[lang] ?? translations[FALLBACK_LANG];
