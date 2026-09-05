@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Space, TextInput } from '~/components/ui';
+import { Space, Text, TextInput } from '~/components/ui';
 import { ParentForm } from '~/components/users/UserForm/ParentForm';
 import { t } from '~/services';
 import { Colors } from '~/styles';
@@ -13,6 +13,8 @@ type OnboardingSignUpAdminStepProps = {
   parent?: Partial<ParentFormProps>;
   initialFamilyName?: string;
   initialEmail?: string;
+  isSubmitting?: boolean;
+  externalError?: string | null;
   onContinue: (
     parent: ParentFormProps,
     credentials: {
@@ -27,11 +29,15 @@ export function OnboardingSignUpAdminStep({
   parent,
   initialFamilyName = '',
   initialEmail = '',
+  isSubmitting = false,
+  externalError = null,
   onContinue,
 }: OnboardingSignUpAdminStepProps) {
   const [familyName, setFamilyName] = useState(initialFamilyName);
   const [email, setEmail] = useState(initialEmail);
   const [error, setError] = useState<string | null>(null);
+
+  const submitError = externalError ?? error;
 
   const handleSave = (value: ParentFormProps) => {
     if (!familyName.trim()) {
@@ -71,7 +77,8 @@ export function OnboardingSignUpAdminStep({
         parent={parent}
         onSave={handleSave}
         showScreenHeader={false}
-        submitError={error}
+        submitError={submitError}
+        isSubmitting={isSubmitting}
         fieldsBeforeName={
           <>
             <TextInput
@@ -91,6 +98,12 @@ export function OnboardingSignUpAdminStep({
           </>
         }
       />
+      {isSubmitting ? (
+        <>
+          <Space size={2} />
+          <Text variant="bodyMedium">{t('common.loading')}</Text>
+        </>
+      ) : null}
     </>
   );
 }

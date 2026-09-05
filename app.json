@@ -108,6 +108,11 @@
       "typedRoutes": true,
       "reactCompiler": true
     },
+    "androidNavigationBar": {
+      "backgroundColor": "#016FE8",
+      "barStyle": "light-content",
+      "enforceContrast": false
+    },
     "extra": {
       "router": {},
       "eas": {
