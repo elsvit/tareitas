@@ -666,7 +666,8 @@
       "error_child_pin_required": "Introdu un PIN copil din 4 cifre",
       "error_admin_incomplete": "Completează mai întâi profilul admin",
       "error_generic": "Nu s-a putut crea familia. Încearcă din nou.",
-      "error_family_name_required": "Numele familiei este obligatoriu"
+      "error_family_name_required": "Numele familiei este obligatoriu",
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
     }
   },
   "helpCenter": {

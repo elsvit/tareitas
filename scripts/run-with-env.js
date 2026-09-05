@@ -6,7 +6,6 @@ const path = require('path');
 const { loadEnvFile } = require('./load-env-file');
 
 const projectRoot = path.resolve(__dirname, '..');
-
 const args = process.argv.slice(2);
 const commandArgs = [];
 let explicitEnvFile = null;
@@ -32,6 +31,9 @@ for (let index = 0; index < args.length; index += 1) {
       process.exit(1);
     }
 
+    console.log(
+      `Loaded ${result.keys.length} env var(s) from ${path.relative(projectRoot, result.resolvedPath)}`,
+    );
     index += 1;
     continue;
   }
@@ -47,6 +49,9 @@ for (let index = 0; index < args.length; index += 1) {
       process.exit(1);
     }
 
+    console.log(
+      `Loaded ${result.keys.length} env var(s) from ${path.relative(projectRoot, result.resolvedPath)}`,
+    );
     continue;
   }
 
@@ -54,7 +59,6 @@ for (let index = 0; index < args.length; index += 1) {
 }
 
 if (explicitEnvFile) {
-  // Prevent Expo from loading .env.local over the chosen env file.
   process.env.EXPO_NO_DOTENV = '1';
   console.log(
     `Using ${explicitEnvFile} (EXPO_NO_DOTENV=1). EXPO_PUBLIC_API_URL=${process.env.EXPO_PUBLIC_API_URL ?? '(unset)'}`,
@@ -63,19 +67,12 @@ if (explicitEnvFile) {
 
 if (commandArgs.length === 0) {
   console.error(
-    'Usage: node scripts/run-with-translation-watch.js [--env-file <path>] <command> [...args]',
+    'Usage: node scripts/run-with-env.js --env-file <path> <command> [...args]',
   );
   process.exit(1);
 }
-const watchScript = path.join(projectRoot, 'scripts', 'sync-translations.js');
 
-const watcher = spawn(process.execPath, [watchScript, '--watch'], {
-  cwd: projectRoot,
-  stdio: 'inherit',
-});
-
-const command = commandArgs[0];
-const childArgs = commandArgs.slice(1);
+const [command, ...childArgs] = commandArgs;
 
 const child = spawn(command, childArgs, {
   cwd: projectRoot,
@@ -84,15 +81,7 @@ const child = spawn(command, childArgs, {
   env: process.env,
 });
 
-const stopWatcher = () => {
-  if (!watcher.killed) {
-    watcher.kill('SIGTERM');
-  }
-};
-
 child.on('exit', (code, signal) => {
-  stopWatcher();
-
   if (signal) {
     process.kill(process.pid, signal);
     return;
@@ -101,24 +90,7 @@ child.on('exit', (code, signal) => {
   process.exit(code ?? 0);
 });
 
-child.on('error', (error) => {
-  stopWatcher();
+child.on('error', error => {
   console.error(error.message);
   process.exit(1);
-});
-
-watcher.on('error', (error) => {
-  child.kill('SIGTERM');
-  console.error(error.message);
-  process.exit(1);
-});
-
-process.on('SIGINT', () => {
-  child.kill('SIGINT');
-  stopWatcher();
-});
-
-process.on('SIGTERM', () => {
-  child.kill('SIGTERM');
-  stopWatcher();
 });

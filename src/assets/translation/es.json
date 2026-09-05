@@ -711,6 +711,8 @@
       "error_child_pin_required": "Introduce un PIN del hijo de 4 dígitos",
       "error_admin_incomplete": "Completa primero el perfil del admin",
       "error_generic": "No se pudo crear la familia. Inténtalo de nuevo.",
+      "error_already_exists": "Este email o nombre de usuario del hijo ya está registrado. Prueba a iniciar sesión o usa otros datos.",
+      "error_network": "No se pudo conectar con el servidor en {{apiUrl}}. Comprueba tu conexión. Si instalaste una versión antigua, vuelve a compilar la app con la URL de producción.",
       "error_family_name_required": "El nombre de la familia es obligatorio"
     }
   }

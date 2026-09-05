@@ -141,6 +141,9 @@ class LocalizationServiceClass {
       compatibilityJSON: 'v4',
       returnEmptyString: false,
       returnNull: false,
+      interpolation: {
+        escapeValue: false,
+      },
     };
 
     await i18next.init(i18nextOptions);
@@ -169,6 +172,9 @@ class LocalizationServiceClass {
       compatibilityJSON: 'v4',
       returnEmptyString: false,
       returnNull: false,
+      interpolation: {
+        escapeValue: false,
+      },
     });
 
     setDefaultOptions({ locale: DEFAULT_DATE_LOCALE });

@@ -666,7 +666,8 @@
       "error_child_pin_required": "Voer een 4-cijferige kind-PIN in",
       "error_admin_incomplete": "Vul eerst het adminprofiel in",
       "error_generic": "Gezin kon niet worden aangemaakt. Probeer opnieuw.",
-      "error_family_name_required": "Familienaam is verplicht"
+      "error_family_name_required": "Familienaam is verplicht",
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
     }
   },
   "helpCenter": {

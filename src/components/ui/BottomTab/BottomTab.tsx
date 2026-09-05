@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import {
+  Dimensions,
   Image,
   type ImageSourcePropType,
   StyleSheet,
@@ -20,12 +21,12 @@ export type BottomTabProps = {
 };
 
 const TABLET_MIN_WIDTH = 600;
-
-const ACTIVE_COLOR = '#FEF30C';
-const INACTIVE_COLOR = '#4FB3FF';
+const PHONE_FALLBACK_WIDTH = 390;
 
 const getTabMetrics = (screenWidth: number) => {
-  if (screenWidth >= TABLET_MIN_WIDTH) {
+  const width = screenWidth > 0 ? screenWidth : PHONE_FALLBACK_WIDTH;
+
+  if (width >= TABLET_MIN_WIDTH) {
     return {
       iconSize: 76,
       hitWidth: 116,
@@ -36,13 +37,16 @@ const getTabMetrics = (screenWidth: number) => {
   }
 
   return {
-    iconSize: screenWidth * 0.17,
-    hitWidth: screenWidth * 0.28,
+    iconSize: width * 0.17,
+    hitWidth: width * 0.28,
     hitHeight: 72,
     labelBottom: -14,
     labelFontSize: 16,
   };
 };
+
+const ACTIVE_COLOR = '#FEF30C';
+const INACTIVE_COLOR = '#4FB3FF';
 
 export const BottomTab: React.FC<BottomTabProps> = ({
   Icon,
@@ -54,7 +58,12 @@ export const BottomTab: React.FC<BottomTabProps> = ({
   badgeTextColor = '#fff',
 }) => {
   const { width: screenWidth } = useWindowDimensions();
-  const metrics = useMemo(() => getTabMetrics(screenWidth), [screenWidth]);
+  const layoutWidth =
+    screenWidth > 0 ? screenWidth : Dimensions.get('window').width;
+  const metrics = useMemo(
+    () => getTabMetrics(layoutWidth),
+    [layoutWidth],
+  );
 
   return (
     <View style={styles.container}>
@@ -119,10 +128,8 @@ export const BottomTab: React.FC<BottomTabProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 0,
   },
 
   hitArea: {

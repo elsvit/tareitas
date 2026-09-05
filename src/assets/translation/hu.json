@@ -666,7 +666,8 @@
       "error_child_pin_required": "Adjon meg 4 számjegyű gyermek PIN-t",
       "error_admin_incomplete": "Először töltse ki az admin profilt",
       "error_generic": "A család létrehozása sikertelen. Próbálja újra.",
-      "error_family_name_required": "A családnév kötelező"
+      "error_family_name_required": "A családnév kötelező",
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
     }
   },
   "helpCenter": {
