@@ -411,7 +411,7 @@
       "pushUpsDescription": "Duw minimaal 20 keer omhoog",
       "walk": "Wandeling",
       "walkDescription": "Maak een wandeling, minimaal 30 minuten",
-      "hike": "Campagne",
+      "hike": "Wandelen",
       "hikeDescription": "Wandeling, minimaal 5 km",
       "playOutside": "Buiten spelen",
       "playOutsideDescription": "Speel een actief spel buiten",
@@ -667,7 +667,8 @@
       "error_admin_incomplete": "Vul eerst het adminprofiel in",
       "error_generic": "Gezin kon niet worden aangemaakt. Probeer opnieuw.",
       "error_family_name_required": "Familienaam is verplicht",
-      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
+      "error_already_exists": "Dit e-mailadres of deze kindgebruikersnaam is al geregistreerd. Probeer in te loggen of gebruik andere gegevens."
     }
   },
   "helpCenter": {
@@ -699,5 +700,21 @@
     "REWARD_INACTIVE": "Deze beloning is niet meer beschikbaar.",
     "REWARD_INSUFFICIENT_BALANCE": "Niet genoeg sterren voor deze beloning.",
     "REWARD_REDEMPTION_INVALID_STATUS": "Deze beloning kan in de huidige staat niet worden bijgewerkt."
+  },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Advertenties verwijderen",
+    "modal_title": "Reclamevrij",
+    "modal_description": "Abonneer om advertenties te verwijderen en Tareitas te steunen.",
+    "description": "Geniet van Tareitas zonder advertenties. Je abonnement helpt ons de app voor je gezin te verbeteren.",
+    "yearly_price": "{{price}} / jaar",
+    "subscribe": "Abonneren",
+    "restore": "Aankopen herstellen",
+    "remove_ads": "Advertenties verwijderen",
+    "loading_price": "Prijs laden...",
+    "unavailable": "Abonnementen zijn niet beschikbaar op dit apparaat.",
+    "purchase_error": "Aankoop kon niet worden voltooid. Probeer het opnieuw.",
+    "restore_error": "Aankopen konden niet worden hersteld. Probeer het opnieuw.",
+    "already_pro": "Je hebt al Tareitas Pro. Bedankt!"
   }
 }

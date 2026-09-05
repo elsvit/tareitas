@@ -3,8 +3,8 @@ import { ERole } from '~/store/settings/enums';
 import { IOptions } from '~/types';
 
 export {
-  FAMILY_ROLE_OPTIONS,
   getFamilyRoleLabel,
+  getFamilyRoleOptions,
   isKnownFamilyRole,
   parseFamilyRoleFormValues,
   resolveFamilyRoleValue,

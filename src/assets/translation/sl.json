@@ -411,7 +411,7 @@
       "pushUpsDescription": "Potisnite se vsaj 20-krat",
       "walk": "Hodi",
       "walkDescription": "Pojdite na sprehod, vsaj 30 minut",
-      "hike": "Kampanja",
+      "hike": "Pohod",
       "hikeDescription": "Pohod, najmanj 5 km",
       "playOutside": "Igrajte se zunaj",
       "playOutsideDescription": "Igrajte aktivno igro na prostem",
@@ -667,7 +667,8 @@
       "error_admin_incomplete": "Najprej dokončajte admin profil",
       "error_generic": "Družine ni bilo mogoče ustvariti. Poskusite znova.",
       "error_family_name_required": "Ime družine je obvezno",
-      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
+      "error_already_exists": "Ta e-pošta ali uporabniško ime otroka je že registrirano. Poskusite se prijaviti ali uporabite druge podatke."
     }
   },
   "helpCenter": {
@@ -699,5 +700,21 @@
     "REWARD_INACTIVE": "Ta nagrada ni več na voljo.",
     "REWARD_INSUFFICIENT_BALANCE": "Ni dovolj zvezdic za to nagrado.",
     "REWARD_REDEMPTION_INVALID_STATUS": "Te nagrade ni mogoče posodobiti v trenutnem stanju."
+  },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Odstrani oglase",
+    "modal_title": "Brez oglasov",
+    "modal_description": "Naročite se, da odstranite oglase in podprete Tareitas.",
+    "description": "Uživajte v Tareitas brez oglasov. Vaša naročnina nam pomaga izboljševati aplikacijo za vašo družino.",
+    "yearly_price": "{{price}} / leto",
+    "subscribe": "Naroči se",
+    "restore": "Obnovi nakup",
+    "remove_ads": "Odstrani oglase",
+    "loading_price": "Nalaganje cene...",
+    "unavailable": "Naročnine na tej napravi niso na voljo.",
+    "purchase_error": "Nakupa ni bilo mogoče dokončati. Poskusite znova.",
+    "restore_error": "Nakupov ni bilo mogoče obnoviti. Poskusite znova.",
+    "already_pro": "Že imate Tareitas Pro. Hvala!"
   }
 }

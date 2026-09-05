@@ -411,7 +411,7 @@
       "pushUpsDescription": "Podnieś się co najmniej 20 razy",
       "walk": "Chodzić",
       "walkDescription": "Wybierz się na spacer, przynajmniej 30 minut",
-      "hike": "Kampania",
+      "hike": "Wędrówka",
       "hikeDescription": "Wędrówka, minimum 5 km",
       "playOutside": "Graj na zewnątrz",
       "playOutsideDescription": "Zagraj w aktywną grę na świeżym powietrzu",
@@ -667,7 +667,8 @@
       "error_admin_incomplete": "Najpierw uzupełnij profil admina",
       "error_generic": "Nie udało się utworzyć rodziny. Spróbuj ponownie.",
       "error_family_name_required": "Nazwa rodziny jest wymagana",
-      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
+      "error_already_exists": "Ten e-mail lub nazwa użytkownika dziecka jest już zarejestrowana. Spróbuj się zalogować lub użyj innych danych."
     }
   },
   "helpCenter": {
@@ -699,5 +700,21 @@
     "REWARD_INACTIVE": "Ta nagroda nie jest już dostępna.",
     "REWARD_INSUFFICIENT_BALANCE": "Za mało gwiazdek na tę nagrodę.",
     "REWARD_REDEMPTION_INVALID_STATUS": "Tej nagrody nie można zaktualizować w bieżącym stanie."
+  },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Usuń reklamy",
+    "modal_title": "Bez reklam",
+    "modal_description": "Subskrybuj, aby usunąć reklamy i wspierać Tareitas.",
+    "description": "Korzystaj z Tareitas bez reklam. Twoja subskrypcja pomaga nam ulepszać aplikację dla Twojej rodziny.",
+    "yearly_price": "{{price}} / rok",
+    "subscribe": "Subskrybuj",
+    "restore": "Przywróć zakupy",
+    "remove_ads": "Usuń reklamy",
+    "loading_price": "Ładowanie ceny...",
+    "unavailable": "Subskrypcje nie są dostępne na tym urządzeniu.",
+    "purchase_error": "Nie udało się dokończyć zakupu. Spróbuj ponownie.",
+    "restore_error": "Nie udało się przywrócić zakupów. Spróbuj ponownie.",
+    "already_pro": "Masz już Tareitas Pro. Dziękujemy!"
   }
 }

@@ -8,6 +8,7 @@ import { CHILDREN_AVATARS, PARENT_AVATARS } from '~/assets/img/users/users';
 import { Text } from '~/components/ui';
 import { UserAvatar } from '~/components/users/UserAvatar';
 import { selectUserImageUrls } from '~/store/images';
+import { selectLang } from '~/store/settings/selectors';
 import { getFamilyRoleLabel } from '~/utils/users';
 import { lightenColor } from '~/utils/color';
 
@@ -135,9 +136,10 @@ const RowContent: React.FC<RowProps> = ({
   familyRole,
   textColor,
 }) => {
+  const lang = useSelector(selectLang);
   const familyRoleText = React.useMemo(
     () => getFamilyRoleLabel(familyRole),
-    [familyRole],
+    [familyRole, lang],
   );
 
   const subtitle = React.useMemo(() => {

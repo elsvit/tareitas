@@ -411,7 +411,7 @@
       "pushUpsDescription": "Stumkite bent 20 kartų",
       "walk": "Vaikščioti",
       "walkDescription": "Pasivaikščiokite, bent 30 minučių",
-      "hike": "Kampanija",
+      "hike": "Žygis",
       "hikeDescription": "Žygis, mažiausiai 5 km",
       "playOutside": "Žaisti lauke",
       "playOutsideDescription": "Žaiskite aktyvų žaidimą lauke",
@@ -667,7 +667,8 @@
       "error_admin_incomplete": "Pirmiausia užpildykite admin profilį",
       "error_generic": "Nepavyko sukurti šeimos. Bandykite dar kartą.",
       "error_family_name_required": "Šeimos pavadinimas privalomas",
-      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
+      "error_already_exists": "Šis el. paštas arba vaiko naudotojo vardas jau užregistruotas. Bandykite prisijungti arba naudokite kitus duomenis."
     }
   },
   "helpCenter": {
@@ -699,5 +700,21 @@
     "REWARD_INACTIVE": "Šis apdovanojimas nebepasiekiamas.",
     "REWARD_INSUFFICIENT_BALANCE": "Nepakanka žvaigždučių šiam apdovanojimui.",
     "REWARD_REDEMPTION_INVALID_STATUS": "Šio apdovanojimo negalima atnaujinti esama būsena."
+  },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Pašalinti reklamas",
+    "modal_title": "Be reklamų",
+    "modal_description": "Prenumeruokite, kad pašalintumėte reklamas ir paremtumėte Tareitas.",
+    "description": "Mėgaukitės Tareitas be reklamų. Jūsų prenumerata padeda mums tobulinti programėlę jūsų šeimai.",
+    "yearly_price": "{{price}} / metai",
+    "subscribe": "Prenumeruoti",
+    "restore": "Atkurti pirkinius",
+    "remove_ads": "Pašalinti reklamas",
+    "loading_price": "Kraunama kaina...",
+    "unavailable": "Prenumeratos šiame įrenginyje nepasiekiamos.",
+    "purchase_error": "Nepavyko užbaigti pirkimo. Bandykite dar kartą.",
+    "restore_error": "Nepavyko atkurti pirkinių. Bandykite dar kartą.",
+    "already_pro": "Jau turite Tareitas Pro. Ačiū!"
   }
 }

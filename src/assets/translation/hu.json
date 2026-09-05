@@ -411,7 +411,7 @@
       "pushUpsDescription": "Nyomd fel legalább 20-szor",
       "walk": "Séta",
       "walkDescription": "Sétáljon legalább 30 percet",
-      "hike": "Kampány",
+      "hike": "Túra",
       "hikeDescription": "Túra, minimum 5 km",
       "playOutside": "Játssz kint",
       "playOutsideDescription": "Játssz egy aktív játékot a szabadban",
@@ -667,7 +667,8 @@
       "error_admin_incomplete": "Először töltse ki az admin profilt",
       "error_generic": "A család létrehozása sikertelen. Próbálja újra.",
       "error_family_name_required": "A családnév kötelező",
-      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL."
+      "error_network": "Could not reach the server at {{apiUrl}}. Check your internet connection. If you installed an older build, rebuild the app with the production API URL.",
+      "error_already_exists": "Ez az e-mail cím vagy a gyermek felhasználóneve már regisztrálva van. Próbálj bejelentkezni, vagy használj más adatokat."
     }
   },
   "helpCenter": {
@@ -699,5 +700,21 @@
     "REWARD_INACTIVE": "Ez a jutalom már nem érhető el.",
     "REWARD_INSUFFICIENT_BALANCE": "Nincs elég csillag ehhez a jutalomhoz.",
     "REWARD_REDEMPTION_INVALID_STATUS": "Ez a jutalom jelenlegi állapotában nem frissíthető."
+  },
+  "subscription": {
+    "title": "Tareitas Pro",
+    "menu_title": "Hirdetések eltávolítása",
+    "modal_title": "Hirdetésmentes",
+    "modal_description": "Fizess elő, hogy eltávolítsd a hirdetéseket és támogasd a Tareitast.",
+    "description": "Élvezd a Tareitast hirdetések nélkül. Az előfizetésed segít továbbfejleszteni az alkalmazást a családod számára.",
+    "yearly_price": "{{price}} / év",
+    "subscribe": "Előfizetés",
+    "restore": "Vásárlások visszaállítása",
+    "remove_ads": "Hirdetések eltávolítása",
+    "loading_price": "Ár betöltése...",
+    "unavailable": "Az előfizetések nem érhetők el ezen az eszközön.",
+    "purchase_error": "A vásárlást nem sikerült befejezni. Próbáld újra.",
+    "restore_error": "A vásárlásokat nem sikerült visszaállítani. Próbáld újra.",
+    "already_pro": "Már rendelkezel Tareitas Pro-val. Köszönjük!"
   }
 }
