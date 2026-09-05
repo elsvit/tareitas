@@ -145,6 +145,7 @@
     "logout": "Wyloguj się",
     "name": "Nazwa",
     "unique_username": "Unikalna nazwa logowania",
+    "username_invalid": "Używaj tylko A–Z, a-z, cyfr, _ i -",
     "no_children": "Nie ma jeszcze dzieci",
     "no_parents": "Nie ma jeszcze rodziców",
     "parent": "Roślina mateczna",

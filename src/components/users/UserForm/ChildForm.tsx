@@ -33,6 +33,7 @@ import { userColors } from '~/styles';
 import { ChildFormProps, IChild } from '~/types';
 import { EFormMode } from '~/types/ECommon';
 import { capitalizeFirst } from '~/utils/string';
+import { sanitizeUsernameInput, usernameSchema } from '~/utils/users/username';
 
 import { OTPInputIconButton } from '~/components/ui/OTPInputIconButton';
 import { styles } from './styles';
@@ -121,13 +122,19 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
     (mode === EFormMode.Add ? t('users.add_child') : t('users.edit_child'));
 
   const requiredMessage = t('common.required') || 'Required';
+  const usernameInvalidMessage =
+    t('users.username_invalid') ||
+    'Use only letters A–Z, numbers, underscore (_) and hyphen (-)';
 
   const schema = useMemo(
     () =>
       z.object({
         ...(showUsernameField
           ? {
-              username: z.string().trim().min(1, requiredMessage),
+              username: usernameSchema({
+                requiredMessage,
+                invalidMessage: usernameInvalidMessage,
+              }),
             }
           : {}),
         name: z.string().trim().min(1, requiredMessage),
@@ -138,7 +145,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
           ? z.string().trim().min(4, requiredMessage)
           : z.string().trim().optional(),
       }),
-    [isChildPasswordRequired, requiredMessage, showUsernameField],
+    [isChildPasswordRequired, requiredMessage, showUsernameField, usernameInvalidMessage],
   );
 
   const {
@@ -280,7 +287,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
                       <TextInput
                         label={t('users.unique_username')}
                         value={value ?? ''}
-                        onChangeText={onChange}
+                        onChangeText={text => onChange(sanitizeUsernameInput(text))}
                         autoCapitalize="none"
                         mode="outlined"
                       />

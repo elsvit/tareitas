@@ -145,6 +145,7 @@
     "logout": "Atsijungti",
     "name": "Vardas",
     "unique_username": "Unikalus prisijungimo vardas",
+    "username_invalid": "Naudokite tik A–Z, a-z, skaičius, _ ir -",
     "no_children": "Vaikų dar nėra",
     "no_parents": "Tėvų dar nėra",
     "parent": "Tėvas",
@@ -471,7 +472,7 @@
     "completed_history": "Užbaigti įpročiai"
   },
   "rewards": {
-    "title": "Apdovanojimai",
+    "title": "Prizai",
     "add_reward": "Pridėti atlygį",
     "base_rewards": "Baziniai apdovanojimai",
     "base_reward_template": "Naudokite bazinį atlygį",

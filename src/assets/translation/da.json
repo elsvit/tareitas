@@ -144,6 +144,7 @@
     "logout": "Log ud",
     "name": "Navn",
     "unique_username": "Unikt login-navn",
+    "username_invalid": "Brug kun A–Z, a-z, tal, _ og -",
     "no_children": "Ingen børn endnu",
     "no_parents": "Ingen forældre endnu",
     "parent": "Forælder",
@@ -470,7 +471,7 @@
     "completed_history": "Fuldførte vaner"
   },
   "rewards": {
-    "title": "Belønninger",
+    "title": "Præmier",
     "add_reward": "Tilføj belønning",
     "base_rewards": "Grundbelønninger",
     "base_reward_template": "Brug basisbelønning",

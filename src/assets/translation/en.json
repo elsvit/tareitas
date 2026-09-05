@@ -192,6 +192,7 @@
     "change_group": "Change family",
     "name": "Name",
     "unique_username": "Unique Login Name",
+    "username_invalid": "Use only A–Z, a-z, numbers, _ and -",
     "no_children": "No children yet",
     "no_parents": "No parents yet",
     "parent": "Parent",

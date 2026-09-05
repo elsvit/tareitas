@@ -145,6 +145,7 @@
     "logout": "Kijelentkezés",
     "name": "Név",
     "unique_username": "Egyedi bejelentkezési név",
+    "username_invalid": "Csak A–Z, a-z, számok, _ és - használható",
     "no_children": "Még nincs gyerek",
     "no_parents": "Még nincsenek szülők",
     "parent": "Szülő",

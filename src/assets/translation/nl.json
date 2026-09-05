@@ -145,6 +145,7 @@
     "logout": "Uitloggen",
     "name": "Naam",
     "unique_username": "Unieke inlognaam",
+    "username_invalid": "Gebruik alleen A–Z, a-z, cijfers, _ en -",
     "no_children": "Nog geen kinderen",
     "no_parents": "Nog geen ouders",
     "parent": "Ouder",
@@ -471,7 +472,7 @@
     "completed_history": "Voltooide gewoonten"
   },
   "rewards": {
-    "title": "Beloningen",
+    "title": "Prijzen",
     "add_reward": "Beloning toevoegen",
     "base_rewards": "Basisbeloningen",
     "base_reward_template": "Gebruik basisbeloning",

@@ -145,6 +145,7 @@
     "logout": "Odjava",
     "name": "Ime",
     "unique_username": "Edinstveno prijavno ime",
+    "username_invalid": "Uporabite samo A–Z, a-z, številke, _ in -",
     "no_children": "Še brez otrok",
     "no_parents": "Še brez staršev",
     "parent": "starš",

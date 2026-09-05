@@ -144,6 +144,7 @@
     "logout": "Väljalogimine",
     "name": "Nimi",
     "unique_username": "Unikaalne sisselogimisnimi",
+    "username_invalid": "Kasutage ainult A–Z, a-z, numbreid, _ ja -",
     "no_children": "Lapsi veel pole",
     "no_parents": "Vanemaid veel pole",
     "parent": "Lapsevanem",
