@@ -19,6 +19,7 @@ import {
   isNewTaskBonusActive,
 } from '~/utils/tasks/taskReward';
 import { getAssignmentFieldsForDate } from '~/utils/tasks/recurringTaskEdit';
+import { getAudioRecordForAssignmentDate } from '~/utils/tasks/taskRecordChanges';
 import { compareTaskTimes } from '~/utils/tasks/taskSort';
 
 import { tasksAdapter } from './slice';
@@ -52,6 +53,7 @@ export type TaskListItemView = {
   date: string;
   name: string;
   description?: string;
+  audioRecord?: string;
   reward?: number;
   picture?: string;
   childName: string;
@@ -187,6 +189,7 @@ export const buildTaskListItemViewFromParts = (
     date,
     name: fieldsForDate.title || taskBase?.name || date,
     description: fieldsForDate.description ?? taskBase?.description,
+    audioRecord: getAudioRecordForAssignmentDate(assignment, date),
     reward: baseReward,
     picture: fieldsForDate.picture ?? taskBase?.picture,
     childName: child?.name ?? '',

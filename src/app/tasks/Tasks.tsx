@@ -20,7 +20,7 @@ import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { useHasCompletedTasksInPast } from '~/hooks/useHasCompletedTasksInPast';
 import { useMultideviceScreenSync } from '~/hooks/useMultideviceScreenSync';
 import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
-import { useTaskCalendarDate } from '~/hooks/useTaskCalendarDate';
+import { useTabBarHeight, useTabScreenFabBottom } from '~/hooks/useTabBarBottomInset';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
@@ -46,6 +46,9 @@ import {
 } from '~/utils/tasks/taskCalendarFilter';
 import { compareTaskTimes } from '~/utils/tasks/taskSort';
 
+const TAB_SCREEN_FAB_SIZE = 56;
+const TAB_SCREEN_LIST_EXTRA_PADDING = 32;
+
 export default function Tasks() {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -55,6 +58,12 @@ export default function Tasks() {
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const tabBarHeight = useTabBarHeight();
+  const fabBottom = useTabScreenFabBottom();
+  const listBottomPadding =
+    Math.max(tabBarHeight, fabBottom + TAB_SCREEN_FAB_SIZE) +
+    TAB_SCREEN_LIST_EXTRA_PADDING;
 
   const children = useSelector(selectAllChildren);
   const taskBaseList = useSelector(selectAllTaskBase);
@@ -298,7 +307,10 @@ export default function Tasks() {
             keyExtractor={keyExtractor}
             ItemSeparatorComponent={renderSeparator}
             ListEmptyComponent={ListEmptyComponent}
-            contentContainerStyle={styles.listContent}
+            contentContainerStyle={[
+              styles.listContent,
+              { paddingBottom: listBottomPadding },
+            ]}
             showsVerticalScrollIndicator={false}
             style={styles.list}
           />
@@ -335,7 +347,6 @@ const styles = StyleSheet.create({
 
   listContent: {
     flexGrow: 1,
-    paddingBottom: 80,
   },
 
   separator: {

@@ -24,6 +24,9 @@ import {
 import { IEarnedRewardPeriods } from '~/types/IReward';
 import { t } from '~/services';
 import {
+  mergeAudioRecordIntoAssignmentChanges,
+} from '~/utils/tasks/taskRecordChanges';
+import {
   createTaskId,
   isRepeatingAssignment,
   shouldShowAssignmentOnDate,
@@ -48,6 +51,7 @@ export const getAssignmentFieldsForDate = (
     description: change?.description ?? assignment.description,
     reward: change?.reward ?? assignment.reward ?? taskBaseReward,
     picture: change?.picture ?? assignment.picture,
+    audioRecord: change?.audioRecord,
     time: change?.time ?? assignment.time,
     newTaskBonus: change?.newTaskBonus ?? assignment.newTaskBonus,
     newTaskDuration: change?.newTaskDuration ?? assignment.newTaskDuration,
@@ -157,9 +161,19 @@ export const applyOnlyThisTaskChange = (
     nextChanges[date] = changeEntry;
   }
 
-  return {
+  const intermediate: ITaskAssignment = {
     ...assignment,
-    changes: Object.keys(nextChanges).length > 0 ? nextChanges : undefined,
+    changes:
+      Object.keys(nextChanges).length > 0 ? nextChanges : undefined,
+  };
+
+  return {
+    ...intermediate,
+    changes: mergeAudioRecordIntoAssignmentChanges(
+      intermediate,
+      date,
+      values.audioRecord,
+    ),
     updatedAt: new Date().toISOString(),
   };
 };
