@@ -8,6 +8,7 @@ import { getTodayDateString } from '~/utils/date';
 
 import { ERole, ESyncMode } from './enums';
 import type { IStateSettings } from './types';
+import { isAdFreeSubscription } from '~/types/ISubscription';
 
 function decodeJwtSub(token: string): string | null {
   try {
@@ -120,6 +121,15 @@ export const selectIsMultidevice = createSelector(
 
 export const selectFamilyId = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>).familyId;
+
+export const selectFamilySubscription = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>).subscription;
+
+/** True when the server subscription is ACTIVE or in GRACE_PERIOD. */
+export const selectIsAdFreeBySubscription = createSelector(
+  [selectFamilySubscription],
+  subscription => isAdFreeSubscription(subscription),
+);
 
 export const selectAuthToken = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>).authToken;

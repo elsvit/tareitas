@@ -154,7 +154,7 @@ export function hydrateFamilyStore(
   dispatch(setCurrentUser(loggedInUser.id));
   dispatch(setCurrentRole(mapServerRole(loggedInUser.role)));
   dispatch(setRequireLogin(false));
-  applyFamilySubscriptionFromServer(family.subscription);
+  applyFamilySubscriptionFromServer(dispatch, family.subscription);
   void loginRevenueCatForFamily(family.id);
   dispatch(syncCatalog());
 }

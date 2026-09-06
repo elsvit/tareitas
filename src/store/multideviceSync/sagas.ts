@@ -19,7 +19,9 @@ import {
   ServerRewardRedemptionStatus,
 } from '~/services/api/rewardsApi';
 import { fetchFamilyDetails } from '~/services/api';
-import { applyFamilySubscriptionFromServer } from '~/services/subscriptions/familySubscriptionSync';
+import { isAdFreeSubscription } from '~/types/ISubscription';
+import { setCachedIsPro } from '~/hooks/useIsPro';
+import { setFamilySubscription } from '~/store/settings/slice';
 import { getFamilyEarnedRewardPeriods } from '~/services/api/earnedRewardPeriodsApi';
 import { buildFamilyMembersSyncPlan } from '~/services/familySync';
 import { resolveAndCacheRewardPicture, resolveAndCacheTaskPicture } from '~/store/helpers/imageRefSync';
@@ -421,5 +423,6 @@ export function* syncFamilyMembersFromServerSaga(): Generator<
     }
   }
 
-  applyFamilySubscriptionFromServer(family.subscription);
+  yield put(setFamilySubscription(family.subscription ?? null));
+  setCachedIsPro(isAdFreeSubscription(family.subscription));
 }

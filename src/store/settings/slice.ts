@@ -4,6 +4,7 @@ import { EStateName } from '~/store/enums';
 import { ERole, ESyncMode } from '~/store/settings/enums';
 import { ELang } from '~/types/ELang';
 import { getTodayDateString } from '~/utils/date';
+import type { IFamilySubscription } from '~/types/ISubscription';
 
 import type { IStateSettings, PendingReturnRoute } from './types';
 
@@ -20,6 +21,7 @@ const initialState: IStateSettings = {
   taskCalendarDate: getTodayDateString(),
   syncMode: ESyncMode.deviceOnly,
   familyId: null,
+  subscription: null,
   authToken: null,
   refreshToken: null,
   authUserId: null,
@@ -92,6 +94,12 @@ export const settingsSlice = createSlice({
       state.lastSessionActivityAt =
         new Date().toISOString();
     },
+    setFamilySubscription: (
+      state,
+      action: PayloadAction<IFamilySubscription | null>,
+    ) => {
+      state.subscription = action.payload;
+    },
     setAuthUser: (
       state,
       action: PayloadAction<{
@@ -105,6 +113,7 @@ export const settingsSlice = createSlice({
     clearMultideviceSession: state => {
       state.syncMode = ESyncMode.deviceOnly;
       state.familyId = null;
+      state.subscription = null;
       state.authToken = null;
       state.refreshToken = null;
       state.authUserId = null;
@@ -117,6 +126,7 @@ export const settingsSlice = createSlice({
     },
     clearAuthSession: state => {
       state.familyId = null;
+      state.subscription = null;
       state.authToken = null;
       state.refreshToken = null;
       state.authUserId = null;
@@ -233,6 +243,7 @@ export const {
   setTaskCalendarDate,
   setSyncMode,
   setMultideviceSession,
+  setFamilySubscription,
   setAuthUser,
   clearMultideviceSession,
   clearAuthSession,
