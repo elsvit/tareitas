@@ -752,9 +752,9 @@
   "subscription": {
     "title": "Tareitas Pro",
     "menu_title": "Werbung entfernen",
-    "modal_title": "Werbefrei",
-    "modal_description": "Abonniere, um Werbung zu entfernen und Tareitas zu unterstützen.",
-    "description": "Genieße Tareitas ohne Werbung. Dein Abo hilft uns, die App für deine Familie weiter zu verbessern.",
+    "modal_title": "Abonnieren",
+    "modal_description": "Abonniere, um Werbung zu entfernen, mehr Möglichkeiten freizuschalten und Tareitas zu unterstützen.",
+    "description": "Entferne Werbung und schalte mehr Möglichkeiten frei. Dein Abo hilft uns, die App für deine Familie weiter zu verbessern.",
     "yearly_price": "{{price}} / Jahr",
     "subscribe": "Abonnieren",
     "restore": "Käufe wiederherstellen",

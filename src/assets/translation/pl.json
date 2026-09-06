@@ -705,9 +705,9 @@
   "subscription": {
     "title": "Tareitas Pro",
     "menu_title": "Usuń reklamy",
-    "modal_title": "Bez reklam",
-    "modal_description": "Subskrybuj, aby usunąć reklamy i wspierać Tareitas.",
-    "description": "Korzystaj z Tareitas bez reklam. Twoja subskrypcja pomaga nam ulepszać aplikację dla Twojej rodziny.",
+    "modal_title": "Subskrybuj",
+    "modal_description": "Subskrybuj, aby usunąć reklamy, odblokować więcej możliwości i wspierać Tareitas.",
+    "description": "Usuń reklamy i odblokuj więcej możliwości. Twoja subskrypcja pomaga nam ulepszać aplikację dla Twojej rodziny.",
     "yearly_price": "{{price}} / rok",
     "subscribe": "Subskrybuj",
     "restore": "Przywróć zakupy",

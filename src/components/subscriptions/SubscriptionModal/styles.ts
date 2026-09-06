@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { Colors } from '~/styles/colors';
+
 export const styles = StyleSheet.create({
   backdropContainer: {
     flex: 1,
@@ -27,5 +29,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 8,
+  },
+  title: {
+    color: Colors.grey800,
   },
 });

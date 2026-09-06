@@ -57,7 +57,7 @@ export function SubscriptionModal({
 
         <View style={styles.sheet}>
           <View style={styles.header}>
-            <Text variant="titleMedium" weight="bold">
+            <Text variant="titleMedium" weight="bold" style={styles.title}>
               {t('subscription.modal_title')}
             </Text>
             <IconButton

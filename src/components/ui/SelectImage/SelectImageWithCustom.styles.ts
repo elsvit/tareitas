@@ -43,8 +43,15 @@ export const styles = StyleSheet.create({
     height: '100%',
   },
   loadPhotoButton: {
-    alignSelf: 'flex-start',
     paddingVertical: 4,
+  },
+  loadPhotoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing(1),
+  },
+  loadPhotoButtonDisabled: {
+    opacity: 0.5,
   },
   loadPhotoSection: {
     gap: spacing(2),
@@ -57,6 +64,10 @@ export const styles = StyleSheet.create({
   loadPhotoText: {
     color: Colors.blue500,
     textDecorationLine: 'underline',
+  },
+  loadPhotoTextDisabled: {
+    color: Colors.grey500,
+    textDecorationLine: 'none',
   },
   customSection: {
     gap: spacing(2),

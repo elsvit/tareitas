@@ -705,9 +705,9 @@
   "subscription": {
     "title": "Tareitas Pro",
     "menu_title": "Elimină reclamele",
-    "modal_title": "Fără reclame",
-    "modal_description": "Abonează-te pentru a elimina reclamele și a susține Tareitas.",
-    "description": "Bucură-te de Tareitas fără reclame. Abonamentul tău ne ajută să îmbunătățim aplicația pentru familia ta.",
+    "modal_title": "Abonează-te",
+    "modal_description": "Abonează-te pentru a elimina reclamele, debloca mai multe posibilități și susține Tareitas.",
+    "description": "Elimină reclamele și deblochează mai multe posibilități. Abonamentul tău ne ajută să îmbunătățim aplicația pentru familia ta.",
     "yearly_price": "{{price}} / an",
     "subscribe": "Abonează-te",
     "restore": "Restaurează achizițiile",

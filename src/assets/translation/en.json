@@ -119,9 +119,9 @@
   "subscription": {
     "title": "Tareitas Pro",
     "menu_title": "Remove ads",
-    "modal_title": "Go ad-free",
-    "modal_description": "Subscribe to remove ads and support Tareitas.",
-    "description": "Enjoy Tareitas without ads. Your subscription helps us keep improving the app for your family.",
+    "modal_title": "Subscribe",
+    "modal_description": "Subscribe to remove ads, unlock more possibilities, and support Tareitas.",
+    "description": "Remove ads and unlock more possibilities. Your subscription helps us keep improving the app for your family.",
     "yearly_price": "{{price}} / year",
     "subscribe": "Subscribe",
     "restore": "Restore purchases",

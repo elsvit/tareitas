@@ -705,9 +705,9 @@
   "subscription": {
     "title": "Tareitas Pro",
     "menu_title": "Pašalinti reklamas",
-    "modal_title": "Be reklamų",
-    "modal_description": "Prenumeruokite, kad pašalintumėte reklamas ir paremtumėte Tareitas.",
-    "description": "Mėgaukitės Tareitas be reklamų. Jūsų prenumerata padeda mums tobulinti programėlę jūsų šeimai.",
+    "modal_title": "Prenumeruoti",
+    "modal_description": "Prenumeruokite, kad pašalintumėte reklamas, atrakintumėte daugiau galimybių ir paremtumėte Tareitas.",
+    "description": "Pašalinkite reklamas ir atrakinkite daugiau galimybių. Jūsų prenumerata padeda mums tobulinti programėlę jūsų šeimai.",
     "yearly_price": "{{price}} / metai",
     "subscribe": "Prenumeruoti",
     "restore": "Atkurti pirkinius",

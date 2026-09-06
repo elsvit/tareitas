@@ -704,9 +704,9 @@
   "subscription": {
     "title": "Tareitas Pro",
     "menu_title": "Rimuovi annunci",
-    "modal_title": "Senza annunci",
-    "modal_description": "Abbonati per rimuovere gli annunci e supportare Tareitas.",
-    "description": "Usa Tareitas senza annunci. Il tuo abbonamento ci aiuta a migliorare l’app per la tua famiglia.",
+    "modal_title": "Abbonati",
+    "modal_description": "Abbonati per rimuovere gli annunci, sbloccare più possibilità e supportare Tareitas.",
+    "description": "Rimuovi gli annunci e sblocca più possibilità. Il tuo abbonamento ci aiuta a migliorare l’app per la tua famiglia.",
     "yearly_price": "{{price}} / anno",
     "subscribe": "Abbonati",
     "restore": "Ripristina acquisti",

@@ -20,3 +20,6 @@ export const ADMOB_BANNER_ID = Platform.select({
 })!;
 
 export const AD_TASK_AMOUNT_START = 10;
+
+export const TASK_IMAGES_WITHOUT_SUBSCRIPTION = 7;
+export const TASK_IMAGES_MAXIMUM = 40;

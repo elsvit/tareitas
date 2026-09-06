@@ -119,9 +119,9 @@
   "subscription": {
     "title": "Tareitas Pro",
     "menu_title": "Quitar anuncios",
-    "modal_title": "Sin anuncios",
-    "modal_description": "Suscríbete para quitar los anuncios y apoyar Tareitas.",
-    "description": "Disfruta de Tareitas sin anuncios. Tu suscripción nos ayuda a seguir mejorando la app para tu familia.",
+    "modal_title": "Suscribirse",
+    "modal_description": "Suscríbete para quitar los anuncios, desbloquear más posibilidades y apoyar Tareitas.",
+    "description": "Quita los anuncios y desbloquea más posibilidades. Tu suscripción nos ayuda a seguir mejorando la app para tu familia.",
     "yearly_price": "{{price}} / año",
     "subscribe": "Suscribirse",
     "restore": "Restaurar compras",
