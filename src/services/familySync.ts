@@ -1,6 +1,5 @@
 import { t } from '~/services';
-import type { AppDispatch } from '~/store/store';
-import type { IState } from '~/store/types';
+import type { AppDispatch, RootStateT } from '~/store/store';
 import type { IChild } from '~/types/IChild';
 import type { IParent } from '~/types/IParent';
 import {
@@ -36,6 +35,8 @@ import {
   mapServerChildToLocal,
   mapServerParentToLocal,
 } from '~/services/api/memberMappers';
+import { applyFamilySubscriptionFromServer } from '~/services/subscriptions/familySubscriptionSync';
+import { loginRevenueCatForFamily } from '~/services/subscriptions/revenueCatInit';
 import { selectAllChildren, selectChildById } from '~/store/children/selectors';
 import type {
   IFamilyChildMember,
@@ -153,6 +154,8 @@ export function hydrateFamilyStore(
   dispatch(setCurrentUser(loggedInUser.id));
   dispatch(setCurrentRole(mapServerRole(loggedInUser.role)));
   dispatch(setRequireLogin(false));
+  applyFamilySubscriptionFromServer(family.subscription);
+  void loginRevenueCatForFamily(family.id);
   dispatch(syncCatalog());
 }
 
@@ -162,7 +165,7 @@ export type FamilyMemberCredentialUpdates = {
 };
 
 function findLocalChildForServerMember(
-  state: IState,
+  state: RootStateT,
   serverChild: IFamilyChildMember,
 ) {
   const byId = selectChildById(state, serverChild.userId);
@@ -311,7 +314,7 @@ export function buildFamilyMembersSyncPlan(
 }
 
 export async function collectFamilyMemberCredentialUpdates(
-  state: IState,
+  state: RootStateT,
 ): Promise<FamilyMemberCredentialUpdates> {
   const authToken = selectAuthToken(state);
   const familyId = selectFamilyId(state);
@@ -365,7 +368,7 @@ export async function collectFamilyMemberCredentialUpdates(
 }
 
 export async function mergeFamilyMemberCredentials(
-  getState: () => IState,
+  getState: () => RootStateT,
   dispatch: AppDispatch,
 ): Promise<void> {
   const updates = await collectFamilyMemberCredentialUpdates(

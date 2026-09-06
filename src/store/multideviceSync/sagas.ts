@@ -19,6 +19,7 @@ import {
   ServerRewardRedemptionStatus,
 } from '~/services/api/rewardsApi';
 import { fetchFamilyDetails } from '~/services/api';
+import { applyFamilySubscriptionFromServer } from '~/services/subscriptions/familySubscriptionSync';
 import { getFamilyEarnedRewardPeriods } from '~/services/api/earnedRewardPeriodsApi';
 import { buildFamilyMembersSyncPlan } from '~/services/familySync';
 import { resolveAndCacheRewardPicture, resolveAndCacheTaskPicture } from '~/store/helpers/imageRefSync';
@@ -419,4 +420,6 @@ export function* syncFamilyMembersFromServerSaga(): Generator<
       yield put(addChildSuccess(child));
     }
   }
+
+  applyFamilySubscriptionFromServer(family.subscription);
 }

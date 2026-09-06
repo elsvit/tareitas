@@ -21,15 +21,15 @@ import {
   TextInput,
 } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
-import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWithCustom';
 import { SelectColor } from '~/components/ui/SelectColor';
+import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWithCustom';
 import {
   DEFAULT_BASE_TASK_COLOR,
   getTaskImageOptions,
 } from '~/constants/tasks';
 import { t } from '~/services';
 import { removeTaskBase } from '~/store/taskBase/slice';
-import { userColors, Colors } from '~/styles';
+import { Colors, userColors } from '~/styles';
 import { EFormMode } from '~/types/ECommon';
 import { ISubtask, ITaskBase, TaskBaseFormProps } from '~/types/ITask';
 import { capitalizeFirst } from '~/utils/string';
@@ -429,7 +429,7 @@ export const BaseTaskForm: FC<Props> = ({
                   options={taskImageOptions}
                   value={value}
                   onChange={onChange}
-                  loadedPhotosMaxRows={1}
+                  loadedPhotosMaxRows={2}
                   showLoadedPhotosLabel={false}
                   loadPhotoButtonBelowLoadedPhotos
                 />

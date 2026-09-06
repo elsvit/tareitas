@@ -94,3 +94,23 @@ export function initializeRevenueCat() {
     }
   }
 }
+
+export async function loginRevenueCatForFamily(
+  familyId: string,
+) {
+  const Purchases = getPurchasesModule();
+
+  if (!Purchases || !familyId) {
+    return;
+  }
+
+  try {
+    await Purchases.logIn(familyId);
+  } catch {
+    if (__DEV__) {
+      console.warn(
+        `[RevenueCat] Failed to log in app user ${familyId}`,
+      );
+    }
+  }
+}
