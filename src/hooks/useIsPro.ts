@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { isRevenueCatNativeModuleAvailable } from '~/services/subscriptions/revenueCatInit';
 import { getIsPro } from '~/services/subscriptions/revenueCatSubscription';
+import { selectIsAdFreeBySubscription } from '~/store/settings/selectors';
 
 let cachedIsPro: boolean | null = null;
 const listeners = new Set<(isPro: boolean) => void>();
@@ -12,8 +14,14 @@ export function setCachedIsPro(isPro: boolean) {
 }
 
 export function useIsPro() {
-  const [isPro, setIsPro] = useState(cachedIsPro ?? false);
+  const isAdFreeBySubscription = useSelector(
+    selectIsAdFreeBySubscription,
+  );
+  const [isProFromClient, setIsProFromClient] = useState(
+    cachedIsPro ?? false,
+  );
   const [isChecking, setIsChecking] = useState(cachedIsPro == null);
+  const isPro = isAdFreeBySubscription || isProFromClient;
 
   const refreshIsPro = useCallback(async () => {
     if (!isRevenueCatNativeModuleAvailable()) {
@@ -34,7 +42,7 @@ export function useIsPro() {
   }, []);
 
   useEffect(() => {
-    const listener = (value: boolean) => setIsPro(value);
+    const listener = (value: boolean) => setIsProFromClient(value);
 
     listeners.add(listener);
 

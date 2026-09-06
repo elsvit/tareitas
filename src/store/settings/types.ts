@@ -1,4 +1,5 @@
 import { ELang } from '~/types/ELang';
+import type { IFamilySubscription } from '~/types/ISubscription';
 import { ERole, ESyncMode } from '~/store/settings/enums';
 
 export interface IStateSettings {
@@ -14,6 +15,7 @@ export interface IStateSettings {
   taskCalendarDate: string;
   syncMode: ESyncMode;
   familyId: string | null;
+  subscription: IFamilySubscription | null;
   authToken: string | null;
   refreshToken: string | null;
   authUserId: string | null;

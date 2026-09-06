@@ -15,7 +15,7 @@ import {
 } from '~/store/multideviceSync/sagas';
 import { syncFamilyImagesFromServerSaga } from '~/store/images/sagas';
 import { updateParent } from '~/store/parents/slice';
-import type { IState } from '~/store/types';
+import type { RootStateT } from '~/store/store';
 import { syncRewardBaseTranslations } from '~/store/rewardBase/slice';
 import { syncTaskBaseTranslations } from '~/store/taskBase/slice';
 
@@ -42,8 +42,8 @@ function* applyFamilyMemberCredentialUpdatesSaga(): Generator<
   void,
   any
 > {
-  const state: IState = yield select(
-    (currentState: IState) => currentState,
+  const state: RootStateT = yield select(
+    (currentState: RootStateT) => currentState,
   );
   const updates = yield call(
     collectFamilyMemberCredentialUpdates,

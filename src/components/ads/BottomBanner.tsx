@@ -12,12 +12,16 @@ import { useIsPro } from '~/hooks/useIsPro';
 import { useSubscription } from '~/hooks/useSubscription';
 import { t } from '~/services';
 import { isGoogleMobileAdsNativeModuleAvailable } from '~/services/ads/googleMobileAds.native';
+import { selectIsAdFreeBySubscription } from '~/store/settings/selectors';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
 import { Colors } from '~/styles';
 
 export const BOTTOM_BANNER_HEIGHT = 50;
 
 export function useBottomBannerVisible() {
+  const isAdFreeBySubscription = useSelector(
+    selectIsAdFreeBySubscription,
+  );
   const { isPro } = useIsPro();
   const taskCount = useSelector(selectAllTaskAssignment).length;
 
@@ -25,7 +29,7 @@ export function useBottomBannerVisible() {
     return false;
   }
 
-  if (isPro) {
+  if (isAdFreeBySubscription || isPro) {
     return false;
   }
 
