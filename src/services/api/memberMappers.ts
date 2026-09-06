@@ -27,7 +27,7 @@ export function mapServerParentToLocal(
     createdAt: existing?.createdAt ?? new Date().toISOString(),
     createdBy: existing?.createdBy ?? createdBy,
     updatedAt: new Date().toISOString(),
-    email: existing?.email,
+    email: server.email ?? existing?.email,
   };
 }
 
