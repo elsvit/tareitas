@@ -19,7 +19,9 @@ export interface ITaskBase extends Partial<CreatedProps> {
 
 export type TaskBaseFormProps = OmitCreatedKeys<ITaskBase>;
 
-export type TaskAssignmentFormProps = OmitCreatedKeys<ITaskAssignment>;
+export type TaskAssignmentFormProps = OmitCreatedKeys<ITaskAssignment> & {
+  audioRecord?: string | null;
+};
 
 export interface ITaskAssignment extends CreatedProps {
   id: string;
@@ -55,6 +57,7 @@ export interface ITaskAssignmentChange {
   description?: string;
   reward?: number;
   picture?: string;
+  audioRecord?: string;
   newTaskBonus?: number;
   newTaskDuration?: number;
   excluded?: boolean;

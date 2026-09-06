@@ -26,6 +26,7 @@ import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWi
 import {
   DEFAULT_BASE_TASK_COLOR,
   getTaskImageOptions,
+  SUBTASK_MAXIMUM,
 } from '~/constants/tasks';
 import { t } from '~/services';
 import { removeTaskBase } from '~/store/taskBase/slice';
@@ -33,6 +34,11 @@ import { Colors, userColors } from '~/styles';
 import { EFormMode } from '~/types/ECommon';
 import { ISubtask, ITaskBase, TaskBaseFormProps } from '~/types/ITask';
 import { capitalizeFirst } from '~/utils/string';
+import {
+  canAddSubtask,
+  getSubtasksMaximumMessage,
+  refineSubtasksField,
+} from '~/utils/tasks/subtaskLimits';
 
 import { selectIsParent } from '~/store/settings/selectors';
 import { styles } from './styles';
@@ -91,21 +97,7 @@ const schema = z
     ),
   })
   .superRefine((values, ctx) => {
-    if (!values.withSubtasks) {
-      return;
-    }
-
-    const hasValidSubtask = values.subtasks.some(
-      subtask => subtask.label.trim().length > 0,
-    );
-
-    if (!hasValidSubtask) {
-      ctx.addIssue({
-        code: 'custom',
-        message: t('tasks.subtasks_required') || 'Add at least one subtask',
-        path: ['subtasks'],
-      });
-    }
+    refineSubtasksField(values, ctx);
   });
 
 export const BaseTaskForm: FC<Props> = ({
@@ -140,11 +132,12 @@ export const BaseTaskForm: FC<Props> = ({
       picture: task?.picture ?? '',
       color: task?.color ?? DEFAULT_BASE_TASK_COLOR,
       withSubtasks: (task?.subtasks?.length ?? 0) > 0,
-      subtasks:
-        task?.subtasks?.map(subtask => ({
+      subtasks: (task?.subtasks ?? [])
+        .slice(0, SUBTASK_MAXIMUM)
+        .map(subtask => ({
           value: subtask.value,
           label: subtask.label,
-        })) ?? [],
+        })),
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -156,6 +149,19 @@ export const BaseTaskForm: FC<Props> = ({
     control,
     name: 'subtasks',
   });
+  const isAtSubtaskMaximum = subtaskFields.length >= SUBTASK_MAXIMUM;
+
+  const handleAddSubtask = () => {
+    if (!canAddSubtask(subtaskFields.length)) {
+      setError('subtasks', {
+        type: 'manual',
+        message: getSubtasksMaximumMessage(),
+      });
+      return;
+    }
+
+    append({ value: uuidv4(), label: '' });
+  };
 
   const taskImageOptions = getTaskImageOptions();
   const isEditMode = mode === EFormMode.Edit;
@@ -337,7 +343,7 @@ export const BaseTaskForm: FC<Props> = ({
                       onChange(nextValue);
 
                       if (nextValue && subtaskFields.length === 0) {
-                        append({ value: uuidv4(), label: '' });
+                        handleAddSubtask();
                       }
                     }}
                   />
@@ -388,7 +394,8 @@ export const BaseTaskForm: FC<Props> = ({
                   <Space size={3} />
                   <Button
                     mode="contained"
-                    onPress={() => append({ value: uuidv4(), label: '' })}
+                    onPress={handleAddSubtask}
+                    disabled={isAtSubtaskMaximum}
                   >
                     {t('tasks.add_subtask')}
                   </Button>

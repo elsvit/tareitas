@@ -30,8 +30,8 @@ export async function uploadFamilyImage(
   const formData = new FormData();
   formData.append('file', {
     uri: localUri,
-    name: 'image.jpg',
-    type: 'image/jpeg',
+    name: kind === 'task_record' ? 'record.m4a' : 'image.jpg',
+    type: kind === 'task_record' ? 'audio/m4a' : 'image/jpeg',
   } as unknown as Blob);
 
   if (kind) {

@@ -16,6 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { BASE_TASKS_IMAGES } from '~/assets/img/tasks/tasks';
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
+import { TaskRecordPlayControl } from '~/components/tasks/TaskRecordPlayControl';
 import { TaskStatusBadge } from '~/components/tasks/TaskStatusBadge';
 import { TaskRewardBadge } from '~/components/tasks/TaskRewardBadge';
 import { TaskRewardStarsAnimation } from '~/components/tasks/TaskRewardStarsAnimation';
@@ -135,6 +136,7 @@ export const TaskListItem: React.FC<Props> = ({
     childName,
     childColor,
     description,
+    audioRecord,
     picture,
     reward,
     rewardDisplayText,
@@ -427,7 +429,9 @@ export const TaskListItem: React.FC<Props> = ({
     </View>
   );
 
-  const hasBottomContent = !!description || hasSubtasks;
+  const hasAudioRecord = !!audioRecord;
+  const hasBottomContent = !!description || hasSubtasks || hasAudioRecord;
+  const showDescriptionSection = !!description || hasAudioRecord;
   const descriptionText =
     description && time ? `${time}: ${description}` : description;
 
@@ -443,7 +447,7 @@ export const TaskListItem: React.FC<Props> = ({
 
       {hasBottomContent && (
         <View style={styles.bottomSection}>
-          {!!description && (
+          {showDescriptionSection && (
             <View style={styles.expandableSection}>
               <TouchableOpacity
                 onPress={() => setIsDescriptionExpanded(prev => !prev)}
@@ -455,22 +459,40 @@ export const TaskListItem: React.FC<Props> = ({
                 <Text style={styles.descriptionLabel}>
                   {t('tasks.description')}
                 </Text>
-                {isDescriptionExpanded ? (
-                  <ChevronUpIcon width={18} height={18} fill={Colors.grey700} />
-                ) : (
-                  <ChevronDownIcon width={18} height={18} fill={Colors.grey700} />
-                )}
+                <View style={styles.descriptionToggleTrailing}>
+                  {hasAudioRecord ? (
+                    <TaskRecordPlayControl
+                      audioRecord={audioRecord}
+                      variant="indicator"
+                    />
+                  ) : null}
+                  {isDescriptionExpanded ? (
+                    <ChevronUpIcon width={18} height={18} fill={Colors.grey700} />
+                  ) : (
+                    <ChevronDownIcon width={18} height={18} fill={Colors.grey700} />
+                  )}
+                </View>
               </TouchableOpacity>
 
               {isDescriptionExpanded && (
-                <Text
-                  variant="bodySmall"
-                  fontFamily="fredoka"
-                  weight="medium"
-                  style={styles.description}
-                >
-                  {descriptionText}
-                </Text>
+                <View style={styles.descriptionContent}>
+                  {hasAudioRecord ? (
+                    <TaskRecordPlayControl
+                      audioRecord={audioRecord}
+                      variant="button"
+                    />
+                  ) : null}
+                  {!!descriptionText && (
+                    <Text
+                      variant="bodySmall"
+                      fontFamily="fredoka"
+                      weight="medium"
+                      style={styles.description}
+                    >
+                      {descriptionText}
+                    </Text>
+                  )}
+                </View>
               )}
             </View>
           )}
@@ -700,6 +722,20 @@ const styles = StyleSheet.create({
     gap: 8,
   },
 
+  descriptionToggleTrailing: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    flexShrink: 0,
+  },
+
+  descriptionContent: {
+    marginTop: 4,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+
   descriptionLabel: {
     color: Colors.grey700,
     fontSize: 14,
@@ -707,8 +743,8 @@ const styles = StyleSheet.create({
   },
 
   description: {
-    marginTop: 4,
-    width: '100%',
+    flex: 1,
+    minWidth: 0,
     color: Colors.grey700,
     fontSize: 16,
   },

@@ -200,12 +200,14 @@ export default function TaskAssignmentEdit() {
       return null;
     }
 
+    const { audioRecord: _audioRecord, ...assignmentValues } = values;
+
     dispatch(
       updateTaskAssignment({
         entity: {
           id,
           updatedAt: new Date().toISOString(),
-          ...values,
+          ...assignmentValues,
         } as ITaskAssignment,
         onSuccess: finishSave,
       }),

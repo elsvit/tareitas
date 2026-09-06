@@ -14,6 +14,7 @@ export {
 export const DEFAULT_BASE_TASK_COLOR = Colors.green500;
 export const DEFAULT_TASK_ASSIGNMENT_COLOR = Colors.blue600;
 export const DEFAULT_HABIT_ASSIGNMENT_COLOR = Colors.green500;
+export const SUBTASK_MAXIMUM = 20;
 
 export const getBaseTasks = (): ITaskBase[] => {
   // LocalizationService.initSync();

@@ -32,6 +32,7 @@ import {
   DEFAULT_HABIT_ASSIGNMENT_COLOR,
   DEFAULT_TASK_ASSIGNMENT_COLOR,
   getTaskImageOptions,
+  SUBTASK_MAXIMUM,
 } from '~/constants/tasks';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
@@ -52,7 +53,17 @@ import {
   validateTaskAssignmentDates,
 } from '~/utils/tasks/taskAssignmentDateValidation';
 import { isNewTaskDurationWithinEndDate } from '~/utils/tasks/taskReward';
+import {
+  getAudioRecordForAssignmentDate,
+  mergeAudioRecordIntoAssignmentChanges,
+} from '~/utils/tasks/taskRecordChanges';
+import {
+  canAddSubtask,
+  getSubtasksMaximumMessage,
+  refineSubtasksField,
+} from '~/utils/tasks/subtaskLimits';
 
+import { TaskRecordField } from '~/components/tasks/TaskRecordField';
 import { SelectDate } from '~/components/ui/SelectDate';
 import { SelectTime } from '~/components/ui/SelectTime';
 import { normalizeTimeString } from '~/components/ui/SelectTime/SelectTime.utils';
@@ -83,6 +94,7 @@ type FormValues = {
   title: string;
   description?: string;
   reward?: number | null;
+  audioRecord?: string | null;
   picture?: string;
   color: string;
   startDate: string;
@@ -132,6 +144,7 @@ const buildSchema = (repeats: boolean, isHabitForm = false) =>
           .min(0, t('tasks.reward_positive') || 'Reward must be ≥ 0'),
       ),
       picture: z.string().optional(),
+      audioRecord: z.string().nullable().optional(),
       color: z.string().trim().min(1, requiredMessage),
       startDate: z
         .string()
@@ -185,19 +198,7 @@ const buildSchema = (repeats: boolean, isHabitForm = false) =>
       ),
     })
     .superRefine((values, ctx) => {
-      if (values.withSubtasks) {
-        const hasValidSubtask = values.subtasks.some(
-          subtask => subtask.label.trim().length > 0,
-        );
-
-        if (!hasValidSubtask) {
-          ctx.addIssue({
-            code: 'custom',
-            message: t('tasks.subtasks_required') || 'Add at least one subtask',
-            path: ['subtasks'],
-          });
-        }
-      }
+      refineSubtasksField(values, ctx);
 
       if (values.repeats) {
         if (!isHabitForm) {
@@ -331,10 +332,10 @@ export const AssignmentTaskForm: FC<Props> = ({
 
   const initialSubtasks = useMemo(() => {
     if (assignment?.subtasks?.length) {
-      return assignment.subtasks;
+      return assignment.subtasks.slice(0, SUBTASK_MAXIMUM);
     }
 
-    return taskBaseForAssignment?.subtasks ?? [];
+    return (taskBaseForAssignment?.subtasks ?? []).slice(0, SUBTASK_MAXIMUM);
   }, [assignment?.subtasks, taskBaseForAssignment?.subtasks]);
 
   const fieldsForEditDate = useMemo(() => {
@@ -367,6 +368,10 @@ export const AssignmentTaskForm: FC<Props> = ({
       title: fieldsForEditDate?.title ?? assignment?.title ?? '',
       description: fieldsForEditDate?.description ?? assignment?.description ?? '',
       reward: fieldsForEditDate?.reward ?? assignment?.reward ?? null,
+      audioRecord: getAudioRecordForAssignmentDate(
+        assignment,
+        editDate ?? assignment?.startDate ?? initialDate,
+      ) ?? null,
       picture: fieldsForEditDate?.picture ?? assignment?.picture ?? '',
       color: assignment?.color ?? defaultAssignmentColor,
       startDate: assignment?.startDate ?? initialDate,
@@ -401,6 +406,7 @@ export const AssignmentTaskForm: FC<Props> = ({
   const selectedColor = watch('color');
   const watchedChildIds = watch('childIds');
   const watchedStartDate = watch('startDate');
+  const recordDate = editDate ?? watchedStartDate ?? initialDate;
   const effectiveRepeats = isHabit || repeats;
 
   const earliestStartDate = useMemo(() => {
@@ -445,10 +451,23 @@ export const AssignmentTaskForm: FC<Props> = ({
     control,
     name: 'subtasks',
   });
+  const isAtSubtaskMaximum = subtaskFields.length >= SUBTASK_MAXIMUM;
+
+  const handleAddSubtask = () => {
+    if (!canAddSubtask(subtaskFields.length)) {
+      setError('subtasks', {
+        type: 'manual',
+        message: getSubtasksMaximumMessage(),
+      });
+      return;
+    }
+
+    append({ value: uuidv4(), label: '' });
+  };
 
   const applySubtasksFromBaseTask = useCallback(
     (baseTask: (typeof baseTasks)[number] | undefined) => {
-      const subtasks = baseTask?.subtasks ?? [];
+      const subtasks = (baseTask?.subtasks ?? []).slice(0, SUBTASK_MAXIMUM);
       const hasSubtasks = subtasks.length > 0;
 
       setValue('withSubtasks', hasSubtasks, { shouldValidate: true });
@@ -604,6 +623,13 @@ export const AssignmentTaskForm: FC<Props> = ({
       return;
     }
 
+    const recordDateForSave = editDate ?? parsed.data.startDate;
+    const mergedChanges = mergeAudioRecordIntoAssignmentChanges(
+      assignment,
+      recordDateForSave,
+      parsed.data.audioRecord,
+    );
+
     const basePayload = {
       title: parsed.data.title,
       description: parsed.data.description,
@@ -642,6 +668,7 @@ export const AssignmentTaskForm: FC<Props> = ({
             label: subtask.label.trim(),
           }))
         : undefined,
+      ...(mergedChanges ? { changes: mergedChanges } : {}),
       ...(repeatsForSave && parsed.data.hasNewTaskBonus
         ? {
           newTaskBonus: parsed.data.newTaskBonus ?? undefined,
@@ -656,6 +683,7 @@ export const AssignmentTaskForm: FC<Props> = ({
     const payloads: TaskAssignmentFormProps[] = parsed.data.childIds.map(childId => ({
       ...basePayload,
       childId,
+      audioRecord: parsed.data.audioRecord ?? undefined,
     }));
 
     if (
@@ -851,43 +879,63 @@ export const AssignmentTaskForm: FC<Props> = ({
 
             <Space size={3} />
 
-            <Controller
-              control={control}
-              name="reward"
-              render={({ field: { value, onChange } }) => (
-                <>
-                  <TextInput
-                    label={t('tasks.reward')}
-                    value={
-                      value != null && !Number.isNaN(value) ? String(value) : ''
-                    }
-                    onChangeText={text => {
-                      if (text.trim() === '') {
-                        onChange(null);
-                        return;
-                      }
+            <View style={styles.row}>
+              <View style={styles.firstInRow}>
+                <Controller
+                  control={control}
+                  name="reward"
+                  render={({ field: { value, onChange } }) => (
+                    <>
+                      <TextInput
+                        label={t('tasks.reward')}
+                        value={
+                          value != null && !Number.isNaN(value)
+                            ? String(value)
+                            : ''
+                        }
+                        onChangeText={text => {
+                          if (text.trim() === '') {
+                            onChange(null);
+                            return;
+                          }
 
-                      if (!/^\d+$/.test(text)) {
-                        return;
-                      }
+                          if (!/^\d+$/.test(text)) {
+                            return;
+                          }
 
-                      const parsed = Number(text);
+                          const parsed = Number(text);
 
-                      if (!Number.isNaN(parsed) && parsed >= 0) {
-                        onChange(parsed);
-                      }
-                    }}
-                    keyboardType="numeric"
-                    mode="outlined"
-                  />
-                  {!!errors.reward && (
-                    <Text style={styles.errorText}>
-                      {errors.reward.message}
-                    </Text>
+                          if (!Number.isNaN(parsed) && parsed >= 0) {
+                            onChange(parsed);
+                          }
+                        }}
+                        keyboardType="numeric"
+                        mode="outlined"
+                      />
+                      {!!errors.reward && (
+                        <Text style={styles.errorText}>
+                          {errors.reward.message}
+                        </Text>
+                      )}
+                    </>
                   )}
-                </>
-              )}
-            />
+                />
+              </View>
+
+              <View style={styles.secondInRow}>
+                <Controller
+                  control={control}
+                  name="audioRecord"
+                  render={({ field: { value, onChange } }) => (
+                    <TaskRecordField
+                      value={value}
+                      onChange={onChange}
+                      recordDate={recordDate}
+                    />
+                  )}
+                />
+              </View>
+            </View>
 
             <Space size={3} />
 
@@ -903,7 +951,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                       onChange(nextValue);
 
                       if (nextValue && subtaskFields.length === 0) {
-                        append({ value: uuidv4(), label: '' });
+                        handleAddSubtask();
                       }
                     }}
                   />
@@ -954,7 +1002,8 @@ export const AssignmentTaskForm: FC<Props> = ({
                   <Space size={3} />
                   <Button
                     mode="contained"
-                    onPress={() => append({ value: uuidv4(), label: '' })}
+                    onPress={handleAddSubtask}
+                    disabled={isAtSubtaskMaximum}
                   >
                     {t('tasks.add_subtask')}
                   </Button>
