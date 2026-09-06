@@ -460,7 +460,16 @@
     "recurring_delete_following_desc": "Kustuta alates sellest päevast",
     "recurring_delete_all": "Kõik ülesanded",
     "recurring_delete_all_desc": "Kustuta kogu seeria",
-    "task_end_date_before_start_date": "Lõppkuupäev ei saa olla alguskuupäevast varasem"
+    "task_end_date_before_start_date": "Lõppkuupäev ei saa olla alguskuupäevast varasem",
+    "record": "Salvesta",
+    "record_play": "▶️ Esita",
+    "record_pause": "⏸ Paus",
+    "record_delete": "🗑️ Kustuta",
+    "record_again": "🔄 Salvesta uuesti",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Salvestist ei saanud salvestada",
+    "record_permission_denied": "Salvestamiseks on vaja mikrofoni luba",
+    "subtasks_maximum": "Maksimaalselt {{maximum}} alaülesannet"
   },
   "habits": {
     "title": "Harjumused",

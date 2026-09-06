@@ -461,7 +461,16 @@
     "recurring_delete_following_desc": "Ištrinti nuo šios dienos",
     "recurring_delete_all": "Visas užduotis",
     "recurring_delete_all_desc": "Ištrinti visą seriją",
-    "task_end_date_before_start_date": "Pabaigos data negali būti ankstesnė už pradžios datą"
+    "task_end_date_before_start_date": "Pabaigos data negali būti ankstesnė už pradžios datą",
+    "record": "Įrašyti",
+    "record_play": "▶️ Paleisti",
+    "record_pause": "⏸ Pauzė",
+    "record_delete": "🗑️ Ištrinti",
+    "record_again": "🔄 Įrašyti iš naujo",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Nepavyko išsaugoti įrašo",
+    "record_permission_denied": "Įrašymui reikia mikrofono leidimo",
+    "subtasks_maximum": "Daugiausia {{maximum}} subužduočių"
   },
   "habits": {
     "title": "Įpročiai",

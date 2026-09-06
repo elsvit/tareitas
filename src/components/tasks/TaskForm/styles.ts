@@ -23,14 +23,16 @@ export const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
+    alignItems: 'flex-start',
   },
   firstInRow: {
     flex: 1,
-    marginRight: spacing(2),
+    marginRight: spacing(1),
   },
   secondInRow: {
     flex: 1,
-    marginLeft: spacing(2),
+    marginLeft: spacing(1),
+    alignItems: 'flex-end',
   },
   switchRow: {
     flexDirection: 'row',

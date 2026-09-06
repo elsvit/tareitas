@@ -461,7 +461,16 @@
     "recurring_delete_following_desc": "Törlés ettől a naptól",
     "recurring_delete_all": "Minden feladat",
     "recurring_delete_all_desc": "Az egész sorozat törlése",
-    "task_end_date_before_start_date": "A befejezési dátum nem lehet korábbi, mint a kezdési dátum"
+    "task_end_date_before_start_date": "A befejezési dátum nem lehet korábbi, mint a kezdési dátum",
+    "record": "Felvétel",
+    "record_play": "▶️ Lejátszás",
+    "record_pause": "⏸ Szünet",
+    "record_delete": "🗑️ Törlés",
+    "record_again": "🔄 Újra felvétel",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "A felvétel mentése nem sikerült",
+    "record_permission_denied": "Felvételhez mikrofonengedély szükséges",
+    "subtasks_maximum": "Legfeljebb {{maximum}} alfeladat engedélyezett"
   },
   "habits": {
     "title": "Szokások",

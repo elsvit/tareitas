@@ -4,49 +4,49 @@ import { Colors, spacing } from '~/styles';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-  },
-  label: {
-    marginBottom: spacing(1),
-    color: Colors.grey700,
+    width: '100%',
+    alignItems: 'flex-end',
   },
   actionsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing(2),
-    flexWrap: 'wrap',
+    justifyContent: 'flex-end',
+    gap: spacing(1),
+    width: '100%',
   },
-  recordButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
-    backgroundColor: Colors.red500,
+  iconActionButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    backgroundColor: Colors.grey200,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  recordButtonDisabled: {
+  iconActionButtonDisabled: {
     opacity: 0.5,
   },
-  actionChip: {
-    paddingHorizontal: spacing(2),
-    paddingVertical: spacing(1.5),
-    borderRadius: 12,
-    backgroundColor: Colors.grey200,
-  },
-  actionChipDisabled: {
-    opacity: 0.5,
-  },
-  actionChipText: {
-    color: Colors.grey900,
-    fontSize: 14,
+  timerSlot: {
+    minHeight: 16,
+    marginTop: spacing(0.5),
+    width: '100%',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
   },
   timerText: {
-    marginTop: spacing(1),
     color: Colors.grey700,
+    textAlign: 'right',
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  timerTextHidden: {
+    opacity: 0,
   },
   errorText: {
-    marginTop: spacing(1),
+    marginTop: spacing(0.5),
     color: Colors.red500,
+    textAlign: 'right',
+    width: '100%',
+    fontSize: 12,
+    lineHeight: 16,
   },
 });

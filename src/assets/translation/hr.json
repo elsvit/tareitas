@@ -461,7 +461,16 @@
     "recurring_delete_following_desc": "Izbriši od ovog dana nadalje",
     "recurring_delete_all": "Svi zadaci",
     "recurring_delete_all_desc": "Izbriši cijelu seriju",
-    "task_end_date_before_start_date": "Datum završetka ne može biti prije datuma početka"
+    "task_end_date_before_start_date": "Datum završetka ne može biti prije datuma početka",
+    "record": "Snimi",
+    "record_play": "▶️ Reproduciraj",
+    "record_pause": "⏸ Pauza",
+    "record_delete": "🗑️ Obriši",
+    "record_again": "🔄 Snimi ponovno",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Snimka nije mogla biti spremljena",
+    "record_permission_denied": "Potrebna je dozvola za mikrofon",
+    "subtasks_maximum": "Maksimalno {{maximum}} podzadataka"
   },
   "habits": {
     "title": "Navike",

@@ -461,7 +461,16 @@
     "recurring_delete_following_desc": "Smazat od tohoto dne dále",
     "recurring_delete_all": "Všechny úkoly",
     "recurring_delete_all_desc": "Smazat celou sérii",
-    "task_end_date_before_start_date": "Datum ukončení nemůže být před datem zahájení"
+    "task_end_date_before_start_date": "Datum ukončení nemůže být před datem zahájení",
+    "record": "Nahrát",
+    "record_play": "▶️ Přehrát",
+    "record_pause": "⏸ Pozastavit",
+    "record_delete": "🗑️ Smazat",
+    "record_again": "🔄 Nahrát znovu",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Nepodařilo se uložit nahrávku",
+    "record_permission_denied": "Pro nahrávání je potřeba povolení mikrofonu",
+    "subtasks_maximum": "Maximálně {{maximum}} podúkolů"
   },
   "habits": {
     "title": "Zvyky",

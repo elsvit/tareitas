@@ -460,7 +460,16 @@
     "recurring_delete_following_desc": "Eliminar a partir deste dia",
     "recurring_delete_all": "Todas as tarefas",
     "recurring_delete_all_desc": "Eliminar toda a série",
-    "task_end_date_before_start_date": "A data de término não pode ser anterior à data de início"
+    "task_end_date_before_start_date": "A data de término não pode ser anterior à data de início",
+    "record": "Gravar",
+    "record_play": "▶️ Reproduzir",
+    "record_pause": "⏸ Pausar",
+    "record_delete": "🗑️ Eliminar",
+    "record_again": "🔄 Gravar novamente",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Não foi possível guardar a gravação",
+    "record_permission_denied": "É necessária permissão de microfone para gravar",
+    "subtasks_maximum": "Máximo de {{maximum}} subtarefas permitidas"
   },
   "habits": {
     "title": "Hábitos",

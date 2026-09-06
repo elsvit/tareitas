@@ -460,7 +460,16 @@
     "recurring_delete_following_desc": "Elimina da questo giorno in poi",
     "recurring_delete_all": "Tutte le attività",
     "recurring_delete_all_desc": "Elimina l'intera serie",
-    "task_end_date_before_start_date": "La data di fine non può essere precedente alla data di inizio"
+    "task_end_date_before_start_date": "La data di fine non può essere precedente alla data di inizio",
+    "record": "Registra",
+    "record_play": "▶️ Riproduci",
+    "record_pause": "⏸ Pausa",
+    "record_delete": "🗑️ Elimina",
+    "record_again": "🔄 Registra di nuovo",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Impossibile salvare la registrazione",
+    "record_permission_denied": "È necessaria l'autorizzazione al microfono",
+    "subtasks_maximum": "Massimo {{maximum}} sotto-attività consentite"
   },
   "habits": {
     "title": "Abitudini",

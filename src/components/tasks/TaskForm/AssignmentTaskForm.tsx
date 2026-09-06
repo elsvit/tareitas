@@ -34,9 +34,15 @@ import {
   getTaskImageOptions,
   SUBTASK_MAXIMUM,
 } from '~/constants/tasks';
+import {
+  TASKS_RECORDS_MAXIMUN,
+  TASKS_RECORDS_WITHOUT_SUBSCRIPTION,
+} from '~/constants/ads';
+import { useIsPro, useProFeatureAccess } from '~/hooks/useIsPro';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectEarnedRewardPeriods } from '~/store/rewards/selectors';
+import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
 import { selectIsAdmin, selectIsChild } from '~/store/settings/selectors';
 import { selectAllTaskBaseInDefaultOrder } from '~/store/taskBase/selectors';
 import { Colors, userColors } from '~/styles';
@@ -57,6 +63,7 @@ import {
   getAudioRecordForAssignmentDate,
   mergeAudioRecordIntoAssignmentChanges,
 } from '~/utils/tasks/taskRecordChanges';
+import { canAddTaskRecord } from '~/utils/tasks/taskRecordLimits';
 import {
   canAddSubtask,
   getSubtasksMaximumMessage,
@@ -118,10 +125,10 @@ const COLOR_OPTIONS = Object.entries(userColors).map(([key, value]) => ({
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_PATTERN = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
-const requiredMessage = t('common.required') || 'Required';
+const buildSchema = (repeats: boolean, isHabitForm = false) => {
+  const requiredMessage = t('common.required') || 'Required';
 
-const buildSchema = (repeats: boolean, isHabitForm = false) =>
-  z
+  return z
     .object({
       childIds: z.array(z.string()).min(1, requiredMessage),
       title: z.string().trim().min(1, requiredMessage),
@@ -269,6 +276,7 @@ const buildSchema = (repeats: boolean, isHabitForm = false) =>
         }
       }
     });
+};
 
 export const AssignmentTaskForm: FC<Props> = ({
   title,
@@ -306,7 +314,9 @@ export const AssignmentTaskForm: FC<Props> = ({
   >(null);
 
   const children = useSelector(selectAllChildren);
+  const assignments = useSelector(selectAllTaskAssignment);
   const earnedRewardPeriods = useSelector(selectEarnedRewardPeriods);
+  const hasProFeatureAccess = useProFeatureAccess();
   const baseTasks = useSelector(selectAllTaskBaseInDefaultOrder);
   const isAdmin = useSelector(selectIsAdmin);
   const isChild = useSelector(selectIsChild);
@@ -624,6 +634,36 @@ export const AssignmentTaskForm: FC<Props> = ({
     }
 
     const recordDateForSave = editDate ?? parsed.data.startDate;
+    const existingAudioRecord = getAudioRecordForAssignmentDate(
+      assignment,
+      recordDateForSave,
+    );
+    const isAddingNewAudioRecord =
+      !!parsed.data.audioRecord &&
+      parsed.data.audioRecord !== existingAudioRecord;
+
+    if (isAddingNewAudioRecord) {
+      const recordLimits = canAddTaskRecord({
+        assignments,
+        date: recordDateForSave,
+        assignmentId: assignment?.id,
+        isPro: hasProFeatureAccess,
+        withoutSubscriptionLimit: TASKS_RECORDS_WITHOUT_SUBSCRIPTION,
+        maximumLimit: TASKS_RECORDS_MAXIMUN,
+      });
+
+      if (recordLimits.isRecordDisabled) {
+        setError('audioRecord', {
+          type: 'manual',
+          message: recordLimits.showSubscriptionHelp
+            ? t('subscription.modal_title')
+            : t('tasks.record_failed'),
+        });
+
+        return;
+      }
+    }
+
     const mergedChanges = mergeAudioRecordIntoAssignmentChanges(
       assignment,
       recordDateForSave,
@@ -931,6 +971,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                       value={value}
                       onChange={onChange}
                       recordDate={recordDate}
+                      assignmentId={assignment?.id}
                     />
                   )}
                 />

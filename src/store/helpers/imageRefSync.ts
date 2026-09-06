@@ -1,6 +1,7 @@
 import { call, put, select } from 'redux-saga/effects';
 
-import { resolveImageRefForServer, isRemoteImageRef } from '~/services/imageSync';
+import { resolveImageRefForServer } from '~/services/imageSync';
+import { isRemoteImageRef } from '~/utils/imageRefs';
 import { toAbsoluteUploadUrl } from '~/services/api/uploadsApi';
 import {
   selectRewardImageUrls,

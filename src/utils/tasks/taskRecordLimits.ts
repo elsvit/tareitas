@@ -3,8 +3,13 @@ import { ITaskAssignment } from '~/types/ITask';
 export function countTaskRecordsForDate(
   assignments: ITaskAssignment[],
   date: string,
+  excludeAssignmentId?: string,
 ): number {
   return assignments.reduce((count, assignment) => {
+    if (excludeAssignmentId && assignment.id === excludeAssignmentId) {
+      return count;
+    }
+
     if (assignment.changes?.[date]?.audioRecord) {
       return count + 1;
     }
@@ -13,20 +18,10 @@ export function countTaskRecordsForDate(
   }, 0);
 }
 
-export function getEffectiveTaskRecordCountForDate(
-  assignments: ITaskAssignment[],
-  date: string,
-  hasExistingRecord: boolean,
-): number {
-  const total = countTaskRecordsForDate(assignments, date);
-
-  return hasExistingRecord ? Math.max(0, total - 1) : total;
-}
-
 export function canAddTaskRecord(params: {
   assignments: ITaskAssignment[];
   date: string;
-  hasExistingRecord: boolean;
+  assignmentId?: string;
   isPro: boolean;
   withoutSubscriptionLimit: number;
   maximumLimit: number;
@@ -36,16 +31,16 @@ export function canAddTaskRecord(params: {
   isRecordDisabled: boolean;
   showSubscriptionHelp: boolean;
 } {
-  const effectiveCount = getEffectiveTaskRecordCountForDate(
+  const otherRecordsCount = countTaskRecordsForDate(
     params.assignments,
     params.date,
-    params.hasExistingRecord,
+    params.assignmentId,
   );
   const isAtMaximumLimit =
-    effectiveCount >= params.maximumLimit;
+    otherRecordsCount >= params.maximumLimit;
   const isAtFreeLimit =
     !params.isPro &&
-    effectiveCount >= params.withoutSubscriptionLimit;
+    otherRecordsCount >= params.withoutSubscriptionLimit;
   const isRecordDisabled = isAtMaximumLimit || isAtFreeLimit;
   const showSubscriptionHelp =
     isAtFreeLimit && !isAtMaximumLimit;

@@ -461,7 +461,16 @@
     "recurring_delete_following_desc": "Dzēst no šīs dienas",
     "recurring_delete_all": "Visus uzdevumus",
     "recurring_delete_all_desc": "Dzēst visu sēriju",
-    "task_end_date_before_start_date": "Beigu datumam nevar būt agrāks par sākuma datumu"
+    "task_end_date_before_start_date": "Beigu datumam nevar būt agrāks par sākuma datumu",
+    "record": "Ierakstīt",
+    "record_play": "▶️ Atskaņot",
+    "record_pause": "⏸ Pauze",
+    "record_delete": "🗑️ Dzēst",
+    "record_again": "🔄 Ierakstīt vēlreiz",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Neizdevās saglabāt ierakstu",
+    "record_permission_denied": "Ierakstīšanai nepieciešama mikrofona atļauja",
+    "subtasks_maximum": "Maksimums {{maximum}} apakšuzdevumi"
   },
   "habits": {
     "title": "Ieradumi",

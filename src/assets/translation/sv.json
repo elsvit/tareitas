@@ -461,7 +461,16 @@
     "recurring_delete_following_desc": "Radera från denna dag och framåt",
     "recurring_delete_all": "Alla uppgifter",
     "recurring_delete_all_desc": "Radera hela serien",
-    "task_end_date_before_start_date": "Slutdatum kan inte vara före startdatum"
+    "task_end_date_before_start_date": "Slutdatum kan inte vara före startdatum",
+    "record": "Spela in",
+    "record_play": "▶️ Spela upp",
+    "record_pause": "⏸ Paus",
+    "record_delete": "🗑️ Radera",
+    "record_again": "🔄 Spela in igen",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Kunde inte spara inspelningen",
+    "record_permission_denied": "Mikrofonbehörighet krävs för att spela in",
+    "subtasks_maximum": "Högst {{maximum}} deluppgifter tillåtna"
   },
   "habits": {
     "title": "Vanor",

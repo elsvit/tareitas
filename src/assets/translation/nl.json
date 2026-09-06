@@ -461,7 +461,16 @@
     "recurring_delete_following_desc": "Verwijderen vanaf deze dag",
     "recurring_delete_all": "Alle taken",
     "recurring_delete_all_desc": "De hele reeks verwijderen",
-    "task_end_date_before_start_date": "Einddatum kan niet vóór de startdatum liggen"
+    "task_end_date_before_start_date": "Einddatum kan niet vóór de startdatum liggen",
+    "record": "Opnemen",
+    "record_play": "▶️ Afspelen",
+    "record_pause": "⏸ Pauze",
+    "record_delete": "🗑️ Verwijderen",
+    "record_again": "🔄 Opnieuw opnemen",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Kon opname niet opslaan",
+    "record_permission_denied": "Microfoontoestemming is vereist om op te nemen",
+    "subtasks_maximum": "Maximaal {{maximum}} sub-taken toegestaan"
   },
   "habits": {
     "title": "Gebruiken",

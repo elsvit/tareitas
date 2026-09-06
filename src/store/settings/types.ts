@@ -29,6 +29,7 @@ export interface IStateSettings {
   lastSessionActivityAt: string | null;
   pendingReturnRoute: PendingReturnRoute | null;
   sessionPauseCount: number;
+  appInstalledAt: string | null;
 }
 
 export type PendingReturnRoute = {

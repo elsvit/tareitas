@@ -461,7 +461,16 @@
     "recurring_delete_following_desc": "Izbriši od tega dne naprej",
     "recurring_delete_all": "Vse naloge",
     "recurring_delete_all_desc": "Izbriši celotno serijo",
-    "task_end_date_before_start_date": "Končni datum ne more biti pred začetnim datumom"
+    "task_end_date_before_start_date": "Končni datum ne more biti pred začetnim datumom",
+    "record": "Posnemi",
+    "record_play": "▶️ Predvajaj",
+    "record_pause": "⏸ Premor",
+    "record_delete": "🗑️ Izbriši",
+    "record_again": "🔄 Posnemi znova",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Posnetka ni bilo mogoče shraniti",
+    "record_permission_denied": "Za snemanje je potrebno dovoljenje za mikrofon",
+    "subtasks_maximum": "Največ {{maximum}} podnalog"
   },
   "habits": {
     "title": "Navade",

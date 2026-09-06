@@ -1,4 +1,3 @@
-import { taskAssignmentAdapter } from './slice';
 import { IStateTaskAssignment } from './types';
 
 export const findOrphanedTaskAssignmentIds = (
@@ -21,7 +20,15 @@ export const pruneOrphanedTaskAssignmentsInState = (
 ): void => {
   const idsToRemove = findOrphanedTaskAssignmentIds(state, validChildIds);
 
-  if (idsToRemove.length > 0) {
-    taskAssignmentAdapter.removeMany(state, idsToRemove);
+  if (idsToRemove.length === 0) {
+    return;
   }
+
+  const idsToRemoveSet = new Set(idsToRemove);
+
+  for (const id of idsToRemove) {
+    delete state.entities[id];
+  }
+
+  state.ids = state.ids.filter(id => !idsToRemoveSet.has(id));
 };

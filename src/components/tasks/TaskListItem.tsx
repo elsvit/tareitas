@@ -456,16 +456,18 @@ export const TaskListItem: React.FC<Props> = ({
                 accessibilityRole="button"
                 accessibilityState={{ expanded: isDescriptionExpanded }}
               >
-                <Text style={styles.descriptionLabel}>
-                  {t('tasks.description')}
-                </Text>
-                <View style={styles.descriptionToggleTrailing}>
+                <View style={styles.descriptionToggleLeading}>
                   {hasAudioRecord ? (
                     <TaskRecordPlayControl
                       audioRecord={audioRecord}
                       variant="indicator"
                     />
                   ) : null}
+                  <Text style={styles.descriptionLabel}>
+                    {t('tasks.description')}
+                  </Text>
+                </View>
+                <View style={styles.descriptionToggleTrailing}>
                   {isDescriptionExpanded ? (
                     <ChevronUpIcon width={18} height={18} fill={Colors.grey700} />
                   ) : (
@@ -720,6 +722,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: 8,
+  },
+
+  descriptionToggleLeading: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    flex: 1,
+    minWidth: 0,
   },
 
   descriptionToggleTrailing: {

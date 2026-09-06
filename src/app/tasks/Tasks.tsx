@@ -21,6 +21,7 @@ import { useHasCompletedTasksInPast } from '~/hooks/useHasCompletedTasksInPast';
 import { useMultideviceScreenSync } from '~/hooks/useMultideviceScreenSync';
 import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
 import { useTabBarHeight, useTabScreenFabBottom } from '~/hooks/useTabBarBottomInset';
+import { useTaskCalendarDate } from '~/hooks/useTaskCalendarDate';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';

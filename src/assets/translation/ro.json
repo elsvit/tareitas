@@ -461,7 +461,16 @@
     "recurring_delete_following_desc": "Șterge de la această zi înainte",
     "recurring_delete_all": "Toate sarcinile",
     "recurring_delete_all_desc": "Șterge întreaga serie",
-    "task_end_date_before_start_date": "Data de încheiere nu poate fi anterioară datei de început"
+    "task_end_date_before_start_date": "Data de încheiere nu poate fi anterioară datei de început",
+    "record": "Înregistrează",
+    "record_play": "▶️ Redă",
+    "record_pause": "⏸ Pauză",
+    "record_delete": "🗑️ Șterge",
+    "record_again": "🔄 Înregistrează din nou",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Nu s-a putut salva înregistrarea",
+    "record_permission_denied": "Este necesară permisiunea pentru microfon",
+    "subtasks_maximum": "Maximum {{maximum}} sub-sarcini permise"
   },
   "habits": {
     "title": "Obiceiuri",

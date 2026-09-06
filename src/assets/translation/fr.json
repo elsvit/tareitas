@@ -461,7 +461,16 @@
     "recurring_delete_following_desc": "Supprimer à partir de ce jour",
     "recurring_delete_all": "Toutes les tâches",
     "recurring_delete_all_desc": "Supprimer toute la série",
-    "task_end_date_before_start_date": "La date de fin ne peut pas être antérieure à la date de début"
+    "task_end_date_before_start_date": "La date de fin ne peut pas être antérieure à la date de début",
+    "record": "Enregistrer",
+    "record_play": "▶️ Lire",
+    "record_pause": "⏸ Pause",
+    "record_delete": "🗑️ Supprimer",
+    "record_again": "🔄 Réenregistrer",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Impossible d'enregistrer l'audio",
+    "record_permission_denied": "L'autorisation du micro est requise pour enregistrer",
+    "subtasks_maximum": "Maximum {{maximum}} sous-tâches autorisées"
   },
   "habits": {
     "title": "Habitudes",
