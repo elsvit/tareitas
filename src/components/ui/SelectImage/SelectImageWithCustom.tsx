@@ -51,6 +51,19 @@ type AvatarGridProps = {
   children: React.ReactNode;
 };
 
+function LoadedPhotosRow({ children }: { children: React.ReactNode }) {
+  return (
+    <ScrollView
+      horizontal
+      nestedScrollEnabled
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.loadedPhotosRow}
+    >
+      {children}
+    </ScrollView>
+  );
+}
+
 function AvatarGrid({ maxRows, children }: AvatarGridProps) {
   if (!maxRows) {
     return <View style={baseStyles.grid}>{children}</View>;
@@ -82,6 +95,10 @@ type Props = {
   avatarMaxRows?: number;
   /** When set, loaded/custom photos scroll horizontally with at most this many rows. */
   loadedPhotosMaxRows?: number;
+  /** When false, hides the "Loaded photos" heading above custom uploads. */
+  showLoadedPhotosLabel?: boolean;
+  /** When true, shows loaded photos above the load button instead of below it. */
+  loadPhotoButtonBelowLoadedPhotos?: boolean;
 };
 
 export function SelectImageWithCustom({
@@ -93,6 +110,8 @@ export function SelectImageWithCustom({
   label,
   avatarMaxRows,
   loadedPhotosMaxRows,
+  showLoadedPhotosLabel = true,
+  loadPhotoButtonBelowLoadedPhotos = false,
 }: Props) {
   const dispatch = useDispatch();
   const isMultidevice = useSelector(selectIsMultidevice);
@@ -284,6 +303,56 @@ export function SelectImageWithCustom({
     saveCustomImageUrl,
   ]);
 
+  const customPhotoItems = customEntries.map(([id, uri]) => {
+    const isSelected = value === id;
+
+    return (
+      <TouchableOpacity
+        key={id}
+        onPress={() => onChange?.(id)}
+        style={[
+          baseStyles.avatarOuter,
+          {
+            borderColor: isSelected ? '#22C55E' : '#D1D5DB',
+          },
+        ]}
+      >
+        <Image source={{ uri }} style={baseStyles.avatarImage} />
+      </TouchableOpacity>
+    );
+  });
+
+  const loadedPhotosGrid =
+    loadedPhotosMaxRows === 1 ? (
+      <LoadedPhotosRow>{customPhotoItems}</LoadedPhotosRow>
+    ) : (
+      <AvatarGrid maxRows={loadedPhotosMaxRows ?? avatarMaxRows}>
+        {customPhotoItems}
+      </AvatarGrid>
+    );
+
+  const loadPhotoButton = (
+    <Pressable
+      accessibilityRole="button"
+      onPress={openPickModal}
+      style={styles.loadPhotoButton}
+    >
+      <Text style={styles.loadPhotoText}>{t('imageLoader.load_photo')}</Text>
+    </Pressable>
+  );
+
+  const loadedPhotosSection =
+    customEntries.length > 0 ? (
+      <View style={styles.customSection}>
+        {showLoadedPhotosLabel && (
+          <Text variant="bodyMedium" style={styles.customLabel}>
+            {t('imageLoader.loaded_photos')}
+          </Text>
+        )}
+        {loadedPhotosGrid}
+      </View>
+    ) : null;
+
   return (
     <>
       <View style={styles.container}>
@@ -312,41 +381,19 @@ export function SelectImageWithCustom({
           })}
         </AvatarGrid>
 
-        <Pressable
-          accessibilityRole="button"
-          onPress={openPickModal}
-          style={styles.loadPhotoButton}
-        >
-          <Text style={styles.loadPhotoText}>{t('imageLoader.load_photo')}</Text>
-        </Pressable>
-
-        {customEntries.length > 0 && (
-          <View style={styles.customSection}>
-            <Text variant="bodyMedium" style={styles.customLabel}>
-              {t('imageLoader.loaded_photos')}
-            </Text>
-            <AvatarGrid maxRows={loadedPhotosMaxRows ?? avatarMaxRows}>
-              {customEntries.map(([id, uri]) => {
-                const isSelected = value === id;
-
-                return (
-                  <TouchableOpacity
-                    key={id}
-                    onPress={() => onChange?.(id)}
-                    style={[
-                      baseStyles.avatarOuter,
-                      {
-                        borderColor: isSelected ? '#22C55E' : '#D1D5DB',
-                      },
-                    ]}
-                  >
-                    <Image source={{ uri }} style={baseStyles.avatarImage} />
-                  </TouchableOpacity>
-                );
-              })}
-            </AvatarGrid>
-          </View>
-        )}
+        <View style={styles.loadPhotoSection}>
+          {loadPhotoButtonBelowLoadedPhotos ? (
+            <>
+              {loadedPhotosSection}
+              {loadPhotoButton}
+            </>
+          ) : (
+            <>
+              {loadPhotoButton}
+              {loadedPhotosSection}
+            </>
+          )}
+        </View>
 
         {!!errorMessage && (
           <Text style={baseStyles.errorText}>{errorMessage}</Text>

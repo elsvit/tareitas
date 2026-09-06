@@ -46,6 +46,14 @@ export const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingVertical: 4,
   },
+  loadPhotoSection: {
+    gap: spacing(2),
+  },
+  loadedPhotosRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing(3),
+  },
   loadPhotoText: {
     color: Colors.blue500,
     textDecorationLine: 'underline',
