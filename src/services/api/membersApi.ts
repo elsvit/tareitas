@@ -3,17 +3,18 @@ import { apiFetch, parseApiJson } from './client';
 export type ServerParentMember = {
   userId: string;
   name: string;
-  username: string;
+  username?: string;
+  email?: string;
   color?: string;
   avatar?: string;
   familyRole?: string;
-  role: 'admin' | 'parent';
+  role: 'admin' | 'parent' | 'child';
 };
 
 export type ServerChildMember = {
   userId: string;
   name: string;
-  username: string;
+  username?: string;
   color?: string;
   avatar?: string;
   reward?: number;
