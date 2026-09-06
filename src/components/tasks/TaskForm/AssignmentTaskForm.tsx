@@ -55,6 +55,7 @@ import { isNewTaskDurationWithinEndDate } from '~/utils/tasks/taskReward';
 
 import { SelectDate } from '~/components/ui/SelectDate';
 import { SelectTime } from '~/components/ui/SelectTime';
+import { normalizeTimeString } from '~/components/ui/SelectTime/SelectTime.utils';
 import { styles } from './styles';
 
 type Props = {
@@ -370,7 +371,9 @@ export const AssignmentTaskForm: FC<Props> = ({
       color: assignment?.color ?? defaultAssignmentColor,
       startDate: assignment?.startDate ?? initialDate,
       endDate: assignment?.endDate ?? initialDate,
-      time: fieldsForEditDate?.time ?? assignment?.time ?? '09:00',
+      time: normalizeTimeString(
+        fieldsForEditDate?.time ?? assignment?.time ?? '09:00',
+      ),
       repeats: isHabit || isRepeating,
       weekDays: assignment?.repeat?.weekDays ?? (isHabit ? ALL_WEEK_DAYS : []),
       baseTaskId: taskBaseForAssignment?.id ?? '',
@@ -562,7 +565,9 @@ export const AssignmentTaskForm: FC<Props> = ({
     }
 
     if (baseTask.time) {
-      setValue('time', baseTask.time, { shouldValidate: true });
+      setValue('time', normalizeTimeString(baseTask.time), {
+        shouldValidate: true,
+      });
     }
 
     applySubtasksFromBaseTask(baseTask);

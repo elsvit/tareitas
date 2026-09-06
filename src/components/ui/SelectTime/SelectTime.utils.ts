@@ -23,16 +23,31 @@ export const dateToTimeString = (date: Date): string => {
   return format(date, 'HH:mm');
 };
 
+export const normalizeTimeString = (value?: string): string => {
+  if (!value?.trim()) {
+    return DEFAULT_TIME;
+  }
+
+  const trimmed = value.trim();
+  let parsed = parse(trimmed, 'HH:mm', new Date());
+
+  if (!isValid(parsed)) {
+    parsed = parse(trimmed, 'H:mm', new Date());
+  }
+
+  if (!isValid(parsed)) {
+    return trimmed;
+  }
+
+  return format(parsed, 'HH:mm');
+};
+
 export const formatTimeLabel = (value?: string): string => {
   if (!value) {
     return '';
   }
 
-  const parsed = parse(value, 'HH:mm', new Date());
+  const normalized = normalizeTimeString(value);
 
-  if (!isValid(parsed)) {
-    return value;
-  }
-
-  return format(parsed, 'HH:mm');
+  return normalized;
 };
