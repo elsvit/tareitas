@@ -1,3 +1,5 @@
+import type { IFamilySubscription } from '~/types/ISubscription';
+
 export interface IAuthUser {
   id: string;
   username: string | null;
@@ -70,6 +72,7 @@ export interface IFamilyChildMember {
 export interface IFamilyDetails {
   id: string;
   name: string;
+  subscription: IFamilySubscription | null;
   parents: IFamilyParentMember[];
   children: IFamilyChildMember[];
 }
