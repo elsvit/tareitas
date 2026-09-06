@@ -17,6 +17,8 @@ const iosApiKey =
 
 let cachedModule: PurchasesModule | null | undefined;
 
+let configured = false;
+
 export function isRevenueCatNativeModuleAvailable(): boolean {
   // Expo Go cannot load custom native modules.
   if (Constants.executionEnvironment === 'storeClient') {
@@ -34,6 +36,31 @@ export function isRevenueCatNativeModuleAvailable(): boolean {
   }
 
   return Boolean(NativeModules.RNPurchases);
+}
+
+export function getRevenueCatApiKeyForPlatform(): string | undefined {
+  const apiKey =
+    Platform.OS === 'android' ? androidApiKey : iosApiKey;
+
+  const trimmed = apiKey?.trim();
+
+  if (!trimmed || trimmed === 'appl_' || trimmed === 'goog_') {
+    return undefined;
+  }
+
+  return trimmed;
+}
+
+/** Native module present and a platform API key was baked into the build. */
+export function isRevenueCatReady(): boolean {
+  return (
+    isRevenueCatNativeModuleAvailable() &&
+    Boolean(getRevenueCatApiKeyForPlatform())
+  );
+}
+
+export function isRevenueCatConfigured(): boolean {
+  return configured && isRevenueCatReady();
 }
 
 export function getPurchasesModule(): PurchasesModule | null {
@@ -57,15 +84,14 @@ export function getPurchasesModule(): PurchasesModule | null {
 }
 
 export function initializeRevenueCat() {
-  const apiKey =
-    Platform.OS === 'android'
-      ? androidApiKey
-      : iosApiKey;
+  const apiKey = getRevenueCatApiKeyForPlatform();
 
   if (!apiKey) {
+    configured = false;
+
     if (__DEV__) {
       console.warn(
-        'TEST_80 __DEV__ [RevenueCat] API key is missing — skipping init',
+        '[RevenueCat] API key is missing for this platform — skipping init. For EAS builds run: yarn sync-eas-env',
       );
     }
 
@@ -75,6 +101,8 @@ export function initializeRevenueCat() {
   const Purchases = getPurchasesModule();
 
   if (!Purchases) {
+    configured = false;
+
     if (__DEV__) {
       console.warn(
         'TEST_92 __DEV__ [RevenueCat] Native module unavailable — skipping init. Use a development build after installing react-native-purchases.',
@@ -86,7 +114,10 @@ export function initializeRevenueCat() {
 
   try {
     Purchases.configure({ apiKey });
+    configured = true;
   } catch {
+    configured = false;
+
     if (__DEV__) {
       console.warn(
         'TEST_105 __DEV__ [RevenueCat] Failed to initialize',
