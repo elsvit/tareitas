@@ -1,10 +1,16 @@
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 
 export async function saveTaskRecordToDevice(
   sourceUri: string,
   id: string,
 ): Promise<string> {
-  const directory = `${FileSystem.documentDirectory}records/tasks/`;
+  const documentDirectory = FileSystem.documentDirectory;
+
+  if (!documentDirectory) {
+    throw new Error('Document directory is unavailable');
+  }
+
+  const directory = `${documentDirectory}records/tasks/`;
 
   await FileSystem.makeDirectoryAsync(directory, {
     intermediates: true,

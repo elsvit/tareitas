@@ -478,7 +478,16 @@
     "recurring_delete_following_desc": "Видалити з цього дня",
     "recurring_delete_all": "Усі завдання",
     "recurring_delete_all_desc": "Видалити всю серію",
-    "task_end_date_before_start_date": "Дата закінчення не може бути раніше дати початку"
+    "task_end_date_before_start_date": "Дата закінчення не може бути раніше дати початку",
+    "record": "Записати",
+    "record_play": "▶️ Відтворити",
+    "record_pause": "⏸ Пауза",
+    "record_delete": "🗑️ Видалити",
+    "record_again": "🔄 Записати знову",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Не вдалося зберегти запис",
+    "record_permission_denied": "Для запису потрібен дозвіл на мікрофон",
+    "subtasks_maximum": "Максимум {{maximum}} підзавдань"
   },
   "habits": {
     "title": "Звички",

@@ -81,7 +81,7 @@ export function TaskRecordPlayControl({ audioRecord, variant }: Props) {
 
 const styles = StyleSheet.create({
   indicator: {
-    marginRight: 2,
+    flexShrink: 0,
   },
   playButton: {
     marginRight: 8,

@@ -461,7 +461,16 @@
     "recurring_delete_following_desc": "Usuń od tego dnia",
     "recurring_delete_all": "Wszystkie zadania",
     "recurring_delete_all_desc": "Usuń całą serię",
-    "task_end_date_before_start_date": "Data zakończenia nie może być wcześniejsza niż data rozpoczęcia"
+    "task_end_date_before_start_date": "Data zakończenia nie może być wcześniejsza niż data rozpoczęcia",
+    "record": "Nagraj",
+    "record_play": "▶️ Odtwórz",
+    "record_pause": "⏸ Pauza",
+    "record_delete": "🗑️ Usuń",
+    "record_again": "🔄 Nagraj ponownie",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Nie udało się zapisać nagrania",
+    "record_permission_denied": "Do nagrywania wymagane jest pozwolenie na mikrofon",
+    "subtasks_maximum": "Maksymalnie {{maximum}} podzadań"
   },
   "habits": {
     "title": "Nawyki",

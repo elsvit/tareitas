@@ -7,7 +7,7 @@ import {
   listFamilyImages,
   toAbsoluteUploadUrl,
 } from '~/services/api/uploadsApi';
-import { isRemoteImageRef } from '~/services/imageSync';
+import { isRemoteImageRef } from '~/utils/imageRefs';
 import {
   assertMultideviceSession,
   callMultideviceApi,

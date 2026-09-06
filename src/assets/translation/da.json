@@ -460,7 +460,16 @@
     "recurring_delete_following_desc": "Slet fra denne dag og frem",
     "recurring_delete_all": "Alle opgaver",
     "recurring_delete_all_desc": "Slet hele serien",
-    "task_end_date_before_start_date": "Slutdato kan ikke være før startdato"
+    "task_end_date_before_start_date": "Slutdato kan ikke være før startdato",
+    "record": "Optag",
+    "record_play": "▶️ Afspil",
+    "record_pause": "⏸ Pause",
+    "record_delete": "🗑️ Slet",
+    "record_again": "🔄 Optag igen",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Kunne ikke gemme optagelsen",
+    "record_permission_denied": "Mikrofontilladelse kræves for at optage",
+    "subtasks_maximum": "Maksimum {{maximum}} delopgaver tilladt"
   },
   "habits": {
     "title": "Vaner",

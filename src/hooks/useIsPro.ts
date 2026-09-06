@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 
 import { isRevenueCatNativeModuleAvailable } from '~/services/subscriptions/revenueCatInit';
 import { getIsPro } from '~/services/subscriptions/revenueCatSubscription';
-import { selectIsAdFreeBySubscription } from '~/store/settings/selectors';
+import { selectAppInstalledAt, selectIsAdFreeBySubscription } from '~/store/settings/selectors';
+import { hasProFeatureAccess } from '~/utils/subscriptionLimits';
 
 let cachedIsPro: boolean | null = null;
 const listeners = new Set<(isPro: boolean) => void>();
@@ -58,4 +59,11 @@ export function useIsPro() {
   }, [refreshIsPro]);
 
   return { isPro, isChecking, refreshIsPro };
+}
+
+export function useProFeatureAccess() {
+  const { isPro } = useIsPro();
+  const appInstalledAt = useSelector(selectAppInstalledAt);
+
+  return hasProFeatureAccess(isPro, appInstalledAt);
 }

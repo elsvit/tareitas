@@ -20,7 +20,7 @@ import { SubscriptionModal } from '~/components/subscriptions/SubscriptionModal'
 import HelpCircleIcon from '~/assets/svg/common/help-circle.svg';
 import { IMAGES_MAXIMUM, IMAGES_WITHOUT_SUBSCRIPTION } from '~/constants/ads';
 import { SCREEN_TEXT } from '~/constants/formField';
-import { useIsPro } from '~/hooks/useIsPro';
+import { useIsPro, useProFeatureAccess } from '~/hooks/useIsPro';
 import { useMediaSessionPause } from '~/hooks/useSessionPause';
 import { useSubscription } from '~/hooks/useSubscription';
 import { t } from '~/services';
@@ -139,6 +139,7 @@ export function SelectImageWithCustom({
   const usedRewardIds = useSelector(selectUsedRewardImageIds);
 
   const { isPro } = useIsPro();
+  const hasProFeatureAccess = useProFeatureAccess();
   const subscription = useSubscription();
   const enforceImageLimits = kind === 'task' || kind === 'reward';
 
@@ -223,7 +224,7 @@ export function SelectImageWithCustom({
     enforceImageLimits && loadedPhotosCount >= IMAGES_MAXIMUM;
   const isAtFreeLimit =
     enforceImageLimits &&
-    !isPro &&
+    !hasProFeatureAccess &&
     loadedPhotosCount >= IMAGES_WITHOUT_SUBSCRIPTION;
   const isLoadPhotoDisabled = isAtMaximumLimit || isAtFreeLimit;
   const showSubscriptionHelp = isAtFreeLimit && !isAtMaximumLimit;

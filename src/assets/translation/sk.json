@@ -461,7 +461,16 @@
     "recurring_delete_following_desc": "Odstrániť od tohto dňa",
     "recurring_delete_all": "Všetky úlohy",
     "recurring_delete_all_desc": "Odstrániť celú sériu",
-    "task_end_date_before_start_date": "Dátum ukončenia nemôže byť pred dátumom začiatku"
+    "task_end_date_before_start_date": "Dátum ukončenia nemôže byť pred dátumom začiatku",
+    "record": "Nahrať",
+    "record_play": "▶️ Prehrať",
+    "record_pause": "⏸ Pozastaviť",
+    "record_delete": "🗑️ Odstrániť",
+    "record_again": "🔄 Nahrať znova",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Nepodarilo sa uložiť nahrávku",
+    "record_permission_denied": "Na nahrávanie je potrebné povolenie mikrofónu",
+    "subtasks_maximum": "Maximálne {{maximum}} podúloh"
   },
   "habits": {
     "title": "Návyky",

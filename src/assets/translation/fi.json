@@ -461,7 +461,16 @@
     "recurring_delete_following_desc": "Poista tästä päivästä eteenpäin",
     "recurring_delete_all": "Kaikki tehtävät",
     "recurring_delete_all_desc": "Poista koko sarja",
-    "task_end_date_before_start_date": "Päättymispäivä ei voi olla ennen alkupäivää"
+    "task_end_date_before_start_date": "Päättymispäivä ei voi olla ennen alkupäivää",
+    "record": "Nauhoita",
+    "record_play": "▶️ Toista",
+    "record_pause": "⏸ Tauko",
+    "record_delete": "🗑️ Poista",
+    "record_again": "🔄 Nauhoita uudelleen",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Nauhoitusta ei voitu tallentaa",
+    "record_permission_denied": "Nauhoittaminen vaatii mikrofonin käyttöoikeuden",
+    "subtasks_maximum": "Enintään {{maximum}} alitehtävää"
   },
   "habits": {
     "title": "Tavat",

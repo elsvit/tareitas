@@ -1,5 +1,4 @@
 import { refreshAuthToken } from '~/services/api/authApi';
-import { store } from '~/store/store';
 import {
   selectAuthToken,
   selectRefreshToken,
@@ -13,7 +12,12 @@ import {
 } from './uploadsApi';
 import type { ImageStoreKind } from '~/store/images/types';
 
+async function getStoreModule() {
+  return import('~/store/store');
+}
+
 async function resolveAuthToken(): Promise<string> {
+  const { store } = await getStoreModule();
   const state = store.getState();
   let authToken = selectAuthToken(state);
   const refreshToken = selectRefreshToken(state);
@@ -60,9 +64,8 @@ export async function uploadFamilyImageWithSession(
       throw error;
     }
 
-    const refreshToken = selectRefreshToken(
-      store.getState(),
-    );
+    const { store } = await getStoreModule();
+    const refreshToken = selectRefreshToken(store.getState());
 
     if (!refreshToken) {
       throw error;

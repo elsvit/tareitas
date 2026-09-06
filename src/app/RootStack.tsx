@@ -31,7 +31,7 @@ import { useColorScheme } from '~/hooks/use-color-scheme';
 import { usePruneOrphanedTaskAssignments } from '~/hooks/usePruneOrphanedTaskAssignments';
 import { useCatalogForegroundSync } from '~/hooks/useCatalogForegroundSync';
 import { AppDispatch } from '~/store';
-import { initLanguage } from '~/store/settings';
+import { initLanguage, ensureAppInstalledAt } from '~/store/settings';
 import { selectIsLangInitiating, selectLang } from '~/store/settings/selectors';
 import { lightPaperTheme } from '~/styles/paperTheme';
 import { ELang } from '~/types/ELang';
@@ -64,6 +64,7 @@ export default function RootStack() {
 
   useEffect(() => {
     dispatch(initLanguage());
+    dispatch(ensureAppInstalledAt());
   }, [dispatch]);
 
   if (!fontsLoaded || isLangInitiating) {

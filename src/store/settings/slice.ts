@@ -35,6 +35,7 @@ const initialState: IStateSettings = {
   lastSessionActivityAt: null,
   pendingReturnRoute: null,
   sessionPauseCount: 0,
+  appInstalledAt: null,
 };
 
 export const settingsSlice = createSlice({
@@ -226,6 +227,11 @@ export const settingsSlice = createSlice({
         state.sessionPauseCount - 1,
       );
     },
+    ensureAppInstalledAt: state => {
+      if (!state.appInstalledAt) {
+        state.appInstalledAt = new Date().toISOString();
+      }
+    },
   },
 });
 
@@ -265,4 +271,5 @@ export const {
   resumeMultideviceSession,
   pauseSessionChecks,
   resumeSessionChecks,
+  ensureAppInstalledAt,
 } = settingsSlice.actions;

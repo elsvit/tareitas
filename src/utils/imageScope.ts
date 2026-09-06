@@ -1,4 +1,4 @@
-import { isRemoteImageRef } from '~/services/imageSync';
+import { isRemoteImageRef } from '~/utils/imageRefs';
 import { toAbsoluteUploadUrl } from '~/services/api/uploadsApi';
 
 export function isUploadPathForFamily(

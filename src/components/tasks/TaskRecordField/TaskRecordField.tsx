@@ -19,10 +19,10 @@ import { Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
 import {
   TASKS_RECORD_MAX_SECONDS,
-  TASKS_RECORDS_MAXIMUM,
+  TASKS_RECORDS_MAXIMUN,
   TASKS_RECORDS_WITHOUT_SUBSCRIPTION,
 } from '~/constants/ads';
-import { useIsPro } from '~/hooks/useIsPro';
+import { useIsPro, useProFeatureAccess } from '~/hooks/useIsPro';
 import { useSubscription } from '~/hooks/useSubscription';
 import { t } from '~/services';
 import { uploadFamilyTaskRecordWithSession } from '~/services/api/uploadFamilyTaskRecord';
@@ -46,6 +46,7 @@ type Props = {
   value?: string | null;
   onChange?: (value: string | undefined) => void;
   recordDate: string;
+  assignmentId?: string;
   disabled?: boolean;
 };
 
@@ -53,8 +54,10 @@ export function TaskRecordField({
   value,
   onChange,
   recordDate,
+  assignmentId,
   disabled = false,
 }: Props) {
+  const hasProFeatureAccess = useProFeatureAccess();
   const { isPro } = useIsPro();
   const subscription = useSubscription();
   const assignments = useSelector(selectAllTaskAssignment);
@@ -82,13 +85,13 @@ export function TaskRecordField({
       canAddTaskRecord({
         assignments,
         date: recordDate,
-        hasExistingRecord: !!value,
-        isPro,
+        assignmentId,
+        isPro: hasProFeatureAccess,
         withoutSubscriptionLimit:
           TASKS_RECORDS_WITHOUT_SUBSCRIPTION,
-        maximumLimit: TASKS_RECORDS_MAXIMUM,
+        maximumLimit: TASKS_RECORDS_MAXIMUN,
       }),
-    [assignments, isPro, recordDate, value],
+    [assignments, assignmentId, hasProFeatureAccess, recordDate],
   );
 
   const isRecording = recorderState.isRecording;
@@ -104,7 +107,7 @@ export function TaskRecordField({
 
     await recorder.stop();
 
-    const uri = recorder.uri;
+    const uri = recorder.uri ?? recorder.getStatus().url;
 
     if (!uri) {
       setError(t('tasks.record_failed'));
@@ -119,12 +122,21 @@ export function TaskRecordField({
       let nextValue = localUri;
 
       if (isMultidevice && familyId) {
-        const uploaded = await uploadFamilyTaskRecordWithSession(
-          familyId,
-          localUri,
-        );
+        try {
+          const uploaded = await uploadFamilyTaskRecordWithSession(
+            familyId,
+            localUri,
+          );
 
-        nextValue = uploaded.path;
+          nextValue = uploaded.path;
+        } catch (uploadError) {
+          if (__DEV__) {
+            console.warn(
+              'Task record upload failed, keeping local file',
+              uploadError,
+            );
+          }
+        }
       }
 
       if (value) {
@@ -132,7 +144,11 @@ export function TaskRecordField({
       }
 
       onChange?.(nextValue);
-    } catch {
+    } catch (saveError) {
+      if (__DEV__) {
+        console.error('Task record save failed', saveError);
+      }
+
       setError(t('tasks.record_failed'));
     } finally {
       setIsSaving(false);
@@ -217,95 +233,117 @@ export function TaskRecordField({
     player.play();
   };
 
+  const isRecordControlDisabled =
+    disabled ||
+    isSaving ||
+    (!isRecording && limits.isRecordDisabled);
+
+  const handleRecordPress = () => {
+    if (isRecording) {
+      void stopRecording();
+      return;
+    }
+
+    void startRecording();
+  };
+
+  const renderRecordButton = () => (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={
+        isRecording ? t('tasks.record_pause') : t('tasks.record')
+      }
+      onPress={handleRecordPress}
+      disabled={isRecordControlDisabled}
+      style={[
+        styles.iconActionButton,
+        isRecordControlDisabled && styles.iconActionButtonDisabled,
+      ]}
+    >
+      {isSaving ? (
+        <ActivityIndicator color={Colors.grey800} />
+      ) : (
+        <MaterialCommunityIcons
+          name={isRecording ? 'stop' : 'microphone'}
+          size={24}
+          color={Colors.grey800}
+        />
+      )}
+    </Pressable>
+  );
+
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{t('tasks.record')}</Text>
-
-      {!value ? (
-        <View style={styles.actionsRow}>
-          <Pressable
-            accessibilityRole="button"
-            onPress={isRecording ? stopRecording : startRecording}
-            disabled={
-              disabled ||
-              isSaving ||
-              (!isRecording && limits.isRecordDisabled)
-            }
-            style={[
-              styles.recordButton,
-              (disabled ||
-                isSaving ||
-                (!isRecording && limits.isRecordDisabled)) &&
-                styles.recordButtonDisabled,
-            ]}
-          >
-            {isSaving ? (
-              <ActivityIndicator color={Colors.white} />
-            ) : (
+      <View style={styles.actionsRow}>
+        {value ? (
+          <>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={
+                playerStatus.playing
+                  ? t('tasks.record_pause')
+                  : t('tasks.record_play')
+              }
+              onPress={handlePlay}
+              disabled={isRecording || isSaving}
+              style={[
+                styles.iconActionButton,
+                (isRecording || isSaving) && styles.iconActionButtonDisabled,
+              ]}
+            >
               <MaterialCommunityIcons
-                name={isRecording ? 'stop' : 'microphone'}
-                size={22}
-                color={Colors.white}
+                name={playerStatus.playing ? 'pause-circle' : 'play-circle'}
+                size={24}
+                color={Colors.grey800}
               />
-            )}
-          </Pressable>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={t('tasks.record_delete')}
+              onPress={handleDelete}
+              disabled={isRecording || isSaving}
+              style={[
+                styles.iconActionButton,
+                (isRecording || isSaving) && styles.iconActionButtonDisabled,
+              ]}
+            >
+              <MaterialCommunityIcons
+                name="delete-outline"
+                size={24}
+                color={Colors.grey800}
+              />
+            </Pressable>
+            {renderRecordButton()}
+          </>
+        ) : (
+          <>
+            {renderRecordButton()}
+            {limits.showSubscriptionHelp ? (
+              <IconButton
+                Icon={<HelpCircleIcon width={22} height={22} />}
+                onPress={() => setIsSubscriptionModalVisible(true)}
+                size={32}
+                accessibilityLabel={t('subscription.modal_title')}
+              />
+            ) : null}
+          </>
+        )}
+      </View>
 
-          {limits.showSubscriptionHelp ? (
-            <IconButton
-              Icon={<HelpCircleIcon width={22} height={22} />}
-              onPress={() => setIsSubscriptionModalVisible(true)}
-              size={32}
-              accessibilityLabel={t('subscription.modal_title')}
-            />
-          ) : null}
-        </View>
-      ) : (
-        <View style={styles.actionsRow}>
-          <Pressable
-            accessibilityRole="button"
-            onPress={handlePlay}
-            style={styles.actionChip}
-          >
-            <Text style={styles.actionChipText}>
-              {playerStatus.playing
-                ? t('tasks.record_pause')
-                : t('tasks.record_play')}
-            </Text>
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            onPress={handleDelete}
-            style={styles.actionChip}
-          >
-            <Text style={styles.actionChipText}>
-              {t('tasks.record_delete')}
-            </Text>
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            onPress={startRecording}
-            disabled={disabled || limits.isRecordDisabled || isSaving}
-            style={[
-              styles.actionChip,
-              (disabled || limits.isRecordDisabled || isSaving) &&
-                styles.actionChipDisabled,
-            ]}
-          >
-            <Text style={styles.actionChipText}>
-              {t('tasks.record_again')}
-            </Text>
-          </Pressable>
-        </View>
-      )}
-
-      {isRecording ? (
-        <Text style={styles.timerText}>
+      <View style={styles.timerSlot}>
+        <Text
+          variant="bodySmall"
+          style={[
+            styles.timerText,
+            !isRecording && styles.timerTextHidden,
+          ]}
+        >
           {t('tasks.record_timer', {
             seconds: recordingSeconds,
             max: TASKS_RECORD_MAX_SECONDS,
           })}
         </Text>
-      ) : null}
+      </View>
 
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
 

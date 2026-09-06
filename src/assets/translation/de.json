@@ -460,7 +460,16 @@
     "recurring_delete_following_desc": "Ab diesem Tag löschen",
     "recurring_delete_all": "Alle Aufgaben",
     "recurring_delete_all_desc": "Die gesamte Serie löschen",
-    "task_end_date_before_start_date": "Das Enddatum darf nicht vor dem Startdatum liegen"
+    "task_end_date_before_start_date": "Das Enddatum darf nicht vor dem Startdatum liegen",
+    "record": "Aufnehmen",
+    "record_play": "▶️ Abspielen",
+    "record_pause": "⏸ Pause",
+    "record_delete": "🗑️ Löschen",
+    "record_again": "🔄 Erneut aufnehmen",
+    "record_timer": "{{seconds}}s / {{max}}s",
+    "record_failed": "Aufnahme konnte nicht gespeichert werden",
+    "record_permission_denied": "Mikrofonberechtigung ist zum Aufnehmen erforderlich",
+    "subtasks_maximum": "Maximal {{maximum}} Unteraufgaben erlaubt"
   },
   "habits": {
     "title": "Routinen",

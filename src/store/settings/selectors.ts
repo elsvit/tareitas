@@ -9,6 +9,7 @@ import { getTodayDateString } from '~/utils/date';
 import { ERole, ESyncMode } from './enums';
 import type { IStateSettings } from './types';
 import { isAdFreeSubscription } from '~/types/ISubscription';
+import { shouldEnforceFreeTierLimits } from '~/utils/subscriptionLimits';
 
 function decodeJwtSub(token: string): string | null {
   try {
@@ -129,6 +130,14 @@ export const selectFamilySubscription = (state: RootStateT) =>
 export const selectIsAdFreeBySubscription = createSelector(
   [selectFamilySubscription],
   subscription => isAdFreeSubscription(subscription),
+);
+
+export const selectAppInstalledAt = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>).appInstalledAt;
+
+export const selectShouldEnforceFreeTierLimits = createSelector(
+  [selectAppInstalledAt],
+  appInstalledAt => shouldEnforceFreeTierLimits(appInstalledAt),
 );
 
 export const selectAuthToken = (state: RootStateT) =>
