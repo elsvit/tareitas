@@ -705,9 +705,9 @@
   "subscription": {
     "title": "Tareitas Pro",
     "menu_title": "Hirdetések eltávolítása",
-    "modal_title": "Hirdetésmentes",
-    "modal_description": "Fizess elő, hogy eltávolítsd a hirdetéseket és támogasd a Tareitast.",
-    "description": "Élvezd a Tareitast hirdetések nélkül. Az előfizetésed segít továbbfejleszteni az alkalmazást a családod számára.",
+    "modal_title": "Előfizetés",
+    "modal_description": "Fizess elő a hirdetések eltávolításához, további lehetőségek feloldásához és a Tareitas támogatásához.",
+    "description": "Távolítsd el a hirdetéseket és oldj fel több lehetőséget. Előfizetésed segít fejleszteni az appot a családod számára.",
     "yearly_price": "{{price}} / év",
     "subscribe": "Előfizetés",
     "restore": "Vásárlások visszaállítása",

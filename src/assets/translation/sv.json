@@ -705,9 +705,9 @@
   "subscription": {
     "title": "Tareitas Pro",
     "menu_title": "Ta bort annonser",
-    "modal_title": "Utan annonser",
-    "modal_description": "Prenumerera för att ta bort annonser och stödja Tareitas.",
-    "description": "Njut av Tareitas utan annonser. Din prenumeration hjälper oss att förbättra appen för din familj.",
+    "modal_title": "Prenumerera",
+    "modal_description": "Prenumerera för att ta bort annonser, låsa upp fler möjligheter och stödja Tareitas.",
+    "description": "Ta bort annonser och lås upp fler möjligheter. Din prenumeration hjälper oss att förbättra appen för din familj.",
     "yearly_price": "{{price}} / år",
     "subscribe": "Prenumerera",
     "restore": "Återställ köp",

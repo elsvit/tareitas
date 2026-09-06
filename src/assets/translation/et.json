@@ -752,9 +752,9 @@
   "subscription": {
     "title": "Tareitas Pro",
     "menu_title": "Eemalda reklaamid",
-    "modal_title": "Reklaamideta",
-    "modal_description": "Telli, et eemaldada reklaamid ja toetada Tareitast.",
-    "description": "Nauti Tareitast ilma reklaamideta. Sinu tellimus aitab meil rakendust sinu pere jaoks paremaks muuta.",
+    "modal_title": "Telli",
+    "modal_description": "Telli, et eemaldada reklaamid, avada rohkem võimalusi ja toetada Tareitast.",
+    "description": "Eemalda reklaamid ja ava rohkem võimalusi. Sinu tellimus aitab meil rakendust sinu pere jaoks paremaks muuta.",
     "yearly_price": "{{price}} / aasta",
     "subscribe": "Telli",
     "restore": "Taasta ostud",

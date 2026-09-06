@@ -753,9 +753,9 @@
   "subscription": {
     "title": "Tareitas Pro",
     "menu_title": "Poista mainokset",
-    "modal_title": "Ilman mainoksia",
-    "modal_description": "Tilaa poistaaksesi mainokset ja tukeaksesi Tareitasta.",
-    "description": "Nauti Tareitasta ilman mainoksia. Tilauksesi auttaa meitä parantamaan sovellusta perheellesi.",
+    "modal_title": "Tilaa",
+    "modal_description": "Tilaa poistaaksesi mainokset, avataksesi lisää mahdollisuuksia ja tukeaksesi Tareitasta.",
+    "description": "Poista mainokset ja avaa lisää mahdollisuuksia. Tilauksesi auttaa meitä parantamaan sovellusta perheellesi.",
     "yearly_price": "{{price}} / vuosi",
     "subscribe": "Tilaa",
     "restore": "Palauta ostot",

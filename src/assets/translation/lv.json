@@ -705,9 +705,9 @@
   "subscription": {
     "title": "Tareitas Pro",
     "menu_title": "Noņemt reklāmas",
-    "modal_title": "Bez reklāmām",
-    "modal_description": "Abonējiet, lai noņemtu reklāmas un atbalstītu Tareitas.",
-    "description": "Izbaudiet Tareitas bez reklāmām. Jūsu abonements palīdz mums uzlabot lietotni jūsu ģimenei.",
+    "modal_title": "Abonēt",
+    "modal_description": "Abonējiet, lai noņemtu reklāmas, atbloķētu vairāk iespēju un atbalstītu Tareitas.",
+    "description": "Noņemiet reklāmas un atbloķējiet vairāk iespēju. Jūsu abonements palīdz mums uzlabot lietotni jūsu ģimenei.",
     "yearly_price": "{{price}} / gads",
     "subscribe": "Abonēt",
     "restore": "Atjaunot pirkumus",

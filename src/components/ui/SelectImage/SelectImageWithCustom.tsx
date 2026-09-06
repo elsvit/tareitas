@@ -14,9 +14,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button, ButtonColors, Text } from '~/components/ui';
+import { IconButton } from '~/components/ui/IconButton';
 import { saveImageToDevice } from '~/components/ui/ImageLoader/ImageLoader.utils';
+import { SubscriptionModal } from '~/components/subscriptions/SubscriptionModal';
+import HelpCircleIcon from '~/assets/svg/common/help-circle.svg';
+import { IMAGES_MAXIMUM, IMAGES_WITHOUT_SUBSCRIPTION } from '~/constants/ads';
 import { SCREEN_TEXT } from '~/constants/formField';
+import { useIsPro } from '~/hooks/useIsPro';
 import { useMediaSessionPause } from '~/hooks/useSessionPause';
+import { useSubscription } from '~/hooks/useSubscription';
 import { t } from '~/services';
 import { uploadFamilyImageWithSession } from '~/services/api/uploadFamilyImageWithSession';
 import { createId } from '~/utils/createId';
@@ -95,6 +101,8 @@ type Props = {
   avatarMaxRows?: number;
   /** When set, loaded/custom photos scroll horizontally with at most this many rows. */
   loadedPhotosMaxRows?: number;
+  /** When true, uses 1 row for fewer than 8 photos and 2 rows for 8 or more. */
+  loadedPhotosAutoRows?: boolean;
   /** When false, hides the "Loaded photos" heading above custom uploads. */
   showLoadedPhotosLabel?: boolean;
   /** When true, shows loaded photos above the load button instead of below it. */
@@ -110,6 +118,7 @@ export function SelectImageWithCustom({
   label,
   avatarMaxRows,
   loadedPhotosMaxRows,
+  loadedPhotosAutoRows = false,
   showLoadedPhotosLabel = true,
   loadPhotoButtonBelowLoadedPhotos = false,
 }: Props) {
@@ -129,7 +138,13 @@ export function SelectImageWithCustom({
   const usedTaskIds = useSelector(selectUsedTaskImageIds);
   const usedRewardIds = useSelector(selectUsedRewardImageIds);
 
+  const { isPro } = useIsPro();
+  const subscription = useSubscription();
+  const enforceImageLimits = kind === 'task' || kind === 'reward';
+
   const [isPickModalOpen, setIsPickModalOpen] = useState(false);
+  const [isSubscriptionModalVisible, setIsSubscriptionModalVisible] =
+    useState(false);
   const [isManipulatorOpen, setIsManipulatorOpen] = useState(false);
   const [draftUri, setDraftUri] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -198,7 +213,34 @@ export function SelectImageWithCustom({
     value,
   ]);
 
+  const loadedPhotosCount =
+    kind === 'task'
+      ? scopedTaskEntries.length
+      : kind === 'reward'
+        ? scopedRewardEntries.length
+        : customEntries.length;
+  const isAtMaximumLimit =
+    enforceImageLimits && loadedPhotosCount >= IMAGES_MAXIMUM;
+  const isAtFreeLimit =
+    enforceImageLimits &&
+    !isPro &&
+    loadedPhotosCount >= IMAGES_WITHOUT_SUBSCRIPTION;
+  const isLoadPhotoDisabled = isAtMaximumLimit || isAtFreeLimit;
+  const showSubscriptionHelp = isAtFreeLimit && !isAtMaximumLimit;
+
+  const handleSubscribe = useCallback(async () => {
+    const success = await subscription.subscribe();
+
+    if (success) {
+      setIsSubscriptionModalVisible(false);
+    }
+  }, [subscription]);
+
   const openPickModal = () => {
+    if (isLoadPhotoDisabled) {
+      return;
+    }
+
     setIsPickModalOpen(true);
   };
 
@@ -322,23 +364,50 @@ export function SelectImageWithCustom({
     );
   });
 
+  const resolvedLoadedPhotosMaxRows = loadedPhotosAutoRows
+    ? customEntries.length >= 8
+      ? 2
+      : 1
+    : loadedPhotosMaxRows;
+
   const loadedPhotosGrid =
-    loadedPhotosMaxRows === 1 ? (
+    resolvedLoadedPhotosMaxRows === 1 ? (
       <LoadedPhotosRow>{customPhotoItems}</LoadedPhotosRow>
     ) : (
-      <AvatarGrid maxRows={loadedPhotosMaxRows ?? avatarMaxRows}>
+      <AvatarGrid maxRows={resolvedLoadedPhotosMaxRows ?? avatarMaxRows}>
         {customPhotoItems}
       </AvatarGrid>
     );
 
   const loadPhotoButton = (
-    <Pressable
-      accessibilityRole="button"
-      onPress={openPickModal}
-      style={styles.loadPhotoButton}
-    >
-      <Text style={styles.loadPhotoText}>{t('imageLoader.load_photo')}</Text>
-    </Pressable>
+    <View style={styles.loadPhotoRow}>
+      <Pressable
+        accessibilityRole="button"
+        onPress={openPickModal}
+        disabled={isLoadPhotoDisabled}
+        style={[
+          styles.loadPhotoButton,
+          isLoadPhotoDisabled && styles.loadPhotoButtonDisabled,
+        ]}
+      >
+        <Text
+          style={[
+            styles.loadPhotoText,
+            isLoadPhotoDisabled && styles.loadPhotoTextDisabled,
+          ]}
+        >
+          {t('imageLoader.load_photo')}
+        </Text>
+      </Pressable>
+      {showSubscriptionHelp ? (
+        <IconButton
+          Icon={<HelpCircleIcon width={22} height={22} />}
+          onPress={() => setIsSubscriptionModalVisible(true)}
+          size={32}
+          accessibilityLabel={t('subscription.modal_title')}
+        />
+      ) : null}
+    </View>
   );
 
   const loadedPhotosSection =
@@ -501,6 +570,21 @@ export function SelectImageWithCustom({
           </SafeAreaView>
         </View>
       </Modal>
+
+      {enforceImageLimits ? (
+        <SubscriptionModal
+          isVisible={isSubscriptionModalVisible}
+          onRequestClose={() => setIsSubscriptionModalVisible(false)}
+          yearlyPrice={subscription.yearlyPrice}
+          isLoading={subscription.isLoading}
+          isPurchasing={subscription.isPurchasing}
+          isPro={subscription.isPro}
+          isAvailable={subscription.isAvailable}
+          error={subscription.error}
+          onSubscribe={handleSubscribe}
+          onRestore={subscription.restore}
+        />
+      ) : null}
     </>
   );
 }

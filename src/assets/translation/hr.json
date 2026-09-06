@@ -705,9 +705,9 @@
   "subscription": {
     "title": "Tareitas Pro",
     "menu_title": "Ukloni oglase",
-    "modal_title": "Bez oglasa",
-    "modal_description": "Pretplatite se kako biste uklonili oglase i podržali Tareitas.",
-    "description": "Uživajte u Tareitasu bez oglasa. Vaša pretplata pomaže nam da aplikaciju poboljšavamo za vašu obitelj.",
+    "modal_title": "Pretplati se",
+    "modal_description": "Pretplatite se kako biste uklonili oglase, otključali više mogućnosti i podržali Tareitas.",
+    "description": "Uklonite oglase i otključajte više mogućnosti. Vaša pretplata pomaže nam poboljšati aplikaciju za vašu obitelj.",
     "yearly_price": "{{price}} / godina",
     "subscribe": "Pretplati se",
     "restore": "Vrati kupnje",

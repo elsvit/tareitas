@@ -705,9 +705,9 @@
   "subscription": {
     "title": "Tareitas Pro",
     "menu_title": "Advertenties verwijderen",
-    "modal_title": "Reclamevrij",
-    "modal_description": "Abonneer om advertenties te verwijderen en Tareitas te steunen.",
-    "description": "Geniet van Tareitas zonder advertenties. Je abonnement helpt ons de app voor je gezin te verbeteren.",
+    "modal_title": "Abonneren",
+    "modal_description": "Abonneer om advertenties te verwijderen, meer mogelijkheden te ontgrendelen en Tareitas te steunen.",
+    "description": "Verwijder advertenties en ontgrendel meer mogelijkheden. Je abonnement helpt ons de app voor je gezin te blijven verbeteren.",
     "yearly_price": "{{price}} / jaar",
     "subscribe": "Abonneren",
     "restore": "Aankopen herstellen",

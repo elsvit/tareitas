@@ -429,7 +429,7 @@ export const BaseTaskForm: FC<Props> = ({
                   options={taskImageOptions}
                   value={value}
                   onChange={onChange}
-                  loadedPhotosMaxRows={2}
+                  loadedPhotosAutoRows
                   showLoadedPhotosLabel={false}
                   loadPhotoButtonBelowLoadedPhotos
                 />

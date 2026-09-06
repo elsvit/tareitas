@@ -5,11 +5,11 @@ import { useRouter } from 'expo-router';
 import { Divider, List } from 'react-native-paper';
 import { SvgProps } from 'react-native-svg';
 
+import CheckCircleIcon from '~/assets/svg/common/check-circle-outline.svg';
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
-import CheckCircleIcon from '~/assets/svg/common/check-circle-outline.svg';
-import ImageXIcon from '~/assets/svg/more/image-x.svg';
 import InfoIcon from '~/assets/svg/common/info.svg';
+import ImageXIcon from '~/assets/svg/more/image-x.svg';
 import SettingsIcon from '~/assets/svg/more/settings.svg';
 import RewardsIcon from '~/assets/svg/rewards/rewards.svg';
 import TasksIcon from '~/assets/svg/tasks/tasks-open.svg';
@@ -22,6 +22,7 @@ import { useIsPro } from '~/hooks/useIsPro';
 import { useSubscription } from '~/hooks/useSubscription';
 import { t } from '~/services';
 import { spacing, styleSheetFactory } from '~/styles';
+import { Colors } from '~/styles/colors';
 import { useStyle } from '~/styles/hooks';
 import { EScreens } from '~/types/ENavigation';
 
@@ -86,7 +87,7 @@ export default function More() {
           navigateTo: EScreens.LoadedPhotos,
         },
         {
-          title: t('subscription.menu_title'),
+          title: t('subscription.title'),
           description: subscriptionDescription,
           Icon: CheckCircleIcon,
           navigateTo: EScreens.Subscription,
@@ -233,7 +234,7 @@ const themedStyles = styleSheetFactory(palette => ({
     lineHeight: 20,
     letterSpacing: 0.2,
     fontWeight: '400',
-    color: palette.text.placeholder,
+    color: Colors.grey500,
   },
   subItem: {
     height: 48,

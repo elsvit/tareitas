@@ -1,28 +1,29 @@
 import { styleSheetFactory, spacing } from '~/styles';
+import { Colors } from '~/styles/colors';
 
-const themedStyles = styleSheetFactory(palette => ({
+const themedStyles = styleSheetFactory(() => ({
   container: {
     gap: spacing(3),
   },
   title: {
     textAlign: 'center',
-    color: palette.text.primary,
+    color: Colors.grey800,
   },
   message: {
     textAlign: 'center',
-    color: palette.text.secondary,
+    color: Colors.grey500,
     lineHeight: 22,
   },
   price: {
     textAlign: 'center',
-    color: palette.text.primary,
+    color: Colors.grey800,
   },
   loader: {
     marginVertical: spacing(2),
   },
   error: {
     textAlign: 'center',
-    color: palette.text.error,
+    color: Colors.red500,
   },
   subscribeButton: {
     marginTop: spacing(1),
@@ -32,7 +33,7 @@ const themedStyles = styleSheetFactory(palette => ({
     paddingVertical: spacing(2),
   },
   restoreText: {
-    color: palette.text.secondary,
+    color: Colors.grey500,
     textDecorationLine: 'underline',
   },
 }));
