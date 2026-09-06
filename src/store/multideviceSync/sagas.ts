@@ -20,6 +20,7 @@ import {
 } from '~/services/api/rewardsApi';
 import { fetchFamilyDetails } from '~/services/api';
 import { isAdFreeSubscription } from '~/types/ISubscription';
+import { resolveFamilySubscriptionForClient } from '~/services/subscriptions/devSubscriptionEmulation';
 import { setCachedIsPro } from '~/hooks/useIsPro';
 import { setFamilySubscription } from '~/store/settings/slice';
 import { getFamilyEarnedRewardPeriods } from '~/services/api/earnedRewardPeriodsApi';
@@ -423,6 +424,11 @@ export function* syncFamilyMembersFromServerSaga(): Generator<
     }
   }
 
-  yield put(setFamilySubscription(family.subscription ?? null));
-  setCachedIsPro(isAdFreeSubscription(family.subscription));
+  const resolvedSubscription = resolveFamilySubscriptionForClient(
+    family,
+    family.subscription,
+  );
+
+  yield put(setFamilySubscription(resolvedSubscription));
+  setCachedIsPro(isAdFreeSubscription(resolvedSubscription));
 }

@@ -36,6 +36,7 @@ import {
   mapServerParentToLocal,
 } from '~/services/api/memberMappers';
 import { applyFamilySubscriptionFromServer } from '~/services/subscriptions/familySubscriptionSync';
+import { resolveFamilySubscriptionForClient } from '~/services/subscriptions/devSubscriptionEmulation';
 import { loginRevenueCatForFamily } from '~/services/subscriptions/revenueCatInit';
 import { selectAllChildren, selectChildById } from '~/store/children/selectors';
 import type {
@@ -154,7 +155,13 @@ export function hydrateFamilyStore(
   dispatch(setCurrentUser(loggedInUser.id));
   dispatch(setCurrentRole(mapServerRole(loggedInUser.role)));
   dispatch(setRequireLogin(false));
-  applyFamilySubscriptionFromServer(dispatch, family.subscription);
+  applyFamilySubscriptionFromServer(
+    dispatch,
+    resolveFamilySubscriptionForClient(
+      family,
+      family.subscription,
+    ),
+  );
   void loginRevenueCatForFamily(family.id);
   dispatch(syncCatalog());
 }

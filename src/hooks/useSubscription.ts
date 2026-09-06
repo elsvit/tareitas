@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { t } from '~/services';
-import { isRevenueCatNativeModuleAvailable } from '~/services/subscriptions/revenueCatInit';
+import { isRevenueCatReady } from '~/services/subscriptions/revenueCatInit';
 import { setCachedIsPro } from '~/hooks/useIsPro';
 import {
   getIsPro,
@@ -27,7 +27,7 @@ export function useSubscription() {
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const isAvailable = isRevenueCatNativeModuleAvailable();
+  const isAvailable = isRevenueCatReady();
 
   const refresh = useCallback(async () => {
     if (!isAvailable) {
