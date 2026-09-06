@@ -1228,7 +1228,9 @@ export const AssignmentTaskForm: FC<Props> = ({
                   value={value ?? ''}
                   onChange={onChange}
                   avatarMaxRows={4}
-                  loadedPhotosMaxRows={2}
+                  loadedPhotosMaxRows={1}
+                  showLoadedPhotosLabel={false}
+                  loadPhotoButtonBelowLoadedPhotos
                 />
               )}
             />

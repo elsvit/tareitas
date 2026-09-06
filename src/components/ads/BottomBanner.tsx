@@ -106,8 +106,8 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: -36,
-    left: 8,
+    top: -24,
+    right: 4,
     zIndex: 11,
     backgroundColor: 'rgba(255,255,255,0.92)',
   },

@@ -6,8 +6,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { z } from 'zod';
 
-import { ScreenHeader } from '~/components/blocks';
 import { BottomBanner, useBottomBannerScrollPadding } from '~/components/ads/BottomBanner';
+import { ScreenHeader } from '~/components/blocks';
 import { DeleteModal } from '~/components/modals';
 import {
   Button,
@@ -23,12 +23,12 @@ import { SelectMulti } from '~/components/ui/SelectMulti';
 import { getRewardImageOptions } from '~/constants/rewards';
 import { t } from '~/services';
 import { selectDedupedChildren } from '~/store/children/selectors';
-import { removeRewardAssignment } from '~/store/rewardAssignment/slice';
 import {
   normalizeRewardChildIdsForSave,
   rewardChildIdsForForm,
 } from '~/store/rewardAssignment/childIds';
 import { selectPreviousRewardTemplates } from '~/store/rewardAssignment/selectors';
+import { removeRewardAssignment } from '~/store/rewardAssignment/slice';
 import { selectAllRewardBase } from '~/store/rewardBase/selectors';
 import { ERole } from '~/store/settings/enums';
 import { selectCurrentRole } from '~/store/settings/selectors';
@@ -38,8 +38,8 @@ import {
   RewardAssignmentFormProps,
 } from '~/types/IReward';
 
-import { styles } from './styles';
 import { PreviousRewardSelect } from './PreviousRewardSelect';
+import { styles } from './styles';
 
 type Props = {
   title?: string;
