@@ -46,6 +46,7 @@ export const ChildListItem: React.FC<Props> = ({ id, onPress }) => {
       avatar={child.avatar}
       color={child.color}
       onPress={canEdit || onPress ? handlePress : undefined}
+      showEditIcon={canEdit}
     />
   );
 };

@@ -16,11 +16,11 @@ import { mapServerChildToLocal } from '~/services/api/memberMappers';
 import { clearFamilyStore, hydrateFamilyStore } from '~/services/familySync';
 import { signupAndLoadFamily } from '~/services/multideviceSetup';
 import {
-  buildSignupFamilyPayload,
-  createPlaceholderChildSignupData,
-  formatOnboardingSignupError,
-  syncOnboardingAdminProfile,
-  syncOnboardingChildProfile,
+    buildSignupFamilyPayload,
+    createPlaceholderChildSignupData,
+    formatOnboardingSignupError,
+    syncOnboardingAdminProfile,
+    syncOnboardingChildProfile,
 } from '~/services/onboardingSignup';
 import type { AppDispatch } from '~/store';
 import { addChild, clearChildren, updateChildSuccess } from '~/store/children/slice';
@@ -29,19 +29,19 @@ import { selectParentIds } from '~/store/parents/selectors';
 import { addParent, clearParents, updateParentSuccess } from '~/store/parents/slice';
 import { EFamilyRole, ERole, ESyncMode } from '~/store/settings/enums';
 import {
-  selectAuthToken,
-  selectAuthUserId,
-  selectFamilyId,
-  selectPendingReturnRoute,
-  selectRequireLogin,
-  selectSyncMode,
+    selectAuthToken,
+    selectAuthUserId,
+    selectFamilyId,
+    selectPendingReturnRoute,
+    selectRequireLogin,
+    selectSyncMode,
 } from '~/store/settings/selectors';
 import {
-  setCurrentRole,
-  setCurrentUser,
-  setPendingReturnRoute,
-  setRequireLogin,
-  setSyncMode,
+    setCurrentRole,
+    setCurrentUser,
+    setPendingReturnRoute,
+    setRequireLogin,
+    setSyncMode,
 } from '~/store/settings/slice';
 import { store } from '~/store/store';
 import { Colors, spacing } from '~/styles';
@@ -55,18 +55,18 @@ import { OnboardingSignUpAdminStep } from './OnboardingSignUpAdminStep';
 import { OnboardingSignUpChildStep } from './OnboardingSignUpChildStep';
 import { OnboardingStepHeader } from './OnboardingStepHeader';
 import {
-  OnboardingStepTransition,
-  type OnboardingTransitionDirection,
+    OnboardingStepTransition,
+    type OnboardingTransitionDirection,
 } from './OnboardingStepTransition';
 import {
-  OnboardingSyncModeStep,
-  type OnboardingSetupPath,
+    OnboardingSyncModeStep,
+    type OnboardingSetupPath,
 } from './OnboardingSyncModeStep';
 import {
-  ONBOARDING_DEVICE_ONLY_TOTAL,
-  ONBOARDING_INTRO_SLIDES_COUNT,
-  ONBOARDING_MULTIDEVICE_TOTAL,
-  ONBOARDING_STEP,
+    ONBOARDING_DEVICE_ONLY_TOTAL,
+    ONBOARDING_INTRO_SLIDES_COUNT,
+    ONBOARDING_MULTIDEVICE_TOTAL,
+    ONBOARDING_STEP,
 } from './constants';
 import { getOnboardingIntroSlides } from './onboardingSlides';
 import { onboardingStyles as styles } from './styles';
@@ -466,7 +466,7 @@ export function OnboardingFlow({
           name: profile.name,
           color: profile.color ?? adminData.color,
           avatar: profile.avatar ?? adminData.avatar,
-          familyRole: profile.familyRole ?? adminData.familyRole,
+          familyRole: profile.familyRole ?? adminData.familyRole ?? EFamilyRole.mother,
           role: ERole.admin,
           passwordPattern: adminData.pin,
           createdAt: new Date().toISOString(),
