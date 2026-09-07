@@ -50,6 +50,7 @@ export const ParentListItem: React.FC<ParentListItemProps> = ({
       avatar={parent.avatar}
       color={parent.color}
       onPress={canEdit || onPress ? handlePress : undefined}
+      showEditIcon={canEdit}
     />
   );
 };

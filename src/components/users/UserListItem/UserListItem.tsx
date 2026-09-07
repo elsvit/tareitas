@@ -5,10 +5,12 @@ import { useSelector } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { CHILDREN_AVATARS, PARENT_AVATARS } from '~/assets/img/users/users';
+import EditIcon from '~/assets/svg/common/edit.svg';
 import { Text } from '~/components/ui';
 import { UserAvatar } from '~/components/users/UserAvatar';
 import { selectUserImageUrls } from '~/store/images';
 import { selectLang } from '~/store/settings/selectors';
+import { Colors } from '~/styles';
 import { getFamilyRoleLabel } from '~/utils/users';
 import { lightenColor } from '~/utils/color';
 
@@ -27,6 +29,7 @@ type Props = {
   familyRole?: string;
   color?: string;
   onPress?: () => void;
+  showEditIcon?: boolean;
 };
 
 export const UserListItem: React.FC<Props> = ({
@@ -37,6 +40,7 @@ export const UserListItem: React.FC<Props> = ({
   familyRole,
   color,
   onPress,
+  showEditIcon = false,
 }) => {
   const userUrls = useSelector(selectUserImageUrls);
 
@@ -57,6 +61,7 @@ export const UserListItem: React.FC<Props> = ({
       showLoginName={showLoginName}
       familyRole={familyRole}
       textColor={color}
+      showEditIcon={showEditIcon}
     />
   );
 
@@ -125,6 +130,7 @@ type RowProps = {
   showLoginName?: boolean;
   familyRole?: string;
   textColor?: string;
+  showEditIcon?: boolean;
 };
 
 const RowContent: React.FC<RowProps> = ({
@@ -135,6 +141,7 @@ const RowContent: React.FC<RowProps> = ({
   showLoginName = false,
   familyRole,
   textColor,
+  showEditIcon = false,
 }) => {
   const lang = useSelector(selectLang);
   const familyRoleText = React.useMemo(
@@ -189,6 +196,16 @@ const RowContent: React.FC<RowProps> = ({
           </Text>
         )}
       </View>
+
+      {showEditIcon ? (
+        <View style={styles.editIconWrap} accessibilityElementsHidden>
+          <EditIcon
+            width={24}
+            height={24}
+            fill={textColor ?? Colors.blue500}
+          />
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -220,6 +237,10 @@ const styles = StyleSheet.create({
   subtitle: {
     color: '#6B7280',
     marginTop: 2,
+  },
+  editIconWrap: {
+    marginLeft: 8,
+    flexShrink: 0,
   },
 });
 

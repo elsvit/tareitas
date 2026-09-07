@@ -77,7 +77,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/icon.png",
+          "image": "./assets/images/icon-stiker.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#60A5FA",

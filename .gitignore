@@ -49,4 +49,5 @@ android/app/tareitas-upload-key.keystore
 
 # Android signing
 product.keystore
+signing.properties
 product-upload-certificate.pem
