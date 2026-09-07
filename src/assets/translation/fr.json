@@ -607,7 +607,10 @@
         "description": "Tout reste sur ce téléphone ou cette tablette. Aucun compte requis."
       },
       "create_section_title": "Créer un nouveau groupe/famille",
-      "connect_section_title": "Se connecter à un groupe/famille existant"
+      "connect_section_title": "Se connecter à un groupe/famille existant",
+      "connect_device_only_section_title": "Se connecter à cet appareil uniquement",
+      "device_only_connect_hint": "Sélectionnez votre profil et saisissez votre PIN pour ouvrir la famille enregistrée sur cet appareil.",
+      "device_only_connect_empty": "Aucune famille enregistrée sur cet appareil. Créez d'abord un nouveau groupe."
     },
     "account": {
       "header": "Compte",

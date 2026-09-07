@@ -170,12 +170,16 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
   });
 
   React.useEffect(() => {
+    const currentAvatar = getValues('avatar');
+
     reset({
       username: child?.username ?? '',
       name: child?.name ?? '',
       color: child?.color ?? userColors.blue600,
       role: ERole.child,
-      avatar: child?.avatar ?? '',
+      avatar: child?.avatar?.trim()
+        ? child.avatar
+        : currentAvatar ?? '',
       passwordPattern: child?.passwordPattern ?? '',
     });
   }, [
@@ -185,6 +189,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
     child?.color,
     child?.avatar,
     child?.passwordPattern,
+    getValues,
     reset,
   ]);
 
@@ -359,14 +364,20 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
             <Controller
               control={control}
               name="avatar"
-              render={({ field: { value, onChange } }) => (
+              render={({ field: { value, onChange, onBlur } }) => (
                 <SelectImageWithCustom
                   kind="user"
                   options={CHILDREN_AVATARS}
                   value={value}
-                  onChange={onChange}
+                  onChange={nextValue => {
+                    onChange(nextValue);
+                    onBlur();
+                  }}
                   label={t('users.avatar')}
                   errorMessage={errors.avatar?.message}
+                  loadedPhotosAutoRows
+                  showLoadedPhotosLabel={false}
+                  loadPhotoButtonBelowLoadedPhotos
                 />
               )}
             />

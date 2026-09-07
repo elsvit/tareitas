@@ -48,8 +48,11 @@ export const saveImageToDevice = async (
   const directory = getImageDirectory(kind);
   const destination = getImageFile(kind, id);
 
-  directory.create({ intermediates: true, idempotent: true });
-  new File(preparedUri).copy(destination);
+  if (!directory.exists) {
+    directory.create({ intermediates: true, idempotent: true });
+  }
+
+  await new File(preparedUri).copy(destination);
 
   return destination.uri;
 };

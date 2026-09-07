@@ -652,7 +652,10 @@
         "description": "Todo permanece en este teléfono o tableta. No necesitas cuenta."
       },
       "create_section_title": "Crear nuevo grupo/familia",
-      "connect_section_title": "Conectar a un grupo/familia existente"
+      "connect_section_title": "Conectar a un grupo/familia existente",
+      "connect_device_only_section_title": "Conectar a solo este dispositivo",
+      "device_only_connect_hint": "Selecciona tu perfil e introduce tu PIN para abrir la familia guardada en este dispositivo.",
+      "device_only_connect_empty": "No hay familia guardada en este dispositivo. Crea un grupo nuevo primero."
     },
     "account": {
       "header": "Cuenta",

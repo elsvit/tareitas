@@ -607,7 +607,10 @@
         "description": "Vše zůstane v tomto telefonu nebo tabletu. Účet není potřeba."
       },
       "create_section_title": "Vytvořit novou skupinu/rodinu",
-      "connect_section_title": "Připojit se k existující skupině/rodině"
+      "connect_section_title": "Připojit se k existující skupině/rodině",
+      "connect_device_only_section_title": "Připojit k pouze tomuto zařízení",
+      "device_only_connect_hint": "Vyberte svůj profil a zadejte PIN pro otevření rodiny uložené v tomto zařízení.",
+      "device_only_connect_empty": "V tomto zařízení není uložena žádná rodina. Nejprve vytvořte novou skupinu."
     },
     "account": {
       "header": "Účet",

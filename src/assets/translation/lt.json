@@ -607,7 +607,10 @@
         "description": "Viskas lieka šiame telefone ar planšetėje. Paskyros nereikia."
       },
       "create_section_title": "Sukurti naują grupę/šeimą",
-      "connect_section_title": "Prisijungti prie esamos grupės/šeimos"
+      "connect_section_title": "Prisijungti prie esamos grupės/šeimos",
+      "connect_device_only_section_title": "Prisijungti tik prie šio įrenginio",
+      "device_only_connect_hint": "Pasirinkite savo profilį ir įveskite PIN, kad atidarytumėte šiame įrenginyje išsaugotą šeimą.",
+      "device_only_connect_empty": "Šiame įrenginyje nėra išsaugotos šeimos. Pirmiausia sukurkite naują grupę."
     },
     "account": {
       "header": "Paskyra",

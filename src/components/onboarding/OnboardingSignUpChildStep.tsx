@@ -60,6 +60,7 @@ export function OnboardingSignUpChildStep({
         child={child}
         onSave={handleSave}
         showScreenHeader={false}
+        embedded
         showUniqueUsername
         submitError={submitError}
       />

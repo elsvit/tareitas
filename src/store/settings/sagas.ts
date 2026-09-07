@@ -22,6 +22,7 @@ import { syncTaskBaseTranslations } from '~/store/taskBase/slice';
 
 import {
   selectHasAuthSession,
+  selectIsMultidevice,
   selectIsSessionPaused,
   selectLang,
 } from './selectors';
@@ -61,6 +62,12 @@ function* applyFamilyMemberCredentialUpdatesSaga(): Generator<
 }
 
 function* syncFamilyMembersSaga(): Generator<any, void, any> {
+  const isMultidevice: boolean = yield select(selectIsMultidevice);
+
+  if (!isMultidevice) {
+    return;
+  }
+
   const hasAuthSession: boolean = yield select(
     selectHasAuthSession,
   );
@@ -77,6 +84,12 @@ function* syncFamilyMembersSaga(): Generator<any, void, any> {
 }
 
 function* syncTaskAssignmentsSaga(): Generator<any, void, any> {
+  const isMultidevice: boolean = yield select(selectIsMultidevice);
+
+  if (!isMultidevice) {
+    return;
+  }
+
   const hasAuthSession: boolean = yield select(
     selectHasAuthSession,
   );
@@ -93,6 +106,12 @@ function* syncTaskAssignmentsSaga(): Generator<any, void, any> {
 }
 
 function* syncRewardsDataSaga(): Generator<any, void, any> {
+  const isMultidevice: boolean = yield select(selectIsMultidevice);
+
+  if (!isMultidevice) {
+    return;
+  }
+
   const hasAuthSession: boolean = yield select(
     selectHasAuthSession,
   );
@@ -109,6 +128,12 @@ function* syncRewardsDataSaga(): Generator<any, void, any> {
 }
 
 function* syncFamilyImagesSaga(): Generator<any, void, any> {
+  const isMultidevice: boolean = yield select(selectIsMultidevice);
+
+  if (!isMultidevice) {
+    return;
+  }
+
   const hasAuthSession: boolean = yield select(
     selectHasAuthSession,
   );
@@ -129,6 +154,12 @@ function* resumeMultideviceSessionSaga(): Generator<
   void,
   any
 > {
+  const isMultidevice: boolean = yield select(selectIsMultidevice);
+
+  if (!isMultidevice) {
+    return;
+  }
+
   const hasAuthSession: boolean = yield select(
     selectHasAuthSession,
   );

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   selectHasAuthSession,
+  selectIsMultidevice,
   selectIsSessionPaused,
 } from '~/store/settings/selectors';
 import {
@@ -42,6 +43,7 @@ export function useMultideviceScreenSync(
   scope: MultideviceScreenSyncScope,
 ) {
   const dispatch = useDispatch();
+  const isMultidevice = useSelector(selectIsMultidevice);
   const hasAuthSession = useSelector(selectHasAuthSession);
   const isSessionPaused = useSelector(selectIsSessionPaused);
   const appState = useRef(AppState.currentState);
@@ -51,16 +53,16 @@ export function useMultideviceScreenSync(
 
   useFocusEffect(
     useCallback(() => {
-      if (!hasAuthSession) {
+      if (!isMultidevice || !hasAuthSession) {
         return;
       }
 
       dispatchScopeSync(dispatch, scope);
-    }, [dispatch, hasAuthSession, scope]),
+    }, [dispatch, hasAuthSession, isMultidevice, scope]),
   );
 
   useEffect(() => {
-    if (!hasAuthSession) {
+    if (!isMultidevice || !hasAuthSession) {
       return;
     }
 
@@ -86,5 +88,5 @@ export function useMultideviceScreenSync(
     return () => {
       subscription.remove();
     };
-  }, [dispatch, hasAuthSession, scope]);
+  }, [dispatch, hasAuthSession, isMultidevice, scope]);
 }

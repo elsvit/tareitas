@@ -7,8 +7,11 @@ export async function saveTaskRecordToDevice(
   const directory = new Directory(Paths.document, 'records', 'tasks');
   const destination = new File(directory, `${id}.m4a`);
 
-  directory.create({ intermediates: true, idempotent: true });
-  new File(sourceUri).copy(destination);
+  if (!directory.exists) {
+    directory.create({ intermediates: true, idempotent: true });
+  }
+
+  await new File(sourceUri).copy(destination);
 
   return destination.uri;
 }

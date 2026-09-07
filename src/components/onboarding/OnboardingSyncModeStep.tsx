@@ -1,19 +1,29 @@
-import React from 'react';
-import { Pressable, View } from 'react-native';
+import React, { useState } from 'react';
+import { Pressable, TouchableOpacity, View } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 
+import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
+import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
 import { Space, Text } from '~/components/ui';
 import { t } from '~/services';
 import { ESyncMode } from '~/store/settings/enums';
 import { Colors } from '~/styles';
 
+import { DeviceOnlyConnectForm } from './DeviceOnlyConnectForm';
 import { FamilyConnectForm } from './FamilyConnectForm';
 import { OnboardingStepHeader } from './OnboardingStepHeader';
 import { onboardingStyles as styles } from './styles';
 
-export type OnboardingSetupPath = 'create' | 'connect';
+export type OnboardingSetupPath =
+  | 'create'
+  | 'connect'
+  | 'connect_device_only';
 
-const SETUP_PATHS: OnboardingSetupPath[] = ['create', 'connect'];
+const SETUP_PATHS: OnboardingSetupPath[] = [
+  'create',
+  'connect',
+  'connect_device_only',
+];
 
 type OnboardingSyncModeStepProps = {
   setupPath: OnboardingSetupPath;
@@ -29,6 +39,78 @@ type SyncModeOption = {
   description: string;
   accentColor: string;
 };
+
+type SyncModeOptionCardProps = SyncModeOption & {
+  selected: boolean;
+  onSelect: () => void;
+};
+
+function SyncModeOptionCard({
+  mode,
+  title,
+  description,
+  accentColor,
+  selected,
+  onSelect,
+}: SyncModeOptionCardProps) {
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+
+  return (
+    <View
+      style={[
+        styles.syncModeOption,
+        selected && {
+          borderColor: accentColor,
+          backgroundColor: 'rgba(255, 255, 255, 0.72)',
+        },
+      ]}
+    >
+      <Pressable
+        onPress={onSelect}
+        style={styles.syncModeOptionRow}
+        accessibilityRole="radio"
+        accessibilityState={{ selected }}
+      >
+        <RadioButton value={mode} color={accentColor} onPress={onSelect} />
+        <View style={styles.syncModeOptionContent}>
+          <Text
+            variant="titleMedium"
+            fontFamily="fredoka"
+            weight="bold"
+            color={selected ? accentColor : Colors.grey700}
+          >
+            {title}
+          </Text>
+        </View>
+      </Pressable>
+
+      <View style={styles.syncModeDescriptionSection}>
+        <TouchableOpacity
+          onPress={() => setIsDescriptionExpanded(prev => !prev)}
+          activeOpacity={0.8}
+          style={styles.syncModeDescriptionToggle}
+          accessibilityRole="button"
+          accessibilityState={{ expanded: isDescriptionExpanded }}
+        >
+          <Text style={styles.syncModeDescriptionLabel}>
+            {t('tasks.description')}
+          </Text>
+          {isDescriptionExpanded ? (
+            <ChevronUpIcon width={18} height={18} fill={Colors.grey700} />
+          ) : (
+            <ChevronDownIcon width={18} height={18} fill={Colors.grey700} />
+          )}
+        </TouchableOpacity>
+
+        {isDescriptionExpanded ? (
+          <Text variant="bodyMedium" style={styles.syncModeOptionDescription}>
+            {description}
+          </Text>
+        ) : null}
+      </View>
+    </View>
+  );
+}
 
 export function OnboardingSyncModeStep({
   setupPath,
@@ -97,50 +179,14 @@ export function OnboardingSyncModeStep({
             value={value}
           >
             <View style={styles.syncModeOptions}>
-              {syncModeOptions.map(option => {
-                const selected = value === option.mode;
-
-                return (
-                  <Pressable
-                    key={option.mode}
-                    onPress={() => onChange(option.mode)}
-                    style={[
-                      styles.syncModeOption,
-                      selected && {
-                        borderColor: option.accentColor,
-                        backgroundColor: 'rgba(255, 255, 255, 0.72)',
-                      },
-                    ]}
-                    accessibilityRole="radio"
-                    accessibilityState={{ selected }}
-                  >
-                    <View style={styles.syncModeOptionRow}>
-                      <RadioButton
-                        value={option.mode}
-                        color={option.accentColor}
-                      />
-                      <View style={styles.syncModeOptionContent}>
-                        <Text
-                          variant="titleMedium"
-                          fontFamily="fredoka"
-                          weight="bold"
-                          color={
-                            selected ? option.accentColor : Colors.grey700
-                          }
-                        >
-                          {option.title}
-                        </Text>
-                        <Text
-                          variant="bodyMedium"
-                          style={styles.syncModeOptionDescription}
-                        >
-                          {option.description}
-                        </Text>
-                      </View>
-                    </View>
-                  </Pressable>
-                );
-              })}
+              {syncModeOptions.map(option => (
+                <SyncModeOptionCard
+                  key={option.mode}
+                  {...option}
+                  selected={value === option.mode}
+                  onSelect={() => onChange(option.mode)}
+                />
+              ))}
             </View>
           </RadioButton.Group>
         ) : null}
@@ -181,6 +227,53 @@ export function OnboardingSyncModeStep({
 
         {setupPath === 'connect' ? (
           <FamilyConnectForm onSuccess={onMemberLoginSuccess} />
+        ) : null}
+      </View>
+
+      <Space size={3} />
+
+      <View
+        style={[
+          styles.syncModeSectionBox,
+          setupPath === 'connect_device_only' &&
+            styles.syncModeSectionBoxSelected,
+        ]}
+      >
+        <Pressable
+          onPress={() => onSetupPathChange('connect_device_only')}
+          style={styles.syncModeSectionHeader}
+          accessibilityRole="radio"
+          accessibilityState={{
+            selected: setupPath === 'connect_device_only',
+          }}
+        >
+          <RadioButton
+            value="connect_device_only"
+            status={
+              setupPath === 'connect_device_only'
+                ? 'checked'
+                : 'unchecked'
+            }
+            onPress={() => onSetupPathChange('connect_device_only')}
+            color={Colors.orange500}
+          />
+          <Text
+            variant="titleMedium"
+            fontFamily="fredoka"
+            weight="bold"
+            color={
+              setupPath === 'connect_device_only'
+                ? Colors.orange500
+                : Colors.grey700
+            }
+            style={styles.syncModeSectionHeaderText}
+          >
+            {t('onboarding.sync_mode.connect_device_only_section_title')}
+          </Text>
+        </Pressable>
+
+        {setupPath === 'connect_device_only' ? (
+          <DeviceOnlyConnectForm onSuccess={onMemberLoginSuccess} />
         ) : null}
       </View>
 

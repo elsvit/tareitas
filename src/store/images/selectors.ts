@@ -6,6 +6,7 @@ import {
   isImageRefForFamily,
   mergeFamilyUploadImageEntries,
 } from '~/utils/imageScope';
+import { isRemoteImageRef } from '~/utils/imageRefs';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectAllParents } from '~/store/parents/selectors';
 import { selectAllRewardAssignment } from '~/store/rewardAssignment/selectors';
