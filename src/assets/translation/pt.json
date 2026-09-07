@@ -294,33 +294,33 @@
       "waterPlantsDescription": "Regar as plantas",
       "morningRoutine": {
         "title": "Rotina matinal",
-        "description": "Rotina matinal",
+        "description": "Rotina matinal (com subtarefas)",
         "subtask1": "Acordar",
         "subtask2": "Escovar os dentes",
-        "subtask3": "Lave-se",
-        "subtask4": "Arrume a cama",
-        "subtask5": "Vista-se"
+        "subtask3": "Higienizar-se",
+        "subtask4": "Fazer a cama",
+        "subtask5": "Vestir-se"
       },
       "eveningRoutine": {
         "title": "Rotina noturna",
-        "description": "Rotina noturna",
+        "description": "Rotina noturna (com subtarefas)",
         "subtask1": "Escovar os dentes",
-        "subtask2": "Lave-se"
+        "subtask2": "Higienizar-se"
       },
       "afterSchool": {
         "title": "Depois da escola",
-        "description": "Depois da escola",
-        "subtask1": "Faça a lição de casa",
-        "subtask2": "Confira a programação",
-        "subtask3": "Arrume a mochila"
+        "description": "Depois da escola (com subtarefas)",
+        "subtask1": "Fazer o dever de casa",
+        "subtask2": "Verificar o horário",
+        "subtask3": "Preparar a mochila"
       },
       "creativeWork": {
         "title": "Trabalho criativo",
-        "description": "Trabalho criativo",
-        "subtask1": "Preparar materiais",
-        "subtask2": "Conclua a tarefa criativa",
-        "subtask3": "Arrume o espaço de trabalho",
-        "subtask4": "Lave as mãos",
+        "description": "Trabalho criativo (com subtarefas)",
+        "subtask1": "Preparar os materiais",
+        "subtask2": "Concluir a tarefa criativa",
+        "subtask3": "Organizar o espaço de trabalho",
+        "subtask4": "Lavar as mãos",
         "subtask5": "Mostrar o resultado"
       },
       "washYourFace": "Lave seu rosto",

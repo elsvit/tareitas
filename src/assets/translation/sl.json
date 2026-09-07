@@ -295,34 +295,34 @@
       "waterPlantsDescription": "Zalijte sobne rastline",
       "morningRoutine": {
         "title": "Jutranja rutina",
-        "description": "Jutranja rutina",
-        "subtask1": "Zbudi se",
-        "subtask2": "Ščetkati zobe",
-        "subtask3": "Umijte se",
-        "subtask4": "Pospravi posteljo",
-        "subtask5": "oblecite se"
+        "description": "Jutranja rutina (s podnalogami)",
+        "subtask1": "Zbuditi se",
+        "subtask2": "Umivati zobe",
+        "subtask3": "Umiti se",
+        "subtask4": "Pospraviti posteljo",
+        "subtask5": "Obleči se"
       },
       "eveningRoutine": {
         "title": "Večerna rutina",
-        "description": "Večerna rutina",
-        "subtask1": "Ščetkati zobe",
-        "subtask2": "Umijte se"
+        "description": "Večerna rutina (s podnalogami)",
+        "subtask1": "Umivati zobe",
+        "subtask2": "Umiti se"
       },
       "afterSchool": {
         "title": "Po šoli",
-        "description": "Po šoli",
-        "subtask1": "Naredi domačo nalogo",
-        "subtask2": "Preverite urnik",
-        "subtask3": "Spakirajte nahrbtnik"
+        "description": "Po šoli (s podnalogami)",
+        "subtask1": "Narediti domačo nalogo",
+        "subtask2": "Preveriti urnik",
+        "subtask3": "Spakirati nahrbtnik"
       },
       "creativeWork": {
         "title": "Ustvarjalno delo",
-        "description": "Ustvarjalno delo",
-        "subtask1": "Pripravite materiale",
-        "subtask2": "Dokončaj ustvarjalno nalogo",
-        "subtask3": "Pospravite delovni prostor",
-        "subtask4": "Umijte si roke",
-        "subtask5": "Pokažite rezultat"
+        "description": "Ustvarjalno delo (s podnalogami)",
+        "subtask1": "Pripraviti material",
+        "subtask2": "Dokončati ustvarjalno nalogo",
+        "subtask3": "Pospraviti delovni prostor",
+        "subtask4": "Umiti roke",
+        "subtask5": "Pokazati rezultat"
       },
       "washYourFace": "Umijte si obraz",
       "washYourFaceDescription": "Umijte si obraz",

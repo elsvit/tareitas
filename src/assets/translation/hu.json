@@ -295,34 +295,34 @@
       "waterPlantsDescription": "Öntözze meg a szobanövényeket",
       "morningRoutine": {
         "title": "Reggeli rutin",
-        "description": "Reggeli rutin",
-        "subtask1": "Felébred",
-        "subtask2": "Moss fogat",
-        "subtask3": "Mosogat",
-        "subtask4": "Beágyaz",
-        "subtask5": "Öltözz fel"
+        "description": "Reggeli rutin (alfeladatokkal)",
+        "subtask1": "Kelj fel",
+        "subtask2": "Fogmosás",
+        "subtask3": "Mosakodás",
+        "subtask4": "Ágyazás",
+        "subtask5": "Öltözés"
       },
       "eveningRoutine": {
         "title": "Esti rutin",
-        "description": "Esti rutin",
-        "subtask1": "Moss fogat",
-        "subtask2": "Mosogat"
+        "description": "Esti rutin (alfeladatokkal)",
+        "subtask1": "Fogmosás",
+        "subtask2": "Mosakodás"
       },
       "afterSchool": {
         "title": "Iskola után",
-        "description": "Iskola után",
-        "subtask1": "Csinálj házi feladatot",
-        "subtask2": "Ellenőrizze a menetrendet",
-        "subtask3": "Csomagolja be a hátizsákot"
+        "description": "Iskola után (alfeladatokkal)",
+        "subtask1": "Házi feladat",
+        "subtask2": "Órarend ellenőrzése",
+        "subtask3": "Hátizsák pakolása"
       },
       "creativeWork": {
         "title": "Kreatív munka",
-        "description": "Kreatív munka",
-        "subtask1": "Készítse elő az anyagokat",
-        "subtask2": "Végezze el a kreatív feladatot",
-        "subtask3": "Tegye rendbe a munkaterületet",
-        "subtask4": "Mosson kezet",
-        "subtask5": "Mutasd meg az eredményt"
+        "description": "Kreatív munka (alfeladatokkal)",
+        "subtask1": "Anyagok előkészítése",
+        "subtask2": "Kreatív feladat befejezése",
+        "subtask3": "Munkaterület rendezése",
+        "subtask4": "Kézmosás",
+        "subtask5": "Eredmény bemutatása"
       },
       "washYourFace": "Mossa meg az arcát",
       "washYourFaceDescription": "Mossa meg az arcát",

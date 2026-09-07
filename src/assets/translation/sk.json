@@ -295,34 +295,34 @@
       "waterPlantsDescription": "Zavlažujte izbové rastliny",
       "morningRoutine": {
         "title": "Ranná rutina",
-        "description": "Ranná rutina",
-        "subtask1": "Zobuď sa",
-        "subtask2": "Umyte si zuby",
+        "description": "Ranná rutina (s podúlohami)",
+        "subtask1": "Vstať",
+        "subtask2": "Umyť si zuby",
         "subtask3": "Umyť sa",
-        "subtask4": "Poskladajte posteľ",
+        "subtask4": "Ustlať posteľ",
         "subtask5": "Obliecť sa"
       },
       "eveningRoutine": {
         "title": "Večerná rutina",
-        "description": "Večerná rutina",
-        "subtask1": "Umyte si zuby",
+        "description": "Večerná rutina (s podúlohami)",
+        "subtask1": "Umyť si zuby",
         "subtask2": "Umyť sa"
       },
       "afterSchool": {
         "title": "Po škole",
-        "description": "Po škole",
-        "subtask1": "Urobte si domácu úlohu",
-        "subtask2": "Skontrolujte rozvrh",
-        "subtask3": "Zbaľte batoh"
+        "description": "Po škole (s podúlohami)",
+        "subtask1": "Urobiť domáce úlohy",
+        "subtask2": "Skontrolovať rozvrh",
+        "subtask3": "Zabaliť batoh"
       },
       "creativeWork": {
         "title": "Kreatívna práca",
-        "description": "Kreatívna práca",
-        "subtask1": "Pripravte si materiály",
-        "subtask2": "Dokončite kreatívnu úlohu",
-        "subtask3": "Upratujte pracovný priestor",
-        "subtask4": "Umyte si ruky",
-        "subtask5": "Ukážte výsledok"
+        "description": "Kreatívna práca (s podúlohami)",
+        "subtask1": "Pripraviť materiály",
+        "subtask2": "Dokončiť kreatívnu úlohu",
+        "subtask3": "Uporiadkať pracovisko",
+        "subtask4": "Umyť ruky",
+        "subtask5": "Ukázať výsledok"
       },
       "washYourFace": "Umyte si tvár",
       "washYourFaceDescription": "Umyte si tvár",

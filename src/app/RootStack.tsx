@@ -21,18 +21,18 @@ import {
   ThemeProvider
 } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack, usePathname, useRootNavigationState } from 'expo-router';
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { StyleSheet, View } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
 import 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Loading } from '~/components/ui/Loading';
-import { useCatalogForegroundSync } from '~/hooks/useCatalogForegroundSync';
 import { usePruneOrphanedTaskAssignments } from '~/hooks/usePruneOrphanedTaskAssignments';
+import { useCatalogForegroundSync } from '~/hooks/useCatalogForegroundSync';
 import { AppDispatch } from '~/store';
-import { ensureAppInstalledAt, initLanguage } from '~/store/settings';
+import { initLanguage, ensureAppInstalledAt } from '~/store/settings';
 import { selectIsLangInitiating, selectLang } from '~/store/settings/selectors';
 import { Colors } from '~/styles';
 import { lightPaperTheme } from '~/styles/paperTheme';
@@ -47,8 +47,6 @@ export default function RootStack() {
   const lang = useSelector(selectLang) ?? ELang.es;
 
   const isLangInitiating = useSelector(selectIsLangInitiating);
-  const navigationState = useRootNavigationState();
-  const pathname = usePathname();
 
   const [fontsLoaded] = useFonts({
     Roboto_400Regular,
@@ -66,7 +64,6 @@ export default function RootStack() {
   });
 
   const isBootstrapping = !fontsLoaded || isLangInitiating;
-  const isOnIndexRoute = pathname === '/' || pathname === '';
 
   useEffect(() => {
     dispatch(initLanguage());
@@ -74,16 +71,12 @@ export default function RootStack() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (
-      isBootstrapping ||
-      !navigationState?.key ||
-      isOnIndexRoute
-    ) {
+    if (isBootstrapping) {
       return;
     }
 
     void SplashScreen.hideAsync();
-  }, [isBootstrapping, isOnIndexRoute, navigationState?.key]);
+  }, [isBootstrapping]);
 
   return (
     <PaperProvider theme={lightPaperTheme}>

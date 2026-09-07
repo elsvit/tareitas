@@ -295,8 +295,8 @@
       "waterPlantsDescription": "Arrosez les plantes d'intérieur",
       "morningRoutine": {
         "title": "Routine matinale",
-        "description": "Routine matinale",
-        "subtask1": "Réveillez-vous",
+        "description": "Routine matinale (avec sous-tâches)",
+        "subtask1": "Se réveiller",
         "subtask2": "Se brosser les dents",
         "subtask3": "Se laver",
         "subtask4": "Faire le lit",
@@ -304,25 +304,25 @@
       },
       "eveningRoutine": {
         "title": "Routine du soir",
-        "description": "Routine du soir",
+        "description": "Routine du soir (avec sous-tâches)",
         "subtask1": "Se brosser les dents",
         "subtask2": "Se laver"
       },
       "afterSchool": {
         "title": "Après l'école",
-        "description": "Après l'école",
+        "description": "Après l'école (avec sous-tâches)",
         "subtask1": "Faire ses devoirs",
-        "subtask2": "Consultez l'horaire",
-        "subtask3": "Préparez le sac à dos"
+        "subtask2": "Consulter l'emploi du temps",
+        "subtask3": "Préparer le sac à dos"
       },
       "creativeWork": {
         "title": "Travail créatif",
-        "description": "Travail créatif",
+        "description": "Travail créatif (avec sous-tâches)",
         "subtask1": "Préparer le matériel",
-        "subtask2": "Terminez la tâche créative",
+        "subtask2": "Terminer la tâche créative",
         "subtask3": "Ranger l'espace de travail",
         "subtask4": "Se laver les mains",
-        "subtask5": "Afficher le résultat"
+        "subtask5": "Montrer le résultat"
       },
       "washYourFace": "Lavez-vous le visage",
       "washYourFaceDescription": "Lavez-vous le visage",

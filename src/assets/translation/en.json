@@ -359,7 +359,7 @@
       "waterPlantsDescription": "Water the indoor plants",
       "morningRoutine": {
         "title": "Morning routine",
-        "description": "Morning routine",
+        "description": "Morning routine (with subtasks)",
         "subtask1": "Wake up",
         "subtask2": "Brush teeth",
         "subtask3": "Wash up",
@@ -368,20 +368,20 @@
       },
       "eveningRoutine": {
         "title": "Evening routine",
-        "description": "Evening routine",
+        "description": "Evening routine (with subtasks)",
         "subtask1": "Brush teeth",
         "subtask2": "Wash up"
       },
       "afterSchool": {
         "title": "After school",
-        "description": "After school",
+        "description": "After school (with subtasks)",
         "subtask1": "Do homework",
         "subtask2": "Check the schedule",
         "subtask3": "Pack the backpack"
       },
       "creativeWork": {
         "title": "Creative work",
-        "description": "Creative work",
+        "description": "Creative work (with subtasks)",
         "subtask1": "Prepare materials",
         "subtask2": "Complete the creative task",
         "subtask3": "Tidy up the workspace",

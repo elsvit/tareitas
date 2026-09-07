@@ -295,34 +295,34 @@
       "waterPlantsDescription": "Geef de kamerplanten water",
       "morningRoutine": {
         "title": "Ochtendroutine",
-        "description": "Ochtendroutine",
-        "subtask1": "Wakker worden",
-        "subtask2": "Poets tanden",
-        "subtask3": "Afwassen",
-        "subtask4": "Maak het bed op",
-        "subtask5": "Kleed je aan"
+        "description": "Ochtendroutine (met subtaken)",
+        "subtask1": "Opstaan",
+        "subtask2": "Tanden poetsen",
+        "subtask3": "Wassen",
+        "subtask4": "Bed opmaken",
+        "subtask5": "Aankleden"
       },
       "eveningRoutine": {
         "title": "Avondroutine",
-        "description": "Avondroutine",
-        "subtask1": "Poets tanden",
-        "subtask2": "Afwassen"
+        "description": "Avondroutine (met subtaken)",
+        "subtask1": "Tanden poetsen",
+        "subtask2": "Wassen"
       },
       "afterSchool": {
-        "title": "Na schooltijd",
-        "description": "Na schooltijd",
+        "title": "Na school",
+        "description": "Na school (met subtaken)",
         "subtask1": "Huiswerk maken",
-        "subtask2": "Controleer het schema",
-        "subtask3": "Pak de rugzak in"
+        "subtask2": "Rooster controleren",
+        "subtask3": "Rugzak inpakken"
       },
       "creativeWork": {
         "title": "Creatief werk",
-        "description": "Creatief werk",
-        "subtask1": "Materialen voorbereiden",
-        "subtask2": "Voltooi de creatieve taak",
-        "subtask3": "Ruim de werkruimte op",
+        "description": "Creatief werk (met subtaken)",
+        "subtask1": "Materialen klaarleggen",
+        "subtask2": "Creatieve taak voltooien",
+        "subtask3": "Werkplek opruimen",
         "subtask4": "Handen wassen",
-        "subtask5": "Laat het resultaat zien"
+        "subtask5": "Resultaat laten zien"
       },
       "washYourFace": "Was je gezicht",
       "washYourFaceDescription": "Was je gezicht",
