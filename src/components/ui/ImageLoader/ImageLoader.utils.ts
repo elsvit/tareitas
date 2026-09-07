@@ -1,6 +1,6 @@
 import { Image } from 'react-native';
 
-import * as FileSystem from 'expo-file-system/legacy';
+import { Directory, File, Paths } from 'expo-file-system';
 import * as ImageManipulator from 'expo-image-manipulator';
 
 import type { ImageStoreKind } from '~/store/images/types';
@@ -8,10 +8,10 @@ import type { ImageStoreKind } from '~/store/images/types';
 export const IMAGE_SIZE = 320;
 
 const getImageDirectory = (kind: ImageStoreKind) =>
-  `${FileSystem.documentDirectory}images/${kind}s/`;
+  new Directory(Paths.document, 'images', `${kind}s`);
 
-const getImagePath = (kind: ImageStoreKind, id: string) =>
-  `${getImageDirectory(kind)}${id}.jpg`;
+const getImageFile = (kind: ImageStoreKind, id: string) =>
+  new File(getImageDirectory(kind), `${id}.jpg`);
 
 const getImageSize = (uri: string): Promise<{ width: number; height: number }> =>
   new Promise((resolve, reject) => {
@@ -46,12 +46,12 @@ export const saveImageToDevice = async (
 ): Promise<string> => {
   const preparedUri = await prepareSquareJpeg(sourceUri);
   const directory = getImageDirectory(kind);
-  const destination = getImagePath(kind, id);
+  const destination = getImageFile(kind, id);
 
-  await FileSystem.makeDirectoryAsync(directory, { intermediates: true });
-  await FileSystem.copyAsync({ from: preparedUri, to: destination });
+  directory.create({ intermediates: true, idempotent: true });
+  new File(preparedUri).copy(destination);
 
-  return destination;
+  return destination.uri;
 };
 
 export const deleteImageFromDevice = async (uri?: string) => {
@@ -59,7 +59,11 @@ export const deleteImageFromDevice = async (uri?: string) => {
     return;
   }
 
-  await FileSystem.deleteAsync(uri, { idempotent: true });
+  const file = new File(uri);
+
+  if (file.exists) {
+    file.delete();
+  }
 };
 
 export const isCustomImageId = (
