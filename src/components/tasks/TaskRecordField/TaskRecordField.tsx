@@ -3,7 +3,6 @@ import { ActivityIndicator, Pressable, View } from 'react-native';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
-  RecordingPresets,
   setAudioModeAsync,
   useAudioPlayer,
   useAudioPlayerStatus,
@@ -22,6 +21,7 @@ import {
   TASKS_RECORDS_MAXIMUN,
   TASKS_RECORDS_WITHOUT_SUBSCRIPTION,
 } from '~/constants/ads';
+import { TASK_RECORDING_OPTIONS } from '~/constants/taskRecord';
 import { useIsPro, useProFeatureAccess } from '~/hooks/useIsPro';
 import { useSubscription } from '~/hooks/useSubscription';
 import { t } from '~/services';
@@ -68,7 +68,7 @@ export function TaskRecordField({
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const recorder = useAudioRecorder(RecordingPresets.LOW_QUALITY);
+  const recorder = useAudioRecorder(TASK_RECORDING_OPTIONS);
   const recorderState = useAudioRecorderState(recorder, 250);
   const playbackSource = useMemo(() => {
     if (!value) {
