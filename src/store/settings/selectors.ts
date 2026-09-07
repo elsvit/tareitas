@@ -153,7 +153,11 @@ export const selectHasAuthSession = createSelector(
 );
 
 /** True when the app should read/write family data through the server. */
-export const selectUsesCloudSync = selectHasAuthSession;
+export const selectUsesCloudSync = createSelector(
+  [selectIsMultidevice, selectHasAuthSession],
+  (isMultidevice, hasAuthSession) =>
+    isMultidevice && hasAuthSession,
+);
 
 export const selectAuthUserId = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>).authUserId;

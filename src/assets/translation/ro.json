@@ -607,7 +607,10 @@
         "description": "Totul rămâne pe acest telefon sau tabletă. Nu este necesar cont."
       },
       "create_section_title": "Creează grup/familie nouă",
-      "connect_section_title": "Conectează-te la un grup/familie existent"
+      "connect_section_title": "Conectează-te la un grup/familie existent",
+      "connect_device_only_section_title": "Conectează-te doar la acest dispozitiv",
+      "device_only_connect_hint": "Selectează profilul tău și introdu PIN-ul pentru a deschide familia salvată pe acest dispozitiv.",
+      "device_only_connect_empty": "Nu există o familie salvată pe acest dispozitiv. Creează mai întâi un grup nou."
     },
     "account": {
       "header": "Cont",

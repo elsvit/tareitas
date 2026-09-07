@@ -607,7 +607,10 @@
         "description": "Vse ostane na tem telefonu ali tablici. Račun ni potreben."
       },
       "create_section_title": "Ustvari novo skupino/družino",
-      "connect_section_title": "Poveži se z obstoječo skupino/družino"
+      "connect_section_title": "Poveži se z obstoječo skupino/družino",
+      "connect_device_only_section_title": "Poveži se samo s to napravo",
+      "device_only_connect_hint": "Izberite svoj profil in vnesite PIN, da odprete družino, shranjeno v tej napravi.",
+      "device_only_connect_empty": "V tej napravi ni shranjene družine. Najprej ustvarite novo skupino."
     },
     "account": {
       "header": "Račun",

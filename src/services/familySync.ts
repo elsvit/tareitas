@@ -401,12 +401,24 @@ export function clearFamilyStore(dispatch: AppDispatch) {
   dispatch(setRequireLogin(true));
 }
 
-/** Wipe local family and restart onboarding from the beginning. */
-export function resetFamilyForOnboarding(dispatch: AppDispatch) {
+export function clearLocalFamilyForNewSetup(dispatch: AppDispatch) {
   dispatch(clearParents());
   dispatch(clearChildren());
   dispatch(clearAllImageUrls());
   dispatch(clearMultideviceSession());
+}
+
+/** Open family-change setup without wiping local device-only family data. */
+export function prepareFamilyChangeScreen(dispatch: AppDispatch) {
+  dispatch(clearMultideviceSession());
+  dispatch(setCurrentUser(null));
+  dispatch(setCurrentRole(null));
+  dispatch(setRequireLogin(false));
+}
+
+/** Wipe local family and restart onboarding from the beginning. */
+export function resetFamilyForOnboarding(dispatch: AppDispatch) {
+  clearLocalFamilyForNewSetup(dispatch);
   dispatch(setCurrentUser(null));
   dispatch(setCurrentRole(null));
   dispatch(setRequireLogin(false));

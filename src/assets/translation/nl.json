@@ -607,7 +607,10 @@
         "description": "Alles blijft op deze telefoon of tablet. Geen account nodig."
       },
       "create_section_title": "Nieuwe groep/familie maken",
-      "connect_section_title": "Verbinden met bestaande groep/familie"
+      "connect_section_title": "Verbinden met bestaande groep/familie",
+      "connect_device_only_section_title": "Verbinden met alleen dit apparaat",
+      "device_only_connect_hint": "Selecteer je profiel en voer je PIN in om de op dit apparaat opgeslagen familie te openen.",
+      "device_only_connect_empty": "Er is geen familie opgeslagen op dit apparaat. Maak eerst een nieuwe groep."
     },
     "account": {
       "header": "Account",

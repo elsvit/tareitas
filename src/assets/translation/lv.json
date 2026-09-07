@@ -607,7 +607,10 @@
         "description": "Viss paliek šajā tālrunī vai planšetdatorā. Konts nav nepieciešams."
       },
       "create_section_title": "Izveidot jaunu grupu/ģimeni",
-      "connect_section_title": "Savienoties ar esošu grupu/ģimeni"
+      "connect_section_title": "Savienoties ar esošu grupu/ģimeni",
+      "connect_device_only_section_title": "Savienoties tikai ar šo ierīci",
+      "device_only_connect_hint": "Izvēlieties savu profilu un ievadiet PIN, lai atvērtu šajā ierīcē saglabāto ģimeni.",
+      "device_only_connect_empty": "Šajā ierīcē nav saglabāta ģimene. Vispirms izveidojiet jaunu grupu."
     },
     "account": {
       "header": "Konts",

@@ -11,7 +11,7 @@ import type { SelectedUser } from '~/components/modals';
 import { t } from '~/services';
 import {
   applyAuthTokensFromLogin,
-  resetFamilyForOnboarding,
+  prepareFamilyChangeScreen,
 } from '~/services/familySync';
 import type { AppDispatch } from '~/store';
 import {
@@ -44,7 +44,9 @@ export function useUserSwitch() {
   const isChildPasswordObligatory = useSelector(
     selectIsChildPasswordObligatory,
   );
-  const showChangeGroup = !isChild || isChildHasChangeFamily;
+  const showChangeGroup = isMultidevice
+    ? !isChild || isChildHasChangeFamily
+    : !isChild;
   const [isSelectUsersVisible, setIsSelectUsersVisible] = useState(false);
   const [pendingUser, setPendingUser] = useState<SelectedUser | null>(null);
   const [isPinModalVisible, setIsPinModalVisible] = useState(false);
@@ -107,7 +109,7 @@ export function useUserSwitch() {
 
   const handleChangeGroup = useCallback(() => {
     setIsSelectUsersVisible(false);
-    resetFamilyForOnboarding(dispatch);
+    prepareFamilyChangeScreen(dispatch);
     router.replace('/(onboarding)?setup=1');
   }, [dispatch, router]);
 

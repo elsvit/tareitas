@@ -607,7 +607,10 @@
         "description": "Kaikki pysyy tässä puhelimessa tai tabletissa. Tiliä ei tarvita."
       },
       "create_section_title": "Luo uusi ryhmä/perhe",
-      "connect_section_title": "Yhdistä olemassa olevaan ryhmään/perheeseen"
+      "connect_section_title": "Yhdistä olemassa olevaan ryhmään/perheeseen",
+      "connect_device_only_section_title": "Yhdistä vain tähän laitteeseen",
+      "device_only_connect_hint": "Valitse profiilisi ja syötä PIN avataksesi tähän laitteeseen tallennetun perheen.",
+      "device_only_connect_empty": "Tällä laitteella ei ole tallennettua perhettä. Luo ensin uusi ryhmä."
     },
     "account": {
       "header": "Tili",

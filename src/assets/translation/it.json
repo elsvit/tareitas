@@ -606,7 +606,10 @@
         "description": "Tutto resta su questo telefono o tablet. Nessun account necessario."
       },
       "create_section_title": "Crea nuovo gruppo/famiglia",
-      "connect_section_title": "Connetti a gruppo/famiglia esistente"
+      "connect_section_title": "Connetti a gruppo/famiglia esistente",
+      "connect_device_only_section_title": "Connetti a solo questo dispositivo",
+      "device_only_connect_hint": "Seleziona il tuo profilo e inserisci il PIN per aprire la famiglia salvata su questo dispositivo.",
+      "device_only_connect_empty": "Nessuna famiglia salvata su questo dispositivo. Crea prima un nuovo gruppo."
     },
     "account": {
       "header": "Account",

@@ -13,7 +13,11 @@ import { ChildForm } from '~/components/users/UserForm/ChildForm';
 import { ParentForm } from '~/components/users/UserForm/ParentForm';
 import { t } from '~/services';
 import { mapServerChildToLocal } from '~/services/api/memberMappers';
-import { clearFamilyStore, hydrateFamilyStore } from '~/services/familySync';
+import {
+  clearFamilyStore,
+  clearLocalFamilyForNewSetup,
+  hydrateFamilyStore,
+} from '~/services/familySync';
 import { signupAndLoadFamily } from '~/services/multideviceSetup';
 import {
     buildSignupFamilyPayload,
@@ -210,7 +214,10 @@ export function OnboardingFlow({
     const showSubscription = Keyboard.addListener(showEvent, event => {
       setKeyboardInset(event.endCoordinates.height);
 
-      if (isSyncModeStep && setupPath === 'connect') {
+      if (
+        isSyncModeStep &&
+        (setupPath === 'connect' || setupPath === 'connect_device_only')
+      ) {
         requestAnimationFrame(() => {
           scrollRef.current?.scrollToEnd({ animated: true });
         });
@@ -327,6 +334,16 @@ export function OnboardingFlow({
       if (setupPath !== 'create') {
         return;
       }
+
+      clearLocalFamilyForNewSetup(dispatch);
+
+      dispatch(
+        setSyncMode(
+          isMultidevice
+            ? ESyncMode.multidevice
+            : ESyncMode.deviceOnly,
+        ),
+      );
 
       goToStep(
         isMultidevice
@@ -633,6 +650,7 @@ export function OnboardingFlow({
             parent={parent}
             onSave={onParentSave}
             showScreenHeader={false}
+            embedded
           />
         </>
       );
@@ -652,6 +670,7 @@ export function OnboardingFlow({
             child={child}
             onSave={onChildSave}
             showScreenHeader={false}
+            embedded
           />
         </>
       );

@@ -77,6 +77,7 @@ export function OnboardingSignUpAdminStep({
         parent={parent}
         onSave={handleSave}
         showScreenHeader={false}
+        embedded
         submitError={submitError}
         isSubmitting={isSubmitting}
         fieldsBeforeName={

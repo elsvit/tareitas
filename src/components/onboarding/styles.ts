@@ -124,6 +124,32 @@ export const onboardingStyles = StyleSheet.create({
   },
   syncModeOptionDescription: {
     opacity: 0.85,
+    marginTop: spacing(0.5),
+  },
+  syncModeDescriptionSection: {
+    width: '100%',
+    paddingLeft: spacing(5.5),
+  },
+  syncModeDescriptionToggle: {
+    marginTop: spacing(0.5),
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing(1),
+  },
+  syncModeDescriptionLabel: {
+    color: Colors.grey700,
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  deviceOnlyConnectEmpty: {
+    opacity: 0.85,
+    paddingLeft: spacing(5.5),
+  },
+  deviceOnlyConnectHint: {
+    opacity: 0.85,
+    paddingLeft: spacing(5.5),
   },
   skipChildButton: {
     alignSelf: 'center',

@@ -8,6 +8,20 @@ import type { IFamilySubscription } from '~/types/ISubscription';
 
 import type { IStateSettings, PendingReturnRoute } from './types';
 
+function resetCloudSessionState(state: IStateSettings) {
+  state.familyId = null;
+  state.subscription = null;
+  state.authToken = null;
+  state.refreshToken = null;
+  state.authUserId = null;
+  state.authUserRole = null;
+  state.lastSyncedTaskBaseRevision = 0;
+  state.lastSyncedRewardBaseRevision = 0;
+  state.catalogDirty = false;
+  state.pendingRemovedTaskBaseIds = [];
+  state.pendingRemovedRewardBaseIds = [];
+}
+
 const initialState: IStateSettings = {
   lang: null,
   isLangInitiating: true, // TODO Change from null to true
@@ -75,6 +89,10 @@ export const settingsSlice = createSlice({
     },
     setSyncMode: (state, action: PayloadAction<ESyncMode>) => {
       state.syncMode = action.payload;
+
+      if (action.payload === ESyncMode.deviceOnly) {
+        resetCloudSessionState(state);
+      }
     },
     setMultideviceSession: (
       state,
@@ -113,17 +131,7 @@ export const settingsSlice = createSlice({
     },
     clearMultideviceSession: state => {
       state.syncMode = ESyncMode.deviceOnly;
-      state.familyId = null;
-      state.subscription = null;
-      state.authToken = null;
-      state.refreshToken = null;
-      state.authUserId = null;
-      state.authUserRole = null;
-      state.lastSyncedTaskBaseRevision = 0;
-      state.lastSyncedRewardBaseRevision = 0;
-      state.catalogDirty = false;
-      state.pendingRemovedTaskBaseIds = [];
-      state.pendingRemovedRewardBaseIds = [];
+      resetCloudSessionState(state);
     },
     clearAuthSession: state => {
       state.familyId = null;

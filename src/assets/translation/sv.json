@@ -607,7 +607,10 @@
         "description": "Allt stannar på den här telefonen eller surfplattan. Inget konto behövs."
       },
       "create_section_title": "Skapa ny grupp/familj",
-      "connect_section_title": "Anslut till befintlig grupp/familj"
+      "connect_section_title": "Anslut till befintlig grupp/familj",
+      "connect_device_only_section_title": "Anslut till endast den här enheten",
+      "device_only_connect_hint": "Välj din profil och ange din PIN för att öppna familjen som sparats på den här enheten.",
+      "device_only_connect_empty": "Ingen familj är sparad på den här enheten. Skapa en ny grupp först."
     },
     "account": {
       "header": "Konto",

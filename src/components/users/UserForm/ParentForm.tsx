@@ -196,6 +196,7 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
 
   useEffect(() => {
     const nextFamilyRole = parseFamilyRoleFormValues(parent?.familyRole);
+    const currentAvatar = getValues('avatar');
 
     reset({
       username: parent?.username ?? '',
@@ -204,7 +205,9 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
       familyRolePreset: nextFamilyRole.preset,
       customFamilyRole: nextFamilyRole.customRole,
       role: parent?.role ?? ERole.parent,
-      avatar: parent?.avatar ?? '',
+      avatar: parent?.avatar?.trim()
+        ? parent.avatar
+        : currentAvatar ?? '',
       passwordPattern: parent?.passwordPattern ?? '',
     });
   }, [
@@ -216,6 +219,7 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
     parent?.role,
     parent?.avatar,
     parent?.passwordPattern,
+    getValues,
     reset,
   ]);
 
@@ -460,14 +464,20 @@ export const ParentForm = React.forwardRef<UserFormHandle, Props>(function Paren
             <Controller
               control={control}
               name="avatar"
-              render={({ field: { value, onChange } }) => (
+              render={({ field: { value, onChange, onBlur } }) => (
                 <SelectImageWithCustom
                   kind="user"
                   options={PARENT_AVATARS}
                   value={value}
-                  onChange={onChange}
+                  onChange={nextValue => {
+                    onChange(nextValue);
+                    onBlur();
+                  }}
                   label={t('users.avatar')}
                   errorMessage={errors.avatar?.message}
+                  loadedPhotosAutoRows
+                  showLoadedPhotosLabel={false}
+                  loadPhotoButtonBelowLoadedPhotos
                 />
               )}
             />

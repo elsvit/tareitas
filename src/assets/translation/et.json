@@ -606,7 +606,10 @@
         "description": "Kõik jääb sellesse telefoni või tahvelarvutisse. Kontot pole vaja."
       },
       "create_section_title": "Loo uus grupp/pere",
-      "connect_section_title": "Ühenda olemasoleva grupi/perega"
+      "connect_section_title": "Ühenda olemasoleva grupi/perega",
+      "connect_device_only_section_title": "Ühenda ainult selle seadmega",
+      "device_only_connect_hint": "Vali oma profiil ja sisesta PIN, et avada sellesse seadmesse salvestatud pere.",
+      "device_only_connect_empty": "Selles seadmes pole salvestatud perekonda. Loo esmalt uus grupp."
     },
     "account": {
       "header": "Konto",

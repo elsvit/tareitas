@@ -607,7 +607,10 @@
         "description": "Sve ostaje na ovom telefonu ili tabletu. Račun nije potreban."
       },
       "create_section_title": "Stvori novu grupu/obitelj",
-      "connect_section_title": "Poveži se s postojećom grupom/obitelji"
+      "connect_section_title": "Poveži se s postojećom grupom/obitelji",
+      "connect_device_only_section_title": "Poveži se samo s ovim uređajem",
+      "device_only_connect_hint": "Odaberite svoj profil i unesite PIN kako biste otvorili obitelj spremljenu na ovom uređaju.",
+      "device_only_connect_empty": "Na ovom uređaju nema spremljene obitelji. Prvo stvorite novu grupu."
     },
     "account": {
       "header": "Račun",
