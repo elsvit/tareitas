@@ -5,14 +5,22 @@ export function isUploadPathForFamily(
   imageRef: string,
   familyId: string,
 ): boolean {
-  return imageRef.startsWith(`/uploads/${familyId}/`);
+  return (
+    imageRef.startsWith(`/uploads/${familyId}/`) ||
+    imageRef.startsWith(`photos/${familyId}/`) ||
+    imageRef.startsWith(`voice/${familyId}/`)
+  );
 }
 
 export function isUploadUrlForFamily(
   imageRef: string,
   familyId: string,
 ): boolean {
-  return imageRef.includes(`/uploads/${familyId}/`);
+  return (
+    imageRef.includes(`/uploads/${familyId}/`) ||
+    imageRef.includes(`/photos/${familyId}/`) ||
+    imageRef.includes(`/voice/${familyId}/`)
+  );
 }
 
 export function isImageRefForFamily(
@@ -24,6 +32,13 @@ export function isImageRefForFamily(
   }
 
   if (imageRef.startsWith('/uploads/')) {
+    return isUploadPathForFamily(imageRef, familyId);
+  }
+
+  if (
+    imageRef.startsWith('photos/') ||
+    imageRef.startsWith('voice/')
+  ) {
     return isUploadPathForFamily(imageRef, familyId);
   }
 
@@ -57,7 +72,11 @@ export function filterFamilyImageEntries(
       return false;
     }
 
-    if (id.startsWith('/uploads/')) {
+    if (
+      id.startsWith('/uploads/') ||
+      id.startsWith('photos/') ||
+      id.startsWith('voice/')
+    ) {
       return isUploadPathForFamily(id, familyId);
     }
 

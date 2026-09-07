@@ -26,7 +26,7 @@ import { useIsPro, useProFeatureAccess } from '~/hooks/useIsPro';
 import { useSubscription } from '~/hooks/useSubscription';
 import { t } from '~/services';
 import { uploadFamilyTaskRecordWithSession } from '~/services/api/uploadFamilyTaskRecord';
-import { toAbsoluteUploadUrl } from '~/services/api/uploadsApi';
+import { useResolvedMediaUrl } from '~/hooks/useResolvedMediaUrl';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
 import {
   selectFamilyId,
@@ -70,13 +70,7 @@ export function TaskRecordField({
 
   const recorder = useAudioRecorder(TASK_RECORDING_OPTIONS);
   const recorderState = useAudioRecorderState(recorder, 250);
-  const playbackSource = useMemo(() => {
-    if (!value) {
-      return null;
-    }
-
-    return toAbsoluteUploadUrl(value) ?? value;
-  }, [value]);
+  const playbackSource = useResolvedMediaUrl(value);
   const player = useAudioPlayer(playbackSource);
   const playerStatus = useAudioPlayerStatus(player);
 

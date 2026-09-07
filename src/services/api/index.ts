@@ -55,6 +55,8 @@ export {
   toUpdateFamilyRewardBody,
 } from './rewardsApi';
 export {
+  fetchMediaAccessUrl,
+  isObjectStoragePath,
   toAbsoluteUploadUrl,
   uploadFamilyImage,
 } from './uploadsApi';
