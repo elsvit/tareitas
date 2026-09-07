@@ -293,33 +293,33 @@
       "waterPlants": "Bewässern Sie die Zimmerpflanzen",
       "waterPlantsDescription": "Bewässern Sie die Zimmerpflanzen",
       "morningRoutine": {
-        "title": "Morgengeschichte",
-        "description": "Morgengeschichte",
-        "subtask1": "Aufstehen",
+        "title": "Morgenroutine",
+        "description": "Morgenroutine (mit Unteraufgaben)",
+        "subtask1": "Aufwachen",
         "subtask2": "Zähne putzen",
-        "subtask3": "Kleidung anziehen",
-        "subtask4": "Ins Bett gehen",
+        "subtask3": "Waschen",
+        "subtask4": "Bett machen",
         "subtask5": "Anziehen"
       },
       "eveningRoutine": {
-        "title": "Abendsgeschichte",
-        "description": "Abendsgeschichte",
+        "title": "Abendroutine",
+        "description": "Abendroutine (mit Unteraufgaben)",
         "subtask1": "Zähne putzen",
-        "subtask2": "Kleidung anziehen"
+        "subtask2": "Waschen"
       },
       "afterSchool": {
-        "title": "Nachschule",
-        "description": "Nachschule",
+        "title": "Nach der Schule",
+        "description": "Nach der Schule (mit Unteraufgaben)",
         "subtask1": "Hausaufgaben machen",
-        "subtask2": "Hund spazieren gehen",
-        "subtask3": "Hände waschen"
+        "subtask2": "Stundenplan prüfen",
+        "subtask3": "Rucksack packen"
       },
       "creativeWork": {
         "title": "Kreative Arbeit",
-        "description": "Kreative Arbeit",
+        "description": "Kreative Arbeit (mit Unteraufgaben)",
         "subtask1": "Material vorbereiten",
-        "subtask2": "Kreative Arbeit machen",
-        "subtask3": "Hände waschen",
+        "subtask2": "Kreative Aufgabe erledigen",
+        "subtask3": "Arbeitsplatz aufräumen",
         "subtask4": "Hände waschen",
         "subtask5": "Ergebnis zeigen"
       },

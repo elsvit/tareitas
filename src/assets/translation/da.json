@@ -294,32 +294,32 @@
       "waterPlantsDescription": "Vand de indendørs planter",
       "morningRoutine": {
         "title": "Morgenrutine",
-        "description": "Morgenrutine",
-        "subtask1": "Stå op til tiden",
-        "subtask2": "Børst tænder om morgenen",
-        "subtask3": "Vælg tøj",
-        "subtask4": "Gå i seng til tiden",
-        "subtask5": "Klæ dig på"
+        "description": "Morgenrutine (med delopgaver)",
+        "subtask1": "Vågn op",
+        "subtask2": "Børst tænder",
+        "subtask3": "Vask dig",
+        "subtask4": "Red sengen",
+        "subtask5": "Klæd dig på"
       },
       "eveningRoutine": {
         "title": "Aftenrutine",
-        "description": "Aftenrutine",
-        "subtask1": "Børst tænder om aftenen",
-        "subtask2": "Vælg tøj"
+        "description": "Aftenrutine (med delopgaver)",
+        "subtask1": "Børst tænder",
+        "subtask2": "Vask dig"
       },
       "afterSchool": {
         "title": "Efter skole",
-        "description": "Efter skole",
+        "description": "Efter skole (med delopgaver)",
         "subtask1": "Lav lektier",
-        "subtask2": "Pusle hunden",
-        "subtask3": "Vask hænder"
+        "subtask2": "Tjek skemaet",
+        "subtask3": "Pak skoletasken"
       },
       "creativeWork": {
         "title": "Kreativt arbejde",
-        "description": "Kreativt arbejde",
+        "description": "Kreativt arbejde (med delopgaver)",
         "subtask1": "Forbered materialer",
-        "subtask2": "Lav kreativt arbejde",
-        "subtask3": "Ryd op",
+        "subtask2": "Fuldfør den kreative opgave",
+        "subtask3": "Ryd arbejdspladsen",
         "subtask4": "Vask hænder",
         "subtask5": "Vis resultatet"
       },

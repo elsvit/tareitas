@@ -294,32 +294,32 @@
       "waterPlantsDescription": "Kastke toataimi",
       "morningRoutine": {
         "title": "Hommikune rutiin",
-        "description": "Hommikune rutiin",
-        "subtask1": "Ärka üles",
-        "subtask2": "Harja hambaid",
-        "subtask3": "Pese ära",
-        "subtask4": "Tee voodi ära",
-        "subtask5": "Pane riidesse"
+        "description": "Hommikune rutiin (alamülesannetega)",
+        "subtask1": "Ära maga",
+        "subtask2": "Pese hambad",
+        "subtask3": "Pese end",
+        "subtask4": "Tee voodi",
+        "subtask5": "Riietu"
       },
       "eveningRoutine": {
         "title": "Õhtune rutiin",
-        "description": "Õhtune rutiin",
-        "subtask1": "Harja hambaid",
-        "subtask2": "Pese ära"
+        "description": "Õhtune rutiin (alamülesannetega)",
+        "subtask1": "Pese hambad",
+        "subtask2": "Pese end"
       },
       "afterSchool": {
-        "title": "Peale kooli",
-        "description": "Peale kooli",
+        "title": "Pärast kooli",
+        "description": "Pärast kooli (alamülesannetega)",
         "subtask1": "Tee kodutööd",
-        "subtask2": "Kontrolli ajakava",
-        "subtask3": "Pakkige seljakott"
+        "subtask2": "Kontrolli tunniplaani",
+        "subtask3": "Paki kott"
       },
       "creativeWork": {
         "title": "Loominguline töö",
-        "description": "Loominguline töö",
-        "subtask1": "Valmistage ette materjalid",
-        "subtask2": "Täitke loominguline ülesanne",
-        "subtask3": "Tehke tööruum korda",
+        "description": "Loominguline töö (alamülesannetega)",
+        "subtask1": "Valmista materjalid",
+        "subtask2": "Lõpeta loominguline ülesanne",
+        "subtask3": "Korista töökoht",
         "subtask4": "Pese käed",
         "subtask5": "Näita tulemust"
       },

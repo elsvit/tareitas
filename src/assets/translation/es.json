@@ -359,7 +359,7 @@
       "waterPlantsDescription": "Regar las plantas",
       "morningRoutine": {
         "title": "Rutina matutina",
-        "description": "Rutina matutina",
+        "description": "Rutina matutina (con subtareas)",
         "subtask1": "Levantarse",
         "subtask2": "Cepillarse los dientes",
         "subtask3": "Asearse",
@@ -368,22 +368,22 @@
       },
       "eveningRoutine": {
         "title": "Rutina vespertina",
-        "description": "Rutina vespertina",
+        "description": "Rutina vespertina (con subtareas)",
         "subtask1": "Cepillarse los dientes",
-        "subtask2": "Vestirse"
+        "subtask2": "Asearse"
       },
       "afterSchool": {
         "title": "Después de la escuela",
-        "description": "Después de la escuela",
+        "description": "Después de la escuela (con subtareas)",
         "subtask1": "Hacer los deberes",
-        "subtask2": "Pasear al perro",
-        "subtask3": "Lavar las manos"
+        "subtask2": "Revisar el horario",
+        "subtask3": "Preparar la mochila"
       },
       "creativeWork": {
         "title": "Trabajo creativo",
-        "description": "Trabajo creativo",
+        "description": "Trabajo creativo (con subtareas)",
         "subtask1": "Preparar los materiales",
-        "subtask2": "Hacer el trabajo creativo",
+        "subtask2": "Completar la tarea creativa",
         "subtask3": "Ordenar el lugar de trabajo",
         "subtask4": "Lavarse las manos",
         "subtask5": "Mostrar el resultado"

@@ -36,7 +36,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     picture: 'tasks_done',
     time: '23:59',
     color: Colors.gold500,
-    reward: 20,
+    reward: 15,
   },
   {
     id: 'morningRoutine',
@@ -148,6 +148,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.brushTeethMorningDescription'),
     picture: 'brush_teeth',
     time: '08:00',
+    reward: 2,
   },
   {
     id: 'brushTeethEvening',
@@ -155,6 +156,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.brushTeethEveningDescription'),
     picture: 'brush_teeth',
     time: '18:00',
+    reward: 2,
   },
   {
     id: 'washYourHands',
@@ -162,6 +164,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.washYourHandsDescription'),
     picture: 'wash_hands',
     time: '08:05',
+    reward: 1,
   },
   {
     id: 'washYourFace',
@@ -169,6 +172,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.washYourFaceDescription'),
     picture: 'wash_hair',
     time: '09:06',
+    reward: 1,
   },
   {
     id: 'brushYourHair',
@@ -176,6 +180,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.brushYourHairDescription'),
     picture: 'brush_hair',
     time: '09:07',
+    reward: 2,
   },
   {
     id: 'cutYourNails',
@@ -183,6 +188,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.cutYourNailsDescription'),
     picture: 'cut_nails',
     time: '09:08',
+    reward: 5,
   },
   {
     id: 'changeYourClothes',
@@ -190,6 +196,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.changeYourClothesDescription'),
     picture: 'change_clothes',
     time: '09:09',
+    reward: 3,
   },
   {
     id: 'applyCream',
@@ -197,6 +204,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.applyCreamDescription'),
     picture: 'put_cream',
     time: '09:10',
+    reward: 1,
   },
   {
     id: 'dayWithoutSweets',
@@ -204,6 +212,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.dayWithoutSweetsDescription'),
     picture: 'day_without_sweets',
     time: '09:11',
+    reward: 5,
   },
   {
     id: 'drinkWater',
@@ -211,6 +220,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.drinkWaterDescription'),
     picture: 'glass_of_water',
     time: '15:12',
+    reward: 5,
   },
   {
     id: 'getUpOnTime',
@@ -218,6 +228,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.getUpOnTimeDescription'),
     picture: 'alarm_morning',
     time: '09:13',
+    reward: 2,
   },
   {
     id: 'goToBedOnTime',
@@ -225,6 +236,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.goToBedOnTimeDescription'),
     picture: 'alarm_evening',
     time: '21:00',
+    reward: 2,
   },
   {
     id: 'makeBed',
@@ -232,6 +244,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.makeBedDescription'),
     picture: 'make_bed',
     time: '09:14',
+    reward: 5,
   },
   {
     id: 'prepareClothesForTomorrow',
@@ -239,6 +252,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.prepareClothesForTomorrowDescription'),
     picture: 'gather_clean_clothes',
     time: '09:15',
+    reward: 5,
   },
   {
     id: 'tidyUpPencilCase',
@@ -246,6 +260,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.tidyUpPencilCaseDescription'),
     picture: 'tidy_up_pencil_case',
     time: '09:16',
+    reward: 3,
   },
   {
     id: 'cleanDesk',
@@ -253,6 +268,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.cleanDeskDescription'),
     picture: 'clean_desk',
     time: '15:17',
+    reward: 3,
   },
   {
     id: 'packBackpack',
@@ -260,6 +276,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.packBackpackDescription'),
     picture: 'pack_backpack',
     time: '15:18',
+    reward: 5,
   },
   {
     id: 'tidyUpRoom',
@@ -267,6 +284,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.tidyUpYourRoomDescription'),
     picture: 'tidy_up_room',
     time: '15:20',
+    reward: 5,
   },
   {
     id: 'putAwayToys',
@@ -274,6 +292,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.putAwayToysDescription'),
     picture: 'put_away_toys',
     time: '20:40',
+    reward: 5,
   },
   {
     id: 'putAwayClothes',
@@ -281,6 +300,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.putAwayClothesDescription'),
     picture: 'organize_clothes',
     time: '20:41',
+    reward: 5,
   },
   {
     id: 'takeOutTrash',
@@ -288,6 +308,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.takeOutTrashDescription'),
     picture: 'trash',
     time: '20:42',
+    reward: 5,
   },
   {
     id: 'helpToCoverTheTable',
@@ -295,6 +316,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.helpToCoverTheTableDescription'),
     picture: 'serve_table',
     time: '20:43',
+    reward: 3,
   },
   {
     id: 'washYourOwnDishes',
@@ -302,6 +324,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.washYourOwnDishesDescription'),
     picture: 'wash_dishes',
     time: '15:32',
+    reward: 3,
   },
   {
     id: 'cleanUpAfterMeal',
@@ -309,6 +332,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.cleanUpAfterMealDescription'),
     picture: 'wash_dishes',
     time: '15:33',
+    reward: 3,
   },
   {
     id: 'loadTheDishwasher',
@@ -316,6 +340,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.loadTheDishwasherDescription'),
     picture: 'wash_dishes',
     time: '15:34',
+    reward: 2,
   },
   {
     id: 'takeCareOfPlants',
@@ -323,6 +348,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.takeCareOfPlantsDescription'),
     picture: 'water_plants',
     time: '15:35',
+    reward: 2,
   },
   {
     id: 'putAwayBooks',
@@ -330,6 +356,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.putAwayBooksDescription'),
     picture: 'put_in_order_books',
     time: '15:36',
+    reward: 3,
   },
   {
     id: 'lineUpShoes',
@@ -337,6 +364,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.lineUpShoesDescription'),
     picture: 'line_up_shoes',
     time: '15:37',
+    reward: 2,
   },
   {
     id: 'sweepTheDirt',
@@ -344,6 +372,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.sweepTheDirtDescription'),
     picture: 'dust_furniture',
     time: '15:38',
+    reward: 3,
   },
   {
     id: 'cleanShoes',
@@ -351,6 +380,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.cleanShoesDescription'),
     picture: 'clean_shoes',
     time: '15:40',
+    reward: 5,
   },
   {
     id: 'sweepTheFloor',
@@ -358,6 +388,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.sweepTheFloorDescription'),
     picture: 'sweep_floor',
     time: '15:41',
+    reward: 5,
   },
   {
     id: 'washTheFloor',
@@ -365,6 +396,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.washTheFloorDescription'),
     picture: 'clean_floor',
     time: '15:42',
+    reward: 5,
   },  
   {
     id: 'vacuumTheFurniture',
@@ -372,6 +404,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.vacuumTheFurnitureDescription'),
     picture: 'vacuum_cleaning',
     time: '15:39',
+    reward: 5,
   },
   {
     id: 'runTheVacuumCleaner',
@@ -379,6 +412,7 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.runTheVacuumCleanerDescription'),
     picture: 'robot',
     time: '15:43',
+    reward: 5,
   },
   {
     id: 'putDirtyClothesInTheBin',
@@ -386,240 +420,280 @@ export const getBaseTasks = (): ITaskBase[] => {
     description: t('tasks.baseTasks.putDirtyClothesInTheBinDescription'),
     picture: 'dirty_clothes_to_bin',
     time: '15:39',
+    reward: 2,
   },
   {
     id: 'homework',
     name: t('tasks.baseTasks.doHomework'),
     description: t('tasks.baseTasks.doHomeworkDescription'),
     picture: 'homework',
+    reward: 2,
   },
   {
     id: 'repeatTheMaterial',
     name: t('tasks.baseTasks.repeatTheMaterial'),
     description: t('tasks.baseTasks.repeatTheMaterialDescription'),
     picture: 'homework',
+    reward: 2,
   },
   {
     id: 'prepareForTheTest',
     name: t('tasks.baseTasks.prepareForTheTest'),
     description: t('tasks.baseTasks.prepareForTheTestDescription'),
     picture: 'homework',
+    reward: 2,
   },
   {
     id: 'learnNewTopic',
     name: t('tasks.baseTasks.learnNewTopic'),
     description: t('tasks.baseTasks.learnNewTopicDescription'),
     picture: 'homework',
+    reward: 3,
   },
   {
     id: 'learnNewLanguage',
     name: t('tasks.baseTasks.learnNewLanguage'),
     description: t('tasks.baseTasks.learnNewLanguageDescription'),
     picture: 'foreign_language',
+    reward: 2,
   },
   {
     id: 'readOnePage',
     name: t('tasks.baseTasks.readOnePage'),
     description: t('tasks.baseTasks.readOnePageDescription'),
     picture: 'read_book',
+    reward: 1,
   },
   {
     id: 'readFor20Minutes',
     name: t('tasks.baseTasks.readFor20Minutes'),
     description: t('tasks.baseTasks.readFor20MinutesDescription'),
     picture: 'read_book',
+    reward: 2,
   },
   {
     id: 'reciteTheRead',
     name: t('tasks.baseTasks.reciteTheRead'),
     description: t('tasks.baseTasks.reciteTheReadDescription'),
     picture: 'read_book',
+    reward: 5,
   },
   {
     id: 'logicalGames',
     name: t('tasks.baseTasks.logicalGames'),
     description: t('tasks.baseTasks.logicalGamesDescription'),
     picture: 'logic_games',
+    reward: 5,
   },
   {
     id: 'solveThePuzzle',
     name: t('tasks.baseTasks.solveThePuzzle'),
     description: t('tasks.baseTasks.solveThePuzzleDescription'),
     picture: 'logic_games',
+    reward: 5,
   },
   {
     id: 'drawAPicture',
     name: t('tasks.baseTasks.drawAPicture'),
     description: t('tasks.baseTasks.drawAPictureDescription'),
     picture: 'painting',
+    reward: 5,
   },
   {
     id: 'makeAnApplique',
     name: t('tasks.baseTasks.makeAnApplique'),
     description: t('tasks.baseTasks.makeAnAppliqueDescription'),
     picture: 'cut_of_paper',
+    reward: 5,
   },
   {
     id: 'playAnMusicInstrument',
     name: t('tasks.baseTasks.playAnMusicInstrument'),
     description: t('tasks.baseTasks.playAnMusicInstrumentDescription'),
     picture: 'music',
+    reward: 5,
   },
   {
     id: 'singASong',
     name: t('tasks.baseTasks.singASong'),
     description: t('tasks.baseTasks.singASongDescription'),
     picture: 'music',
+    reward: 5,
   },
   {
     id: 'musicTheory',
     name: t('tasks.baseTasks.musicTheory'),
     description: t('tasks.baseTasks.musicTheoryDescription'),
     picture: 'music',
+    reward: 5,
   },
   {
     id: 'morningExercise',
     name: t('tasks.baseTasks.morningExercise'),
     description: t('tasks.baseTasks.morningExerciseDescription'),
     picture: 'training',
+    reward: 5,
   },
   {
     id: 'eveningExercises',
     name: t('tasks.baseTasks.eveningExercises'),
     description: t('tasks.baseTasks.eveningExercisesDescription'),
     picture: 'training',
+    reward: 5,
   },
   {
     id: 'homeTraining',
     name: t('tasks.baseTasks.homeTraining'),
     description: t('tasks.baseTasks.homeTrainingDescription'),
     picture: 'active_game',
+    reward: 5,
   },
   {
     id: 'activeGame',
     name: t('tasks.baseTasks.activeGame'),
     description: t('tasks.baseTasks.activeGameDescription'),
     picture: 'active_game',
+    reward: 5,
   },
   {
     id: 'stretch',
     name: t('tasks.baseTasks.stretch'),
     description: t('tasks.baseTasks.stretchDescription'),
     picture: 'training',
+    reward: 5,
   },
   {
     id: 'squats',
     name: t('tasks.baseTasks.squats'),
     description: t('tasks.baseTasks.squatsDescription'),
     picture: 'training',
+    reward: 5,
   },
   {
     id: 'pullUps',
     name: t('tasks.baseTasks.pullUps'),
     description: t('tasks.baseTasks.pullUpsDescription'),
     picture: 'training',
+    reward: 5,
   },
   {
     id: 'pushUps',
     name: t('tasks.baseTasks.pushUps'),
     description: t('tasks.baseTasks.pushUpsDescription'),
     picture: 'training',
+    reward: 5,
   },
   {
     id: 'walk',
     name: t('tasks.baseTasks.walk'),
     description: t('tasks.baseTasks.walkDescription'),
     picture: 'jogging',
+    reward: 5,
   },
   {
     id: 'hike',
     name: t('tasks.baseTasks.hike'),
     description: t('tasks.baseTasks.hikeDescription'),
     picture: 'jogging',
+    reward: 5,
   },
   {
     id: 'playOutside',
     name: t('tasks.baseTasks.playOutside'),
     description: t('tasks.baseTasks.playOutsideDescription'),
     picture: 'active_game',
+    reward: 3,
   },
   {
     id: 'rideABicycle',
     name: t('tasks.baseTasks.rideABicycle'),
     description: t('tasks.baseTasks.rideABicycleDescription'),
     picture: 'bike',
+    reward: 5,
   },
   {
     id: 'jumpOnTheTrampoline',
     name: t('tasks.baseTasks.jumpOnTheTrampoline'),
     description: t('tasks.baseTasks.jumpOnTheTrampolineDescription'),
     picture: 'jumping',
+    reward: 5,
   },
   {
     id: 'swim',
     name: t('tasks.baseTasks.swim'),
     description: t('tasks.baseTasks.swimDescription'),
     picture: 'swim',
+    reward: 5,
   },
   {
     id: 'run',
     name: t('tasks.baseTasks.run'),
     description: t('tasks.baseTasks.runDescription'),
     picture: 'jogging',
+    reward: 5,
   },
   {
     id: 'helpToPrepareFood',
     name: t('tasks.baseTasks.helpToPrepareFood'),
     description: t('tasks.baseTasks.helpToPrepareFoodDescription'),
     picture: 'dish',
+    reward: 5,
   },
   {
     id: 'feedThePet',
     name: t('tasks.baseTasks.feedThePet'),
     description: t('tasks.baseTasks.feedThePetDescription'),
     picture: 'water_for_pet',
+    reward: 2,
   },
   {
     id: 'pourWaterToThePet',
     name: t('tasks.baseTasks.pourWaterToThePet'),
     description: t('tasks.baseTasks.pourWaterToThePetDescription'),
     picture: 'water_for_pet',
+    reward: 2,
   },
   {
     id: 'walkTheDog',
     name: t('tasks.baseTasks.walkTheDog'),
     description: t('tasks.baseTasks.walkTheDogDescription'),
     picture: 'walk_the_dog',
+    reward: 5,
   },
   {
     id: 'cleanTheCage',
     name: t('tasks.baseTasks.cleanTheCage'),
     description: t('tasks.baseTasks.cleanTheCageDescription'),
     picture: 'clean_cage',
+    reward: 5,
   },
   {
     id: 'playWithThePet',
     name: t('tasks.baseTasks.playWithThePet'),
     description: t('tasks.baseTasks.playWithThePetDescription'),
     picture: 'play_with_pet',
+    reward: 3,
   },
   {
     id: 'cleanAfterThePet',
     name: t('tasks.baseTasks.cleanAfterThePet'),
     description: t('tasks.baseTasks.cleanAfterThePetDescription'),
     picture: 'clean_pet_toilet',
+    reward: 5,
   },
   {
     id: 'greetTheMorning',
     name: t('tasks.baseTasks.greetTheMorning'),
     description: t('tasks.baseTasks.greetTheMorningDescription'),
     picture: 'good_morning',
+    reward: 1,
   },
   {
     id: 'sayGoodNight',
     name: t('tasks.baseTasks.sayGoodNight'),
     description: t('tasks.baseTasks.sayGoodNightDescription'),
     picture: 'good_night',
+    reward: 1,
   },
   ];
 };

@@ -294,35 +294,35 @@
       "waterPlants": "Laistykite kambarinius augalus",
       "waterPlantsDescription": "Laistykite kambarinius augalus",
       "morningRoutine": {
-        "title": "Rytinė rutina",
-        "description": "Rytinė rutina",
-        "subtask1": "Pabusti",
-        "subtask2": "Valytis dantis",
-        "subtask3": "Nusiprausti",
-        "subtask4": "Pakloti lovą",
-        "subtask5": "Apsirenk"
+        "title": "Ryto rutina",
+        "description": "Ryto rutina (su papildomomis užduotimis)",
+        "subtask1": "Atsikelti",
+        "subtask2": "Valyti dantis",
+        "subtask3": "Plautis",
+        "subtask4": "Sutaisyti lovą",
+        "subtask5": "Apsirengti"
       },
       "eveningRoutine": {
         "title": "Vakaro rutina",
-        "description": "Vakaro rutina",
-        "subtask1": "Valytis dantis",
-        "subtask2": "Nusiprausti"
+        "description": "Vakaro rutina (su papildomomis užduotimis)",
+        "subtask1": "Valyti dantis",
+        "subtask2": "Plautis"
       },
       "afterSchool": {
         "title": "Po mokyklos",
-        "description": "Po mokyklos",
-        "subtask1": "Atlikite namų darbus",
-        "subtask2": "Patikrinkite tvarkaraštį",
-        "subtask3": "Sukraukite kuprinę"
+        "description": "Po mokyklos (su papildomomis užduotimis)",
+        "subtask1": "Atlik namų darbus",
+        "subtask2": "Patikrink tvarkaraštį",
+        "subtask3": "Supakuok kuprinę"
       },
       "creativeWork": {
         "title": "Kūrybinis darbas",
-        "description": "Kūrybinis darbas",
-        "subtask1": "Paruoškite medžiagas",
-        "subtask2": "Atlikite kūrybinę užduotį",
-        "subtask3": "Sutvarkykite darbo vietą",
-        "subtask4": "Nusiplauk rankas",
-        "subtask5": "Parodykite rezultatą"
+        "description": "Kūrybinis darbas (su papildomomis užduotimis)",
+        "subtask1": "Paruošk medžiagas",
+        "subtask2": "Atlik kūrybinę užduotį",
+        "subtask3": "Sutvarkyk darbo vietą",
+        "subtask4": "Plauk rankas",
+        "subtask5": "Parodyk rezultatą"
       },
       "washYourFace": "Nusiplaukite veidą",
       "washYourFaceDescription": "Nusiplaukite veidą",

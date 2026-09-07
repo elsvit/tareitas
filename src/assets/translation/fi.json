@@ -294,32 +294,32 @@
       "waterPlants": "Kastele sisäkasvit",
       "waterPlantsDescription": "Kastele sisäkasvit",
       "morningRoutine": {
-        "title": "Aamun rutiini",
-        "description": "Aamun rutiini",
+        "title": "Aamurutiini",
+        "description": "Aamurutiini (alihteineen)",
         "subtask1": "Herää",
         "subtask2": "Harjaa hampaat",
-        "subtask3": "Peseytyä",
-        "subtask4": "Peitä sänky",
-        "subtask5": "Pukeutua"
+        "subtask3": "Peseydy",
+        "subtask4": "Sovita sänky",
+        "subtask5": "Pukeudu"
       },
       "eveningRoutine": {
-        "title": "Iltarutiinia",
-        "description": "Iltarutiinia",
+        "title": "Iltarutiini",
+        "description": "Iltarutiini (alihteineen)",
         "subtask1": "Harjaa hampaat",
-        "subtask2": "Peseytyä"
+        "subtask2": "Peseydy"
       },
       "afterSchool": {
         "title": "Koulun jälkeen",
-        "description": "Koulun jälkeen",
+        "description": "Koulun jälkeen (alihteineen)",
         "subtask1": "Tee läksyt",
         "subtask2": "Tarkista aikataulu",
         "subtask3": "Pakkaa reppu"
       },
       "creativeWork": {
-        "title": "Luovaa työtä",
-        "description": "Luovaa työtä",
-        "subtask1": "Valmistele materiaalit",
-        "subtask2": "Suorita luova tehtävä",
+        "title": "Luova työ",
+        "description": "Luova työ (alihteineen)",
+        "subtask1": "Valmistele tarvikkeet",
+        "subtask2": "Viimeistele luova tehtävä",
         "subtask3": "Siivoa työtila",
         "subtask4": "Pese kädet",
         "subtask5": "Näytä tulos"

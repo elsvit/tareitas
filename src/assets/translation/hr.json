@@ -295,34 +295,34 @@
       "waterPlantsDescription": "Zalijevajte sobne biljke",
       "morningRoutine": {
         "title": "Jutarnja rutina",
-        "description": "Jutarnja rutina",
+        "description": "Jutarnja rutina (s podzadacima)",
         "subtask1": "Probuditi se",
-        "subtask2": "Perite zube",
-        "subtask3": "Operite se",
-        "subtask4": "Pospremi krevet",
-        "subtask5": "Obuci se"
+        "subtask2": "Prati zube",
+        "subtask3": "Umivati se",
+        "subtask4": "Pospremiti krevet",
+        "subtask5": "Obući se"
       },
       "eveningRoutine": {
         "title": "Večernja rutina",
-        "description": "Večernja rutina",
-        "subtask1": "Perite zube",
-        "subtask2": "Operite se"
+        "description": "Večernja rutina (s podzadacima)",
+        "subtask1": "Prati zube",
+        "subtask2": "Umivati se"
       },
       "afterSchool": {
         "title": "Poslije škole",
-        "description": "Poslije škole",
-        "subtask1": "Napravi domaću zadaću",
-        "subtask2": "Provjerite raspored",
-        "subtask3": "Spakirajte ruksak"
+        "description": "Poslije škole (s podzadacima)",
+        "subtask1": "Odraditi domaću zadaću",
+        "subtask2": "Provjeriti raspored",
+        "subtask3": "Spakirati ruksak"
       },
       "creativeWork": {
         "title": "Kreativni rad",
-        "description": "Kreativni rad",
-        "subtask1": "Pripremite materijale",
-        "subtask2": "Izvršite kreativni zadatak",
-        "subtask3": "Pospremite radni prostor",
-        "subtask4": "Operite ruke",
-        "subtask5": "Pokažite rezultat"
+        "description": "Kreativni rad (s podzadacima)",
+        "subtask1": "Pripremiti materijale",
+        "subtask2": "Dovršiti kreativni zadatak",
+        "subtask3": "Pospremiti radni prostor",
+        "subtask4": "Prati ruke",
+        "subtask5": "Pokazati rezultat"
       },
       "washYourFace": "Operite lice",
       "washYourFaceDescription": "Operite lice",

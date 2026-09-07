@@ -294,34 +294,34 @@
       "waterPlantsDescription": "Irrigare le piante interne",
       "morningRoutine": {
         "title": "Routine mattutina",
-        "description": "Routine mattutina",
-        "subtask1": "Svegliati",
+        "description": "Routine mattutina (con sottoattività)",
+        "subtask1": "Svegliarsi",
         "subtask2": "Lavarsi i denti",
-        "subtask3": "Lavati",
-        "subtask4": "Rifai il letto",
-        "subtask5": "Vestiti"
+        "subtask3": "Lavarsi",
+        "subtask4": "Fare il letto",
+        "subtask5": "Vestirsi"
       },
       "eveningRoutine": {
         "title": "Routine serale",
-        "description": "Routine serale",
+        "description": "Routine serale (con sottoattività)",
         "subtask1": "Lavarsi i denti",
-        "subtask2": "Lavati"
+        "subtask2": "Lavarsi"
       },
       "afterSchool": {
         "title": "Dopo la scuola",
-        "description": "Dopo la scuola",
-        "subtask1": "Fai i compiti",
-        "subtask2": "Controlla il programma",
-        "subtask3": "Prepara lo zaino"
+        "description": "Dopo la scuola (con sottoattività)",
+        "subtask1": "Fare i compiti",
+        "subtask2": "Controllare l'orario",
+        "subtask3": "Preparare lo zaino"
       },
       "creativeWork": {
         "title": "Lavoro creativo",
-        "description": "Lavoro creativo",
+        "description": "Lavoro creativo (con sottoattività)",
         "subtask1": "Preparare i materiali",
-        "subtask2": "Completa l'attività creativa",
-        "subtask3": "Metti in ordine lo spazio di lavoro",
+        "subtask2": "Completare il compito creativo",
+        "subtask3": "Riordinare lo spazio di lavoro",
         "subtask4": "Lavarsi le mani",
-        "subtask5": "Mostra il risultato"
+        "subtask5": "Mostrare il risultato"
       },
       "washYourFace": "Lavati la faccia",
       "washYourFaceDescription": "Lavati la faccia",

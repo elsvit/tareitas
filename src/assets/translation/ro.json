@@ -295,33 +295,33 @@
       "waterPlantsDescription": "Udați plantele de interior",
       "morningRoutine": {
         "title": "Rutina de dimineață",
-        "description": "Rutina de dimineață",
-        "subtask1": "Trezeşte-te",
-        "subtask2": "Periați dinții",
-        "subtask3": "Spălați-vă",
-        "subtask4": "Faceți patul",
+        "description": "Rutina de dimineață (cu sub-sarcini)",
+        "subtask1": "Trezește-te",
+        "subtask2": "Spală-te pe dinți",
+        "subtask3": "Spală-te",
+        "subtask4": "Fă patul",
         "subtask5": "Îmbracă-te"
       },
       "eveningRoutine": {
         "title": "Rutina de seară",
-        "description": "Rutina de seară",
-        "subtask1": "Periați dinții",
-        "subtask2": "Spălați-vă"
+        "description": "Rutina de seară (cu sub-sarcini)",
+        "subtask1": "Spală-te pe dinți",
+        "subtask2": "Spală-te"
       },
       "afterSchool": {
         "title": "După școală",
-        "description": "După școală",
-        "subtask1": "Fa temele",
-        "subtask2": "Verificați programul",
-        "subtask3": "Împachetează rucsacul"
+        "description": "După școală (cu sub-sarcini)",
+        "subtask1": "Fă temele",
+        "subtask2": "Verifică orarul",
+        "subtask3": "Pregătește ghiozdanul"
       },
       "creativeWork": {
-        "title": "Munca creativă",
-        "description": "Munca creativă",
-        "subtask1": "Pregătiți materialele",
-        "subtask2": "Finalizați sarcina creativă",
-        "subtask3": "Faceți ordine în spațiul de lucru",
-        "subtask4": "Spălați-vă mâinile",
+        "title": "Lucru creativ",
+        "description": "Lucru creativ (cu sub-sarcini)",
+        "subtask1": "Pregătește materialele",
+        "subtask2": "Finalizează sarcina creativă",
+        "subtask3": "Aranjează spațiul de lucru",
+        "subtask4": "Spală-te pe mâini",
         "subtask5": "Arată rezultatul"
       },
       "washYourFace": "Spălați-vă fața",

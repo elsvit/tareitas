@@ -295,34 +295,34 @@
       "waterPlantsDescription": "Laistiet istabas augus",
       "morningRoutine": {
         "title": "Rīta rutīna",
-        "description": "Rīta rutīna",
-        "subtask1": "mosties",
-        "subtask2": "Tīriet zobus",
-        "subtask3": "Nomazgājies",
-        "subtask4": "Saklāj gultu",
-        "subtask5": "Saģērbies"
+        "description": "Rīta rutīna (ar apakšuzdevumiem)",
+        "subtask1": "Pamosties",
+        "subtask2": "Tīrīt zobus",
+        "subtask3": "Mazgāties",
+        "subtask4": "Salikt gultu",
+        "subtask5": "Ģērbties"
       },
       "eveningRoutine": {
         "title": "Vakara rutīna",
-        "description": "Vakara rutīna",
-        "subtask1": "Tīriet zobus",
-        "subtask2": "Nomazgājies"
+        "description": "Vakara rutīna (ar apakšuzdevumiem)",
+        "subtask1": "Tīrīt zobus",
+        "subtask2": "Mazgāties"
       },
       "afterSchool": {
         "title": "Pēc skolas",
-        "description": "Pēc skolas",
-        "subtask1": "Izpildi mājasdarbus",
-        "subtask2": "Pārbaudiet grafiku",
-        "subtask3": "Iepakojiet mugursomu"
+        "description": "Pēc skolas (ar apakšuzdevumiem)",
+        "subtask1": "Izdari mājasdarbus",
+        "subtask2": "Pārbaudi grafiku",
+        "subtask3": "Sakārto somu"
       },
       "creativeWork": {
         "title": "Radošs darbs",
-        "description": "Radošs darbs",
-        "subtask1": "Sagatavojiet materiālus",
-        "subtask2": "Izpildi radošo uzdevumu",
-        "subtask3": "Sakārtojiet darba vietu",
-        "subtask4": "Nomazgājiet rokas",
-        "subtask5": "Parādiet rezultātu"
+        "description": "Radošs darbs (ar apakšuzdevumiem)",
+        "subtask1": "Sagatavo materiālus",
+        "subtask2": "Pabeidz radošo uzdevumu",
+        "subtask3": "Sakārto darba vietu",
+        "subtask4": "Nomazgā rokas",
+        "subtask5": "Parādi rezultātu"
       },
       "washYourFace": "Nomazgājiet seju",
       "washYourFaceDescription": "Nomazgājiet seju",

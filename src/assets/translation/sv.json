@@ -295,32 +295,32 @@
       "waterPlantsDescription": "Vattna inomhusväxterna",
       "morningRoutine": {
         "title": "Morgonrutin",
-        "description": "Morgonrutin",
+        "description": "Morgonrutin (med deluppgifter)",
         "subtask1": "Vakna",
-        "subtask2": "Borsta tänderna",
-        "subtask3": "Diska",
+        "subtask2": "Borsta tänder",
+        "subtask3": "Tvätta dig",
         "subtask4": "Bädda sängen",
-        "subtask5": "Klä på sig"
+        "subtask5": "Klä på dig"
       },
       "eveningRoutine": {
         "title": "Kvällsrutin",
-        "description": "Kvällsrutin",
-        "subtask1": "Borsta tänderna",
-        "subtask2": "Diska"
+        "description": "Kvällsrutin (med deluppgifter)",
+        "subtask1": "Borsta tänder",
+        "subtask2": "Tvätta dig"
       },
       "afterSchool": {
         "title": "Efter skolan",
-        "description": "Efter skolan",
+        "description": "Efter skolan (med deluppgifter)",
         "subtask1": "Gör läxor",
-        "subtask2": "Kontrollera schemat",
+        "subtask2": "Kolla schemat",
         "subtask3": "Packa ryggsäcken"
       },
       "creativeWork": {
         "title": "Kreativt arbete",
-        "description": "Kreativt arbete",
+        "description": "Kreativt arbete (med deluppgifter)",
         "subtask1": "Förbered material",
         "subtask2": "Slutför den kreativa uppgiften",
-        "subtask3": "Städa i arbetsytan",
+        "subtask3": "Städa arbetsplatsen",
         "subtask4": "Tvätta händerna",
         "subtask5": "Visa resultatet"
       },

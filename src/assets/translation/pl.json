@@ -295,34 +295,34 @@
       "waterPlantsDescription": "Podlewaj rośliny domowe",
       "morningRoutine": {
         "title": "Poranna rutyna",
-        "description": "Poranna rutyna",
-        "subtask1": "Budzić się",
+        "description": "Poranna rutyna (z podzadaniami)",
+        "subtask1": "Obudź się",
         "subtask2": "Myj zęby",
-        "subtask3": "Zmyć naczynia",
-        "subtask4": "Posłać",
+        "subtask3": "Umyj się",
+        "subtask4": "Pościel łóżko",
         "subtask5": "Ubierz się"
       },
       "eveningRoutine": {
         "title": "Wieczorna rutyna",
-        "description": "Wieczorna rutyna",
+        "description": "Wieczorna rutyna (z podzadaniami)",
         "subtask1": "Myj zęby",
-        "subtask2": "Zmyć naczynia"
+        "subtask2": "Umyj się"
       },
       "afterSchool": {
         "title": "Po szkole",
-        "description": "Po szkole",
+        "description": "Po szkole (z podzadaniami)",
         "subtask1": "Odrób pracę domową",
-        "subtask2": "Sprawdź harmonogram",
+        "subtask2": "Sprawdź plan lekcji",
         "subtask3": "Spakuj plecak"
       },
       "creativeWork": {
-        "title": "Twórcza praca",
-        "description": "Twórcza praca",
+        "title": "Praca twórcza",
+        "description": "Praca twórcza (z podzadaniami)",
         "subtask1": "Przygotuj materiały",
         "subtask2": "Wykonaj zadanie twórcze",
         "subtask3": "Uporządkuj miejsce pracy",
         "subtask4": "Umyj ręce",
-        "subtask5": "Pokaż wynik"
+        "subtask5": "Pokaż efekt"
       },
       "washYourFace": "Umyj twarz",
       "washYourFaceDescription": "Umyj twarz",

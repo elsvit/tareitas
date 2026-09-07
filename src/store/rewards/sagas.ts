@@ -1,6 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, select } from 'redux-saga/effects';
 
+import { deleteImageFromDevice } from '~/components/ui/ImageLoader/ImageLoader.utils';
 import {
   approveRewardRedemption,
   completeRewardRedemption,
@@ -18,7 +19,11 @@ import {
   assertMultideviceSession,
   callMultideviceApi,
 } from '~/store/helpers/multideviceSession';
-import { selectCanReviewTasks } from '~/store/settings/selectors';
+import { removeTaskImageUrl } from '~/store/images/slice';
+import { syncTaskAssignmentsFromServerSaga } from '~/store/multideviceSync/sagas';
+import { selectCanReviewTasks, selectIsMultidevice } from '~/store/settings/selectors';
+import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
+import { updateTaskAssignmentSuccess } from '~/store/taskAssignment/slice';
 import { takeLatestWithFetchable } from '../helpers/fetchableHandler';
 import { RootStateT } from '~/store';
 import {
@@ -42,6 +47,11 @@ import {
 import { syncEarnedRewardPeriodsFromState } from './rewardCalculations';
 import { syncRewardsData } from '~/store/settings/slice';
 import { IReward } from '~/types/IReward';
+import {
+  cleanupAssignmentChangesForCutoff,
+  getApprovedPeriodMediaCutoffYearMonth,
+} from '~/utils/tasks/periodMediaCleanup';
+import { deleteTaskRecordFromDevice } from '~/utils/tasks/taskRecordStorage';
 
 function resolveRedemptionIdForComplete(
   rewards: IReward[],
@@ -95,6 +105,57 @@ function* pushEarnedRewardPeriodsToServer(
   );
 }
 
+function* cleanupDeviceOnlyPeriodMedia(
+  action: PayloadAction<ApprovePeriodPayload>,
+): Generator<any, void, any> {
+  const isMultidevice: boolean = yield select(selectIsMultidevice);
+
+  if (isMultidevice) {
+    return;
+  }
+
+  const { childId, updates } = action.payload;
+
+  for (const { yearMonth } of updates) {
+    const cutoffYearMonth = getApprovedPeriodMediaCutoffYearMonth(yearMonth);
+    const state: RootStateT = yield select(
+      (currentState: RootStateT) => currentState,
+    );
+    const taskUrls = state.images.taskUrls;
+    const assignments = selectAllTaskAssignment(state).filter(
+      assignment => assignment.childId === childId,
+    );
+
+    for (const assignment of assignments) {
+      const result = cleanupAssignmentChangesForCutoff(
+        assignment,
+        cutoffYearMonth,
+        taskUrls,
+      );
+
+      if (result.assignment === assignment) {
+        continue;
+      }
+
+      yield put(updateTaskAssignmentSuccess(result.assignment));
+
+      for (const uri of result.removedAudioUris) {
+        yield call(deleteTaskRecordFromDevice, uri);
+      }
+
+      for (const { ref, uri } of result.removedPictureRefs) {
+        if (uri?.startsWith('file://')) {
+          yield call(deleteImageFromDevice, uri);
+        }
+
+        if (Object.prototype.hasOwnProperty.call(taskUrls, ref)) {
+          yield put(removeTaskImageUrl(ref));
+        }
+      }
+    }
+  }
+}
+
 function* approvePeriodSaga(
   action: PayloadAction<ApprovePeriodPayload>,
 ): Generator<any, void, any> {
@@ -106,9 +167,11 @@ function* approvePeriodSaga(
   const periods = syncEarnedRewardPeriodsFromState(state);
 
   yield put(syncEarnedRewardPeriods(periods));
+  yield* cleanupDeviceOnlyPeriodMedia(action);
 
   try {
     yield* pushEarnedRewardPeriodsToServer(periods);
+    yield call(syncTaskAssignmentsFromServerSaga);
   } catch {
     // Local approval remains; sync on next screen focus will reconcile.
   }
