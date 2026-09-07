@@ -1,7 +1,7 @@
 import type { ImageSource } from 'expo-image';
 import type { ImageSourcePropType } from 'react-native';
 
-import { toAbsoluteUploadUrl } from '~/services/api/uploadsApi';
+import { isDisplayableMediaUri, toAbsoluteUploadUrl } from '~/services/api/uploadsApi';
 
 export const resolvePictureSource = (
   picture: string | number | undefined,
@@ -21,14 +21,22 @@ export const resolvePictureSource = (
 
     if (uploadUrl) {
       if (Object.prototype.hasOwnProperty.call(customUrls, picture)) {
-        return { uri: customUrls[picture] };
+        const customUri = customUrls[picture];
+
+        if (isDisplayableMediaUri(customUri)) {
+          return { uri: customUri };
+        }
       }
 
       return { uri: uploadUrl };
     }
 
     if (Object.prototype.hasOwnProperty.call(customUrls, picture)) {
-      return { uri: customUrls[picture] };
+      const customUri = customUrls[picture];
+
+      if (isDisplayableMediaUri(customUri)) {
+        return { uri: customUri };
+      }
     }
 
     if (picture in builtInImages) {

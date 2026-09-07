@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Modal,
@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, ButtonColors, Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
 import { saveImageToDevice } from '~/components/ui/ImageLoader/ImageLoader.utils';
+import { UploadImageThumbnail } from '~/components/ui/UploadImageThumbnail/UploadImageThumbnail';
 import { SubscriptionModal } from '~/components/subscriptions/SubscriptionModal';
 import HelpCircleIcon from '~/assets/svg/common/help-circle.svg';
 import { IMAGES_MAXIMUM, IMAGES_WITHOUT_SUBSCRIPTION } from '~/constants/ads';
@@ -42,6 +43,7 @@ import {
   selectFamilyId,
   selectIsMultidevice,
 } from '~/store/settings/selectors';
+import { syncFamilyImages } from '~/store/settings/slice';
 import { spacing } from '~/styles';
 import { IImageOption } from '~/types';
 import { filterFamilyImageEntries } from '~/utils/imageScope';
@@ -161,6 +163,12 @@ export function SelectImageWithCustom({
     isSaving;
 
   useMediaSessionPause(isMediaFlowActive);
+
+  useEffect(() => {
+    if (isMultidevice) {
+      dispatch(syncFamilyImages());
+    }
+  }, [dispatch, isMultidevice]);
 
   const pickAndCropFromGallery = useCallback(async () => {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -320,8 +328,12 @@ export function SelectImageWithCustom({
           kind,
         );
 
-        saveCustomImageUrl(uploaded.path, savedUri);
+        saveCustomImageUrl(
+          uploaded.path,
+          uploaded.url ?? savedUri,
+        );
         onChange?.(uploaded.path);
+        dispatch(syncFamilyImages());
       } else {
         saveCustomImageUrl(nextId, savedUri);
         onChange?.(nextId);
@@ -344,6 +356,7 @@ export function SelectImageWithCustom({
     kind,
     onChange,
     saveCustomImageUrl,
+    dispatch,
   ]);
 
   const customPhotoItems = customEntries.map(([id, uri]) => {
@@ -360,7 +373,12 @@ export function SelectImageWithCustom({
           },
         ]}
       >
-        <Image source={{ uri }} style={baseStyles.avatarImage} />
+        <UploadImageThumbnail
+          imageRef={id}
+          uri={uri}
+          style={baseStyles.avatarImage}
+          placeholderStyle={baseStyles.avatarImage}
+        />
       </TouchableOpacity>
     );
   });

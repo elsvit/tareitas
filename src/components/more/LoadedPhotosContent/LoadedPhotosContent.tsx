@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
-import { Image } from 'expo-image';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CrossIcon from '~/assets/svg/common/cross.svg';
 import { ConfirmModal } from '~/components/modals';
 import { ButtonColors, Text } from '~/components/ui';
+import { UploadImageThumbnail } from '~/components/ui/UploadImageThumbnail/UploadImageThumbnail';
 import { deleteImageFromDevice } from '~/components/ui/ImageLoader/ImageLoader.utils';
 import { t } from '~/services';
 import { isRemoteImageRef } from '~/services/imageSync';
@@ -16,9 +16,9 @@ import {
   removeRewardImageUrl,
   removeTaskImageUrl,
   removeUserImageUrl,
-  selectFamilyScopedRewardImageEntries,
-  selectFamilyScopedTaskImageEntries,
-  selectFamilyScopedUserImageEntries,
+  selectLoadedPhotosRewardEntries,
+  selectLoadedPhotosTaskImageEntries,
+  selectLoadedPhotosUserImageEntries,
   selectUsedRewardImageIds,
   selectUsedTaskImageIds,
   selectUsedUserImageIds,
@@ -26,6 +26,7 @@ import {
 import type { ImageStoreKind } from '~/store/images/types';
 import {
   selectCanReviewTasks,
+  selectHasAuthSession,
   selectIsMultidevice,
 } from '~/store/settings/selectors';
 import { syncFamilyImages } from '~/store/settings/slice';
@@ -68,7 +69,12 @@ const ImageGrid: React.FC<ImageGridProps> = ({
 
         return (
           <View key={id} style={styles.imageWrapper}>
-            <Image source={{ uri }} style={styles.image} />
+            <UploadImageThumbnail
+              imageRef={id}
+              uri={uri}
+              style={styles.image}
+              placeholderStyle={styles.image}
+            />
 
             {showRemove && (
               <Pressable
@@ -120,12 +126,13 @@ const PhotoSection: React.FC<PhotoSectionProps> = ({
 export function LoadedPhotosContent() {
   const dispatch = useDispatch();
   const isMultidevice = useSelector(selectIsMultidevice);
+  const hasAuthSession = useSelector(selectHasAuthSession);
   const canManageImages = useSelector(selectCanReviewTasks);
   const canRemoveUnused = !isMultidevice || canManageImages;
 
-  const userEntries = useSelector(selectFamilyScopedUserImageEntries);
-  const taskEntries = useSelector(selectFamilyScopedTaskImageEntries);
-  const rewardEntries = useSelector(selectFamilyScopedRewardImageEntries);
+  const userEntries = useSelector(selectLoadedPhotosUserEntries);
+  const taskEntries = useSelector(selectLoadedPhotosTaskEntries);
+  const rewardEntries = useSelector(selectLoadedPhotosRewardEntries);
   const usedUserIds = useSelector(selectUsedUserImageIds);
   const usedTaskIds = useSelector(selectUsedTaskImageIds);
   const usedRewardIds = useSelector(selectUsedRewardImageIds);
@@ -134,10 +141,10 @@ export function LoadedPhotosContent() {
 
   useFocusEffect(
     useCallback(() => {
-      if (isMultidevice) {
+      if (isMultidevice && hasAuthSession) {
         dispatch(syncFamilyImages());
       }
-    }, [dispatch, isMultidevice]),
+    }, [dispatch, hasAuthSession, isMultidevice]),
   );
 
   const handleRemovePress = useCallback(

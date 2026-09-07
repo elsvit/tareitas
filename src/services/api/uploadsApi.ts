@@ -65,6 +65,12 @@ export function isObjectStoragePath(
   );
 }
 
+export function isDisplayableMediaUri(
+  value: string,
+): boolean {
+  return /^(https?:\/\/|file:|data:)/.test(value);
+}
+
 export function toAbsoluteUploadUrl(
   pathOrUrl: string | undefined,
 ): string | null {
@@ -133,6 +139,33 @@ function contentTypeForKind(
     : 'image/jpeg';
 }
 
+async function getLocalFileSize(
+  localUri: string,
+): Promise<number> {
+  const fileInfo = await FileSystem.getInfoAsync(
+    localUri,
+    { size: true },
+  );
+
+  if (
+    fileInfo.exists &&
+    'size' in fileInfo &&
+    typeof fileInfo.size === 'number' &&
+    fileInfo.size > 0
+  ) {
+    return fileInfo.size;
+  }
+
+  const fileResponse = await fetch(localUri);
+  const fileBody = await fileResponse.blob();
+
+  if (fileBody.size <= 0) {
+    throw new Error('Upload file not found');
+  }
+
+  return fileBody.size;
+}
+
 async function uploadViaPresign(
   familyId: string,
   authToken: string,
@@ -140,11 +173,7 @@ async function uploadViaPresign(
   kind: ImageStoreKind,
 ): Promise<UploadedImageResponse> {
   const contentType = contentTypeForKind(kind);
-  const fileInfo = await FileSystem.getInfoAsync(localUri);
-
-  if (!fileInfo.exists || fileInfo.size == null) {
-    throw new Error('Upload file not found');
-  }
+  const contentLength = await getLocalFileSize(localUri);
 
   const presignResponse = await fetch(
     `${API_CONFIG.baseUrl}/families/${familyId}/uploads/presign`,
@@ -157,7 +186,7 @@ async function uploadViaPresign(
       body: JSON.stringify({
         kind,
         contentType,
-        contentLength: fileInfo.size,
+        contentLength,
       }),
     },
   );

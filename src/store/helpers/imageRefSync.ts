@@ -1,8 +1,12 @@
 import { call, put, select } from 'redux-saga/effects';
 
 import { resolveImageRefForServer } from '~/services/imageSync';
+import {
+  fetchMediaAccessUrl,
+  isObjectStoragePath,
+  toAbsoluteUploadUrl,
+} from '~/services/api/uploadsApi';
 import { isRemoteImageRef } from '~/utils/imageRefs';
-import { toAbsoluteUploadUrl } from '~/services/api/uploadsApi';
 import {
   selectRewardImageUrls,
   selectTaskImageUrls,
@@ -12,6 +16,7 @@ import {
   setUserImageUrl,
 } from '~/store/images';
 import type { ImageStoreKind } from '~/store/images/types';
+import { selectAuthToken } from '~/store/settings/selectors';
 
 function selectUrlsForKind(kind: ImageStoreKind) {
   switch (kind) {
@@ -73,15 +78,36 @@ export function* resolveAndCacheImageRef(
     const existingUri = localUrls[resolved];
 
     if (!existingUri?.startsWith('file:')) {
-      yield put(
-        cacheResolvedImageUrl(
-          kind,
-          resolved,
-          existingUri ??
-            toAbsoluteUploadUrl(resolved) ??
+      let displayUri =
+        existingUri ?? toAbsoluteUploadUrl(resolved);
+
+      if (
+        !displayUri &&
+        isObjectStoragePath(resolved)
+      ) {
+        const authToken: string | null = yield select(
+          selectAuthToken,
+        );
+
+        if (authToken) {
+          displayUri = yield call(
+            fetchMediaAccessUrl,
+            familyId,
+            authToken,
             resolved,
-        ),
-      );
+          );
+        }
+      }
+
+      if (displayUri) {
+        yield put(
+          cacheResolvedImageUrl(
+            kind,
+            resolved,
+            displayUri,
+          ),
+        );
+      }
     }
   }
 

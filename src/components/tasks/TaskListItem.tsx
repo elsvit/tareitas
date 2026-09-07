@@ -10,7 +10,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import * as Haptics from 'expo-haptics';
-import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { BASE_TASKS_IMAGES } from '~/assets/img/tasks/tasks';
@@ -21,6 +20,7 @@ import { TaskStatusBadge } from '~/components/tasks/TaskStatusBadge';
 import { TaskRewardBadge } from '~/components/tasks/TaskRewardBadge';
 import { TaskRewardStarsAnimation } from '~/components/tasks/TaskRewardStarsAnimation';
 import { Text } from '~/components/ui';
+import { ResolvedPicture } from '~/components/ui/ResolvedPicture/ResolvedPicture';
 import { t } from '~/services';
 import { RootStateT } from '~/store';
 import { ECommonActions } from '~/store/common/types';
@@ -39,7 +39,6 @@ import { Colors } from '~/styles';
 import { ETaskStatus } from '~/types/ETask';
 import { ITask } from '~/types/ITask';
 import { lightenColor } from '~/utils/color';
-import { resolvePictureSource } from '~/utils/pictureSource';
 import { createTaskId } from '~/utils/tasks/taskGeneration';
 
 type Props = {
@@ -285,11 +284,6 @@ export const TaskListItem: React.FC<Props> = ({
     setStatus(nextStatus, nextCompleted);
   };
 
-  const pictureSource = useMemo(
-    () => resolvePictureSource(picture, customUrls, BASE_TASKS_IMAGES),
-    [customUrls, picture],
-  );
-
   const renderEditPressable = (
     children: React.ReactNode,
     style?: object,
@@ -337,19 +331,20 @@ export const TaskListItem: React.FC<Props> = ({
       )}
 
       <View style={styles.imageContainer}>
-        {pictureSource ? (
-          <Image
-            source={pictureSource}
-            style={styles.image}
-            contentFit="contain"
-          />
-        ) : (
-          <View style={styles.placeholder}>
-            <Text fontFamily="fredoka" weight="bold">
-              🎯
-            </Text>
-          </View>
-        )}
+        <ResolvedPicture
+          picture={picture}
+          customUrls={customUrls}
+          builtInImages={BASE_TASKS_IMAGES}
+          style={styles.image}
+          contentFit="contain"
+          placeholder={
+            <View style={styles.placeholder}>
+              <Text fontFamily="fredoka" weight="bold">
+                🎯
+              </Text>
+            </View>
+          }
+        />
       </View>
 
       <TaskRewardBadge reward={reward} rewardDisplayText={rewardDisplayText} />

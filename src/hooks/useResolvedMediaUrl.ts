@@ -15,17 +15,26 @@ export function useResolvedMediaUrl(
   const authToken = useSelector(selectAuthToken);
   const [resolvedUrl, setResolvedUrl] = useState<string | null>(
     () => {
-      if (!path) {
-        return null;
-      }
+    if (!path) {
+      return null;
+    }
 
-      return toAbsoluteUploadUrl(path);
+    if (/^(https?:\/\/|file:|data:)/.test(path)) {
+      return path;
+    }
+
+    return toAbsoluteUploadUrl(path);
     },
   );
 
   useEffect(() => {
     if (!path) {
       setResolvedUrl(null);
+      return;
+    }
+
+    if (/^(https?:\/\/|file:|data:)/.test(path)) {
+      setResolvedUrl(path);
       return;
     }
 
