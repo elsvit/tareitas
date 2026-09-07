@@ -219,6 +219,8 @@ export const BaseRewardForm: FC<Props> = ({
                   value={value}
                   onChange={onChange}
                   loadedPhotosAutoRows
+                  showLoadedPhotosLabel={false}
+                  loadPhotoButtonBelowLoadedPhotos
                 />
               )}
             />

@@ -432,6 +432,8 @@ export const RewardForm: FC<Props> = ({
                   onChange={onChange}
                   errorMessage={errors.picture?.message}
                   loadedPhotosAutoRows
+                  showLoadedPhotosLabel={false}
+                  loadPhotoButtonBelowLoadedPhotos
                 />
               )}
             />
