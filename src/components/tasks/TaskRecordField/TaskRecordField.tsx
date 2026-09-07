@@ -130,6 +130,12 @@ export function TaskRecordField({
               uploadError,
             );
           }
+
+          setError(
+            uploadError instanceof Error
+              ? uploadError.message
+              : t('tasks.record_failed'),
+          );
         }
       }
 
