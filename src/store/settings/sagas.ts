@@ -2,6 +2,7 @@ import { call, put, select } from 'redux-saga/effects';
 
 import { collectFamilyMemberCredentialUpdates } from '~/services/familySync';
 import { LocalizationService } from '~/services/localization/localization';
+import { DEFAULT_LANG } from '~/constants/settings';
 import { updateChild } from '~/store/children/slice';
 import {
   ensureSessionNotIdle,
@@ -170,10 +171,18 @@ function* refreshAuthSessionSaga(): Generator<any, void, any> {
 
 function* initLanguageSaga(): Generator<any, void, any> {
   const storeLang = yield select(selectLang);
-  const lang = yield call(
-    LocalizationService.init,
-    storeLang,
-  );
+  let lang = DEFAULT_LANG;
+
+  try {
+    lang = yield call(LocalizationService.init, storeLang);
+  } catch {
+    try {
+      lang = yield call(LocalizationService.init, DEFAULT_LANG);
+    } catch {
+      lang = DEFAULT_LANG;
+    }
+  }
+
   yield put(setLanguage(lang));
   yield put(syncTaskBaseTranslations());
   yield put(syncRewardBaseTranslations());
