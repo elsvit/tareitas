@@ -1,7 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import { selectFamilyId } from '~/store/settings/selectors';
-import { filterFamilyImageEntries, mergeFamilyUploadImageEntries } from '~/utils/imageScope';
+import { selectFamilyId, selectIsMultidevice } from '~/store/settings/selectors';
+import {
+  filterFamilyImageEntries,
+  isImageRefForFamily,
+  mergeFamilyUploadImageEntries,
+} from '~/utils/imageScope';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectAllParents } from '~/store/parents/selectors';
 import { selectAllRewardAssignment } from '~/store/rewardAssignment/selectors';
@@ -133,5 +137,76 @@ export const selectFamilyScopedRewardImageEntries = createSelector(
         familyId,
         usedIds,
       },
+    ),
+);
+
+function selectLoadedPhotoEntries(
+  urlMap: Record<string, string>,
+  usedIds: Set<string>,
+  familyId: string | null | undefined,
+  isMultidevice: boolean,
+): [string, string][] {
+  return mergeFamilyUploadImageEntries(
+    urlMap,
+    usedIds,
+    familyId,
+  ).filter(([id]) => {
+    if (id.startsWith('voice/')) {
+      return false;
+    }
+
+    if (isRemoteImageRef(id)) {
+      return isImageRefForFamily(id, familyId);
+    }
+
+    return !isMultidevice;
+  });
+}
+
+export const selectLoadedPhotosUserEntries = createSelector(
+  [
+    selectUserImageUrls,
+    selectUsedUserImageIds,
+    selectFamilyImageFilterOptions,
+    selectIsMultidevice,
+  ],
+  (userUrls, usedIds, { familyId }, isMultidevice) =>
+    selectLoadedPhotoEntries(
+      userUrls,
+      usedIds,
+      familyId,
+      isMultidevice,
+    ),
+);
+
+export const selectLoadedPhotosTaskEntries = createSelector(
+  [
+    selectTaskImageUrls,
+    selectUsedTaskImageIds,
+    selectFamilyImageFilterOptions,
+    selectIsMultidevice,
+  ],
+  (taskUrls, usedIds, { familyId }, isMultidevice) =>
+    selectLoadedPhotoEntries(
+      taskUrls,
+      usedIds,
+      familyId,
+      isMultidevice,
+    ),
+);
+
+export const selectLoadedPhotosRewardEntries = createSelector(
+  [
+    selectRewardImageUrls,
+    selectUsedRewardImageIds,
+    selectFamilyImageFilterOptions,
+    selectIsMultidevice,
+  ],
+  (rewardUrls, usedIds, { familyId }, isMultidevice) =>
+    selectLoadedPhotoEntries(
+      rewardUrls,
+      usedIds,
+      familyId,
+      isMultidevice,
     ),
 );

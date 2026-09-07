@@ -7,7 +7,6 @@ import {
   View,
 } from 'react-native';
 
-import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector } from 'react-redux';
 
@@ -17,12 +16,12 @@ import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
 import { DEFAULT_BASE_TASK_COLOR } from '~/constants/tasks';
 import { TaskRewardBadge } from '~/components/tasks/TaskRewardBadge';
 import { Text } from '~/components/ui';
+import { ResolvedPicture } from '~/components/ui/ResolvedPicture/ResolvedPicture';
 import { t } from '~/services';
 import { selectTaskImageUrls } from '~/store/images';
 import { Colors } from '~/styles';
 import { ISubtask } from '~/types/ITask';
 import { lightenColor } from '~/utils/color';
-import { resolvePictureSource } from '~/utils/pictureSource';
 
 type Props = {
   name: string;
@@ -48,28 +47,24 @@ const RowContent: React.FC<{
   const [areSubtasksExpanded, setAreSubtasksExpanded] = useState(false);
   const hasSubtasks = subtasks.length > 0;
 
-  const pictureSource = useMemo(
-    () => resolvePictureSource(picture, customUrls, BASE_TASKS_IMAGES),
-    [customUrls, picture],
-  );
-
   return (
     <View style={styles.row}>
       <View style={styles.leftColumn}>
         <View style={styles.imageContainer}>
-          {pictureSource ? (
-            <Image
-              source={pictureSource}
-              style={styles.image}
-              contentFit="contain"
-            />
-          ) : (
-            <View style={styles.placeholder}>
-              <Text fontFamily="fredoka" weight="bold">
-                🎯
-              </Text>
-            </View>
-          )}
+          <ResolvedPicture
+            picture={picture}
+            customUrls={customUrls}
+            builtInImages={BASE_TASKS_IMAGES}
+            style={styles.image}
+            contentFit="contain"
+            placeholder={
+              <View style={styles.placeholder}>
+                <Text fontFamily="fredoka" weight="bold">
+                  🎯
+                </Text>
+              </View>
+            }
+          />
         </View>
 
         <TaskRewardBadge reward={reward} />

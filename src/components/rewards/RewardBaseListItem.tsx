@@ -7,15 +7,14 @@ import {
   View,
 } from 'react-native';
 
-import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector } from 'react-redux';
 
 import { BASE_REWARDS_IMAGES } from '~/assets/img/rewards/rewards';
 import { Text } from '~/components/ui';
+import { ResolvedPicture } from '~/components/ui/ResolvedPicture/ResolvedPicture';
 import { selectRewardImageUrls } from '~/store/images';
 import { lightenColor } from '~/utils/color';
-import { resolvePictureSource } from '~/utils/pictureSource';
 
 type Props = {
   title: string;
@@ -36,11 +35,6 @@ const RowContent: React.FC<{
   footer?: React.ReactNode;
   customUrls: Record<string, string>;
 }> = ({ title, picture, reward, textColor, footer, customUrls }) => {
-  const pictureSource = useMemo(
-    () => resolvePictureSource(picture, customUrls, BASE_REWARDS_IMAGES),
-    [customUrls, picture],
-  );
-
   const rewardText = reward != null ? String(reward) : '';
   const isLongReward = rewardText.length > 3;
 
@@ -48,19 +42,20 @@ const RowContent: React.FC<{
     <View style={styles.row}>
       <View style={styles.leftColumn}>
         <View style={styles.imageContainer}>
-          {pictureSource ? (
-            <Image
-              source={pictureSource}
-              style={styles.image}
-              contentFit="contain"
-            />
-          ) : (
-            <View style={styles.placeholder}>
-              <Text fontFamily="fredoka" weight="bold">
-                🎁
-              </Text>
-            </View>
-          )}
+          <ResolvedPicture
+            picture={picture}
+            customUrls={customUrls}
+            builtInImages={BASE_REWARDS_IMAGES}
+            style={styles.image}
+            contentFit="contain"
+            placeholder={
+              <View style={styles.placeholder}>
+                <Text fontFamily="fredoka" weight="bold">
+                  🎁
+                </Text>
+              </View>
+            }
+          />
         </View>
 
         {reward != null && (

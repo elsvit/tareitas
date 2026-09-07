@@ -4,6 +4,7 @@ import { call, put, select } from 'redux-saga/effects';
 import { deleteImageFromDevice } from '~/components/ui/ImageLoader/ImageLoader.utils';
 import {
   deleteFamilyImage as deleteFamilyImageApi,
+  isDisplayableMediaUri,
   listFamilyImages,
   toAbsoluteUploadUrl,
 } from '~/services/api/uploadsApi';
@@ -56,11 +57,11 @@ export function* syncFamilyImagesFromServerSaga(): Generator<
     (currentState: IState) => currentState,
   );
 
-  const merged = images.map(image => {
+  const merged = images
+    .filter(image => image.kind !== 'task_record')
+    .map(image => {
     const remoteUri =
-      image.url ??
-      toAbsoluteUploadUrl(image.path) ??
-      image.path;
+      image.url ?? toAbsoluteUploadUrl(image.path);
     const existing =
       image.kind === 'task'
         ? state.images.taskUrls[image.path]
@@ -68,10 +69,19 @@ export function* syncFamilyImagesFromServerSaga(): Generator<
           ? state.images.rewardUrls[image.path]
           : state.images.userUrls[image.path];
 
+    const nextUri =
+      existing?.startsWith('file:')
+        ? existing
+        : remoteUri && isDisplayableMediaUri(remoteUri)
+          ? remoteUri
+          : existing && isDisplayableMediaUri(existing)
+            ? existing
+            : remoteUri ?? existing ?? image.path;
+
     return {
       kind: image.kind,
       path: image.path,
-      uri: existing?.startsWith('file:') ? existing : remoteUri,
+      uri: nextUri,
     };
   });
 

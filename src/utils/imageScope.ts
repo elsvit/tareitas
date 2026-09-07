@@ -1,5 +1,9 @@
 import { isRemoteImageRef } from '~/utils/imageRefs';
-import { toAbsoluteUploadUrl } from '~/services/api/uploadsApi';
+import {
+  isDisplayableMediaUri,
+  isObjectStoragePath,
+  toAbsoluteUploadUrl,
+} from '~/services/api/uploadsApi';
 
 export function isUploadPathForFamily(
   imageRef: string,
@@ -107,10 +111,17 @@ export function mergeFamilyUploadImageEntries(
     }
 
     if (!entries.has(id)) {
-      entries.set(
-        id,
-        urlMap[id] ?? toAbsoluteUploadUrl(id) ?? id,
-      );
+      const candidate =
+        urlMap[id] ?? toAbsoluteUploadUrl(id);
+
+      if (candidate && isDisplayableMediaUri(candidate)) {
+        entries.set(id, candidate);
+      } else if (
+        isObjectStoragePath(id) ||
+        id.startsWith('/uploads/')
+      ) {
+        entries.set(id, candidate ?? id);
+      }
     }
   });
 

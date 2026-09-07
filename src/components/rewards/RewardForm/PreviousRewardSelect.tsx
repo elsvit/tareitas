@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
-import { Image } from 'expo-image';
 import { Icon, Menu, TextInput as PaperTextInput } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
@@ -9,11 +8,11 @@ import { BASE_REWARDS_IMAGES } from '~/assets/img/rewards/rewards';
 import { Search } from '~/components/ui/Search';
 import { Text } from '~/components/ui/Text';
 import { TextInput } from '~/components/ui/TextInput';
+import { ResolvedPicture } from '~/components/ui/ResolvedPicture/ResolvedPicture';
 import { FORM_FIELD, FORM_FIELD_MENU_THEME } from '~/constants/formField';
 import { t } from '~/services';
 import { selectRewardImageUrls } from '~/store/images';
 import { IRewardAssignment } from '~/types/IReward';
-import { resolvePictureSource } from '~/utils/pictureSource';
 
 import { styles } from '~/components/ui/Select/styles';
 import { styles as localStyles } from './PreviousRewardSelect.styles';
@@ -50,12 +49,6 @@ function PreviousRewardOptionRow({
   selected: boolean;
   customUrls: Record<string, string>;
 }) {
-  const pictureSource = resolvePictureSource(
-    assignment.picture,
-    customUrls,
-    BASE_REWARDS_IMAGES,
-  );
-
   return (
     <View style={localStyles.optionRow}>
       <View style={localStyles.optionIconSlot}>
@@ -65,17 +58,18 @@ function PreviousRewardOptionRow({
       </View>
 
       <View style={localStyles.optionImageContainer}>
-        {pictureSource ? (
-          <Image
-            source={pictureSource}
-            style={localStyles.optionImage}
-            contentFit="contain"
-          />
-        ) : (
-          <Text fontFamily="fredoka" weight="bold">
-            🎁
-          </Text>
-        )}
+        <ResolvedPicture
+          picture={assignment.picture}
+          customUrls={customUrls}
+          builtInImages={BASE_REWARDS_IMAGES}
+          style={localStyles.optionImage}
+          contentFit="contain"
+          placeholder={
+            <Text fontFamily="fredoka" weight="bold">
+              🎁
+            </Text>
+          }
+        />
       </View>
 
       <View style={localStyles.optionTexts}>
@@ -130,14 +124,6 @@ export function PreviousRewardSelect({
     setSearchQuery('');
   };
 
-  const selectedPictureSource = selectedAssignment
-    ? resolvePictureSource(
-        selectedAssignment.picture,
-        customUrls,
-        BASE_REWARDS_IMAGES,
-      )
-    : null;
-
   return (
     <View
       style={styles.container}
@@ -180,17 +166,18 @@ export function PreviousRewardSelect({
               <View pointerEvents="none" style={localStyles.valueOverlay}>
                 <View style={localStyles.selectedValueRow}>
                   <View style={localStyles.selectedImageContainer}>
-                    {selectedPictureSource ? (
-                      <Image
-                        source={selectedPictureSource}
-                        style={localStyles.selectedImage}
-                        contentFit="contain"
-                      />
-                    ) : (
-                      <Text fontFamily="fredoka" weight="bold">
-                        🎁
-                      </Text>
-                    )}
+                    <ResolvedPicture
+                      picture={selectedAssignment.picture}
+                      customUrls={customUrls}
+                      builtInImages={BASE_REWARDS_IMAGES}
+                      style={localStyles.selectedImage}
+                      contentFit="contain"
+                      placeholder={
+                        <Text fontFamily="fredoka" weight="bold">
+                          🎁
+                        </Text>
+                      }
+                    />
                   </View>
                   <View style={localStyles.selectedTexts}>
                     <Text

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -6,11 +6,10 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import { Image } from 'expo-image';
 import type { ImageSourcePropType } from 'react-native';
 
 import { Text } from '~/components/ui';
-import { resolvePictureSource } from '~/utils/pictureSource';
+import { ResolvedPicture } from '~/components/ui/ResolvedPicture/ResolvedPicture';
 
 type Props = {
   avatar?: string;
@@ -31,22 +30,6 @@ export function UserAvatar({
   size = 48,
   style,
 }: Props) {
-  const [loadFailed, setLoadFailed] = useState(false);
-  const source = useMemo(
-    () =>
-      resolvePictureSource(
-        avatar,
-        customUrls,
-        builtInImages,
-      ),
-    [avatar, builtInImages, customUrls],
-  );
-
-  useEffect(() => {
-    setLoadFailed(false);
-  }, [avatar, source]);
-
-  const showPlaceholder = !source || loadFailed;
   const fallbackLetter = name?.[0]?.toUpperCase() || '?';
   const fallbackFontSize = Math.max(14, Math.round(size * 0.38));
 
@@ -62,27 +45,28 @@ export function UserAvatar({
         style,
       ]}
     >
-      {showPlaceholder ? (
-        <View style={styles.placeholder}>
-          <Text
-            style={[
-              styles.fallbackText,
-              { fontSize: fallbackFontSize },
-              textColor ? { color: textColor } : null,
-            ]}
-            numberOfLines={1}
-          >
-            {fallbackLetter}
-          </Text>
-        </View>
-      ) : (
-        <Image
-          source={source}
-          style={styles.image}
-          contentFit="cover"
-          onError={() => setLoadFailed(true)}
-        />
-      )}
+      <ResolvedPicture
+        picture={avatar}
+        customUrls={customUrls}
+        builtInImages={builtInImages}
+        style={styles.image}
+        contentFit="cover"
+        placeholder={
+          <View style={styles.placeholder}>
+            <Text
+              style={[
+                styles.fallbackText,
+                { fontSize: fallbackFontSize },
+                textColor ? { color: textColor } : null,
+              ]}
+              numberOfLines={1}
+            >
+              {fallbackLetter}
+            </Text>
+          </View>
+        }
+        placeholderStyle={styles.placeholder}
+      />
     </View>
   );
 }

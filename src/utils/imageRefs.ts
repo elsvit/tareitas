@@ -46,7 +46,11 @@ export function isRemoteImageRef(
     return false;
   }
 
-  return /^(https?:\/\/|\/uploads\/)/.test(value);
+  return (
+    /^(https?:\/\/|\/uploads\/|photos\/|voice\/)/.test(
+      value,
+    )
+  );
 }
 
 export function isLocalCustomImageRef(
