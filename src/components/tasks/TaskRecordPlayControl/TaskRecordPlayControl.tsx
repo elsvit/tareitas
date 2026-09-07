@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -8,7 +8,7 @@ import {
   useAudioPlayerStatus,
 } from 'expo-audio';
 
-import { toAbsoluteUploadUrl } from '~/services/api/uploadsApi';
+import { useResolvedMediaUrl } from '~/hooks/useResolvedMediaUrl';
 import { Colors } from '~/styles';
 
 type Props = {
@@ -17,10 +17,7 @@ type Props = {
 };
 
 export function TaskRecordPlayControl({ audioRecord, variant }: Props) {
-  const playbackSource = useMemo(
-    () => toAbsoluteUploadUrl(audioRecord) ?? audioRecord,
-    [audioRecord],
-  );
+  const playbackSource = useResolvedMediaUrl(audioRecord);
   const player = useAudioPlayer(playbackSource);
   const playerStatus = useAudioPlayerStatus(player);
 

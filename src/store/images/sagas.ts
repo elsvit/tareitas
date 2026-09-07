@@ -58,7 +58,9 @@ export function* syncFamilyImagesFromServerSaga(): Generator<
 
   const merged = images.map(image => {
     const remoteUri =
-      toAbsoluteUploadUrl(image.path) ?? image.path;
+      image.url ??
+      toAbsoluteUploadUrl(image.path) ??
+      image.path;
     const existing =
       image.kind === 'task'
         ? state.images.taskUrls[image.path]
