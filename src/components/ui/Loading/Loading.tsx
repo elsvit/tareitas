@@ -1,9 +1,13 @@
-import React from "react";
-import { View, ActivityIndicator, StyleSheet } from "react-native";
+import React from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
-export function Loading() {
+type Props = {
+  backgroundColor?: string;
+};
+
+export function Loading({ backgroundColor }: Props) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, backgroundColor && { backgroundColor }]}>
       <ActivityIndicator size="large" color="#4F46E5" />
     </View>
   );
@@ -12,7 +16,7 @@ export function Loading() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

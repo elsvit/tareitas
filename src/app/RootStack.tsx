@@ -21,7 +21,8 @@ import {
   ThemeProvider
 } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, useRootNavigationState } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { Provider as PaperProvider } from 'react-native-paper';
 import 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,6 +34,7 @@ import { useCatalogForegroundSync } from '~/hooks/useCatalogForegroundSync';
 import { AppDispatch } from '~/store';
 import { initLanguage, ensureAppInstalledAt } from '~/store/settings';
 import { selectIsLangInitiating, selectLang } from '~/store/settings/selectors';
+import { Colors } from '~/styles';
 import { lightPaperTheme } from '~/styles/paperTheme';
 import { ELang } from '~/types/ELang';
 
@@ -46,6 +48,7 @@ export default function RootStack() {
   const lang = useSelector(selectLang) ?? ELang.es;
 
   const isLangInitiating = useSelector(selectIsLangInitiating);
+  const navigationState = useRootNavigationState();
 
   const [fontsLoaded] = useFonts({
     Roboto_400Regular,
@@ -67,8 +70,20 @@ export default function RootStack() {
     dispatch(ensureAppInstalledAt());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (
+      !fontsLoaded ||
+      isLangInitiating ||
+      !navigationState?.key
+    ) {
+      return;
+    }
+
+    void SplashScreen.hideAsync();
+  }, [fontsLoaded, isLangInitiating, navigationState?.key]);
+
   if (!fontsLoaded || isLangInitiating) {
-    return <Loading />;
+    return <Loading backgroundColor={Colors.blue400} />;
   }
 
   // const initialRouteName = 'users/WelcomeSteps';
@@ -84,6 +99,14 @@ export default function RootStack() {
           key={`stack-${lang}`}
         // initialRouteName={initialRouteName}
         >
+          <Stack.Screen
+            name="index"
+            options={{
+              headerShown: false,
+              contentStyle: { backgroundColor: Colors.blue400 },
+            }}
+          />
+
           <Stack.Screen
             name="(onboarding)"
             options={{ headerShown: false }}
