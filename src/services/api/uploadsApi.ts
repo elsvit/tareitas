@@ -1,4 +1,4 @@
-import * as FileSystem from 'expo-file-system/legacy';
+import { File } from 'expo-file-system';
 
 import { API_CONFIG } from './config';
 import { parseApiJson } from './client';
@@ -142,18 +142,10 @@ function contentTypeForKind(
 async function getLocalFileSize(
   localUri: string,
 ): Promise<number> {
-  const fileInfo = await FileSystem.getInfoAsync(
-    localUri,
-    { size: true },
-  );
+  const file = new File(localUri);
 
-  if (
-    fileInfo.exists &&
-    'size' in fileInfo &&
-    typeof fileInfo.size === 'number' &&
-    fileInfo.size > 0
-  ) {
-    return fileInfo.size;
+  if (file.exists && file.size > 0) {
+    return file.size;
   }
 
   const fileResponse = await fetch(localUri);

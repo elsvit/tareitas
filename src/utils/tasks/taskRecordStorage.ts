@@ -1,29 +1,16 @@
-import * as FileSystem from 'expo-file-system/legacy';
+import { Directory, File, Paths } from 'expo-file-system';
 
 export async function saveTaskRecordToDevice(
   sourceUri: string,
   id: string,
 ): Promise<string> {
-  const documentDirectory = FileSystem.documentDirectory;
+  const directory = new Directory(Paths.document, 'records', 'tasks');
+  const destination = new File(directory, `${id}.m4a`);
 
-  if (!documentDirectory) {
-    throw new Error('Document directory is unavailable');
-  }
+  directory.create({ intermediates: true, idempotent: true });
+  new File(sourceUri).copy(destination);
 
-  const directory = `${documentDirectory}records/tasks/`;
-
-  await FileSystem.makeDirectoryAsync(directory, {
-    intermediates: true,
-  });
-
-  const destination = `${directory}${id}.m4a`;
-
-  await FileSystem.copyAsync({
-    from: sourceUri,
-    to: destination,
-  });
-
-  return destination;
+  return destination.uri;
 }
 
 export async function deleteTaskRecordFromDevice(
@@ -33,5 +20,9 @@ export async function deleteTaskRecordFromDevice(
     return;
   }
 
-  await FileSystem.deleteAsync(uri, { idempotent: true });
+  const file = new File(uri);
+
+  if (file.exists) {
+    file.delete();
+  }
 }
