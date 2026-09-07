@@ -198,11 +198,11 @@
     "time": "Tempo",
     "invalid_date": "Usa il formato YYYY-MM-DD",
     "invalid_time": "Usa il formato HH:mm",
-    "with_subtasks": "Con subtasks",
+    "with_subtasks": "Con sotto-attività",
     "subtasks": "Sotto-attività",
     "subtask_label": "Sotto-attività",
-    "add_subtask": "Aggiungi subtask",
-    "subtasks_required": "Aggiungi almeno un subtask",
+    "add_subtask": "Aggiungi sotto-attività",
+    "subtasks_required": "Aggiungi almeno una sotto-attività",
     "syncing": "Salvataggio…",
     "done": "Completato",
     "completed_history": "Task Completati",
@@ -294,7 +294,7 @@
       "waterPlantsDescription": "Irrigare le piante interne",
       "morningRoutine": {
         "title": "Routine mattutina",
-        "description": "Routine mattutina (con sottoattività)",
+        "description": "Routine mattutina (con sotto-attività)",
         "subtask1": "Svegliarsi",
         "subtask2": "Lavarsi i denti",
         "subtask3": "Lavarsi",
@@ -303,20 +303,20 @@
       },
       "eveningRoutine": {
         "title": "Routine serale",
-        "description": "Routine serale (con sottoattività)",
+        "description": "Routine serale (con sotto-attività)",
         "subtask1": "Lavarsi i denti",
         "subtask2": "Lavarsi"
       },
       "afterSchool": {
         "title": "Dopo la scuola",
-        "description": "Dopo la scuola (con sottoattività)",
+        "description": "Dopo la scuola (con sotto-attività)",
         "subtask1": "Fare i compiti",
         "subtask2": "Controllare l'orario",
         "subtask3": "Preparare lo zaino"
       },
       "creativeWork": {
         "title": "Lavoro creativo",
-        "description": "Lavoro creativo (con sottoattività)",
+        "description": "Lavoro creativo (con sotto-attività)",
         "subtask1": "Preparare i materiali",
         "subtask2": "Completare il compito creativo",
         "subtask3": "Riordinare lo spazio di lavoro",

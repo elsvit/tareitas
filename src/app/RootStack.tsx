@@ -22,21 +22,21 @@ import {
 } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Loading } from '~/components/ui/Loading';
-import { usePruneOrphanedTaskAssignments } from '~/hooks/usePruneOrphanedTaskAssignments';
 import { useCatalogForegroundSync } from '~/hooks/useCatalogForegroundSync';
+import { usePruneOrphanedTaskAssignments } from '~/hooks/usePruneOrphanedTaskAssignments';
 import { AppDispatch } from '~/store';
-import { initLanguage, ensureAppInstalledAt } from '~/store/settings';
+import { ensureAppInstalledAt, initLanguage } from '~/store/settings';
 import { selectIsLangInitiating, selectLang } from '~/store/settings/selectors';
 import { Colors } from '~/styles';
 import { lightPaperTheme } from '~/styles/paperTheme';
 import { ELang } from '~/types/ELang';
+import { hideAppSplash } from '~/utils/hideAppSplash';
 
 export default function RootStack() {
   const dispatch = useDispatch<AppDispatch>();
@@ -75,7 +75,7 @@ export default function RootStack() {
       return;
     }
 
-    void SplashScreen.hideAsync();
+    hideAppSplash();
   }, [isBootstrapping]);
 
   return (

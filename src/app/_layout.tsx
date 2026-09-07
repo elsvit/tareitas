@@ -11,14 +11,15 @@ import { Loading } from '~/components/ui/Loading';
 import { initializeRevenueCat } from '~/services/subscriptions/revenueCatInit';
 import { persistor, store } from '~/store';
 import { Colors } from '~/styles';
+import { hideAppSplash, scheduleAppSplashFallbackHide } from '~/utils/hideAppSplash';
 import RootStack from './RootStack';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export default function RootLayout() {
-
   useEffect(() => {
     initializeRevenueCat();
+    return scheduleAppSplashFallbackHide();
   }, []);
 
   return (
@@ -28,6 +29,7 @@ export default function RootLayout() {
           <PersistGate
             loading={<Loading backgroundColor={Colors.blue400} />}
             persistor={persistor}
+            onBeforeLift={hideAppSplash}
           >
             <RootStack />
           </PersistGate>
