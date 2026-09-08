@@ -19,7 +19,7 @@ export function OnboardingStepTransition({
   children,
 }: OnboardingStepTransitionProps) {
   return (
-    <View style={styles.stepTransitionHost}>
+    <View style={styles.stepTransitionHost} pointerEvents="box-none">
       <Animated.View
         key={stepKey}
         entering={

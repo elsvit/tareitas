@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { InteractionManager } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
 
@@ -109,8 +110,11 @@ export function useUserSwitch() {
 
   const handleChangeGroup = useCallback(() => {
     setIsSelectUsersVisible(false);
-    void prepareFamilyChangeScreen(dispatch).then(() => {
-      router.replace('/(onboarding)?setup=1');
+
+    InteractionManager.runAfterInteractions(() => {
+      void prepareFamilyChangeScreen(dispatch).then(() => {
+        router.replace('/(onboarding)?setup=1');
+      });
     });
   }, [dispatch, router]);
 

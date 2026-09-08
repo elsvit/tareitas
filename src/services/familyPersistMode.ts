@@ -178,6 +178,21 @@ async function rehydrateDeviceOnlyConnectFromStorage(
   return selectParentIds(store.getState()).length > 0;
 }
 
+async function persistSharedSettingsState(
+  getState: () => IState,
+): Promise<void> {
+  const settings = getState()[EStateName.settings];
+
+  if (!settings) {
+    return;
+  }
+
+  await sharedPersistStorage.setItem(
+    EStateName.settings,
+    JSON.stringify(settings),
+  );
+}
+
 async function rehydrateFamilySlicesFromStorage(
   dispatch: AppDispatch,
   mode: ESyncMode,
@@ -515,4 +530,7 @@ export async function prepareFamilyChangeScreen(
     force: true,
     getState: store.getState,
   });
+
+  dispatch(setRequireLogin(true));
+  await persistSharedSettingsState(store.getState);
 }

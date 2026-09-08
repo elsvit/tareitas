@@ -19,6 +19,7 @@
     "build-dev-ios": "eas build -p ios --profile development",
     "build-dev-ios-prod-api": "node ./scripts/run-with-env.js --env-file=.env.production eas build -p ios --profile development-simulator-prod-api",
     "build-apk": "node ./scripts/run-with-env.js --env-file=.env.production npx expo run:android --variant release",
+    "build-aab": "node ./scripts/run-with-env.js --env-file=.env.production node ./scripts/build-android-aab.js",
     "build-dev-apk-prod-api": "node ./scripts/run-with-env.js --env-file=.env.production npx expo run:android --variant debug",
     "build-apk-preview": "node ./scripts/run-with-env.js --env-file=.env.production eas build -p android --profile preview",
     "build-apk-prod": "node ./scripts/run-with-env.js --env-file=.env.production eas build -p android --profile production",
