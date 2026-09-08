@@ -73,7 +73,8 @@ export function filterFamilyImageEntries(
     }
 
     if (!familyId) {
-      return false;
+      // Device-only / pre-family setup: local custom ids live in Redux only.
+      return !isRemoteImageRef(id);
     }
 
     if (

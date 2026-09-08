@@ -4,6 +4,7 @@ import { EStateName } from '~/store/enums';
 import {
   createEntityReducers,
   createGenericEntityAdapter,
+  createHydrateFromStorageReducer,
 } from '~/store/helpers';
 import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
 import { IRewardAssignment } from '~/types/IReward';
@@ -97,6 +98,7 @@ export const rewardAssignmentSlice = createSlice({
     clearRewardAssignment: state => {
       entityReducers.clearEntities(state);
     },
+    hydrateFromStorage: createHydrateFromStorageReducer(rewardAssignmentAdapter),
     remapRewardAssignmentChildIds: (
       state,
       action: PayloadAction<{ fromId: string; toId: string }>,
@@ -130,5 +132,6 @@ export const {
   removeRewardAssignmentSuccess,
   replaceRewardAssignments,
   clearRewardAssignment,
+  hydrateFromStorage,
   remapRewardAssignmentChildIds,
 } = rewardAssignmentSlice.actions;

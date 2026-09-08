@@ -13,6 +13,7 @@
     "start-prod-api-ios": "node ./scripts/run-with-translation-watch.js --env-file=.env.production expo start --dev-client --clear --ios",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "node ./scripts/run-with-translation-watch.js expo start --dev-client --android",
+    "android-device": "npx expo run:android --device",
     "ios": "node ./scripts/run-with-translation-watch.js expo start --dev-client --ios",
     "build-dev": "eas build -p android --profile development",
     "build-dev-ios": "eas build -p ios --profile development",

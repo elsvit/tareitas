@@ -46,6 +46,8 @@ export const imagesSlice = createSlice({
       state.rewardUrls = {};
       state.userUrls = {};
     },
+    hydrateFromStorage: (_state, action: PayloadAction<IStateImages>) =>
+      action.payload,
     mergeFamilyImagesFromServer: (
       state,
       action: PayloadAction<
@@ -81,6 +83,7 @@ export const {
   setUserImageUrl,
   removeUserImageUrl,
   clearAllImageUrls,
+  hydrateFromStorage,
   mergeFamilyImagesFromServer,
   deleteFamilyImage,
 } = imagesSlice.actions;

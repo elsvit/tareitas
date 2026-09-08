@@ -9,9 +9,9 @@ import {
 } from '~/components/modals';
 import type { SelectedUser } from '~/components/modals';
 import { t } from '~/services';
+import { prepareFamilyChangeScreen } from '~/services/familyPersistMode';
 import {
   applyAuthTokensFromLogin,
-  prepareFamilyChangeScreen,
 } from '~/services/familySync';
 import type { AppDispatch } from '~/store';
 import {
@@ -109,8 +109,9 @@ export function useUserSwitch() {
 
   const handleChangeGroup = useCallback(() => {
     setIsSelectUsersVisible(false);
-    prepareFamilyChangeScreen(dispatch);
-    router.replace('/(onboarding)?setup=1');
+    void prepareFamilyChangeScreen(dispatch).then(() => {
+      router.replace('/(onboarding)?setup=1');
+    });
   }, [dispatch, router]);
 
   const handleSelectUser = useCallback(

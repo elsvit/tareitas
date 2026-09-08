@@ -101,7 +101,7 @@ export function FamilyConnectForm({
       dispatch(setRequireLogin(false));
 
       try {
-        hydrateFamilyStore(
+        await hydrateFamilyStore(
           dispatch,
           result.family,
           result.user,

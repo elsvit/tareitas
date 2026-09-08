@@ -4,7 +4,7 @@ import type { RootStateT } from '~/store';
 import { EStateName } from '~/store/enums';
 import { selectChildById } from '~/store/children/selectors';
 import { selectParentById } from '~/store/parents/selectors';
-import { getTodayDateString } from '~/utils/date';
+import { resolveCalendarDateString } from '~/utils/date';
 
 import { ERole, ESyncMode } from './enums';
 import type { IStateSettings } from './types';
@@ -109,8 +109,9 @@ export const selectIsAdmin = createSelector(
 );
 
 export const selectTaskCalendarDate = (state: RootStateT) =>
-  (state[EStateName.settings] as Persisted<IStateSettings>).taskCalendarDate ??
-  getTodayDateString();
+  resolveCalendarDateString(
+    (state[EStateName.settings] as Persisted<IStateSettings>).taskCalendarDate,
+  );
 
 export const selectSyncMode = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>).syncMode;

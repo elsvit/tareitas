@@ -1,5 +1,11 @@
 import { t } from '~/services';
+import {
+  flushFamilyPersistMode,
+  resumeFamilyPersist,
+} from '~/services/familyPersistMode';
+import { setActiveFamilyPersistMode } from '~/services/storage/familyPersistStorage';
 import type { AppDispatch, RootStateT } from '~/store/store';
+import { persistor, store } from '~/store/store';
 import type { IChild } from '~/types/IChild';
 import type { IParent } from '~/types/IParent';
 import {
@@ -14,7 +20,7 @@ import {
   updateParent,
 } from '~/store/parents/slice';
 import { clearAllImageUrls } from '~/store/images/slice';
-import { ERole } from '~/store/settings/enums';
+import { ERole, ESyncMode } from '~/store/settings/enums';
 import {
   clearAuthSession,
   clearMultideviceSession,
@@ -79,7 +85,7 @@ export function applyAuthTokensFromLogin(
   );
 }
 
-export function hydrateFamilyStore(
+export async function hydrateFamilyStore(
   dispatch: AppDispatch,
   family: IFamilyDetails,
   loggedInUser: IAuthUser,
@@ -91,6 +97,9 @@ export function hydrateFamilyStore(
   if (family.parents.length === 0) {
     throw new Error(t('onboarding.login.error_empty_family'));
   }
+
+  await flushFamilyPersistMode(persistor);
+  setActiveFamilyPersistMode(ESyncMode.multidevice);
 
   const adminUserId = family.parents.find(
     parent => parent.role === 'admin',
@@ -164,6 +173,8 @@ export function hydrateFamilyStore(
   );
   void loginRevenueCatForFamily(family.id);
   dispatch(syncCatalog());
+  await flushFamilyPersistMode(persistor);
+  resumeFamilyPersist(persistor);
 }
 
 export type FamilyMemberCredentialUpdates = {
@@ -406,14 +417,6 @@ export function clearLocalFamilyForNewSetup(dispatch: AppDispatch) {
   dispatch(clearChildren());
   dispatch(clearAllImageUrls());
   dispatch(clearMultideviceSession());
-}
-
-/** Open family-change setup without wiping local device-only family data. */
-export function prepareFamilyChangeScreen(dispatch: AppDispatch) {
-  dispatch(clearMultideviceSession());
-  dispatch(setCurrentUser(null));
-  dispatch(setCurrentRole(null));
-  dispatch(setRequireLogin(false));
 }
 
 /** Wipe local family and restart onboarding from the beginning. */

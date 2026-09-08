@@ -1,9 +1,12 @@
 import { IStateTaskAssignment } from './types';
+import { normalizeEntityState } from '~/store/helpers';
 
 export const findOrphanedTaskAssignmentIds = (
   state: IStateTaskAssignment,
   validChildIds: ReadonlySet<string> | readonly string[],
 ): string[] => {
+  normalizeEntityState(state);
+
   const validIds =
     validChildIds instanceof Set ? validChildIds : new Set(validChildIds);
 

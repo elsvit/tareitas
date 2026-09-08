@@ -151,6 +151,47 @@ export const onboardingStyles = StyleSheet.create({
     opacity: 0.85,
     paddingLeft: spacing(5.5),
   },
+  deviceOnlyUserRow: {
+    paddingLeft: spacing(5.5),
+    paddingRight: spacing(2),
+    gap: spacing(2),
+  },
+  deviceOnlyUserItem: {
+    width: 64,
+    alignItems: 'center',
+  },
+  deviceOnlyAvatarWrap: {
+    borderWidth: 2,
+    borderColor: Colors.blue200,
+    borderRadius: 26,
+    padding: 2,
+    position: 'relative',
+  },
+  deviceOnlyAvatarWrapSelected: {
+    borderColor: Colors.orange500,
+  },
+  deviceOnlyCheckBadge: {
+    position: 'absolute',
+    right: -2,
+    bottom: -2,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: Colors.orange500,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: Colors.white,
+  },
+  deviceOnlyUserName: {
+    marginTop: spacing(0.5),
+    textAlign: 'center',
+    fontSize: 12,
+  },
+  deviceOnlyPinSection: {
+    paddingLeft: spacing(5.5),
+    paddingRight: spacing(2),
+  },
   skipChildButton: {
     alignSelf: 'center',
     marginTop: spacing(2),

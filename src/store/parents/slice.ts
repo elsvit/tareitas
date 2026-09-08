@@ -1,14 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IStateParents, RemoveParentPayload } from './types';
-import { IParent } from '~/types/IParent';
-// IMPORTANT: import EStateName directly from types to avoid circular deps with store
+import { REHYDRATE } from 'redux-persist';
+
 import { EStateName } from '~/store/enums';
 import {
-  createGenericEntityAdapter,
   createEntityReducers,
+  createGenericEntityAdapter,
+  createHydrateFromStorageReducer,
+  normalizeEntityState,
 } from '~/store/helpers';
 import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
-import { AddParentPayload, UpdateParentPayload } from './types';
+import { IParent } from '~/types/IParent';
+
+import { IStateParents } from './types';
 
 // Create entity adapter for dishes
 export const parentsAdapter = createGenericEntityAdapter<IParent>();
@@ -45,6 +48,12 @@ export const parentsSlice = createSlice({
     clearParents: state => {
       entityReducers.clearEntities(state);
     },
+    hydrateFromStorage: createHydrateFromStorageReducer(parentsAdapter),
+  },
+  extraReducers: builder => {
+    builder.addCase(REHYDRATE, state => {
+      normalizeEntityState(state);
+    });
   },
 });
 
@@ -56,4 +65,5 @@ export const {
   removeParent,
   removeParentSuccess,
   clearParents,
+  hydrateFromStorage,
 } = parentsSlice.actions;

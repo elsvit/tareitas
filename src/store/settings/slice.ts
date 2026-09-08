@@ -3,7 +3,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { EStateName } from '~/store/enums';
 import { ERole, ESyncMode } from '~/store/settings/enums';
 import { ELang } from '~/types/ELang';
-import { getTodayDateString } from '~/utils/date';
+import { getTodayDateString, resolveCalendarDateString } from '~/utils/date';
 import type { IFamilySubscription } from '~/types/ISubscription';
 
 import type { IStateSettings, PendingReturnRoute } from './types';
@@ -85,7 +85,7 @@ export const settingsSlice = createSlice({
       state.currentRole = action.payload;
     },
     setTaskCalendarDate: (state, action: PayloadAction<string>) => {
-      state.taskCalendarDate = action.payload;
+      state.taskCalendarDate = resolveCalendarDateString(action.payload);
     },
     setSyncMode: (state, action: PayloadAction<ESyncMode>) => {
       state.syncMode = action.payload;

@@ -4,6 +4,7 @@ import { EStateName } from '~/store/enums';
 import {
   createEntityReducers,
   createGenericEntityAdapter,
+  createHydrateFromStorageReducer,
 } from '~/store/helpers';
 import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
 import { ITaskBase } from '~/types/ITask';
@@ -93,6 +94,7 @@ export const taskBaseSlice = createSlice({
     ) => {
       taskBaseAdapter.setAll(state, action.payload);
     },
+    hydrateFromStorage: createHydrateFromStorageReducer(taskBaseAdapter),
   },
 });
 
@@ -107,4 +109,5 @@ export const {
   resetTaskBase,
   syncTaskBaseTranslations,
   replaceTaskBaseCatalog,
+  hydrateFromStorage,
 } = taskBaseSlice.actions;

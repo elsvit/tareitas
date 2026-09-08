@@ -5,6 +5,8 @@ import { EStateName } from '~/store/enums';
 import {
   createEntityReducers,
   createGenericEntityAdapter,
+  createHydrateFromStorageReducer,
+  hydrateEntityAdapterState,
 } from '~/store/helpers';
 import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
 import { IEarnedRewardPeriod, IReward } from '~/types/IReward';
@@ -61,6 +63,12 @@ export const rewardsSlice = createSlice({
     },
     clearRewards: state => {
       entityReducers.clearEntities(state);
+    },
+    hydrateFromStorage: (state, action: PayloadAction<IStateRewards>) => {
+      hydrateEntityAdapterState(state, rewardsAdapter, action.payload);
+      state.earnedRewardPeriods = normalizeEarnedRewardPeriods(
+        action.payload.earnedRewardPeriods ?? [],
+      );
     },
     setRemainingRewardFromPreviousMonths: (
       state,
@@ -159,11 +167,18 @@ export const rewardsSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(REHYDRATE, (state, action) => {
-      const payload = (action as { payload?: IStateRewards }).payload;
+      const rehydrateAction = action as {
+        key?: string;
+        payload?: IStateRewards;
+      };
 
-      if (payload?.earnedRewardPeriods) {
+      if (rehydrateAction.key !== EStateName.rewards) {
+        return;
+      }
+
+      if (rehydrateAction.payload?.earnedRewardPeriods) {
         state.earnedRewardPeriods = normalizeEarnedRewardPeriods(
-          payload.earnedRewardPeriods,
+          rehydrateAction.payload.earnedRewardPeriods,
         );
       }
     });
@@ -178,6 +193,7 @@ export const {
   removeReward,
   removeRewardSuccess,
   clearRewards,
+  hydrateFromStorage,
   setRemainingRewardFromPreviousMonths,
   approvePeriod,
   approvePeriodSuccess,
