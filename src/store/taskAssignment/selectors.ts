@@ -1,8 +1,8 @@
-import { RootStateT } from '~/store';
+import type { IState } from '~/store/types';
 import { taskAssignmentAdapter } from './slice';
 
 // Base selectors
-export const getTaskAssignmentState = (state: RootStateT) => state.taskAssignment;
+export const getTaskAssignmentState = (state: IState) => state.taskAssignment;
 
 // Adapter selectors
 export const {
@@ -11,7 +11,7 @@ export const {
   selectIds: selectTaskAssignmentIds,
   selectEntities: selectTaskAssignmentEntities,
   selectTotal: selectTotalTaskAssignment,
-} = taskAssignmentAdapter.getSelectors((state: RootStateT) => state.taskAssignment);
+} = taskAssignmentAdapter.getSelectors((state: IState) => state.taskAssignment);
 
 export const selectTaskAssignmentById = (id: string) => (state: RootStateT) =>
   selectById(state, id);

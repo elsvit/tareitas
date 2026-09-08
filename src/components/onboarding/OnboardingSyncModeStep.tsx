@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Pressable, TouchableOpacity, View } from 'react-native';
 import { RadioButton } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
 import { Space, Text } from '~/components/ui';
+import { switchFamilyPersistMode } from '~/services/familyPersistMode';
 import { t } from '~/services';
 import { ESyncMode } from '~/store/settings/enums';
+import { selectParentIds } from '~/store/parents/selectors';
+import type { AppDispatch } from '~/store/store';
+import { persistor } from '~/store/store';
 import { Colors } from '~/styles';
 
 import { DeviceOnlyConnectForm } from './DeviceOnlyConnectForm';
@@ -119,6 +124,57 @@ export function OnboardingSyncModeStep({
   onChange,
   onMemberLoginSuccess,
 }: OnboardingSyncModeStepProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const parentIds = useSelector(selectParentIds);
+  const [isLoadingDeviceOnlyFamily, setIsLoadingDeviceOnlyFamily] =
+    useState(false);
+  const [deviceOnlyLoadVersion, setDeviceOnlyLoadVersion] = useState(0);
+
+  const handleSetupPathChange = useCallback(
+    async (path: OnboardingSetupPath) => {
+      if (path === 'connect_device_only') {
+        setIsLoadingDeviceOnlyFamily(true);
+
+        try {
+          await switchFamilyPersistMode(
+            dispatch,
+            persistor,
+            ESyncMode.deviceOnly,
+          );
+          setDeviceOnlyLoadVersion(version => version + 1);
+          onSetupPathChange(path);
+        } catch (error) {
+          console.error(
+            '[Tareitas] Failed to load device-only family storage',
+            error,
+          );
+        } finally {
+          setIsLoadingDeviceOnlyFamily(false);
+        }
+
+        return;
+      }
+
+      if (path === 'connect') {
+        try {
+          await switchFamilyPersistMode(
+            dispatch,
+            persistor,
+            ESyncMode.multidevice,
+          );
+        } catch (error) {
+          console.error(
+            '[Tareitas] Failed to load multidevice family storage',
+            error,
+          );
+        }
+      }
+
+      onSetupPathChange(path);
+    },
+    [dispatch, onSetupPathChange, parentIds],
+  );
+
   const syncModeOptions: SyncModeOption[] = [
     {
       mode: ESyncMode.multidevice,
@@ -149,7 +205,7 @@ export function OnboardingSyncModeStep({
         ]}
       >
         <Pressable
-          onPress={() => onSetupPathChange('create')}
+          onPress={() => handleSetupPathChange('create')}
           style={styles.syncModeSectionHeader}
           accessibilityRole="radio"
           accessibilityState={{ selected: setupPath === 'create' }}
@@ -157,7 +213,7 @@ export function OnboardingSyncModeStep({
           <RadioButton
             value="create"
             status={setupPath === 'create' ? 'checked' : 'unchecked'}
-            onPress={() => onSetupPathChange('create')}
+            onPress={() => handleSetupPathChange('create')}
             color={Colors.blue600}
           />
           <Text
@@ -201,7 +257,7 @@ export function OnboardingSyncModeStep({
         ]}
       >
         <Pressable
-          onPress={() => onSetupPathChange('connect')}
+          onPress={() => handleSetupPathChange('connect')}
           style={styles.syncModeSectionHeader}
           accessibilityRole="radio"
           accessibilityState={{ selected: setupPath === 'connect' }}
@@ -209,7 +265,7 @@ export function OnboardingSyncModeStep({
           <RadioButton
             value="connect"
             status={setupPath === 'connect' ? 'checked' : 'unchecked'}
-            onPress={() => onSetupPathChange('connect')}
+            onPress={() => handleSetupPathChange('connect')}
             color={Colors.blue600}
           />
           <Text
@@ -240,7 +296,7 @@ export function OnboardingSyncModeStep({
         ]}
       >
         <Pressable
-          onPress={() => onSetupPathChange('connect_device_only')}
+          onPress={() => handleSetupPathChange('connect_device_only')}
           style={styles.syncModeSectionHeader}
           accessibilityRole="radio"
           accessibilityState={{
@@ -254,7 +310,7 @@ export function OnboardingSyncModeStep({
                 ? 'checked'
                 : 'unchecked'
             }
-            onPress={() => onSetupPathChange('connect_device_only')}
+            onPress={() => handleSetupPathChange('connect_device_only')}
             color={Colors.orange500}
           />
           <Text
@@ -273,7 +329,16 @@ export function OnboardingSyncModeStep({
         </Pressable>
 
         {setupPath === 'connect_device_only' ? (
-          <DeviceOnlyConnectForm onSuccess={onMemberLoginSuccess} />
+          isLoadingDeviceOnlyFamily ? (
+            <Text variant="bodyMedium">
+              {t('common.loading')}
+            </Text>
+          ) : (
+            <DeviceOnlyConnectForm
+              key={`device-only-${deviceOnlyLoadVersion}-${parentIds.join(',')}`}
+              onSuccess={onMemberLoginSuccess}
+            />
+          )
         ) : null}
       </View>
 
@@ -281,7 +346,7 @@ export function OnboardingSyncModeStep({
         {SETUP_PATHS.map(path => (
           <Pressable
             key={path}
-            onPress={() => onSetupPathChange(path)}
+            onPress={() => handleSetupPathChange(path)}
             accessibilityRole="button"
             accessibilityState={{ selected: setupPath === path }}
           >

@@ -9,15 +9,25 @@ import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { Button, ProgressBar } from '~/components/ui';
 import { ButtonColors } from '~/components/ui/Button';
+import { Loading } from '~/components/ui/Loading';
 import { ChildForm } from '~/components/users/UserForm/ChildForm';
 import { ParentForm } from '~/components/users/UserForm/ParentForm';
 import { t } from '~/services';
 import { mapServerChildToLocal } from '~/services/api/memberMappers';
 import {
   clearFamilyStore,
-  clearLocalFamilyForNewSetup,
   hydrateFamilyStore,
 } from '~/services/familySync';
+import {
+  beginDeviceOnlyFamilyCreate,
+  clearFamilySlicesInMemory,
+  completeDeviceOnlyFamilyCreate,
+  flushFamilyPersistMode,
+  hasFamilyDataInMemory,
+  resetFamilySetupScreenMemory,
+  resumeFamilyPersist,
+} from '~/services/familyPersistMode';
+import { setActiveFamilyPersistMode } from '~/services/storage/familyPersistStorage';
 import { signupAndLoadFamily } from '~/services/multideviceSetup';
 import {
     buildSignupFamilyPayload,
@@ -27,10 +37,10 @@ import {
     syncOnboardingChildProfile,
 } from '~/services/onboardingSignup';
 import type { AppDispatch } from '~/store';
-import { addChild, clearChildren, updateChildSuccess } from '~/store/children/slice';
+import { addChild, addChildSuccess, clearChildren, updateChildSuccess } from '~/store/children/slice';
 import { selectUserImageUrls, setUserImageUrl } from '~/store/images';
 import { selectParentIds } from '~/store/parents/selectors';
-import { addParent, clearParents, updateParentSuccess } from '~/store/parents/slice';
+import { addParent, addParentSuccess, clearParents, updateParentSuccess } from '~/store/parents/slice';
 import { EFamilyRole, ERole, ESyncMode } from '~/store/settings/enums';
 import {
     selectAuthToken,
@@ -41,14 +51,17 @@ import {
     selectSyncMode,
 } from '~/store/settings/selectors';
 import {
+    clearMultideviceSession,
     setCurrentRole,
     setCurrentUser,
     setPendingReturnRoute,
     setRequireLogin,
     setSyncMode,
+    setTaskCalendarDate,
 } from '~/store/settings/slice';
-import { store } from '~/store/store';
+import { store, persistor } from '~/store/store';
 import { Colors, spacing } from '~/styles';
+import { getTodayDateString } from '~/utils/date';
 import { EFormMode } from '~/types/ECommon';
 import type { ChildFormProps } from '~/types/IChild';
 import type { ParentFormProps } from '~/types/IParent';
@@ -112,9 +125,7 @@ export function OnboardingFlow({
     role: ERole.admin,
   });
   const [child, setChild] = useState<ChildFormProps>();
-  const [syncMode, setSyncModeSelection] = useState(() =>
-    parentIds.length > 0 ? storedSyncMode : ESyncMode.multidevice,
-  );
+  const [syncMode, setSyncModeSelection] = useState(storedSyncMode);
   const [signUpAdmin, setSignUpAdmin] =
     useState<Partial<SignUpAdminData>>({ role: ERole.admin });
   const [signUpChild, setSignUpChild] =
@@ -126,6 +137,9 @@ export function OnboardingFlow({
     useState(false);
   const [isSubmittingSignUp, setIsSubmittingSignUp] = useState(false);
   const [keyboardInset, setKeyboardInset] = useState(0);
+  const [isSetupMemoryReady, setIsSetupMemoryReady] = useState(
+    () => initialStep !== ONBOARDING_STEP.syncMode,
+  );
 
   const isMultidevice = syncMode === ESyncMode.multidevice;
   const isMultideviceFlow =
@@ -206,6 +220,28 @@ export function OnboardingFlow({
   }, [step]);
 
   useEffect(() => {
+    if (!isSyncModeStep) {
+      setIsSetupMemoryReady(true);
+      return;
+    }
+
+    let cancelled = false;
+    setIsSetupMemoryReady(false);
+
+    void resetFamilySetupScreenMemory(dispatch, persistor, {
+      getState: store.getState,
+    }).finally(() => {
+      if (!cancelled) {
+        setIsSetupMemoryReady(true);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [dispatch, isSyncModeStep]);
+
+  useEffect(() => {
     const showEvent =
       Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
     const hideEvent =
@@ -268,6 +304,7 @@ export function OnboardingFlow({
 
     dispatch(setPendingReturnRoute(null));
     dispatch(setRequireLogin(false));
+    dispatch(setTaskCalendarDate(getTodayDateString()));
 
     if (returnRoute) {
       router.replace({
@@ -280,7 +317,7 @@ export function OnboardingFlow({
     router.replace('/(tabs)/Tasks');
   };
 
-  const finishOnboarding = () => {
+  const finishOnboarding = async () => {
     if (!parent.name) {
       return;
     }
@@ -290,71 +327,95 @@ export function OnboardingFlow({
     }
 
     const parentId = uuidv4();
+    const targetMode = isMultideviceFlow
+      ? ESyncMode.multidevice
+      : ESyncMode.deviceOnly;
 
-    dispatch(setSyncMode(syncMode));
+    dispatch(setSyncMode(targetMode));
+    setActiveFamilyPersistMode(targetMode);
     dispatch(clearParents());
-    dispatch(
-      addParent({
-        entity: {
-          ...parent,
-          name: parent.name,
-          role: ERole.admin,
-          id: parentId,
-          createdAt: new Date().toISOString(),
-          createdBy: parentId,
-        },
-      }),
-    );
+
+    const parentEntity = {
+      ...parent,
+      name: parent.name,
+      role: ERole.admin,
+      id: parentId,
+      createdAt: new Date().toISOString(),
+      createdBy: parentId,
+    };
+
+    if (isMultideviceFlow) {
+      dispatch(addParent({ entity: parentEntity }));
+    } else {
+      dispatch(addParentSuccess(parentEntity));
+    }
 
     dispatch(clearChildren());
 
     if (child?.name) {
       const childId = uuidv4();
+      const childEntity = {
+        ...child,
+        name: child.name,
+        id: childId,
+        createdAt: new Date().toISOString(),
+        createdBy: parentId,
+      };
 
-      dispatch(
-        addChild({
-          entity: {
-            ...child,
-            name: child.name,
-            id: childId,
-            createdAt: new Date().toISOString(),
-            createdBy: parentId,
-          },
-        }),
-      );
+      if (isMultideviceFlow) {
+        dispatch(addChild({ entity: childEntity }));
+      } else {
+        dispatch(addChildSuccess(childEntity));
+      }
     }
 
     dispatch(setCurrentUser(parentId));
     dispatch(setCurrentRole(ERole.admin));
+
+    if (isMultideviceFlow) {
+      await flushFamilyPersistMode(persistor);
+      resumeFamilyPersist(persistor);
+    } else {
+      await completeDeviceOnlyFamilyCreate(persistor);
+    }
+
     enterApp();
   };
 
-  const onNext = () => {
+  const onNext = async () => {
     if (isSyncModeStep) {
       if (setupPath !== 'create') {
         return;
       }
 
-      clearLocalFamilyForNewSetup(dispatch);
+      if (!isMultidevice) {
+        await beginDeviceOnlyFamilyCreate(dispatch, persistor);
+        goToStep(ONBOARDING_STEP.parent);
+        return;
+      }
 
-      dispatch(
-        setSyncMode(
-          isMultidevice
-            ? ESyncMode.multidevice
-            : ESyncMode.deviceOnly,
-        ),
-      );
+      persistor?.pause?.();
 
-      goToStep(
-        isMultidevice
-          ? ONBOARDING_STEP.signUpAdmin
-          : ONBOARDING_STEP.parent,
-      );
+      try {
+        if (hasFamilyDataInMemory(store.getState())) {
+          setActiveFamilyPersistMode(selectSyncMode(store.getState()));
+          await flushFamilyPersistMode(persistor);
+        }
+
+        setActiveFamilyPersistMode(ESyncMode.multidevice);
+        dispatch(setSyncMode(ESyncMode.multidevice));
+        clearFamilySlicesInMemory(dispatch);
+        dispatch(clearMultideviceSession());
+      } finally {
+        resumeFamilyPersist(persistor);
+      }
+
+      goToStep(ONBOARDING_STEP.signUpAdmin);
       return;
     }
 
     if (isCompleteStep) {
-      finishOnboarding();
+      void finishOnboarding();
       return;
     }
 
@@ -454,7 +515,7 @@ export function OnboardingFlow({
       dispatch(setSyncMode(ESyncMode.multidevice));
 
       try {
-        hydrateFamilyStore(
+        await hydrateFamilyStore(
           dispatch,
           result.family,
           result.user,
@@ -601,6 +662,10 @@ export function OnboardingFlow({
     }
 
     if (isSyncModeStep) {
+      if (!isSetupMemoryReady) {
+        return <Loading />;
+      }
+
       return (
         <OnboardingSyncModeStep
           setupPath={setupPath}

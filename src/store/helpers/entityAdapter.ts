@@ -1,4 +1,6 @@
-import { createEntityAdapter, EntityAdapter, PayloadAction } from '@reduxjs/toolkit';
+import { createEntityAdapter, EntityAdapter, EntityState, PayloadAction } from '@reduxjs/toolkit';
+
+import { ensureEntityState, entityStateToEntities } from './normalizeEntityState';
 
 // Generic interface for entity actions with isUpsert option
 export interface EntityAction<T> {
@@ -29,6 +31,25 @@ export function createGenericEntityAdapter<T extends { id: string }>(
     selectId: (entity: T) => entity.id,
     sortComparer,
   });
+}
+
+export function hydrateEntityAdapterState<T extends { id: string }>(
+  state: EntityState<T, string>,
+  adapter: EntityAdapter<T, string>,
+  persisted: EntityState<T, string>,
+): void {
+  adapter.setAll(state, entityStateToEntities(persisted));
+}
+
+export function createHydrateFromStorageReducer<T extends { id: string }>(
+  adapter: EntityAdapter<T, string>,
+) {
+  return (
+    state: EntityState<T, string>,
+    action: PayloadAction<EntityState<T, string>>,
+  ) => {
+    hydrateEntityAdapterState(state, adapter, action.payload);
+  };
 }
 
 // Generic reducers for entity operations

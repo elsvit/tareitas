@@ -5,6 +5,7 @@ import { EStateName } from '~/store/enums';
 import {
   createEntityReducers,
   createGenericEntityAdapter,
+  createHydrateFromStorageReducer,
 } from '~/store/helpers';
 import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
 import { IRewardBase } from '~/types/IReward';
@@ -76,6 +77,7 @@ export const rewardBaseSlice = createSlice({
     ) => {
       rewardBaseAdapter.setAll(state, action.payload);
     },
+    hydrateFromStorage: createHydrateFromStorageReducer(rewardBaseAdapter),
   },
 });
 
@@ -90,4 +92,5 @@ export const {
   resetRewardBase,
   syncRewardBaseTranslations,
   replaceRewardBaseCatalog,
+  hydrateFromStorage,
 } = rewardBaseSlice.actions;

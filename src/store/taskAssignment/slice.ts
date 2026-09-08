@@ -6,10 +6,11 @@ import { EStateName } from '~/store/enums';
 import {
   createEntityReducers,
   createGenericEntityAdapter,
+  createHydrateFromStorageReducer,
+  normalizeEntityState,
 } from '~/store/helpers';
 import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
 import { removeChild } from '~/store/children/slice';
-import type { IState } from '~/store/types';
 
 import { pruneOrphanedTaskAssignmentsInState } from './taskAssignmentCleanup';
 import { IStateTaskAssignment } from './types';
@@ -70,6 +71,7 @@ export const taskAssignmentSlice = createSlice({
     clearTaskAssignment: (state) => {
       entityReducers.clearEntities(state);
     },
+    hydrateFromStorage: createHydrateFromStorageReducer(taskAssignmentAdapter),
     pruneOrphanedTaskAssignments: (
       state,
       action: PayloadAction<{ validChildIds: string[] }>,
@@ -79,6 +81,7 @@ export const taskAssignmentSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(removeChild, (state, action) => {
+      normalizeEntityState(state);
       const childId = action.payload.id;
       const idsToRemove = state.ids.filter(
         id => state.entities[id]?.childId === childId,
@@ -90,13 +93,13 @@ export const taskAssignmentSlice = createSlice({
     });
 
     builder.addCase(REHYDRATE, (state, action) => {
-      const payload = (action as { payload?: IState }).payload;
+      const rehydrateAction = action as { key?: string };
 
-      if (!payload?.children) {
+      if (rehydrateAction.key !== EStateName.taskAssignment) {
         return;
       }
 
-      pruneOrphanedTaskAssignmentsInState(state, payload.children.ids);
+      normalizeEntityState(state);
     });
   },
 });
@@ -111,5 +114,6 @@ export const {
   removeTaskAssignmentSuccess,
   replaceTaskAssignments,
   clearTaskAssignment,
+  hydrateFromStorage,
   pruneOrphanedTaskAssignments,
 } = taskAssignmentSlice.actions;

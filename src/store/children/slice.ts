@@ -1,13 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IStateChildren, RemoveChildrenPayload } from './types';
-import { IChild } from '~/types/IChild';
+import { REHYDRATE } from 'redux-persist';
+
 import { EStateName } from '~/store/enums';
 import {
-  createGenericEntityAdapter,
   createEntityReducers,
+  createGenericEntityAdapter,
+  createHydrateFromStorageReducer,
+  normalizeEntityState,
 } from '~/store/helpers';
 import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
-import { AddChildrenPayload, UpdateChildrenPayload } from './types';
+import { IChild } from '~/types/IChild';
+
+import { IStateChildren } from './types';
 
 // Create entity adapter for dishes
 export const childrenAdapter = createGenericEntityAdapter<IChild>();
@@ -44,6 +48,12 @@ export const childrenSlice = createSlice({
     clearChildren: state => {
       entityReducers.clearEntities(state);
     },
+    hydrateFromStorage: createHydrateFromStorageReducer(childrenAdapter),
+  },
+  extraReducers: builder => {
+    builder.addCase(REHYDRATE, state => {
+      normalizeEntityState(state);
+    });
   },
 });
 
@@ -55,4 +65,5 @@ export const {
   removeChild,
   removeChildSuccess,
   clearChildren,
+  hydrateFromStorage,
 } = childrenSlice.actions;

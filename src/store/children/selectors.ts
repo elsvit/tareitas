@@ -1,11 +1,13 @@
 import { createSelector } from '@reduxjs/toolkit';
 
 import { RootStateT } from '~/store';
+import { ensureEntityState } from '~/store/helpers';
 import { dedupeChildren } from '~/store/rewardAssignment/childIds';
 
 import { childrenAdapter } from './slice';
 
-export const getChildrenState = (state: RootStateT) => state.children;
+export const getChildrenState = (state: RootStateT) =>
+  ensureEntityState(state.children);
 
 export const {
   selectAll: selectAllChildren,
@@ -13,7 +15,7 @@ export const {
   selectIds: selectChildIds,
   selectEntities: selectChildEntities,
   selectTotal: selectTotalChildren,
-} = childrenAdapter.getSelectors((state: RootStateT) => state.children);
+} = childrenAdapter.getSelectors(getChildrenState);
 
 export const selectDedupedChildren = createSelector(
   [selectAllChildren],

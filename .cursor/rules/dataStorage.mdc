@@ -1,0 +1,12 @@
+---
+alwaysApply: true
+---
+
+The App has 3 cases for save/upload data:
+1. deviceOnly - user create family only on device
+2. multidevice dev - user create multidevice family, local dev server started (yarn dev in tareiras-server, yarn start-local in tareitas)
+3. multidevice prod - user create multidevice family, Hetzner server and bucket are used (production)
+
+- In case 1 (deviceOnly): all data, photos, records save to the smartphone or tablet. Exist only one family. If user create another deviceOnly family, previous deviceOnly family erased. Separated localStorage used for persist redux store for deviceOnly family.
+- In case 2 (multidevice dev): all data saved to local (Mac) PostgresSql and local folder for photos and records. 
+- In case 3 (multidevice prod): all data saved to Hetzner PostgresSql and Object Storage tareitas-multimedia for photos and records.

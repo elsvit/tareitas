@@ -3,8 +3,9 @@ import { IStateTasks, RemoveTasksPayload } from './types';
 import { ITask, ITaskAssignment } from '~/types/ITask';
 import { EStateName } from '~/store/enums';
 import {
-  createGenericEntityAdapter,
   createEntityReducers,
+  createGenericEntityAdapter,
+  createHydrateFromStorageReducer,
 } from '~/store/helpers';
 import { noopEntityRequestReducer } from '~/store/helpers/sagaEntitySync';
 import { AddTasksPayload, ReplaceTasksFromServerPayload, UpdateTasksPayload } from './types';
@@ -41,6 +42,7 @@ export const tasksSlice = createSlice({
     clearTasks: state => {
       entityReducers.clearEntities(state);
     },
+    hydrateFromStorage: createHydrateFromStorageReducer(tasksAdapter),
     replaceTasksFromServer: (
       state,
       action: PayloadAction<ReplaceTasksFromServerPayload>,
@@ -97,6 +99,7 @@ export const {
   removeTask,
   removeTaskSuccess,
   clearTasks,
+  hydrateFromStorage,
   replaceTasksFromServer,
   generateTasksForDate,
   addGeneratedTask,
