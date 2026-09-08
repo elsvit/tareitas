@@ -138,7 +138,9 @@ export function OnboardingFlow({
   const [isSubmittingSignUp, setIsSubmittingSignUp] = useState(false);
   const [keyboardInset, setKeyboardInset] = useState(0);
   const [isSetupMemoryReady, setIsSetupMemoryReady] = useState(
-    () => initialStep !== ONBOARDING_STEP.syncMode,
+    () =>
+      initialStep !== ONBOARDING_STEP.syncMode ||
+      (opensOnSetup && parentIds.length === 0),
   );
 
   const isMultidevice = syncMode === ESyncMode.multidevice;
@@ -225,6 +227,11 @@ export function OnboardingFlow({
       return;
     }
 
+    if (opensOnSetup && parentIds.length === 0) {
+      setIsSetupMemoryReady(true);
+      return;
+    }
+
     let cancelled = false;
     setIsSetupMemoryReady(false);
 
@@ -239,7 +246,7 @@ export function OnboardingFlow({
     return () => {
       cancelled = true;
     };
-  }, [dispatch, isSyncModeStep]);
+  }, [dispatch, isSyncModeStep, opensOnSetup, parentIds.length]);
 
   useEffect(() => {
     const showEvent =

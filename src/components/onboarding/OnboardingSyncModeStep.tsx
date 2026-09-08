@@ -205,7 +205,7 @@ export function OnboardingSyncModeStep({
         ]}
       >
         <Pressable
-          onPress={() => handleSetupPathChange('create')}
+          onPress={() => onSetupPathChange('create')}
           style={styles.syncModeSectionHeader}
           accessibilityRole="radio"
           accessibilityState={{ selected: setupPath === 'create' }}
@@ -213,7 +213,7 @@ export function OnboardingSyncModeStep({
           <RadioButton
             value="create"
             status={setupPath === 'create' ? 'checked' : 'unchecked'}
-            onPress={() => handleSetupPathChange('create')}
+            onPress={() => onSetupPathChange('create')}
             color={Colors.blue600}
           />
           <Text
