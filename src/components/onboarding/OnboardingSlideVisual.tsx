@@ -16,8 +16,8 @@ import Animated, {
 
 import Image1 from '~/assets/img/tasks/dust_furniture.jpg';
 import Image2 from '~/assets/img/tasks/pack_backpack.jpg';
-import Girl1 from '~/assets/img/users/girl1_320.jpg';
-import Man1 from '~/assets/img/users/man1_320.jpg';
+import GirlBlond from '~/assets/img/users/girl_blond.jpg';
+import ManDark from '~/assets/img/users/man_dark.jpg';
 import { Text } from '~/components/ui';
 import { Colors } from '~/styles';
 
@@ -59,7 +59,7 @@ function CreateTasksVisual() {
     <View style={styles.visualStage}>
       <Animated.View entering={FadeInDown.delay(100).springify()}>
         <View style={[styles.avatarCircle, { borderColor: Colors.blue500 }]}>
-          <Image source={Man1} style={styles.avatarImage} contentFit="cover" />
+          <Image source={ManDark} style={styles.avatarImage} contentFit="cover" />
         </View>
       </Animated.View>
       <Animated.View entering={ZoomIn.delay(300).springify()} style={{ marginTop: 16 }}>
@@ -81,7 +81,7 @@ function EarnStarsVisual() {
     <View style={styles.visualStage}>
       <Animated.View entering={FadeInDown.delay(100).springify()}>
         <View style={[styles.avatarCircle, { borderColor: Colors.brightGreen500 }]}>
-          <Image source={Girl1} style={styles.avatarImage} contentFit="cover" />
+          <Image source={GirlBlond} style={styles.avatarImage} contentFit="cover" />
         </View>
       </Animated.View>
       <Animated.View entering={ZoomIn.delay(350).springify()} style={{ marginTop: 16 }}>
@@ -126,7 +126,7 @@ function SelectRewardVisual() {
       <Animated.View entering={FadeIn.delay(400)} style={{ marginTop: 20 }}>
         <View style={styles.completeAvatarsRow}>
           <View style={[styles.avatarCircle, { width: 56, height: 56, borderRadius: 28 }]}>
-            <Image source={Girl1} style={styles.avatarImage} contentFit="cover" />
+            <Image source={GirlBlond} style={styles.avatarImage} contentFit="cover" />
           </View>
           <Text variant="titleLarge">🎉</Text>
         </View>

@@ -1,193 +1,235 @@
-import Boy1 from '~/assets/img/users/boy1_320.jpg';
-import Boy2 from '~/assets/img/users/boy2_320.jpg';
-import Boy3 from '~/assets/img/users/boy3_320.jpg';
-import Boy4 from '~/assets/img/users/boy4_320.jpg';
-import Girl1 from '~/assets/img/users/girl1_320.jpg';
-import Man1 from '~/assets/img/users/man1_320.jpg';
-import Man2 from '~/assets/img/users/man2_320.jpg';
-import Man3 from '~/assets/img/users/man3_320.jpg';
-import Man4 from '~/assets/img/users/man4_320.jpg';
-import Man5 from '~/assets/img/users/man5_320.jpg';
-import Man6 from '~/assets/img/users/man6_320.jpg';
-import Man7 from '~/assets/img/users/man7_320.jpg';
-import Man8 from '~/assets/img/users/man8_320.jpg';
-import Woman1 from '~/assets/img/users/woman1_320.jpg';
-import Woman2 from '~/assets/img/users/woman2_320.jpg';
+import BoyAfro from '~/assets/img/users/boy_afro.jpg';
+import BoyBlond from '~/assets/img/users/boy_blond.jpg';
+import BoyDark from '~/assets/img/users/boy_dark.jpg';
+import BoyRed from '~/assets/img/users/boy_red.jpg';
 
-import Senior1 from '~/assets/img/users/senior1_320.jpg';
-import Senior2 from '~/assets/img/users/senior2_320.jpg';
-import Senior3 from '~/assets/img/users/senior3_320.jpg';
-import Senior4 from '~/assets/img/users/senior4_320.jpg';
-import Seniora1 from '~/assets/img/users/seniora1_320.jpg';
+import GirlAfro from '~/assets/img/users/girl_afro.jpg';
+import GirlBlond from '~/assets/img/users/girl_blond.jpg';
+import GirlDark from '~/assets/img/users/girl_dark.jpg';
+import GirlRed from '~/assets/img/users/girl_red.jpg';
 
-import Nanny1 from '~/assets/img/users/nanny1_320.jpg';
-import Nanny2 from '~/assets/img/users/nanny2_320.jpg';
-import Nanny3 from '~/assets/img/users/nanny3_320.jpg';
-import Nanny4 from '~/assets/img/users/nanny4_320.jpg';
+import TeenboyAfro from '~/assets/img/users/teenboy_afro.jpg';
+import TeenboyBlond from '~/assets/img/users/teenboy_blond.jpg';
+import TeenboyDark from '~/assets/img/users/teenboy_dark.jpg';
+import TeenboyRed from '~/assets/img/users/teenboy_red.jpg';
+
+import TeenGirlAfro from '~/assets/img/users/teengirl_afro.jpg';
+import TeenGirlBlond from '~/assets/img/users/teengirl_blond.jpg';
+import TeenGirlDark from '~/assets/img/users/teengirl_dark.jpg';
+import TeenGirlRed from '~/assets/img/users/teengirl_red.jpg';
+
+import ManAfro from '~/assets/img/users/man_afro.jpg';
+import ManBlond from '~/assets/img/users/man_blond.jpg';
+import ManDark from '~/assets/img/users/man_dark.jpg';
+import ManRed from '~/assets/img/users/man_red.jpg';
+
+import WomanAfro from '~/assets/img/users/woman_afro.jpg';
+import WomanAsian from '~/assets/img/users/woman_asian.jpg';
+import WomanBlond from '~/assets/img/users/woman_blond.jpg';
+import WomanRed from '~/assets/img/users/woman_red.jpg';
+import WomanDark from '~/assets/img/users/women_black.jpg';
+
+import SeniorAfro from '~/assets/img/users/senior_afro.jpg';
+import SeniorAsian from '~/assets/img/users/senior_asian.jpg';
+import SeniorWhite from '~/assets/img/users/senior_white.jpg';
+
+import SenioraAfro from '~/assets/img/users/seniora_afro.jpg';
+import SenioraWhite from '~/assets/img/users/seniora_white.jpg';
+
 import { IImageOption } from '~/types';
 
 export const PARENT_AVATARS: IImageOption[] = [
   {
-    label: 'Woman 1',
-    value: 'woman1',
-    image: Woman1,
+    label: 'Woman Red',
+    value: 'woman_red',
+    image: WomanRed,
   },
   {
-    label: 'Man 1',
-    value: 'man1',
-    image: Man1,
+    label: 'Woman Blond',
+    value: 'woman_blond',
+    image: WomanBlond,
   },
   {
-    label: 'Seniora 1',
-    value: 'seniora1',
-    image: Seniora1,
+    label: 'Woman Dark',
+    value: 'woman_dark',
+    image: WomanDark,
   },
   {
-    label: 'Woman 2',
-    value: 'woman2',
-    image: Woman2,
+    label: 'Woman Afro',
+    value: 'woman_afro',
+    image: WomanAfro,
   },
   {
-    label: 'Man 2',
-    value: 'man2',
-    image: Man2,
+    label: 'Woman Asian',
+    value: 'woman_asian',
+    image: WomanAsian,
   },
   {
-    label: 'Man 3',
-    value: 'man3',
-    image: Man3,
+    label: 'Teen Girl Blond',
+    value: 'teen_girl_blond',
+    image: TeenGirlBlond,
   },
   {
-    label: 'Man 4',
-    value: 'man4',
-    image: Man4,
+    label: 'Teen Girl Dark',
+    value: 'teen_girl_dark',
+    image: TeenGirlDark,
   },
   {
-    label: 'Man 5',
-    value: 'man5',
-    image: Man5,
+    label: 'Teen Girl Red',
+    value: 'teen_girl_red',
+    image: TeenGirlRed,
   },
   {
-    label: 'Man 6',
-    value: 'man6',
-    image: Man6,
+    label: 'Teen Girl Afro',
+    value: 'teen_girl_afro',
+    image: TeenGirlAfro,
   },
   {
-    label: 'Man 7',
-    value: 'man7',
-    image: Man7,
+    label: 'Seniora White',
+    value: 'seniora_white',
+    image: SenioraWhite,
   },
   {
-    label: 'Man 8',
-    value: 'man8',
-    image: Man8,
+    label: 'Seniora Afro',
+    value: 'seniora_afro',
+    image: SenioraAfro,
   },
   {
-    label: 'Nanny 1',
-    value: 'nanny1',
-    image: Nanny1,
+    label: 'Man Blond',
+    value: 'man_blond',
+    image: ManBlond,
   },
   {
-    label: 'Nanny 2',
-    value: 'nanny2',
-    image: Nanny2,
+    label: 'Man Dark',
+    value: 'man_dark',
+    image: ManDark,
   },
   {
-    label: 'Nanny 3',
-    value: 'nanny3',
-    image: Nanny3,
+    label: 'Man Red',
+    value: 'man_red',
+    image: ManRed,
   },
   {
-    label: 'Nanny 4',
-    value: 'nanny4',
-    image: Nanny4,
+    label: 'Man Afro',
+    value: 'man_afro',
+    image: ManAfro,
   },
   {
-    label: 'Senior 1',
-    value: 'senior1',
-    image: Senior1,
+    label: 'Teenboy Blond',
+    value: 'teenboy_blond',
+    image: TeenboyBlond,
   },
   {
-    label: 'Senior 2',
-    value: 'senior2',
-    image: Senior2,
+    label: 'Teenboy Dark',
+    value: 'teenboy_dark',
+    image: TeenboyDark,
   },
   {
-    label: 'Senior 3',
-    value: 'senior3',
-    image: Senior3,
+    label: 'Teenboy Red',
+    value: 'teenboy_red',
+    image: TeenboyRed,
   },
   {
-    label: 'Senior 4',
-    value: 'senior4',
-    image: Senior4,
+    label: 'Teenboy Afro',
+    value: 'teenboy_afro',
+    image: TeenboyAfro,
+  },
+  {
+    label: 'Senior Afro',
+    value: 'senior_afro',
+    image: SeniorAfro,
+  },
+  {
+    label: 'Senior Asian',
+    value: 'senior_asian',
+    image: SeniorAsian,
+  },
+  {
+    label: 'Senior White',
+    value: 'senior_white',
+    image: SeniorWhite,
   },
 ];
 
 export const CHILDREN_AVATARS: IImageOption[] = [
   {
-    label: 'Girl 1',
-    value: 'girl1',
-    image: Girl1,
+    label: 'Girl Dark',
+    value: 'girl_dark',
+    image: GirlDark,
   },
   {
-    label: 'Boy 1',
-    value: 'boy1',
-    image: Boy1,
+    label: 'Girl Blond',
+    value: 'girl_blond',
+    image: GirlBlond,
   },
   {
-    label: 'Boy 2',
-    value: 'boy2',
-    image: Boy2,
+    label: 'Girl Red',
+    value: 'girl_red',
+    image: GirlRed,
   },
   {
-    label: 'Boy 3',
-    value: 'boy3',
-    image: Boy3,
+    label: 'Girl Afro',
+    value: 'girl_afro',
+    image: GirlAfro,
   },
   {
-    label: 'Boy 4',
-    value: 'boy4',
-    image: Boy4,
+    label: 'Teen Girl Blond',
+    value: 'teen_girl_blond',
+    image: TeenGirlBlond,
   },
   {
-    label: 'Woman 1',
-    value: 'woman1',
-    image: Woman1,
+    label: 'Teen Girl Dark',
+    value: 'teen_girl_dark',
+    image: TeenGirlDark,
   },
   {
-    label: 'Woman 2',
-    value: 'woman2',
-    image: Woman2,
+    label: 'Teen Girl Red',
+    value: 'teen_girl_red',
+    image: TeenGirlRed,
   },
   {
-    label: 'Man 3',
-    value: 'man3',
-    image: Man3,
+    label: 'Teen Girl Afro',
+    value: 'teen_girl_afro',
+    image: TeenGirlAfro,
   },
   {
-    label: 'Man 4',
-    value: 'man4',
-    image: Man4,
+    label: 'Boy Afro',
+    value: 'boy_afro',
+    image: BoyAfro,
   },
   {
-    label: 'Man 5',
-    value: 'man5',
-    image: Man5,
+    label: 'Boy Blond',
+    value: 'boy_blond',
+    image: BoyBlond,
   },
   {
-    label: 'Man 6',
-    value: 'man6',
-    image: Man6,
+    label: 'Boy Dark',
+    value: 'boy_dark',
+    image: BoyDark,
   },
   {
-    label: 'Man 7',
-    value: 'man7',
-    image: Man7,
+    label: 'Boy Red',
+    value: 'boy_red',
+    image: BoyRed,
   },
   {
-    label: 'Man 8',
-    value: 'man8',
-    image: Man8,
+    label: 'Teenboy Blond',
+    value: 'teenboy_blond',
+    image: TeenboyBlond,
   },
-]
+  {
+    label: 'Teenboy Dark',
+    value: 'teenboy_dark',
+    image: TeenboyDark,
+  },
+  {
+    label: 'Teenboy Red',
+    value: 'teenboy_red',
+    image: TeenboyRed,
+  },
+  {
+    label: 'Teenboy Afro',
+    value: 'teenboy_afro',
+    image: TeenboyAfro,
+  },
+];
