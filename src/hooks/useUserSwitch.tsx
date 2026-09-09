@@ -111,8 +111,8 @@ export function useUserSwitch() {
   const handleChangeGroup = useCallback(() => {
     setIsSelectUsersVisible(false);
 
-    InteractionManager.runAfterInteractions(() => {
-      void prepareFamilyChangeScreen(dispatch).then(() => {
+    void prepareFamilyChangeScreen(dispatch).then(() => {
+      InteractionManager.runAfterInteractions(() => {
         router.replace('/(onboarding)?setup=1');
       });
     });
