@@ -98,26 +98,15 @@ function parsePersistedSlice<T>(raw: string, key?: string): T | null {
   }
 }
 
-const DEVICE_ONLY_CONNECT_KEYS = [
-  EStateName.parents,
-  EStateName.children,
-  EStateName.images,
-] as const;
-
-const DEVICE_ONLY_ENTITY_KEYS = new Set<string>([
-  EStateName.parents,
-  EStateName.children,
-]);
-
-function serializeDeviceOnlyConnectSlice(
-  key: (typeof DEVICE_ONLY_CONNECT_KEYS)[number],
+function serializeFamilySliceForBucket(
+  key: (typeof FAMILY_PERSIST_KEYS)[number],
   slice: unknown,
 ): string | null {
   if (slice === undefined || slice === null) {
     return null;
   }
 
-  if (DEVICE_ONLY_ENTITY_KEYS.has(key)) {
+  if (ENTITY_FAMILY_PERSIST_KEYS.has(key)) {
     return JSON.stringify(
       ensureEntityState({ ...(slice as Parameters<typeof ensureEntityState>[0]) }),
     );
@@ -126,7 +115,8 @@ function serializeDeviceOnlyConnectSlice(
   return JSON.stringify(slice);
 }
 
-async function persistDeviceOnlyConnectToBucket(
+/** Write every family slice directly to the device-only bucket (not modeAware). */
+async function persistDeviceOnlyFamilyToBucket(
   getState: () => IState,
 ): Promise<void> {
   if (selectParentIds(getState()).length === 0) {
@@ -136,9 +126,9 @@ async function persistDeviceOnlyConnectToBucket(
   const storage = getFamilyPersistStorageForMode(ESyncMode.deviceOnly);
   const state = getState();
 
-  for (const key of DEVICE_ONLY_CONNECT_KEYS) {
+  for (const key of FAMILY_PERSIST_KEYS) {
     const slice = state[key as keyof IState];
-    const serialized = serializeDeviceOnlyConnectSlice(key, slice);
+    const serialized = serializeFamilySliceForBucket(key, slice);
 
     if (!serialized) {
       continue;
@@ -157,23 +147,7 @@ function isDeviceOnlyFamilyState(state: IState): boolean {
 async function rehydrateDeviceOnlyConnectFromStorage(
   dispatch: AppDispatch,
 ): Promise<boolean> {
-  clearFamilySlicesInMemory(dispatch);
-
-  const storage = getFamilyPersistStorageForMode(ESyncMode.deviceOnly);
-
-  for (const key of DEVICE_ONLY_CONNECT_KEYS) {
-    const raw = await storage.getItem(key);
-
-    if (!raw) {
-      continue;
-    }
-
-    const payload = parsePersistedSlice<unknown>(raw, key);
-
-    if (payload) {
-      dispatchFamilySliceHydrate(dispatch, key, payload);
-    }
-  }
+  await rehydrateFamilySlicesFromStorage(dispatch, ESyncMode.deviceOnly);
 
   return selectParentIds(store.getState()).length > 0;
 }
@@ -270,7 +244,7 @@ export async function saveDeviceOnlyFamilyForReconnect(
   }
 
   setActiveFamilyPersistMode(ESyncMode.deviceOnly);
-  await persistDeviceOnlyConnectToBucket(getState);
+  await persistDeviceOnlyFamilyToBucket(getState);
 }
 
 /** Persist a finished device-only family and resume redux-persist. */
@@ -279,8 +253,7 @@ export async function completeDeviceOnlyFamilyCreate(
   getState: () => IState = store.getState,
 ): Promise<void> {
   setActiveFamilyPersistMode(ESyncMode.deviceOnly);
-  await persistDeviceOnlyConnectToBucket(getState);
-  await flushFamilyPersistMode(persistor);
+  await persistDeviceOnlyFamilyToBucket(getState);
   resumeFamilyPersist(persistor);
 }
 
@@ -411,7 +384,7 @@ export async function resetFamilySetupScreenMemory(
     const parentCount = selectParentIds(readState()).length;
 
     if (parentCount > 0 && deviceOnlyFamily) {
-      await persistDeviceOnlyConnectToBucket(readState);
+      await persistDeviceOnlyFamilyToBucket(readState);
     } else if (hasFamilyDataInMemory(readState()) && !deviceOnlyFamily) {
       await flushFamilyPersistMode(persistor);
     }
@@ -476,14 +449,10 @@ export async function switchFamilyPersistMode(
     const parentCountBeforeSwitch = selectParentIds(getState()).length;
 
     if (parentCountBeforeSwitch > 0 && hasFamilyDataInMemory(getState())) {
-      syncActiveFamilyPersistMode(getState);
-
-      if (
-        targetMode === ESyncMode.deviceOnly &&
-        isDeviceOnlyFamilyState(getState())
-      ) {
-        await persistDeviceOnlyConnectToBucket(getState);
+      if (isDeviceOnlyFamilyState(getState())) {
+        await persistDeviceOnlyFamilyToBucket(getState);
       } else {
+        syncActiveFamilyPersistMode(getState);
         await flushFamilyPersistMode(persistor);
       }
     }
