@@ -138,9 +138,7 @@ export function OnboardingFlow({
   const [isSubmittingSignUp, setIsSubmittingSignUp] = useState(false);
   const [keyboardInset, setKeyboardInset] = useState(0);
   const [isSetupMemoryReady, setIsSetupMemoryReady] = useState(
-    () =>
-      initialStep !== ONBOARDING_STEP.syncMode ||
-      (opensOnSetup && parentIds.length === 0),
+    () => initialStep !== ONBOARDING_STEP.syncMode || opensOnSetup,
   );
 
   const isMultidevice = syncMode === ESyncMode.multidevice;
@@ -227,7 +225,9 @@ export function OnboardingFlow({
       return;
     }
 
-    if (opensOnSetup && parentIds.length === 0) {
+    // Change-family / login setup: memory was already prepared — do not reset
+    // again when device-only reconnect loads parents (parentIds.length > 0).
+    if (opensOnSetup) {
       setIsSetupMemoryReady(true);
       return;
     }
@@ -246,7 +246,7 @@ export function OnboardingFlow({
     return () => {
       cancelled = true;
     };
-  }, [dispatch, isSyncModeStep, opensOnSetup, parentIds.length]);
+  }, [dispatch, isSyncModeStep, opensOnSetup]);
 
   useEffect(() => {
     const showEvent =
