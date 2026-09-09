@@ -600,11 +600,11 @@
       "subtitle": "Tareitas lahko uporabljate samo na tej napravi ali sinhronizirate družino med telefoni in tablicami.",
       "multidevice": {
         "title": "Več naprav",
-        "description": "Sinhronizirajte naloge, nagrade in družinske podatke prek oblaka. Potreben je račun."
+        "description": "Sinhronizirajte naloge, nagrade in družinske podatke med napravami. Družinski člani lahko aplikacijo uporabljajo na različnih napravah."
       },
       "device_only": {
         "title": "Samo ta naprava",
-        "description": "Vse ostane na tem telefonu ali tablici. Račun ni potreben."
+        "description": "Vse ostane na tem telefonu ali tablici. Družinski člani lahko aplikacijo uporabljajo samo na tej napravi. Aplikacijo lahko uporabljate brez povezave."
       },
       "create_section_title": "Ustvari novo skupino/družino",
       "connect_section_title": "Poveži se z obstoječo skupino/družino",

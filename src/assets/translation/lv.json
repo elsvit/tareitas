@@ -600,11 +600,11 @@
       "subtitle": "Varat izmantot Tareitas tikai šajā ierīcē vai sinhronizēt ģimeni starp tālruņiem un planšetdatoriem.",
       "multidevice": {
         "title": "Vairākas ierīces",
-        "description": "Sinhronizējiet uzdevumus, balvas un ģimenes datus caur mākoni. Nepieciešams konts."
+        "description": "Sinhronizējiet uzdevumus, balvas un ģimenes datus starp ierīcēm. Ģimenes locekļi var lietot lietotni dažādās ierīcēs."
       },
       "device_only": {
         "title": "Tikai šī ierīce",
-        "description": "Viss paliek šajā tālrunī vai planšetdatorā. Konts nav nepieciešams."
+        "description": "Viss paliek šajā tālrunī vai planšetdatorā. Ģimenes locekļi var lietot lietotni tikai šajā ierīcē. Lietotni var izmantot bezsaistē."
       },
       "create_section_title": "Izveidot jaunu grupu/ģimeni",
       "connect_section_title": "Savienoties ar esošu grupu/ģimeni",

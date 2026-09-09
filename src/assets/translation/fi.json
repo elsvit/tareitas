@@ -600,11 +600,11 @@
       "subtitle": "Voit käyttää Tareitasta vain tällä laitteella tai synkronoida perheesi puhelimien ja tablettien välillä.",
       "multidevice": {
         "title": "Useita laitteita",
-        "description": "Synkronoi tehtävät, palkinnot ja perhetiedot pilven kautta. Vaatii tilin."
+        "description": "Synkronoi tehtävät, palkinnot ja perhetiedot laitteiden välillä. Perheenjäsenet voivat käyttää sovellusta eri laitteilla."
       },
       "device_only": {
         "title": "Vain tämä laite",
-        "description": "Kaikki pysyy tässä puhelimessa tai tabletissa. Tiliä ei tarvita."
+        "description": "Kaikki pysyy tässä puhelimessa tai tabletissa. Perheenjäsenet voivat käyttää sovellusta vain tällä laitteella. Voit käyttää sovellusta offline-tilassa."
       },
       "create_section_title": "Luo uusi ryhmä/perhe",
       "connect_section_title": "Yhdistä olemassa olevaan ryhmään/perheeseen",

@@ -599,11 +599,11 @@
       "subtitle": "Du kannst Tareitas nur auf diesem Gerät nutzen oder deine Familie zwischen Handys und Tablets synchronisieren.",
       "multidevice": {
         "title": "Mehrere Geräte",
-        "description": "Synchronisiere Aufgaben, Belohnungen und Familiendaten über die Cloud. Erfordert ein Konto."
+        "description": "Synchronisiere Aufgaben, Belohnungen und Familiendaten zwischen Geräten. Familienmitglieder können die App auf verschiedenen Geräten nutzen."
       },
       "device_only": {
         "title": "Nur dieses Gerät",
-        "description": "Alles bleibt auf diesem Handy oder Tablet. Kein Konto nötig."
+        "description": "Alles bleibt auf diesem Handy oder Tablet. Familienmitglieder können die App nur auf diesem Gerät nutzen. Du kannst die App offline verwenden."
       },
       "create_section_title": "Neue Gruppe/Familie erstellen",
       "connect_section_title": "Mit bestehender Gruppe/Familie verbinden",

@@ -600,11 +600,11 @@
       "subtitle": "Môžete používať Tareitas len na tomto zariadení alebo synchronizovať rodinu medzi telefónmi a tabletmi.",
       "multidevice": {
         "title": "Viac zariadení",
-        "description": "Synchronizujte úlohy, odmeny a rodinné dáta cez cloud. Vyžaduje účet."
+        "description": "Synchronizujte úlohy, odmeny a rodinné dáta medzi zariadeniami. Členovia rodiny môžu aplikáciu používať na rôznych zariadeniach."
       },
       "device_only": {
         "title": "Len toto zariadenie",
-        "description": "Všetko zostane v tomto telefóne alebo tablete. Účet nie je potrebný."
+        "description": "Všetko zostane v tomto telefóne alebo tablete. Členovia rodiny môžu aplikáciu používať len na tomto zariadení. Aplikáciu môžete používať offline."
       },
       "create_section_title": "Vytvoriť novú skupinu/rodinu",
       "connect_section_title": "Pripojiť sa k existujúcej skupine/rodine",

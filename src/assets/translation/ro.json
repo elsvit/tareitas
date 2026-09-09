@@ -600,11 +600,11 @@
       "subtitle": "Poți folosi Tareitas doar pe acest dispozitiv sau poți sincroniza familia între telefoane și tablete.",
       "multidevice": {
         "title": "Mai multe dispozitive",
-        "description": "Sincronizează sarcini, recompense și date de familie prin cloud. Necesită cont."
+        "description": "Sincronizează sarcini, recompense și date de familie între dispozitive. Membrii familiei pot folosi aplicația pe dispozitive diferite."
       },
       "device_only": {
         "title": "Doar acest dispozitiv",
-        "description": "Totul rămâne pe acest telefon sau tabletă. Nu este necesar cont."
+        "description": "Totul rămâne pe acest telefon sau tabletă. Membrii familiei pot folosi aplicația doar pe acest dispozitiv. Poți folosi aplicația offline."
       },
       "create_section_title": "Creează grup/familie nouă",
       "connect_section_title": "Conectează-te la un grup/familie existent",

@@ -599,11 +599,11 @@
       "subtitle": "Pode usar o Tareitas apenas neste dispositivo ou sincronizar a família entre telemóveis e tablets.",
       "multidevice": {
         "title": "Vários dispositivos",
-        "description": "Sincronize tarefas, recompensas e dados familiares pela cloud. Requer uma conta."
+        "description": "Sincronize tarefas, recompensas e dados familiares entre dispositivos. Os membros da família podem usar a app em dispositivos diferentes."
       },
       "device_only": {
         "title": "Apenas este dispositivo",
-        "description": "Tudo fica neste telemóvel ou tablet. Não é necessária conta."
+        "description": "Tudo fica neste telemóvel ou tablet. Os membros da família só podem usar a app neste dispositivo. Pode usar a app offline."
       },
       "create_section_title": "Criar novo grupo/família",
       "connect_section_title": "Ligar a um grupo/família existente",

@@ -599,11 +599,11 @@
       "subtitle": "Du kan bruge Tareitas kun på denne enhed, eller synkronisere din familie på tværs af telefoner og tablets.",
       "multidevice": {
         "title": "Flere enheder",
-        "description": "Synkroniser opgaver, belønninger og familiedata via skyen. Kræver en konto."
+        "description": "Synkroniser opgaver, belønninger og familiedata på tværs af enheder. Familiemedlemmer kan bruge appen på forskellige enheder."
       },
       "device_only": {
         "title": "Kun denne enhed",
-        "description": "Alt bliver på denne telefon eller tablet. Ingen konto nødvendig."
+        "description": "Alt bliver på denne telefon eller tablet. Familiemedlemmer kan kun bruge appen på denne enhed. Du kan bruge appen offline."
       },
       "create_section_title": "Opret ny gruppe/familie",
       "connect_section_title": "Forbind til eksisterende gruppe/familie",
