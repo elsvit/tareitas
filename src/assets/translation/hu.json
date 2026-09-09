@@ -600,11 +600,11 @@
       "subtitle": "Használhatja a Tareitast csak ezen az eszközön, vagy szinkronizálhatja családját telefonok és tabletek között.",
       "multidevice": {
         "title": "Több eszköz",
-        "description": "Feladatok, jutalmak és családi adatok szinkronizálása a felhőn keresztül. Fiók szükséges."
+        "description": "Szinkronizálja a feladatokat, jutalmakat és családi adatokat az eszközök között. A családtagok különböző eszközökön használhatják az alkalmazást."
       },
       "device_only": {
         "title": "Csak ez az eszköz",
-        "description": "Minden ezen a telefonon vagy tableten marad. Nincs szükség fiókra."
+        "description": "Minden ezen a telefonon vagy tableten marad. A családtagok csak ezen az eszközön használhatják az alkalmazást. Offline is használhatja az alkalmazást."
       },
       "create_section_title": "Új csoport/család létrehozása",
       "connect_section_title": "Csatlakozás meglévő csoporthoz/családhoz",

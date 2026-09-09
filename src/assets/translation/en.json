@@ -645,11 +645,11 @@
       "subtitle": "You can use Tareitas on this device only, or sync your family across phones and tablets.",
       "multidevice": {
         "title": "Several devices",
-        "description": "Sync tasks, rewards, and family data through the cloud. Requires an account."
+        "description": "Sync tasks, rewards, and family data across devices. Family members can use the app on different devices."
       },
       "device_only": {
         "title": "This device only",
-        "description": "Everything stays on this phone or tablet. No account needed."
+        "description": "Everything stays on this phone or tablet. Family members can use the app only on this device. You can use the app offline."
       },
       "create_section_title": "Create new group/family",
       "connect_section_title": "Connect to existing group/family",

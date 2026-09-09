@@ -599,11 +599,11 @@
       "subtitle": "Puoi usare Tareitas solo su questo dispositivo o sincronizzare la famiglia tra telefoni e tablet.",
       "multidevice": {
         "title": "Più dispositivi",
-        "description": "Sincronizza compiti, ricompense e dati familiari tramite cloud. Richiede un account."
+        "description": "Sincronizza compiti, ricompense e dati familiari tra dispositivi. I membri della famiglia possono usare l'app su dispositivi diversi."
       },
       "device_only": {
         "title": "Solo questo dispositivo",
-        "description": "Tutto resta su questo telefono o tablet. Nessun account necessario."
+        "description": "Tutto resta su questo telefono o tablet. I membri della famiglia possono usare l'app solo su questo dispositivo. Puoi usare l'app offline."
       },
       "create_section_title": "Crea nuovo gruppo/famiglia",
       "connect_section_title": "Connetti a gruppo/famiglia esistente",

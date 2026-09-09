@@ -600,11 +600,11 @@
       "subtitle": "Možete koristiti Tareitas samo na ovom uređaju ili sinkronizirati obitelj između telefona i tableta.",
       "multidevice": {
         "title": "Više uređaja",
-        "description": "Sinkronizirajte zadatke, nagrade i obiteljske podatke putem oblaka. Potreban je račun."
+        "description": "Sinkronizirajte zadatke, nagrade i obiteljske podatke između uređaja. Članovi obitelji mogu koristiti aplikaciju na različitim uređajima."
       },
       "device_only": {
         "title": "Samo ovaj uređaj",
-        "description": "Sve ostaje na ovom telefonu ili tabletu. Račun nije potreban."
+        "description": "Sve ostaje na ovom telefonu ili tabletu. Članovi obitelji mogu koristiti aplikaciju samo na ovom uređaju. Aplikaciju možete koristiti offline."
       },
       "create_section_title": "Stvori novu grupu/obitelj",
       "connect_section_title": "Poveži se s postojećom grupom/obitelji",

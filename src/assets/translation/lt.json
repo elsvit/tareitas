@@ -600,11 +600,11 @@
       "subtitle": "Galite naudoti Tareitas tik šiame įrenginyje arba sinchronizuoti šeimą tarp telefonų ir planšetinių kompiuterių.",
       "multidevice": {
         "title": "Keli įrenginiai",
-        "description": "Sinchronizuokite užduotis, apdovanojimus ir šeimos duomenis per debesį. Reikalinga paskyra."
+        "description": "Sinchronizuokite užduotis, apdovanojimus ir šeimos duomenis tarp įrenginių. Šeimos nariai gali naudoti programėlę skirtinguose įrenginiuose."
       },
       "device_only": {
         "title": "Tik šis įrenginys",
-        "description": "Viskas lieka šiame telefone ar planšetėje. Paskyros nereikia."
+        "description": "Viskas lieka šiame telefone ar planšetėje. Šeimos nariai gali naudoti programėlę tik šiame įrenginyje. Programėle gali būti naudojama neprisijungus."
       },
       "create_section_title": "Sukurti naują grupę/šeimą",
       "connect_section_title": "Prisijungti prie esamos grupės/šeimos",

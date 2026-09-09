@@ -600,11 +600,11 @@
       "subtitle": "Du kan använda Tareitas endast på den här enheten eller synka din familj mellan telefoner och surfplattor.",
       "multidevice": {
         "title": "Flera enheter",
-        "description": "Synka uppgifter, belöningar och familjedata via molnet. Kräver ett konto."
+        "description": "Synka uppgifter, belöningar och familjedata mellan enheter. Familjemedlemmar kan använda appen på olika enheter."
       },
       "device_only": {
         "title": "Endast den här enheten",
-        "description": "Allt stannar på den här telefonen eller surfplattan. Inget konto behövs."
+        "description": "Allt stannar på den här telefonen eller surfplattan. Familjemedlemmar kan bara använda appen på den här enheten. Du kan använda appen offline."
       },
       "create_section_title": "Skapa ny grupp/familj",
       "connect_section_title": "Anslut till befintlig grupp/familj",

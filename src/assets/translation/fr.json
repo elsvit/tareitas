@@ -600,11 +600,11 @@
       "subtitle": "Vous pouvez utiliser Tareitas sur cet appareil uniquement ou synchroniser votre famille entre téléphones et tablettes.",
       "multidevice": {
         "title": "Plusieurs appareils",
-        "description": "Synchronisez tâches, récompenses et données familiales via le cloud. Nécessite un compte."
+        "description": "Synchronisez tâches, récompenses et données familiales entre appareils. Les membres de la famille peuvent utiliser l'application sur différents appareils."
       },
       "device_only": {
         "title": "Cet appareil uniquement",
-        "description": "Tout reste sur ce téléphone ou cette tablette. Aucun compte requis."
+        "description": "Tout reste sur ce téléphone ou cette tablette. Les membres de la famille ne peuvent utiliser l'application que sur cet appareil. Vous pouvez utiliser l'application hors ligne."
       },
       "create_section_title": "Créer un nouveau groupe/famille",
       "connect_section_title": "Se connecter à un groupe/famille existant",

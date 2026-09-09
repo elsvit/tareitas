@@ -1,0 +1,59 @@
+---
+description: Tareitas translation rules
+globs:
+  - "src/assets/translation/**/*.json"
+alwaysApply: false
+---
+
+# Translation Rules
+
+## Translation files
+
+- All application translations are stored in `src/assets/translation`.
+- Translation files are JSON files.
+- Keep all translation files structurally identical.
+- Every translation key that exists in the source language must exist in every supported language.
+- Never delete, rename, or change translation keys unless explicitly requested.
+- Never add a translation key to only one language.
+- Preserve the exact JSON structure and nesting.
+- Preserve placeholders exactly. For example:
+  - `{{name}}`
+  - `{{count}}`
+  - `%s`
+  - `{value}`
+- Never translate placeholders, keys, variable names, or technical identifiers.
+- Preserve Markdown, HTML tags, interpolation syntax, and special characters when present.
+- Do not change the meaning of the original English text.
+- Use natural, native-sounding language rather than word-for-word translations.
+- Keep the same tone and level of formality as the English source.
+- Keep terminology consistent throughout the application.
+
+## Adding or changing text
+
+When a new English translation is added:
+
+1. Add the same key to every supported language JSON file.
+2. Translate the value into the appropriate language.
+3. Keep the JSON structure identical across all languages.
+4. Check that no placeholders or formatting were changed.
+5. Run the project's translation validation/audit scripts if available.
+
+When an existing English translation changes:
+
+1. Find the corresponding key in every language.
+2. Update every translation to reflect the new meaning.
+3. Do not leave outdated translations behind.
+
+## Languages
+
+- English is the source/reference language.
+- Do not assume that an English word can be translated literally.
+- Use the established terminology already present in each language file.
+- When translating UI text, prefer concise and natural wording appropriate for mobile applications.
+
+## Important
+
+- Never put translations directly in React/TypeScript components when a translation key should be used.
+- Use the existing i18next translation mechanism.
+- Do not create duplicate translation keys for the same meaning without a clear reason.
+- Do not modify unrelated translation entries.

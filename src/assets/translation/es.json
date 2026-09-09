@@ -645,11 +645,11 @@
       "subtitle": "Puedes usar Tareitas solo en este dispositivo o sincronizar tu familia entre teléfonos y tabletas.",
       "multidevice": {
         "title": "Varios dispositivos",
-        "description": "Sincroniza tareas, recompensas y datos familiares en la nube. Requiere una cuenta."
+        "description": "Sincroniza tareas, recompensas y datos familiares entre dispositivos. Los miembros de la familia pueden usar la app en distintos dispositivos."
       },
       "device_only": {
         "title": "Solo este dispositivo",
-        "description": "Todo permanece en este teléfono o tableta. No necesitas cuenta."
+        "description": "Todo permanece en este teléfono o tableta. Los miembros de la familia solo pueden usar la app en este dispositivo. Puedes usar la app sin conexión."
       },
       "create_section_title": "Crear nuevo grupo/familia",
       "connect_section_title": "Conectar a un grupo/familia existente",

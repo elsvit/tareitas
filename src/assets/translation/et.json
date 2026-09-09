@@ -599,11 +599,11 @@
       "subtitle": "Saate kasutada Tareitast ainult selles seadmes või sünkroniseerida pere telefonide ja tahvelarvutite vahel.",
       "multidevice": {
         "title": "Mitu seadet",
-        "description": "Sünkroniseerige ülesandeid, preemiaid ja peredate pilve kaudu. Nõuab kontot."
+        "description": "Sünkroniseerige ülesandeid, preemiaid ja peredate seadmete vahel. Pereliikmed saavad rakendust kasutada erinevates seadmetes."
       },
       "device_only": {
         "title": "Ainult see seade",
-        "description": "Kõik jääb sellesse telefoni või tahvelarvutisse. Kontot pole vaja."
+        "description": "Kõik jääb sellesse telefoni või tahvelarvutisse. Pereliikmed saavad rakendust kasutada ainult selles seadmes. Saate rakendust kasutada võrguühenduseta."
       },
       "create_section_title": "Loo uus grupp/pere",
       "connect_section_title": "Ühenda olemasoleva grupi/perega",

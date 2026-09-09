@@ -600,11 +600,11 @@
       "subtitle": "U kunt Tareitas alleen op dit apparaat gebruiken of uw gezin synchroniseren tussen telefoons en tablets.",
       "multidevice": {
         "title": "Meerdere apparaten",
-        "description": "Synchroniseer taken, beloningen en gezinsgegevens via de cloud. Account vereist."
+        "description": "Synchroniseer taken, beloningen en gezinsgegevens tussen apparaten. Gezinsleden kunnen de app op verschillende apparaten gebruiken."
       },
       "device_only": {
         "title": "Alleen dit apparaat",
-        "description": "Alles blijft op deze telefoon of tablet. Geen account nodig."
+        "description": "Alles blijft op deze telefoon of tablet. Gezinsleden kunnen de app alleen op dit apparaat gebruiken. Je kunt de app offline gebruiken."
       },
       "create_section_title": "Nieuwe groep/familie maken",
       "connect_section_title": "Verbinden met bestaande groep/familie",
