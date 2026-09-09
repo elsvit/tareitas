@@ -39,22 +39,6 @@ import { OTPInputIconButton } from '~/components/ui/OTPInputIconButton';
 import { styles } from './styles';
 import type { UserFormHandle } from './types';
 
-// export const AVATAR_OPTIONS = [
-//   { label: 'Girl 1', value: 'girl1' },
-//   { label: 'Boy 1', value: 'boy1' },
-//   { label: 'Boy 2', value: 'boy2' },
-//   { label: 'Boy 3', value: 'boy3' },
-//   { label: 'Boy 4', value: 'boy4' },
-//   { label: 'Woman 1', value: 'woman1' },
-//   { label: 'Woman 2', value: 'woman2' },
-//   { label: 'Man 3', value: 'man3' },
-//   { label: 'Man 4', value: 'man4' },
-//   { label: 'Man 5', value: 'man5' },
-//   { label: 'Man 6', value: 'man6' },
-//   { label: 'Man 7', value: 'man7' },
-//   { label: 'Man 8', value: 'man8' },
-// ];
-
 type Props = {
   title?: string;
   mode: EFormMode;

@@ -3,8 +3,8 @@ import { StyleSheet, View } from 'react-native';
 
 import { Image as ExpoImage } from 'expo-image';
 
-import Boy1 from '~/assets/img/users/boy1_320.jpg';
-import Woman1 from '~/assets/img/users/woman1_320.jpg';
+import BoyRed from '~/assets/img/users/boy_red.jpg';
+import WomanRed from '~/assets/img/users/woman_red.jpg';
 import ChevronRightIcon from '~/assets/svg/common/chevron-right.svg';
 import { Text } from '~/components/ui';
 import { t } from '~/services';
@@ -38,11 +38,11 @@ export const HelpCenterChangeUserVisual: React.FC = () => (
   <View style={styles.visual}>
     <UserChip
       name={t('users.parent')}
-      image={Woman1}
+      image={WomanRed}
       color={Colors.pink500}
     />
     <ChevronRightIcon width={14} height={14} fill={Colors.grey500} />
-    <UserChip name={t('users.child')} image={Boy1} color={Colors.blue500} />
+    <UserChip name={t('users.child')} image={BoyRed} color={Colors.blue500} />
   </View>
 );
 

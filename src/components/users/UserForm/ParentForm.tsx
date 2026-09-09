@@ -29,30 +29,8 @@ import {
 } from '~/utils/users/familyRole';
 import { sanitizeUsernameInput, usernameSchema } from '~/utils/users/username';
 
-import type { UserFormHandle } from './types';
 import { styles } from './styles';
-
-// export const AVATAR_OPTIONS = [
-//   { label: 'Man 1', value: 'man1' },
-//   { label: 'Woman 1', value: 'woman1' },
-//   { label: 'Seniora 1', value: 'seniora1' },
-//   { label: 'Man 2', value: 'man2' },
-//   { label: 'Woman 2', value: 'woman2' },
-//   { label: 'Man 3', value: 'man3' },
-//   { label: 'Man 4', value: 'man4' },
-//   { label: 'Man 5', value: 'man5' },
-//   { label: 'Man 6', value: 'man6' },
-//   { label: 'Man 7', value: 'man7' },
-//   { label: 'Man 8', value: 'man8' },
-//   { label: 'Nanny 1', value: 'nanny1' },
-//   { label: 'Nanny 2', value: 'nanny2' },
-//   { label: 'Nanny 3', value: 'nanny3' },
-//   { label: 'Nanny 4', value: 'nanny4' },
-//   { label: 'Senior 1', value: 'senior1' },
-//   { label: 'Senior 2', value: 'senior2' },
-//   { label: 'Senior 3', value: 'senior3' },
-//   { label: 'Senior 4', value: 'senior4' },
-// ];
+import type { UserFormHandle } from './types';
 
 type Props = {
   title?: string;
