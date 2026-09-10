@@ -1,4 +1,18 @@
-import { ITaskAssignment } from '~/types/ITask';
+import { ITaskAssignment, ITaskAssignmentChange } from '~/types/ITask';
+
+export function buildAssignmentChangesUpdate(
+  previous: ITaskAssignment['changes'] | undefined,
+  merged: ITaskAssignment['changes'] | undefined,
+): Record<string, ITaskAssignmentChange> | undefined {
+  const previousJson = JSON.stringify(previous ?? null);
+  const mergedJson = JSON.stringify(merged ?? null);
+
+  if (previousJson === mergedJson) {
+    return undefined;
+  }
+
+  return merged ?? {};
+}
 
 export function mergeAudioRecordIntoAssignmentChanges(
   assignment: Partial<ITaskAssignment> | undefined,

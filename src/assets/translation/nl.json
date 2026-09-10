@@ -470,7 +470,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Kon opname niet opslaan",
     "record_permission_denied": "Microfoontoestemming is vereist om op te nemen",
-    "subtasks_maximum": "Maximaal {{maximum}} sub-taken toegestaan"
+    "subtasks_maximum": "Maximaal {{maximum}} sub-taken toegestaan",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Gebruiken",

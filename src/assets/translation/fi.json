@@ -470,7 +470,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Nauhoitusta ei voitu tallentaa",
     "record_permission_denied": "Nauhoittaminen vaatii mikrofonin käyttöoikeuden",
-    "subtasks_maximum": "Enintään {{maximum}} alitehtävää"
+    "subtasks_maximum": "Enintään {{maximum}} alitehtävää",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Tavat",

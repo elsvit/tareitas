@@ -470,7 +470,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Nepodarilo sa uložiť nahrávku",
     "record_permission_denied": "Na nahrávanie je potrebné povolenie mikrofónu",
-    "subtasks_maximum": "Maximálne {{maximum}} podúloh"
+    "subtasks_maximum": "Maximálne {{maximum}} podúloh",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Návyky",

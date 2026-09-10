@@ -469,7 +469,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Salvestist ei saanud salvestada",
     "record_permission_denied": "Salvestamiseks on vaja mikrofoni luba",
-    "subtasks_maximum": "Maksimaalselt {{maximum}} alaülesannet"
+    "subtasks_maximum": "Maksimaalselt {{maximum}} alaülesannet",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Harjumused",

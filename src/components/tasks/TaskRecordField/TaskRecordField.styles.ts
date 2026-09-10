@@ -41,6 +41,12 @@ export const styles = StyleSheet.create({
   timerTextHidden: {
     opacity: 0,
   },
+  pendingSaveText: {
+    color: Colors.grey700,
+    textAlign: 'right',
+    fontSize: 12,
+    lineHeight: 16,
+  },
   errorText: {
     marginTop: spacing(0.5),
     color: Colors.red500,

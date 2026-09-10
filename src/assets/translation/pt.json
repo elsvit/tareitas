@@ -469,7 +469,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Não foi possível guardar a gravação",
     "record_permission_denied": "É necessária permissão de microfone para gravar",
-    "subtasks_maximum": "Máximo de {{maximum}} subtarefas permitidas"
+    "subtasks_maximum": "Máximo de {{maximum}} subtarefas permitidas",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Hábitos",

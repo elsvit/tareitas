@@ -470,7 +470,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Snimka nije mogla biti spremljena",
     "record_permission_denied": "Potrebna je dozvola za mikrofon",
-    "subtasks_maximum": "Maksimalno {{maximum}} podzadataka"
+    "subtasks_maximum": "Maksimalno {{maximum}} podzadataka",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Navike",

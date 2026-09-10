@@ -470,7 +470,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Impossible d'enregistrer l'audio",
     "record_permission_denied": "L'autorisation du micro est requise pour enregistrer",
-    "subtasks_maximum": "Maximum {{maximum}} sous-tâches autorisées"
+    "subtasks_maximum": "Maximum {{maximum}} sous-tâches autorisées",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Habitudes",

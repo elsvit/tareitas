@@ -44,7 +44,8 @@ import { styles } from './TaskRecordField.styles';
 
 type Props = {
   value?: string | null;
-  onChange?: (value: string | undefined) => void;
+  initialValue?: string | null;
+  onChange?: (value: string | null) => void;
   recordDate: string;
   assignmentId?: string;
   disabled?: boolean;
@@ -52,6 +53,7 @@ type Props = {
 
 export function TaskRecordField({
   value,
+  initialValue = null,
   onChange,
   recordDate,
   assignmentId,
@@ -67,12 +69,16 @@ export function TaskRecordField({
     useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [markedDeleted, setMarkedDeleted] = useState(false);
+
+  const savedValue = initialValue ?? null;
+  const playbackValue = value ?? (markedDeleted ? savedValue : null);
+  const playbackSource = useResolvedMediaUrl(playbackValue);
+  const player = useAudioPlayer(markedDeleted ? null : playbackSource);
+  const playerStatus = useAudioPlayerStatus(player);
 
   const recorder = useAudioRecorder(TASK_RECORDING_OPTIONS);
   const recorderState = useAudioRecorderState(recorder, 250);
-  const playbackSource = useResolvedMediaUrl(value);
-  const player = useAudioPlayer(playbackSource);
-  const playerStatus = useAudioPlayerStatus(player);
 
   const limits = useMemo(
     () =>
@@ -93,6 +99,18 @@ export function TaskRecordField({
     TASKS_RECORD_MAX_SECONDS,
     Math.floor(recorderState.durationMillis / 1000),
   );
+
+  const hasPendingAudioChange = useMemo(() => {
+    if (markedDeleted) {
+      return true;
+    }
+
+    return (value ?? null) !== savedValue;
+  }, [markedDeleted, savedValue, value]);
+
+  useEffect(() => {
+    setMarkedDeleted(false);
+  }, [savedValue]);
 
   const stopRecording = useCallback(async () => {
     if (!recorderState.isRecording) {
@@ -139,10 +157,11 @@ export function TaskRecordField({
         }
       }
 
-      if (value) {
+      if (value?.startsWith('file://') && value !== savedValue) {
         await deleteTaskRecordFromDevice(value);
       }
 
+      setMarkedDeleted(false);
       onChange?.(nextValue);
     } catch (saveError) {
       if (__DEV__) {
@@ -159,6 +178,7 @@ export function TaskRecordField({
     onChange,
     recorder,
     recorderState.isRecording,
+    savedValue,
     value,
   ]);
 
@@ -207,12 +227,30 @@ export function TaskRecordField({
   };
 
   const handleDelete = async () => {
-    await deleteTaskRecordFromDevice(value);
-    onChange?.(undefined);
+    if (disabled || isRecording || isSaving || markedDeleted) {
+      return;
+    }
+
+    const currentValue = value ?? null;
+    const isNewRecording = !!currentValue && currentValue !== savedValue;
+
+    if (isNewRecording) {
+      await deleteTaskRecordFromDevice(currentValue);
+      setMarkedDeleted(false);
+      onChange?.(savedValue);
+      return;
+    }
+
+    if (!currentValue && !savedValue) {
+      return;
+    }
+
+    setMarkedDeleted(!!savedValue);
+    onChange?.(null);
   };
 
   const handlePlay = () => {
-    if (!playbackSource) {
+    if (markedDeleted || !playbackSource) {
       return;
     }
 
@@ -237,6 +275,9 @@ export function TaskRecordField({
     disabled ||
     isSaving ||
     (!isRecording && limits.isRecordDisabled);
+
+  const isPlaybackDisabled = markedDeleted || isRecording || isSaving;
+  const showExistingControls = !!value || markedDeleted;
 
   const handleRecordPress = () => {
     if (isRecording) {
@@ -275,7 +316,7 @@ export function TaskRecordField({
   return (
     <View style={styles.container}>
       <View style={styles.actionsRow}>
-        {value ? (
+        {showExistingControls ? (
           <>
             <Pressable
               accessibilityRole="button"
@@ -285,10 +326,10 @@ export function TaskRecordField({
                   : t('tasks.record_play')
               }
               onPress={handlePlay}
-              disabled={isRecording || isSaving}
+              disabled={isPlaybackDisabled}
               style={[
                 styles.iconActionButton,
-                (isRecording || isSaving) && styles.iconActionButtonDisabled,
+                isPlaybackDisabled && styles.iconActionButtonDisabled,
               ]}
             >
               <MaterialCommunityIcons
@@ -300,11 +341,11 @@ export function TaskRecordField({
             <Pressable
               accessibilityRole="button"
               accessibilityLabel={t('tasks.record_delete')}
-              onPress={handleDelete}
-              disabled={isRecording || isSaving}
+              onPress={() => void handleDelete()}
+              disabled={isPlaybackDisabled}
               style={[
                 styles.iconActionButton,
-                (isRecording || isSaving) && styles.iconActionButtonDisabled,
+                isPlaybackDisabled && styles.iconActionButtonDisabled,
               ]}
             >
               <MaterialCommunityIcons
@@ -331,18 +372,24 @@ export function TaskRecordField({
       </View>
 
       <View style={styles.timerSlot}>
-        <Text
-          variant="bodySmall"
-          style={[
-            styles.timerText,
-            !isRecording && styles.timerTextHidden,
-          ]}
-        >
-          {t('tasks.record_timer', {
-            seconds: recordingSeconds,
-            max: TASKS_RECORD_MAX_SECONDS,
-          })}
-        </Text>
+        {hasPendingAudioChange ? (
+          <Text variant="bodySmall" style={styles.pendingSaveText}>
+            {t('tasks.record_press_save')}
+          </Text>
+        ) : (
+          <Text
+            variant="bodySmall"
+            style={[
+              styles.timerText,
+              !isRecording && styles.timerTextHidden,
+            ]}
+          >
+            {t('tasks.record_timer', {
+              seconds: recordingSeconds,
+              max: TASKS_RECORD_MAX_SECONDS,
+            })}
+          </Text>
+        )}
       </View>
 
       {error ? <Text style={styles.errorText}>{error}</Text> : null}

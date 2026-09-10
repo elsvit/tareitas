@@ -244,6 +244,7 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "No se pudo guardar la grabación",
     "record_permission_denied": "Se necesita permiso de micrófono para grabar",
+    "record_press_save": "Pulsa Guardar",
     "task_templates": "plantillas de tareas",
     "add_task": "Añadir Tarea",
     "edit_task": "Editar Tarea",

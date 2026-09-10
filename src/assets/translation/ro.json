@@ -470,7 +470,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Nu s-a putut salva înregistrarea",
     "record_permission_denied": "Este necesară permisiunea pentru microfon",
-    "subtasks_maximum": "Maximum {{maximum}} sub-sarcini permise"
+    "subtasks_maximum": "Maximum {{maximum}} sub-sarcini permise",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Obiceiuri",

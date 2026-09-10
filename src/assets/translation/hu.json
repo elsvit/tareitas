@@ -470,7 +470,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "A felvétel mentése nem sikerült",
     "record_permission_denied": "Felvételhez mikrofonengedély szükséges",
-    "subtasks_maximum": "Legfeljebb {{maximum}} alfeladat engedélyezett"
+    "subtasks_maximum": "Legfeljebb {{maximum}} alfeladat engedélyezett",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Szokások",

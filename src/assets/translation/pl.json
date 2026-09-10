@@ -470,7 +470,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Nie udało się zapisać nagrania",
     "record_permission_denied": "Do nagrywania wymagane jest pozwolenie na mikrofon",
-    "subtasks_maximum": "Maksymalnie {{maximum}} podzadań"
+    "subtasks_maximum": "Maksymalnie {{maximum}} podzadań",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Nawyki",
