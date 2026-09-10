@@ -1,0 +1,45 @@
+---
+
+description: Rules for Firebase Crashlytics
+globs:
+
+* "src/**/*.{ts,tsx}"
+* "app.json"
+* "ios/**/*"
+* "android/**/*"
+  alwaysApply: false
+
+---
+
+# Firebase Crashlytics
+
+Package:
+
+* `@react-native-firebase/crashlytics`
+
+## Current project status
+
+Crashlytics is installed and configured through the native plugin.
+
+There is currently no manual Crashlytics instrumentation in application JS/TS code.
+
+The native SDK may automatically report production crashes when Firebase and Crashlytics are correctly initialized.
+
+## Rules
+
+* Do NOT add manual Crashlytics reporting unless explicitly requested.
+* Do NOT add `crashlytics().recordError()` to every catch block automatically.
+* Do NOT use Crashlytics as general-purpose application logging.
+* Do NOT add breadcrumbs or custom logs unless they provide useful diagnostic information.
+* Do NOT modify Crashlytics configuration as part of an unrelated task.
+* Never send passwords, tokens, authentication credentials, secrets, or private user content to Crashlytics.
+* Avoid recording expected/normal application errors as Crashlytics errors.
+* Prefer recording unexpected, actionable production failures.
+
+## Error handling
+
+Normal expected errors should be handled by the application normally.
+
+Only use Crashlytics when the error is important for diagnosing a real production problem.
+
+Do not replace existing error handling merely to add Crashlytics reporting.

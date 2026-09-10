@@ -1,0 +1,58 @@
+---
+
+description: Rules for RevenueCat subscriptions and purchases
+globs:
+
+* "src/**/*.{ts,tsx}"
+  alwaysApply: false
+
+---
+
+# RevenueCat
+
+Package:
+
+* `react-native-purchases`
+
+## Current project usage
+
+RevenueCat is used for:
+
+* Subscription initialization
+* Purchases
+* Restore purchases
+* Subscription state
+* Family/account identification
+* Subscription and revenue reporting
+
+Existing functions include:
+
+* `initializeRevenueCat()`
+* `loginRevenueCatForFamily(familyId)`
+
+RevenueCat provides subscription, trial, purchase, and revenue analytics through its dashboard.
+
+## Rules
+
+* Do NOT add custom RevenueCat analytics events unless explicitly requested.
+* Do NOT duplicate RevenueCat purchase events in Firebase Analytics automatically.
+* Do NOT manually track subscription revenue when RevenueCat already provides it.
+* Do NOT modify `initializeRevenueCat()` as part of unrelated work.
+* Do NOT modify `loginRevenueCatForFamily()` identity behavior as part of unrelated work.
+* Do NOT invent a separate subscription state when RevenueCat already provides the required information.
+* Treat RevenueCat as the source of truth for subscription/purchase state.
+* Never send passwords, authentication tokens, payment information, or secrets to RevenueCat.
+* Do not change subscription or entitlement logic unless explicitly requested.
+
+## Analytics responsibility
+
+RevenueCat handles:
+
+* Purchases
+* Trials
+* Subscriptions
+* Renewals
+* Revenue
+* Customer/subscriber analytics
+
+Do not recreate these metrics using Firebase Analytics unless there is a specific product analytics requirement.
