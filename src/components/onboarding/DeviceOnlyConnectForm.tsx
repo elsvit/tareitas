@@ -12,6 +12,7 @@ import {
 } from '~/components/ui';
 import { OTPInput } from '~/components/ui/OTPInput';
 import { UserAvatar } from '~/components/users/UserAvatar';
+import { trackDeviceModeUsed, trackFamilySize } from '~/services/analytics';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectUserImageUrls } from '~/store/images/selectors';
@@ -146,9 +147,11 @@ export function DeviceOnlyConnectForm({
       dispatch(setTaskCalendarDate(getTodayDateString()));
       setPin('');
       setLoginError(null);
+      void trackDeviceModeUsed(ESyncMode.deviceOnly);
+      void trackFamilySize(parents.length, children.length);
       onSuccess();
     },
-    [dispatch, onSuccess],
+    [children.length, dispatch, onSuccess, parents.length],
   );
 
   const handleSelectUser = useCallback((user: SwitchableUser) => {

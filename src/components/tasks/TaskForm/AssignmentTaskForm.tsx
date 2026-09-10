@@ -42,6 +42,7 @@ import {
 } from '~/constants/ads';
 import { useIsPro, useProFeatureAccess } from '~/hooks/useIsPro';
 import { t } from '~/services';
+import { trackDefaultBaseTaskUsed } from '~/services/analytics';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectEarnedRewardPeriods } from '~/store/rewards/selectors';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
@@ -771,6 +772,7 @@ export const AssignmentTaskForm: FC<Props> = ({
     }
 
     applySubtasksFromBaseTask(baseTask);
+    void trackDefaultBaseTaskUsed();
   };
 
   const onSubmit = (values: FormValues) => {

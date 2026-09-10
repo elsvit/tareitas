@@ -44,6 +44,10 @@ import {
 } from '~/services/api/memberMappers';
 import { applyFamilySubscriptionFromServer } from '~/services/subscriptions/familySubscriptionSync';
 import { resolveFamilySubscriptionForClient } from '~/services/subscriptions/devSubscriptionEmulation';
+import {
+  trackDeviceModeUsed,
+  trackFamilySize,
+} from '~/services/analytics';
 import { loginRevenueCatForFamily } from '~/services/subscriptions/revenueCatInit';
 import { selectAllChildren, selectChildById } from '~/store/children/selectors';
 import type {
@@ -190,6 +194,8 @@ export async function hydrateFamilyStore(
   );
   void loginRevenueCatForFamily(family.id);
   dispatch(syncCatalog());
+  void trackDeviceModeUsed(ESyncMode.multidevice);
+  void trackFamilySize(family.parents.length, family.children.length);
   await flushFamilyPersistMode(persistor);
   resumeFamilyPersist(persistor);
 }

@@ -13,6 +13,7 @@ import HelpCircleIcon from '~/assets/svg/common/help-circle.svg';
 import { DeleteModal } from '~/components/modals';
 import { IconButton } from '~/components/ui/IconButton';
 import { Text } from '~/components/ui';
+import { trackSubtaskPhotoUsed } from '~/services/analytics';
 import { t } from '~/services';
 import { useResolvedMediaUrl } from '~/hooks/useResolvedMediaUrl';
 import {
@@ -124,6 +125,7 @@ export function SubtaskPhotoRow({
       }
 
       onPhotoComplete(nextValue);
+      void trackSubtaskPhotoUsed();
       shouldClearPendingCapture = true;
     } catch (saveError) {
       if (__DEV__) {

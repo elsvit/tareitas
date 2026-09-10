@@ -5,6 +5,7 @@ import { Image } from 'expo-image';
 
 import { Text } from '~/components/ui';
 import { t } from '~/services';
+import { trackDefaultUserImageUsed } from '~/services/analytics';
 
 import { IImageOption } from '~/types';
 import { styles } from './styles';
@@ -36,7 +37,10 @@ export const SelectImage: React.FC<Props> = ({
           return (
             <TouchableOpacity
               key={`${opt.value}-${index}`}
-              onPress={() => onChange?.(opt.value)}
+              onPress={() => {
+                onChange?.(opt.value);
+                void trackDefaultUserImageUsed();
+              }}
               style={[
                 styles.avatarOuter,
                 {
