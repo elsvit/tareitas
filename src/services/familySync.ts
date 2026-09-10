@@ -72,6 +72,21 @@ export function applyAuthTokensFromLogin(
   dispatch: AppDispatch,
   auth: IAuthTokens,
 ) {
+  const familyId = auth.user.familyId;
+
+  if (familyId) {
+    dispatch(
+      setMultideviceSession({
+        familyId,
+        authToken: auth.accessToken,
+        refreshToken: auth.refreshToken,
+        authUserId: auth.user.id,
+        authUserRole: mapServerRole(auth.user.role),
+      }),
+    );
+    return;
+  }
+
   dispatch(
     updateAuthTokens({
       authToken: auth.accessToken,

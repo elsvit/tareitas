@@ -16,14 +16,16 @@ import {
 } from '~/services/familySync';
 import type { AppDispatch } from '~/store';
 import {
+  selectHasAuthSession,
   selectIsChild,
   selectIsChildHasChangeFamily,
-  selectIsChildPasswordObligatory,
   selectIsMultidevice,
+  selectRequireLogin,
 } from '~/store/settings/selectors';
 import {
   setCurrentRole,
   setCurrentUser,
+  setRequireLogin,
   setTaskCalendarDate,
 } from '~/store/settings/slice';
 import { getTodayDateString } from '~/utils/date';
@@ -32,7 +34,8 @@ import {
   patternToString,
 } from '~/utils/users/passwordPattern';
 import {
-  userRequiresPasswordOnSwitch,
+  userCanReauthenticateOnSwitch,
+  userNeedsCloudReauthOnSwitch,
   verifyUserSwitchPassword,
 } from '~/utils/users/userSwitchAuth';
 
@@ -40,11 +43,10 @@ export function useUserSwitch() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const isMultidevice = useSelector(selectIsMultidevice);
+  const hasAuthSession = useSelector(selectHasAuthSession);
+  const requireLogin = useSelector(selectRequireLogin);
   const isChild = useSelector(selectIsChild);
   const isChildHasChangeFamily = useSelector(selectIsChildHasChangeFamily);
-  const isChildPasswordObligatory = useSelector(
-    selectIsChildPasswordObligatory,
-  );
   const showChangeGroup = isMultidevice
     ? !isChild || isChildHasChangeFamily
     : !isChild;
@@ -123,25 +125,24 @@ export function useUserSwitch() {
       setIsSelectUsersVisible(false);
       logoutUser();
 
-      const requiresPassword = userRequiresPasswordOnSwitch(
-        user,
-        isMultidevice,
-        isChildPasswordObligatory,
-      );
-
-      if (!requiresPassword) {
-        completeLogin(user);
+      if (
+        isMultidevice &&
+        (requireLogin || !hasAuthSession) &&
+        !userCanReauthenticateOnSwitch(user)
+      ) {
+        router.replace('/(onboarding)?setup=1');
         return;
       }
 
       promptForPassword(user);
     },
     [
-      completeLogin,
-      isChildPasswordObligatory,
+      hasAuthSession,
       isMultidevice,
       logoutUser,
       promptForPassword,
+      requireLogin,
+      router,
     ],
   );
 
@@ -150,12 +151,25 @@ export function useUserSwitch() {
       setIsVerifyingPassword(true);
       setPasswordError(null);
 
+      const needsCloudReauth = userNeedsCloudReauthOnSwitch(
+        user,
+        isMultidevice,
+        { hasAuthSession, requireLogin },
+      );
+
       try {
-        const result = await verifyUserSwitchPassword(user, input);
+        const result = await verifyUserSwitchPassword(user, input, {
+          preferCloudAuth: needsCloudReauth,
+        });
 
         if (result.ok) {
           if (result.kind === 'cloud') {
             applyAuthTokensFromLogin(dispatch, result.auth);
+            dispatch(setRequireLogin(false));
+          } else if (needsCloudReauth) {
+            setPasswordError(t('users.wrong_password'));
+            setPinAttempt(current => current + 1);
+            return;
           }
 
           completeLogin(user);
@@ -168,7 +182,7 @@ export function useUserSwitch() {
         setIsVerifyingPassword(false);
       }
     },
-    [completeLogin],
+    [completeLogin, dispatch, hasAuthSession, isMultidevice, requireLogin],
   );
 
   const handlePinComplete = useCallback(

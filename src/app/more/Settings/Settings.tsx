@@ -24,6 +24,8 @@ import {
 } from '~/store/settings/selectors';
 import {
   clearAuthSession,
+  setCurrentRole,
+  setCurrentUser,
   setIsChildHasChangeFamily,
   setIsChildPasswordObligatory,
   setLanguage,
@@ -126,6 +128,8 @@ export default function Settings() {
     }
 
     dispatch(clearAuthSession());
+    dispatch(setCurrentUser(null));
+    dispatch(setCurrentRole(null));
     dispatch(setRequireLogin(true));
   }, [dispatch, refreshToken]);
 
