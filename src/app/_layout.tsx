@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { Loading } from '~/components/ui/Loading';
+import { validatePersistedFamilyOnBoot } from '~/services/familyBootValidation';
 import { prepareFamilyPersistOnBoot } from '~/services/familyPersistMode';
 import { initializeRevenueCat } from '~/services/subscriptions/revenueCatInit';
 import { persistor, store } from '~/store';
@@ -27,6 +28,10 @@ export default function RootLayout() {
     try {
       if (persistor) {
         await prepareFamilyPersistOnBoot(
+          store.dispatch,
+          store.getState,
+        );
+        await validatePersistedFamilyOnBoot(
           store.dispatch,
           store.getState,
         );

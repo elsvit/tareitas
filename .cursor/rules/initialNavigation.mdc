@@ -1,0 +1,145 @@
+---
+description: Tareitas app startup and initial navigation flow
+globs:
+  - "src/**/*.ts"
+  - "src/**/*.tsx"
+alwaysApply: true
+---
+
+# Tareitas App Startup Flow
+
+The mobile app has a deterministic startup flow based on whether this is the first app launch and the user's last selected storage mode.
+
+## 1. First launch after installation
+
+If the app is launched for the first time after installation:
+
+- Open the onboarding flow.
+- The existing onboarding flow is already working correctly.
+- Do not change the existing onboarding behavior unless explicitly requested.
+- After onboarding is completed, continue to the appropriate configuration / family setup flow.
+
+The app must persist enough information to know that onboarding has already been completed.
+
+---
+
+# 2. Subsequent app launches
+
+After the user has already completed onboarding, determine the last active app mode.
+
+There are three possible startup cases:
+
+## Case A — oneDevice mode
+
+If the last active mode was `oneDevice`:
+
+- The user is considered unknown / not authenticated.
+- The family is stored locally on the device.
+- Check that the local one-device family still exists and that its local data is valid.
+- If the local family exists:
+  - Open the Tasks screen.
+  - Use one-device mode.
+  - Load the local family data.
+  - Do not require a server connection.
+- If the local family does not exist:
+  - Do NOT open Tasks.
+  - Open the mode selection / configuration screen:
+    - `Elige tu configuracion`
+  - From there the user can create or connect/configure a family again.
+
+Important:
+- `oneDevice` data is local-only.
+- Never send one-device family data to the server.
+- Never require a server request to validate a one-device family.
+
+---
+
+## Case B — multidevice mode
+
+If the last active mode was `multidevice`:
+
+- The user is considered unknown / not authenticated locally unless authentication is implemented separately.
+- Persist the last used `familyId`.
+- Check whether the stored `familyId` still exists on the server.
+- If the family exists:
+  - Open the Tasks screen.
+  - Use multidevice mode.
+  - Load/sync the family data from the server.
+  - If the device is offline, use the persisted local multidevice data and sync later when connectivity returns.
+- If the stored `familyId` does not exist on the server:
+  - Do NOT open Tasks.
+  - Clear/invalidate the stale local family reference.
+  - Open the mode selection / configuration screen:
+    - `Elige tu configuracion`
+
+Important:
+- A `familyId` stored locally is only a reference to the server family.
+- The existence of the server family must be validated before treating the stored family as active.
+- Do not silently create a new family when the stored server family no longer exists.
+- Do not use a stale `familyId`.
+
+---
+
+## Case C — select mode / no active mode
+
+If there is no valid last active mode:
+
+- Open the mode selection / configuration screen:
+  - `Elige tu configuracion`
+- The user can then:
+  - create a one-device family,
+  - create a multidevice family,
+  - or connect to an existing multidevice family.
+
+---
+
+# 3. Startup decision order
+
+Startup logic must follow this order:
+
+1. Check whether onboarding has been completed.
+2. If onboarding is NOT completed:
+   - Open onboarding.
+   - Stop startup routing.
+3. If onboarding IS completed:
+   - Read the persisted last active mode.
+4. If mode is `oneDevice`:
+   - Validate local family.
+   - Valid → Tasks in oneDevice mode.
+   - Missing/invalid → `Elige tu configuracion`.
+5. If mode is `multidevice`:
+   - Read persisted `familyId`.
+   - Validate the family against the server.
+   - Valid → Tasks in multidevice mode.
+   - Missing/invalid/non-existent → `Elige tu configuracion`.
+6. If there is no valid mode:
+   - Open `Elige tu configuracion`.
+
+Do not navigate to Tasks before the required family validation has completed.
+
+---
+
+# 4. Important distinction: mode vs family
+
+Do not treat these as the same piece of state.
+
+The app needs to distinguish:
+
+- onboarding completion
+- last active mode
+- local one-device family
+- last multidevice `familyId`
+- whether the stored multidevice family is still valid
+- current startup/loading state
+
+Example conceptual state:
+
+```ts
+type AppMode = 'oneDevice' | 'multidevice';
+
+type StartupState =
+  | 'checking'
+  | 'onboarding'
+  | 'selectMode'
+  | 'loadingFamily'
+  | 'tasks';

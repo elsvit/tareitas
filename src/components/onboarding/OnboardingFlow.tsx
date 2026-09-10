@@ -54,6 +54,8 @@ import {
     clearMultideviceSession,
     setCurrentRole,
     setCurrentUser,
+    setHasPersistedFamily,
+    setPendingFamilySetup,
     setPendingReturnRoute,
     setRequireLogin,
     setSyncMode,
@@ -218,6 +220,12 @@ export function OnboardingFlow({
   }, [step]);
 
   useEffect(() => {
+    if (isSyncModeStep) {
+      dispatch(setPendingFamilySetup(true));
+    }
+  }, [dispatch, isSyncModeStep]);
+
+  useEffect(() => {
     if (!isSyncModeStep) {
       setIsSetupMemoryReady(true);
       return;
@@ -280,6 +288,7 @@ export function OnboardingFlow({
       const returnRoute = pendingReturnRoute;
 
       dispatch(setRequireLogin(false));
+      dispatch(setPendingFamilySetup(false));
       dispatch(setPendingReturnRoute(null));
 
       if (returnRoute) {
@@ -300,6 +309,10 @@ export function OnboardingFlow({
     }
 
     if (canGoBack) {
+      if (isSyncModeStep) {
+        dispatch(setPendingFamilySetup(false));
+      }
+
       goToStep(getPreviousStep(step));
     }
   };
@@ -309,6 +322,7 @@ export function OnboardingFlow({
 
     dispatch(setPendingReturnRoute(null));
     dispatch(setRequireLogin(false));
+    dispatch(setPendingFamilySetup(false));
     dispatch(setTaskCalendarDate(getTodayDateString()));
 
     if (returnRoute) {
@@ -384,6 +398,7 @@ export function OnboardingFlow({
       await completeDeviceOnlyFamilyCreate(persistor);
     }
 
+    dispatch(setHasPersistedFamily(true));
     enterApp();
   };
 
@@ -392,6 +407,8 @@ export function OnboardingFlow({
       if (setupPath !== 'create') {
         return;
       }
+
+      dispatch(setPendingFamilySetup(false));
 
       if (!isMultidevice) {
         await beginDeviceOnlyFamilyCreate(dispatch, persistor);

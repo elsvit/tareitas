@@ -26,6 +26,10 @@ export interface IStateSettings {
   pendingRemovedTaskBaseIds: string[];
   pendingRemovedRewardBaseIds: string[];
   requireLogin: boolean;
+  /** True while the user is on the family setup (sync mode) screen without a family yet. */
+  pendingFamilySetup: boolean;
+  /** True after the user has created or connected a family at least once. */
+  hasPersistedFamily: boolean;
   lastSessionActivityAt: string | null;
   pendingReturnRoute: PendingReturnRoute | null;
   sessionPauseCount: number;

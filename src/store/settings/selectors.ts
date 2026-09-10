@@ -216,6 +216,14 @@ export const selectRequireLogin = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>)
     .requireLogin ?? false;
 
+export const selectPendingFamilySetup = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .pendingFamilySetup ?? false;
+
+export const selectHasPersistedFamily = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .hasPersistedFamily ?? false;
+
 export const selectLastSessionActivityAt = (
   state: RootStateT,
 ) =>

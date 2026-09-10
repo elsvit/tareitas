@@ -78,7 +78,7 @@ export const useCatalogForegroundSync = () => {
 
     if (
       isSessionPaused ||
-      parentIds.length === 0 ||
+      parentIds.length > 0 ||
       isOnboardingRoute(segments) ||
       hasRedirectedToLoginRef.current
     ) {

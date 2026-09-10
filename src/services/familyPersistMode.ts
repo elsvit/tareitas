@@ -33,6 +33,8 @@ import {
   clearMultideviceSession,
   setCurrentRole,
   setCurrentUser,
+  setHasPersistedFamily,
+  setPendingFamilySetup,
   setRequireLogin,
   setSyncMode,
 } from '~/store/settings/slice';
@@ -154,7 +156,7 @@ async function rehydrateDeviceOnlyConnectFromStorage(
   return selectParentIds(store.getState()).length > 0;
 }
 
-async function persistSharedSettingsState(
+export async function persistSharedSettingsState(
   getState: () => IState,
 ): Promise<void> {
   const settings = getState()[EStateName.settings];
@@ -230,6 +232,7 @@ export async function beginDeviceOnlyFamilyCreate(
   await clearFamilyStorageBucket(ESyncMode.deviceOnly);
   clearFamilySlicesInMemory(dispatch);
   dispatch(clearMultideviceSession());
+  dispatch(setHasPersistedFamily(false));
 }
 
 export async function saveDeviceOnlyFamilyForReconnect(
@@ -443,6 +446,7 @@ export async function prepareFamilyPersistOnBoot(
   ) {
     dispatch(setRequireLogin(false));
   }
+
 }
 
 export async function switchFamilyPersistMode(
@@ -511,5 +515,7 @@ export async function prepareFamilyChangeScreen(
   });
 
   dispatch(setRequireLogin(true));
+  dispatch(setPendingFamilySetup(true));
+  dispatch(setHasPersistedFamily(false));
   await persistSharedSettingsState(store.getState);
 }
