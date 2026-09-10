@@ -15,6 +15,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { BASE_TASKS_IMAGES } from '~/assets/img/tasks/tasks';
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
+import { SubscriptionModal } from '~/components/subscriptions/SubscriptionModal';
 import { SubtaskAudioRow, SubtaskPhotoRow } from '~/components/tasks/SubtaskCompletion';
 import { TaskRecordPlayControl } from '~/components/tasks/TaskRecordPlayControl';
 import { TaskStatusBadge } from '~/components/tasks/TaskStatusBadge';
@@ -22,12 +23,21 @@ import { TaskRewardBadge } from '~/components/tasks/TaskRewardBadge';
 import { TaskRewardStarsAnimation } from '~/components/tasks/TaskRewardStarsAnimation';
 import { Text } from '~/components/ui';
 import { ResolvedPicture } from '~/components/ui/ResolvedPicture/ResolvedPicture';
+import {
+  SUBTASKS_PHOTOS_MAXIMUM,
+  SUBTASKS_PHOTOS_WITHOUT_SUBSCRIPTION,
+  SUBTASKS_RECORDS_MAXIMUM,
+  SUBTASKS_RECORDS_WITHOUT_SUBSCRIPTION,
+} from '~/constants/ads';
+import { useIsPro, useProFeatureAccess } from '~/hooks/useIsPro';
+import { useSubscription } from '~/hooks/useSubscription';
 import { t } from '~/services';
 import { RootStateT } from '~/store';
 import { ECommonActions } from '~/store/common/types';
 import { EStateName } from '~/store/enums';
 import {
   ScheduledTaskItem,
+  selectAllTasks,
   selectTaskListItemViewByScheduledItem,
 } from '~/store/tasks/selectors';
 import { addTask, updateTask } from '~/store/tasks/slice';
@@ -53,6 +63,7 @@ import {
   withSubtaskMarkedIncomplete,
 } from '~/utils/tasks/subtaskCompletion';
 import { createTaskId } from '~/utils/tasks/taskGeneration';
+import { canAddSubtaskMedia } from '~/utils/tasks/subtaskMediaLimits';
 
 type Props = {
   item: ScheduledTaskItem;
@@ -100,6 +111,20 @@ export const TaskListItem: React.FC<Props> = ({
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [areSubtasksExpanded, setAreSubtasksExpanded] = useState(false);
   const [rewardAnimationTrigger, setRewardAnimationTrigger] = useState(0);
+  const [isSubscriptionModalVisible, setIsSubscriptionModalVisible] =
+    useState(false);
+  const allTasks = useSelector(selectAllTasks);
+  const hasProFeatureAccess = useProFeatureAccess();
+  const { isPro } = useIsPro();
+  const subscription = useSubscription();
+
+  const handleSubscribe = useCallback(async () => {
+    const success = await subscription.subscribe();
+
+    if (success) {
+      setIsSubscriptionModalVisible(false);
+    }
+  }, [subscription]);
 
   const gradientColors = useMemo(
     () =>
@@ -705,53 +730,95 @@ export const TaskListItem: React.FC<Props> = ({
               {areSubtasksExpanded && (
                 <View style={styles.subtasksList}>
                   {partitionedSubtasks.regular.map(renderRegularSubtaskRow)}
-                  {partitionedSubtasks.audio.map(subtask => (
-                    <SubtaskAudioRow
-                      key={subtask.value}
-                      subtask={subtask}
-                      audioUrl={getSubtaskAudioUrl(
-                        subtask.value,
-                        completedAudioRecords,
-                      )}
-                      checked={isSubtaskComplete(
-                        subtask,
-                        completedSubtasks,
-                        completedAudioRecords,
-                        completedPhotos,
-                      )}
-                      disabled={!canChildModifyTask || isStatusUpdating}
-                      onRecordComplete={url =>
-                        handleSubtaskAudioComplete(subtask, url)
-                      }
-                      onDelete={() => handleSubtaskAudioDelete(subtask)}
-                    />
-                  ))}
-                  {partitionedSubtasks.photo.map(subtask => (
-                    <SubtaskPhotoRow
-                      key={subtask.value}
-                      subtask={subtask}
-                      captureContext={{
-                        taskId: id,
-                        assignmentId,
-                        date,
-                      }}
-                      photoUrl={getSubtaskPhotoUrl(
-                        subtask.value,
-                        completedPhotos,
-                      )}
-                      checked={isSubtaskComplete(
-                        subtask,
-                        completedSubtasks,
-                        completedAudioRecords,
-                        completedPhotos,
-                      )}
-                      disabled={!canChildModifyTask || isStatusUpdating}
-                      onPhotoComplete={url =>
-                        handleSubtaskPhotoComplete(subtask, url)
-                      }
-                      onDelete={() => handleSubtaskPhotoDelete(subtask)}
-                    />
-                  ))}
+                  {partitionedSubtasks.audio.map(subtask => {
+                    const audioUrl = getSubtaskAudioUrl(
+                      subtask.value,
+                      completedAudioRecords,
+                    );
+                    const audioLimits = canAddSubtaskMedia({
+                      tasks: allTasks,
+                      date,
+                      taskId: id,
+                      subtaskId: subtask.value,
+                      hasExistingMedia: !!audioUrl,
+                      isPro: hasProFeatureAccess,
+                      withoutSubscriptionLimit:
+                        SUBTASKS_RECORDS_WITHOUT_SUBSCRIPTION,
+                      maximumLimit: SUBTASKS_RECORDS_MAXIMUM,
+                      field: 'completedAudioRecords',
+                    });
+
+                    return (
+                      <SubtaskAudioRow
+                        key={subtask.value}
+                        subtask={subtask}
+                        audioUrl={audioUrl}
+                        checked={isSubtaskComplete(
+                          subtask,
+                          completedSubtasks,
+                          completedAudioRecords,
+                          completedPhotos,
+                        )}
+                        disabled={!canChildModifyTask || isStatusUpdating}
+                        isCaptureDisabled={audioLimits.isCaptureDisabled}
+                        showSubscriptionHelp={audioLimits.showSubscriptionHelp}
+                        onSubscriptionHelpPress={() =>
+                          setIsSubscriptionModalVisible(true)
+                        }
+                        onRecordComplete={url =>
+                          handleSubtaskAudioComplete(subtask, url)
+                        }
+                        onDelete={() => handleSubtaskAudioDelete(subtask)}
+                      />
+                    );
+                  })}
+                  {partitionedSubtasks.photo.map(subtask => {
+                    const photoUrl = getSubtaskPhotoUrl(
+                      subtask.value,
+                      completedPhotos,
+                    );
+                    const photoLimits = canAddSubtaskMedia({
+                      tasks: allTasks,
+                      date,
+                      taskId: id,
+                      subtaskId: subtask.value,
+                      hasExistingMedia: !!photoUrl,
+                      isPro: hasProFeatureAccess,
+                      withoutSubscriptionLimit:
+                        SUBTASKS_PHOTOS_WITHOUT_SUBSCRIPTION,
+                      maximumLimit: SUBTASKS_PHOTOS_MAXIMUM,
+                      field: 'completedPhotos',
+                    });
+
+                    return (
+                      <SubtaskPhotoRow
+                        key={subtask.value}
+                        subtask={subtask}
+                        captureContext={{
+                          taskId: id,
+                          assignmentId,
+                          date,
+                        }}
+                        photoUrl={photoUrl}
+                        checked={isSubtaskComplete(
+                          subtask,
+                          completedSubtasks,
+                          completedAudioRecords,
+                          completedPhotos,
+                        )}
+                        disabled={!canChildModifyTask || isStatusUpdating}
+                        isCaptureDisabled={photoLimits.isCaptureDisabled}
+                        showSubscriptionHelp={photoLimits.showSubscriptionHelp}
+                        onSubscriptionHelpPress={() =>
+                          setIsSubscriptionModalVisible(true)
+                        }
+                        onPhotoComplete={url =>
+                          handleSubtaskPhotoComplete(subtask, url)
+                        }
+                        onDelete={() => handleSubtaskPhotoDelete(subtask)}
+                      />
+                    );
+                  })}
                 </View>
               )}
             </View>
@@ -802,6 +869,19 @@ export const TaskListItem: React.FC<Props> = ({
           rewardText={rewardText}
         />
       )}
+
+      <SubscriptionModal
+        isVisible={isSubscriptionModalVisible}
+        onRequestClose={() => setIsSubscriptionModalVisible(false)}
+        onSubscribe={handleSubscribe}
+        onRestore={subscription.restore}
+        isLoading={subscription.isLoading}
+        isPurchasing={subscription.isPurchasing}
+        yearlyPrice={subscription.yearlyPrice}
+        isAvailable={subscription.isAvailable}
+        isPro={isPro}
+        error={subscription.error}
+      />
     </View>
   );
 };

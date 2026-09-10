@@ -9,7 +9,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
 
+import HelpCircleIcon from '~/assets/svg/common/help-circle.svg';
 import { DeleteModal } from '~/components/modals';
+import { IconButton } from '~/components/ui/IconButton';
 import { Text } from '~/components/ui';
 import { t } from '~/services';
 import { useResolvedMediaUrl } from '~/hooks/useResolvedMediaUrl';
@@ -38,6 +40,9 @@ type Props = {
   photoUrl?: string;
   checked: boolean;
   disabled?: boolean;
+  isCaptureDisabled?: boolean;
+  showSubscriptionHelp?: boolean;
+  onSubscriptionHelpPress?: () => void;
   captureContext: Omit<PendingSubtaskPhotoCapture, 'subtaskValue' | 'previousPhotoUrl'>;
   onPhotoComplete: (url: string) => void;
   onDelete: () => void;
@@ -48,6 +53,9 @@ export function SubtaskPhotoRow({
   photoUrl,
   checked,
   disabled = false,
+  isCaptureDisabled = false,
+  showSubscriptionHelp = false,
+  onSubscriptionHelpPress,
   captureContext,
   onPhotoComplete,
   onDelete,
@@ -65,7 +73,7 @@ export function SubtaskPhotoRow({
   useMediaSessionPause(isCameraFlowActive || isSaving);
 
   const handleTakePhoto = async () => {
-    if (disabled || isSaving || isCameraFlowActive) {
+    if (disabled || isCaptureDisabled || isSaving || isCameraFlowActive) {
       return;
     }
 
@@ -219,10 +227,11 @@ export function SubtaskPhotoRow({
           accessibilityRole="button"
           accessibilityLabel={t('tasks.subtask_add_photo')}
           onPress={() => void handleTakePhoto()}
-          disabled={disabled || isSaving}
+          disabled={disabled || isCaptureDisabled || isSaving}
           style={[
             styles.iconActionButton,
-            (disabled || isSaving) && styles.iconActionButtonDisabled,
+            (disabled || isCaptureDisabled || isSaving) &&
+              styles.iconActionButtonDisabled,
           ]}
         >
           {isSaving ? (
@@ -235,6 +244,15 @@ export function SubtaskPhotoRow({
             />
           )}
         </Pressable>
+
+        {showSubscriptionHelp ? (
+          <IconButton
+            Icon={<HelpCircleIcon width={22} height={22} />}
+            onPress={() => onSubscriptionHelpPress?.()}
+            size={32}
+            accessibilityLabel={t('subscription.modal_title')}
+          />
+        ) : null}
 
         <Text style={styles.label}>{subtask.label}</Text>
       </View>

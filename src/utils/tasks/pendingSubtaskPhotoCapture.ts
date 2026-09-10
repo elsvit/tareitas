@@ -2,15 +2,23 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import type { ImagePickerAsset } from 'expo-image-picker';
 
+import {
+  SUBTASKS_PHOTOS_MAXIMUM,
+  SUBTASKS_PHOTOS_WITHOUT_SUBSCRIPTION,
+} from '~/constants/ads';
 import { uploadFamilyImageWithSession } from '~/services/api/uploadFamilyImageWithSession';
 import { store } from '~/store/store';
 import { selectTaskAssignmentById } from '~/store/taskAssignment/selectors';
-import { selectTaskById } from '~/store/tasks/selectors';
+import { selectAllTasks, selectTaskById } from '~/store/tasks/selectors';
 import { updateTask } from '~/store/tasks/slice';
 import {
+  selectAppInstalledAt,
   selectFamilyId,
+  selectIsAdFreeBySubscription,
   selectIsMultidevice,
 } from '~/store/settings/selectors';
+import { hasProFeatureAccess } from '~/utils/subscriptionLimits';
+import { canAddSubtaskMedia } from '~/utils/tasks/subtaskMediaLimits';
 import { ETaskStatus } from '~/types/ETask';
 import { createId } from '~/utils/createId';
 import {
@@ -167,6 +175,27 @@ export async function recoverPendingSubtaskPhotoCapture(): Promise<boolean> {
 
   try {
     const state = store.getState();
+    const hasPro = hasProFeatureAccess(
+      selectIsAdFreeBySubscription(state),
+      selectAppInstalledAt(state),
+    );
+    const photoLimits = canAddSubtaskMedia({
+      tasks: selectAllTasks(state),
+      date: capture.date,
+      taskId: capture.taskId,
+      subtaskId: capture.subtaskValue,
+      hasExistingMedia: !!capture.previousPhotoUrl,
+      isPro: hasPro,
+      withoutSubscriptionLimit: SUBTASKS_PHOTOS_WITHOUT_SUBSCRIPTION,
+      maximumLimit: SUBTASKS_PHOTOS_MAXIMUM,
+      field: 'completedPhotos',
+    });
+
+    if (photoLimits.isCaptureDisabled) {
+      await clearPendingSubtaskPhotoCapture();
+      return false;
+    }
+
     const photoUrl = await saveSubtaskPhotoFromAsset(
       pickerResult.assets[0],
       {
