@@ -6,6 +6,7 @@ import {
   createTaskInstance,
   getTaskInstance,
   mapServerTaskToLocal,
+  mergeTaskFromServerWithLocal,
   rejectTaskInstance,
   toCreateTaskBody,
   toUpdateTaskBody,
@@ -274,14 +275,34 @@ function* syncTaskToServer(
     return;
   }
 
-  const localTask = yield* persistTaskOnServer(
-    session,
-    entity,
-    preferUpdate,
-    previousTask,
+  yield put(
+    preferUpdate
+      ? updateTaskSuccess(entity)
+      : addTaskSuccess(entity),
   );
 
-  yield put(updateTaskSuccess(localTask));
+  try {
+    const serverTask = yield* persistTaskOnServer(
+      session,
+      entity,
+      preferUpdate,
+      previousTask,
+    );
+
+    yield put(
+      updateTaskSuccess(
+        mergeTaskFromServerWithLocal(serverTask, entity),
+      ),
+    );
+  } catch (error) {
+    if (previousTask) {
+      yield put(updateTaskSuccess(previousTask));
+    } else {
+      yield put(removeTaskSuccess(entity.id));
+    }
+
+    throw error;
+  }
 }
 
 function* addTasksSaga(

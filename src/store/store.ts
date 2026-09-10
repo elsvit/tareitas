@@ -78,6 +78,7 @@ function buildPersistedReducers() {
     key: EStateName.settings,
     storage: sharedPersistStorage,
     stateReconciler: autoMergeLevel2,
+    blacklist: ['sessionPauseCount'],
   };
 
   const parentsPersistConfig: PersistConfig<IStateParents> = {

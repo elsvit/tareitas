@@ -15,6 +15,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { BASE_TASKS_IMAGES } from '~/assets/img/tasks/tasks';
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
+import { SubtaskAudioRow, SubtaskPhotoRow } from '~/components/tasks/SubtaskCompletion';
 import { TaskRecordPlayControl } from '~/components/tasks/TaskRecordPlayControl';
 import { TaskStatusBadge } from '~/components/tasks/TaskStatusBadge';
 import { TaskRewardBadge } from '~/components/tasks/TaskRewardBadge';
@@ -37,8 +38,20 @@ import { selectEarnedRewardPeriods } from '~/store/rewards/selectors';
 import { isDateInClosedRewardPeriod } from '~/store/rewards/earnedRewardPeriodUtils';
 import { Colors } from '~/styles';
 import { ETaskStatus } from '~/types/ETask';
-import { ITask } from '~/types/ITask';
+import { ISubtask, ISubtaskCompletionMedia, ITask } from '~/types/ITask';
 import { lightenColor } from '~/utils/color';
+import {
+  areAllSubtasksComplete,
+  buildTaskCompletionUpdate,
+  getSubtaskAudioUrl,
+  getSubtaskPhotoUrl,
+  isSubtaskComplete,
+  partitionSubtasks,
+  removeSubtaskCompletionMedia,
+  upsertSubtaskCompletionMedia,
+  withSubtaskMarkedComplete,
+  withSubtaskMarkedIncomplete,
+} from '~/utils/tasks/subtaskCompletion';
 import { createTaskId } from '~/utils/tasks/taskGeneration';
 
 type Props = {
@@ -122,6 +135,11 @@ export const TaskListItem: React.FC<Props> = ({
     }
   }, [isSyncing, isTaskActionLoading, taskActionError]);
 
+  const partitionedSubtasks = useMemo(
+    () => partitionSubtasks(taskView?.subtasks ?? []),
+    [taskView?.subtasks],
+  );
+
   if (!taskView || !gradientColors) {
     return null;
   }
@@ -143,6 +161,8 @@ export const TaskListItem: React.FC<Props> = ({
     time,
     subtasks,
     completedSubtasks,
+    completedAudioRecords,
+    completedPhotos,
     status,
   } = taskView;
 
@@ -180,9 +200,13 @@ export const TaskListItem: React.FC<Props> = ({
     dispatch(addTask({ entity, onSuccess: handleSynced }));
   };
 
-  const setStatus = (
-    nextStatus: ETaskStatus,
-    nextCompletedSubtasks?: string[],
+  const persistTaskCompletion = (
+    next: {
+      status: ETaskStatus;
+      completedSubtasks: string[];
+      completedAudioRecords?: ISubtaskCompletionMedia[];
+      completedPhotos?: ISubtaskCompletionMedia[];
+    },
     onSynced?: () => void,
   ) => {
     if (isPeriodLocked) {
@@ -193,27 +217,86 @@ export const TaskListItem: React.FC<Props> = ({
       return;
     }
 
-    const entity: ITask = {
-      id: createTaskId(assignmentId, date),
-      assignmentId,
-      date,
-      status: nextStatus,
-      completedSubtasks:
-        nextCompletedSubtasks ??
-        (nextStatus === ETaskStatus.Completed && hasSubtasks
-          ? subtasks.map(subtask => subtask.value)
-          : task?.completedSubtasks),
-      createdAt: task?.createdAt ?? new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    upsertTask(entity, onSynced);
+    upsertTask(
+      buildTaskCompletionUpdate(task, assignmentId, date, next),
+      onSynced,
+    );
   };
 
-  const completeTask = (nextCompletedSubtasks?: string[]) => {
-    setStatus(ETaskStatus.Completed, nextCompletedSubtasks, () => {
-      triggerCompletionAnimation();
-    });
+  const setStatus = (
+    nextStatus: ETaskStatus,
+    nextCompletedSubtasks?: string[],
+    nextCompletedAudioRecords?: ISubtaskCompletionMedia[],
+    nextCompletedPhotos?: ISubtaskCompletionMedia[],
+    onSynced?: () => void,
+  ) => {
+    const resolvedCompletedSubtasks =
+      nextCompletedSubtasks ??
+      (nextStatus === ETaskStatus.Completed && hasSubtasks
+        ? subtasks.map(subtask => subtask.value)
+        : task?.completedSubtasks ?? []);
+
+    persistTaskCompletion(
+      {
+        status: nextStatus,
+        completedSubtasks: resolvedCompletedSubtasks,
+        completedAudioRecords:
+          nextCompletedAudioRecords !== undefined
+            ? nextCompletedAudioRecords
+            : task?.completedAudioRecords,
+        completedPhotos:
+          nextCompletedPhotos !== undefined
+            ? nextCompletedPhotos
+            : task?.completedPhotos,
+      },
+      onSynced,
+    );
+  };
+
+  const completeTask = (
+    nextCompletedSubtasks?: string[],
+    nextCompletedAudioRecords?: ISubtaskCompletionMedia[],
+    nextCompletedPhotos?: ISubtaskCompletionMedia[],
+  ) => {
+    setStatus(
+      ETaskStatus.Completed,
+      nextCompletedSubtasks,
+      nextCompletedAudioRecords,
+      nextCompletedPhotos,
+      () => {
+        triggerCompletionAnimation();
+      },
+    );
+  };
+
+  const evaluateSubtaskCompletion = (
+    nextCompletedSubtasks: string[],
+    nextCompletedAudioRecords?: ISubtaskCompletionMedia[],
+    nextCompletedPhotos?: ISubtaskCompletionMedia[],
+  ) => {
+    const allDone = areAllSubtasksComplete(
+      subtasks,
+      nextCompletedSubtasks,
+      nextCompletedAudioRecords,
+      nextCompletedPhotos,
+    );
+    const nextStatus = allDone ? ETaskStatus.Completed : ETaskStatus.Pending;
+
+    if (allDone && isChildView && status === ETaskStatus.Pending) {
+      completeTask(
+        nextCompletedSubtasks,
+        nextCompletedAudioRecords,
+        nextCompletedPhotos,
+      );
+      return;
+    }
+
+    setStatus(
+      nextStatus,
+      nextCompletedSubtasks,
+      nextCompletedAudioRecords,
+      nextCompletedPhotos,
+    );
   };
 
   const handleChildStatusPress = () => {
@@ -222,14 +305,17 @@ export const TaskListItem: React.FC<Props> = ({
     }
 
     if (status === ETaskStatus.Rejected) {
-      setStatus(ETaskStatus.Pending, []);
+      setStatus(ETaskStatus.Pending, [], [], []);
       return;
     }
 
     if (status === ETaskStatus.Pending) {
       if (hasSubtasks) {
-        const allSubtasksDone = subtasks.every(subtask =>
-          completedSubtasks.includes(subtask.value),
+        const allSubtasksDone = areAllSubtasksComplete(
+          subtasks,
+          completedSubtasks,
+          completedAudioRecords,
+          completedPhotos,
         );
 
         if (!allSubtasksDone) {
@@ -243,7 +329,7 @@ export const TaskListItem: React.FC<Props> = ({
     }
 
     if (status === ETaskStatus.Completed) {
-      setStatus(ETaskStatus.Pending, []);
+      setStatus(ETaskStatus.Pending, [], [], []);
     }
   };
 
@@ -267,21 +353,124 @@ export const TaskListItem: React.FC<Props> = ({
     }
 
     const nextCompleted = checked
-      ? [...new Set([...completedSubtasks, subtaskValue])]
-      : completedSubtasks.filter(value => value !== subtaskValue);
+      ? withSubtaskMarkedComplete(subtaskValue, completedSubtasks)
+      : withSubtaskMarkedIncomplete(subtaskValue, completedSubtasks);
 
-    const allDone =
-      hasSubtasks &&
-      subtasks.every(subtask => nextCompleted.includes(subtask.value));
+    evaluateSubtaskCompletion(nextCompleted, completedAudioRecords, completedPhotos);
+  };
 
-    const nextStatus = allDone ? ETaskStatus.Completed : ETaskStatus.Pending;
-
-    if (allDone && isChildView && status === ETaskStatus.Pending) {
-      completeTask(nextCompleted);
+  const handleSubtaskAudioComplete = (subtask: ISubtask, url: string) => {
+    if (isStatusUpdating || !canChildModifyTask) {
       return;
     }
 
-    setStatus(nextStatus, nextCompleted);
+    const nextAudioRecords = upsertSubtaskCompletionMedia(
+      completedAudioRecords,
+      subtask.value,
+      url,
+    );
+    const nextCompleted = withSubtaskMarkedComplete(
+      subtask.value,
+      completedSubtasks,
+    );
+
+    evaluateSubtaskCompletion(
+      nextCompleted,
+      nextAudioRecords,
+      completedPhotos,
+    );
+  };
+
+  const handleSubtaskAudioDelete = (subtask: ISubtask) => {
+    if (isStatusUpdating || !canChildModifyTask) {
+      return;
+    }
+
+    const nextAudioRecords = removeSubtaskCompletionMedia(
+      completedAudioRecords,
+      subtask.value,
+    );
+    const nextCompleted = withSubtaskMarkedIncomplete(
+      subtask.value,
+      completedSubtasks,
+    );
+
+    evaluateSubtaskCompletion(
+      nextCompleted,
+      nextAudioRecords,
+      completedPhotos,
+    );
+  };
+
+  const handleSubtaskPhotoComplete = (subtask: ISubtask, url: string) => {
+    if (isStatusUpdating || !canChildModifyTask) {
+      return;
+    }
+
+    const nextPhotos = upsertSubtaskCompletionMedia(
+      completedPhotos,
+      subtask.value,
+      url,
+    );
+    const nextCompleted = withSubtaskMarkedComplete(
+      subtask.value,
+      completedSubtasks,
+    );
+
+    evaluateSubtaskCompletion(nextCompleted, completedAudioRecords, nextPhotos);
+  };
+
+  const handleSubtaskPhotoDelete = (subtask: ISubtask) => {
+    if (isStatusUpdating || !canChildModifyTask) {
+      return;
+    }
+
+    const nextPhotos = removeSubtaskCompletionMedia(
+      completedPhotos,
+      subtask.value,
+    );
+    const nextCompleted = withSubtaskMarkedIncomplete(
+      subtask.value,
+      completedSubtasks,
+    );
+
+    evaluateSubtaskCompletion(nextCompleted, completedAudioRecords, nextPhotos);
+  };
+
+  const renderRegularSubtaskRow = (subtask: ISubtask) => {
+    const checked = isSubtaskComplete(
+      subtask,
+      completedSubtasks,
+      completedAudioRecords,
+      completedPhotos,
+    );
+
+    return (
+      <Pressable
+        key={subtask.value}
+        onPress={() =>
+          canChildModifyTask
+            ? handleToggleSubtask(subtask.value, !checked)
+            : undefined
+        }
+        disabled={!canChildModifyTask || isStatusUpdating}
+        accessibilityRole="checkbox"
+        accessibilityState={{ checked }}
+        style={styles.subtaskRow}
+      >
+        <View
+          style={[
+            styles.subtaskCheckbox,
+            checked && styles.subtaskCheckboxChecked,
+          ]}
+        >
+          {checked ? <Text style={styles.subtaskCheckmark}>✓</Text> : null}
+        </View>
+        <View style={styles.subtaskLabelWrapper}>
+          <Text style={styles.subtaskLabel}>{subtask.label}</Text>
+        </View>
+      </Pressable>
+    );
   };
 
   const renderEditPressable = (
@@ -515,38 +704,54 @@ export const TaskListItem: React.FC<Props> = ({
 
               {areSubtasksExpanded && (
                 <View style={styles.subtasksList}>
-                  {subtasks.map(subtask => {
-                    const checked = completedSubtasks.includes(subtask.value);
-
-                    return (
-                      <Pressable
-                        key={subtask.value}
-                        onPress={() =>
-                          canChildModifyTask
-                            ? handleToggleSubtask(subtask.value, !checked)
-                            : undefined
-                        }
-                        disabled={!canChildModifyTask || isStatusUpdating}
-                        accessibilityRole="checkbox"
-                        accessibilityState={{ checked }}
-                        style={styles.subtaskRow}
-                      >
-                        <View
-                          style={[
-                            styles.subtaskCheckbox,
-                            checked && styles.subtaskCheckboxChecked,
-                          ]}
-                        >
-                          {checked && (
-                            <Text style={styles.subtaskCheckmark}>✓</Text>
-                          )}
-                        </View>
-                        <View style={styles.subtaskLabelWrapper}>
-                          <Text style={styles.subtaskLabel}>{subtask.label}</Text>
-                        </View>
-                      </Pressable>
-                    );
-                  })}
+                  {partitionedSubtasks.regular.map(renderRegularSubtaskRow)}
+                  {partitionedSubtasks.audio.map(subtask => (
+                    <SubtaskAudioRow
+                      key={subtask.value}
+                      subtask={subtask}
+                      audioUrl={getSubtaskAudioUrl(
+                        subtask.value,
+                        completedAudioRecords,
+                      )}
+                      checked={isSubtaskComplete(
+                        subtask,
+                        completedSubtasks,
+                        completedAudioRecords,
+                        completedPhotos,
+                      )}
+                      disabled={!canChildModifyTask || isStatusUpdating}
+                      onRecordComplete={url =>
+                        handleSubtaskAudioComplete(subtask, url)
+                      }
+                      onDelete={() => handleSubtaskAudioDelete(subtask)}
+                    />
+                  ))}
+                  {partitionedSubtasks.photo.map(subtask => (
+                    <SubtaskPhotoRow
+                      key={subtask.value}
+                      subtask={subtask}
+                      captureContext={{
+                        taskId: id,
+                        assignmentId,
+                        date,
+                      }}
+                      photoUrl={getSubtaskPhotoUrl(
+                        subtask.value,
+                        completedPhotos,
+                      )}
+                      checked={isSubtaskComplete(
+                        subtask,
+                        completedSubtasks,
+                        completedAudioRecords,
+                        completedPhotos,
+                      )}
+                      disabled={!canChildModifyTask || isStatusUpdating}
+                      onPhotoComplete={url =>
+                        handleSubtaskPhotoComplete(subtask, url)
+                      }
+                      onDelete={() => handleSubtaskPhotoDelete(subtask)}
+                    />
+                  ))}
                 </View>
               )}
             </View>
@@ -739,6 +944,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'flex-start',
+    gap: 8,
   },
 
   descriptionLabel: {

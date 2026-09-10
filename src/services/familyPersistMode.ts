@@ -20,6 +20,8 @@ import { clearRewards } from '~/store/rewards/slice';
 import { ESyncMode } from '~/store/settings/enums';
 import {
   selectFamilyId,
+  selectHasAuthSession,
+  selectRequireLogin,
   selectSyncMode,
 } from '~/store/settings/selectors';
 import { selectChildIds } from '~/store/children/selectors';
@@ -433,6 +435,14 @@ export async function prepareFamilyPersistOnBoot(
 
   setActiveFamilyPersistMode(mode);
   await rehydrateFamilySlicesFromStorage(dispatch, mode);
+
+  if (
+    selectRequireLogin(getState()) &&
+    selectHasAuthSession(getState()) &&
+    selectParentIds(getState()).length > 0
+  ) {
+    dispatch(setRequireLogin(false));
+  }
 }
 
 export async function switchFamilyPersistMode(

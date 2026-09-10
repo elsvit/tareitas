@@ -4,6 +4,13 @@ import { ETaskRepeatType, ETaskStatus } from './ETask';
 export interface ISubtask {
   value: string;
   label: string;
+  isPhoto?: boolean;
+  isAudio?: boolean;
+}
+
+export interface ISubtaskCompletionMedia {
+  url: string;
+  subtaskId: string;
 }
 
 export interface ITaskBase extends Partial<CreatedProps> {
@@ -70,4 +77,6 @@ export interface ITask extends Partial<CreatedProps> {
   date: string; // specific YYYY-MM-DD
   status: ETaskStatus;
   completedSubtasks?: string[];
+  completedAudioRecords?: ISubtaskCompletionMedia[];
+  completedPhotos?: ISubtaskCompletionMedia[];
 }

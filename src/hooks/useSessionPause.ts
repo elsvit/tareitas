@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import type { AppDispatch } from '~/store';
@@ -33,7 +33,7 @@ function syncRequireLoginAfterPause() {
 export function useMediaSessionPause(active: boolean) {
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!active) {
       return;
     }

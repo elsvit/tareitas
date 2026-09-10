@@ -15,6 +15,7 @@ import {
   selectIsSessionPaused,
   selectRequireLogin,
 } from '~/store/settings/selectors';
+import { store } from '~/store/store';
 import type { PendingReturnRoute } from '~/store/settings/types';
 import {
   resumeMultideviceSession,
@@ -117,12 +118,12 @@ export const useCatalogForegroundSync = () => {
         dispatch(touchSessionActivity());
       }
 
-      if (
-        previousState === 'background' &&
-        nextState === 'active' &&
-        !isSessionPausedRef.current
-      ) {
-        dispatch(resumeMultideviceSession());
+      if (previousState === 'background' && nextState === 'active') {
+        const isPaused = selectIsSessionPaused(store.getState());
+
+        if (!isPaused) {
+          dispatch(resumeMultideviceSession());
+        }
       }
 
       appState.current = nextState;

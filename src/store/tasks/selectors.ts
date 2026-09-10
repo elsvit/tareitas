@@ -62,6 +62,8 @@ export type TaskListItemView = {
   time?: string;
   subtasks: ISubtask[];
   completedSubtasks: string[];
+  completedAudioRecords: ITask['completedAudioRecords'];
+  completedPhotos: ITask['completedPhotos'];
   isDone: boolean;
   status: ETaskStatus;
   newTaskBonus?: number;
@@ -198,6 +200,8 @@ export const buildTaskListItemViewFromParts = (
     time: fieldsForDate.time,
     subtasks,
     completedSubtasks,
+    completedAudioRecords: task?.completedAudioRecords,
+    completedPhotos: task?.completedPhotos,
     isDone,
     status,
     newTaskBonus: activeBonus,
