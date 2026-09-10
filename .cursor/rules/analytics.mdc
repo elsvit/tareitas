@@ -1,0 +1,608 @@
+---
+
+description: Firebase Analytics rules and automatic product usage tracking
+globs:
+
+* "src/**/*.{ts,tsx}"
+* "app.json"
+  alwaysApply: false
+
+---
+
+# Firebase Analytics
+
+Package:
+
+* `@react-native-firebase/analytics`
+
+Firebase Analytics is used for product usage analytics.
+
+## Current project status
+
+Firebase Analytics is installed at the native/build level.
+
+Configuration:
+
+* `GoogleService-Info.plist`
+* `google-services.json`
+* Firebase project: `tareitas-3b584`
+* iOS `IS_ANALYTICS_ENABLED` is currently `false`
+
+Firebase Analytics may be used for the product usage events and user properties defined in this rule.
+
+---
+
+# Analytics implementation
+
+Prefer a centralized analytics service if the project has one.
+
+If no centralized service exists, Firebase Analytics may be called directly:
+
+```ts
+import analytics from '@react-native-firebase/analytics';
+```
+
+Example:
+
+```ts
+await analytics().logEvent('default_reward_used');
+```
+
+Analytics must NEVER block or break the underlying user action.
+
+If analytics fails, the application action must still succeed.
+
+Use the project's existing error-handling conventions. If there is no centralized analytics service, analytics calls may be safely wrapped so that failures are ignored.
+
+Do not introduce a new analytics dependency because Firebase Analytics is already installed.
+
+---
+
+# Automatic product usage events
+
+When implementing or modifying functionality covered by this rule, Cursor MUST automatically add the corresponding analytics event.
+
+Events must represent a real user action or meaningful application state.
+
+Do NOT log events merely because:
+
+* a component rendered
+* a screen mounted
+* data was fetched
+* an image loaded
+* an option was displayed
+* a picker was opened
+* React state changed
+* a component was re-rendered
+
+---
+
+## 1. Default user image
+
+Event:
+
+```ts
+analytics().logEvent('default_user_image_used');
+```
+
+Log when a user actually selects/applies a default user image.
+
+Do not log when the image is merely displayed or available.
+
+---
+
+## 2. Default task image
+
+Event:
+
+```ts
+analytics().logEvent('default_task_image_used');
+```
+
+Log when a user actually selects/applies a default task image.
+
+Do not log when the image picker or list is merely displayed.
+
+---
+
+## 3. Default reward image
+
+Event:
+
+```ts
+analytics().logEvent('default_reward_image_used');
+```
+
+Log when a user actually selects/applies a default reward image.
+
+Do not log when the image is merely displayed.
+
+---
+
+## 4. Default base task
+
+Event:
+
+```ts
+analytics().logEvent('default_base_task_used');
+```
+
+Log when a user actually creates or applies a task based on a default base task.
+
+Do not log when default base tasks are merely loaded or displayed.
+
+---
+
+## 5. Default reward
+
+Event:
+
+```ts
+analytics().logEvent('default_reward_used');
+```
+
+Log when a user actually creates, selects, or applies a default reward.
+
+Do not log when default rewards are merely displayed.
+
+---
+
+# Device usage
+
+Track usage of the two application modes.
+
+Event:
+
+```ts
+analytics().logEvent('device_mode_used', {
+  mode: 'only_device',
+});
+```
+
+or:
+
+```ts
+analytics().logEvent('device_mode_used', {
+  mode: 'multi_device',
+});
+```
+
+Allowed values:
+
+* `only_device`
+* `multi_device`
+
+Log after successful initialization, login, mode selection, or another meaningful point where the active mode is known.
+
+Do not log repeatedly on every render.
+
+If the mode changes, log the new mode after the change succeeds.
+
+---
+
+# Family usage
+
+## Parents and children
+
+Track aggregate family composition.
+
+Event:
+
+```ts
+analytics().logEvent('family_size', {
+  parents_count: 1,
+  children_count: 2,
+});
+```
+
+Parameters:
+
+* `parents_count`
+* `children_count`
+
+Both values must be numeric counts.
+
+Log after successful family loading or when the family composition changes.
+
+Do not log continuously on every screen render.
+
+Do not send:
+
+* parent names
+* child names
+* email addresses
+* user IDs
+* family IDs
+* profile photos
+* private family content
+
+Only send aggregate counts.
+
+---
+
+## Number of families/groups
+
+Track how many families/groups the user has access to.
+
+Event:
+
+```ts
+analytics().logEvent('families_count', {
+  count: 3,
+});
+```
+
+Parameter:
+
+* `count`
+
+Log after successful loading or when the number of accessible families/groups changes.
+
+Do not send:
+
+* family IDs
+* family names
+* family members
+* private family information
+
+Only send the aggregate count.
+
+---
+
+# Task and media usage
+
+## Task record
+
+Event:
+
+```ts
+analytics().logEvent('task_record_used');
+```
+
+Log when the user actually uses the task-record functionality.
+
+Do not log when the record button is merely displayed.
+
+Do not log because a component renders.
+
+One meaningful user action should normally produce one event.
+
+---
+
+## Subtask record
+
+Event:
+
+```ts
+analytics().logEvent('subtask_record_used');
+```
+
+Log when the user actually records audio for a subtask.
+
+Do not log when:
+
+* recording UI is opened
+* microphone permission is requested
+* recording is cancelled
+* recording fails
+
+The event represents successful actual usage.
+
+---
+
+## Subtask photo
+
+Event:
+
+```ts
+analytics().logEvent('subtask_photo_used');
+```
+
+Log when the user successfully adds/uses a photo for a subtask.
+
+Do not log when:
+
+* camera/photo picker is opened
+* photo selection is cancelled
+* permission dialog is shown
+* an existing photo is merely displayed
+
+---
+
+# Help Center
+
+## Help Center opened
+
+Event:
+
+```ts
+analytics().logEvent('help_center_opened');
+```
+
+Log when the user intentionally opens the Help Center.
+
+Do not log because Help Center components are mounted or prefetched.
+
+Avoid duplicate events caused by navigation lifecycle or React re-renders.
+
+---
+
+## Help Center email started
+
+Event:
+
+```ts
+analytics().logEvent('help_center_email_started');
+```
+
+Log when the user actually chooses the email/contact-support action.
+
+Do not log merely because the email button is displayed.
+
+If the application has predefined support topics, include a non-sensitive topic:
+
+```ts
+analytics().logEvent('help_center_email_started', {
+  topic: 'tasks',
+});
+```
+
+Allowed topic values:
+
+* `tasks`
+* `subtasks`
+* `rewards`
+* `family`
+* `subscription`
+* `account`
+* `photos`
+* `audio`
+* `sync`
+* `notifications`
+* `other`
+
+Use existing application terminology if it differs.
+
+---
+
+## Help Center email sent
+
+Only use this event if the application can reliably determine that the email was actually sent:
+
+```ts
+analytics().logEvent('help_center_email_sent');
+```
+
+If the application only opens the user's external email client and cannot know whether the email was sent, do NOT log `help_center_email_sent`.
+
+In that case, only log:
+
+```ts
+analytics().logEvent('help_center_email_started');
+```
+
+---
+
+# Support email content
+
+NEVER send the actual support email body to Firebase Analytics.
+
+Do not send:
+
+* email body
+* user's question
+* private messages
+* names
+* email addresses
+* authentication information
+* tokens
+* family IDs
+* task IDs
+* reward IDs
+* uploaded photo contents
+* uploaded audio contents
+* private task content
+
+Use only predefined, non-sensitive support topics.
+
+---
+
+# Language
+
+Track the application's effective UI language as a Firebase Analytics user property.
+
+Use:
+
+```ts
+await analytics().setUserProperty('language', language);
+```
+
+Use the application's existing i18n/localization language value.
+
+Examples:
+
+* `en`
+* `es`
+* `uk`
+* `de`
+* `fr`
+
+Do not invent a different language-code format if the application already has an established format.
+
+Update the property when the application language changes.
+
+Do not send language as a parameter on every event.
+
+---
+
+# Country
+
+Do NOT manually collect precise location for analytics.
+
+Prefer Firebase Analytics' built-in geographic reporting for country.
+
+Do NOT send:
+
+* street address
+* GPS coordinates
+* precise location
+* IP address
+* home address
+* school address
+* family address
+
+Do not ask the user for their country solely for analytics.
+
+If the application already has a legitimate user-selected country setting, it may be used for application functionality, but do not introduce country collection solely to duplicate Firebase's geographic reporting.
+
+Do NOT create events such as:
+
+```ts
+analytics().logEvent('user_country', ...);
+```
+
+Firebase's standard geographic reporting should be used instead.
+
+---
+
+# User properties
+
+Use Firebase user properties only for stable, useful, non-sensitive attributes.
+
+Currently supported application-level property:
+
+```ts
+analytics().setUserProperty('language', language);
+```
+
+Do not create user properties for:
+
+* names
+* email addresses
+* family IDs
+* child IDs
+* parent IDs
+* task IDs
+* reward IDs
+* authentication IDs
+* precise location
+
+Aggregate family information should be tracked through the defined events rather than identifying individual family members.
+
+---
+
+# Event frequency and duplicate prevention
+
+Do not place usage events in locations where they can fire repeatedly because of:
+
+* React renders
+* `useEffect`
+* navigation events
+* state synchronization
+* API polling
+* list rendering
+* image loading
+* component mounting
+* component unmounting
+
+Place events at the actual successful user action.
+
+One meaningful user action should normally produce one corresponding event.
+
+If an action can be retried, cancelled, or rolled back, only record successful usage unless this rule explicitly defines otherwise.
+
+---
+
+# Privacy
+
+Only collect information necessary for product analytics.
+
+Never send:
+
+* passwords
+* access tokens
+* refresh tokens
+* authentication credentials
+* payment information
+* private messages
+* email bodies
+* private task content
+* private reward content
+* uploaded photo contents
+* uploaded audio contents
+* precise location
+* unnecessary personally identifiable information
+
+Prefer:
+
+* aggregate counts
+* predefined categories
+* stable non-sensitive properties
+
+The purpose of analytics is to understand aggregate product usage, not to track individual users' private information.
+
+---
+
+# Separation of responsibilities
+
+Firebase Analytics:
+
+* Product usage
+* Feature adoption
+* Default content usage
+* Device mode usage
+* Aggregate family size
+* Aggregate number of families/groups
+* Task/media feature usage
+* Help Center usage
+* Support topic categories
+* Application language
+
+RevenueCat:
+
+* Purchases
+* Subscriptions
+* Trials
+* Revenue
+* Entitlements
+
+AdMob:
+
+* Ad impressions
+* Ad clicks
+* Advertising revenue
+
+Crashlytics:
+
+* Crashes
+* Actionable production errors
+
+Do not duplicate metrics between these services without an explicit product analytics requirement.
+
+---
+
+# Automatic instrumentation requirement
+
+When Cursor implements a feature related to any of the following, it MUST check this rule and add the appropriate analytics:
+
+* default user images
+* default task images
+* default reward images
+* default base tasks
+* default rewards
+* only-device mode
+* multi-device mode
+* family membership
+* number of children
+* number of parents
+* multiple families/groups
+* task recording
+* subtask recording
+* subtask photos
+* Help Center
+* Help Center support email
+* application language
+
+Do not ask for permission to add an explicitly defined event.
+
+If the correct trigger is ambiguous, inspect the existing application flow and place the event at the point where the user's action is successfully completed.

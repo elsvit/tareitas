@@ -1,0 +1,43 @@
+---
+
+description: Rules for Google AdMob integration
+globs:
+
+* "src/**/*.{ts,tsx}"
+* "app.json"
+* "ios/**/*"
+* "android/**/*"
+  alwaysApply: false
+
+---
+
+# Google AdMob
+
+Package:
+
+* `react-native-google-mobile-ads`
+
+## Current project usage
+
+The application uses banner advertisements through:
+
+* `BottomBanner`
+* `GoogleMobileBannerAdFromConfig`
+
+Ads are shown according to the application's existing Pro/subscription and task-count logic.
+
+AdMob already provides advertising metrics such as impressions, clicks, and revenue through the AdMob dashboard.
+
+## Rules
+
+* Do NOT add custom analytics events for ad impressions.
+* Do NOT add custom analytics events for ad clicks.
+* Do NOT duplicate AdMob reporting in Firebase Analytics unless explicitly requested.
+* Do NOT modify existing ad eligibility logic as part of unrelated work.
+* Do NOT change Pro/subscription behavior when working on unrelated features.
+* Do NOT add another advertising or tracking SDK.
+* Do NOT manually track metrics that AdMob already provides.
+* Never send passwords, authentication tokens, secrets, or unnecessary private user data to AdMob.
+* Do NOT change ad placement or frequency unless explicitly requested.
+
+AdMob is responsible for advertising delivery and advertising-related reporting.
