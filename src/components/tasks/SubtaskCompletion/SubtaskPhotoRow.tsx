@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 
 import { useMediaSessionPause } from '~/hooks/useSessionPause';
-import { ActivityIndicator, Image, Pressable, View } from 'react-native';
+import { ActivityIndicator, Pressable, View } from 'react-native';
+
+import { Image } from 'expo-image';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -25,6 +27,7 @@ import {
   setPendingSubtaskPhotoCapture,
   type PendingSubtaskPhotoCapture,
 } from '~/utils/tasks/pendingSubtaskPhotoCapture';
+import { getRemoteImageCachePolicy } from '~/utils/imageCache';
 import { deleteSubtaskPhotoFromDevice } from '~/utils/tasks/subtaskPhotoStorage';
 
 import { PhotoPreviewModal } from './PhotoPreviewModal';
@@ -180,7 +183,8 @@ export function SubtaskPhotoRow({
             <Image
               source={{ uri: resolvedPhotoUrl }}
               style={styles.photoThumb}
-              resizeMode="cover"
+              contentFit="cover"
+              cachePolicy={getRemoteImageCachePolicy(resolvedPhotoUrl)}
             />
           ) : (
             <View style={styles.photoPlaceholder}>

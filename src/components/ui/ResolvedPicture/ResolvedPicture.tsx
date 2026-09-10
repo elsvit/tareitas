@@ -10,6 +10,7 @@ import {
   isObjectStoragePath,
   toAbsoluteUploadUrl,
 } from '~/services/api/uploadsApi';
+import { getRemoteImageCachePolicy } from '~/utils/imageCache';
 
 type Props = {
   picture?: string | number;
@@ -89,6 +90,7 @@ export function ResolvedPicture({
         source={{ uri }}
         style={style}
         contentFit={contentFit}
+        cachePolicy={getRemoteImageCachePolicy(uri)}
       />
     );
   }

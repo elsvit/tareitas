@@ -1,5 +1,7 @@
 import React from 'react';
-import { Image, Modal, Pressable, StyleSheet, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, View } from 'react-native';
+
+import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import CloseIcon from '~/assets/svg/common/cross.svg';
@@ -7,6 +9,7 @@ import { Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
 import { t } from '~/services';
 import { Colors } from '~/styles';
+import { getRemoteImageCachePolicy } from '~/utils/imageCache';
 
 type Props = {
   visible: boolean;
@@ -46,7 +49,8 @@ export function PhotoPreviewModal({
               <Image
                 source={{ uri: imageUri }}
                 style={styles.image}
-                resizeMode="contain"
+                contentFit="contain"
+                cachePolicy={getRemoteImageCachePolicy(imageUri)}
               />
             ) : (
               <Text style={styles.emptyText}>
