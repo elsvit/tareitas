@@ -11,8 +11,10 @@ import {
 import { useSelector } from 'react-redux';
 
 import { useMediaSessionPause } from '~/hooks/useSessionPause';
+import HelpCircleIcon from '~/assets/svg/common/help-circle.svg';
 import { DeleteModal } from '~/components/modals';
 import { TaskRecordPlayControl } from '~/components/tasks/TaskRecordPlayControl';
+import { IconButton } from '~/components/ui/IconButton';
 import { Text } from '~/components/ui';
 import { SUBTASK_RECORD_MAX_DURATION, TASK_RECORDING_OPTIONS } from '~/constants/taskRecord';
 import { t } from '~/services';
@@ -36,6 +38,9 @@ type Props = {
   audioUrl?: string;
   checked: boolean;
   disabled?: boolean;
+  isCaptureDisabled?: boolean;
+  showSubscriptionHelp?: boolean;
+  onSubscriptionHelpPress?: () => void;
   onRecordComplete: (url: string) => void;
   onDelete: () => void;
 };
@@ -45,6 +50,9 @@ export function SubtaskAudioRow({
   audioUrl,
   checked,
   disabled = false,
+  isCaptureDisabled = false,
+  showSubscriptionHelp = false,
+  onSubscriptionHelpPress,
   onRecordComplete,
   onDelete,
 }: Props) {
@@ -153,7 +161,7 @@ export function SubtaskAudioRow({
   }, [recorderState.isRecording, recordingSeconds, stopRecording]);
 
   const startRecording = async () => {
-    if (disabled || isSaving || isRecording) {
+    if (disabled || isCaptureDisabled || isSaving || isRecording) {
       return;
     }
 
@@ -204,7 +212,8 @@ export function SubtaskAudioRow({
   };
 
   const hasAudio = !!audioUrl;
-  const isRecordControlDisabled = disabled || isSaving;
+  const isRecordControlDisabled =
+    disabled || isCaptureDisabled || isSaving;
   const isPlaybackDisabled = disabled || isSaving || isRecording;
 
   return (
@@ -259,28 +268,63 @@ export function SubtaskAudioRow({
           />
         </Pressable>
 
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={
-            isRecording ? t('tasks.record_pause') : t('tasks.record')
-          }
-          onPress={handleRecordPress}
-          disabled={isRecordControlDisabled}
-          style={[
-            styles.iconActionButton,
-            isRecordControlDisabled && styles.iconActionButtonDisabled,
-          ]}
-        >
-          {isSaving ? (
-            <ActivityIndicator color={Colors.grey800} size="small" />
-          ) : (
-            <MaterialCommunityIcons
-              name={isRecording ? 'stop' : 'microphone'}
-              size={22}
-              color={Colors.grey800}
-            />
-          )}
-        </Pressable>
+        {hasAudio ? (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={
+              isRecording ? t('tasks.record_pause') : t('tasks.record')
+            }
+            onPress={handleRecordPress}
+            disabled={isRecordControlDisabled}
+            style={[
+              styles.iconActionButton,
+              isRecordControlDisabled && styles.iconActionButtonDisabled,
+            ]}
+          >
+            {isSaving ? (
+              <ActivityIndicator color={Colors.grey800} size="small" />
+            ) : (
+              <MaterialCommunityIcons
+                name={isRecording ? 'stop' : 'microphone'}
+                size={22}
+                color={Colors.grey800}
+              />
+            )}
+          </Pressable>
+        ) : (
+          <>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={
+                isRecording ? t('tasks.record_pause') : t('tasks.record')
+              }
+              onPress={handleRecordPress}
+              disabled={isRecordControlDisabled}
+              style={[
+                styles.iconActionButton,
+                isRecordControlDisabled && styles.iconActionButtonDisabled,
+              ]}
+            >
+              {isSaving ? (
+                <ActivityIndicator color={Colors.grey800} size="small" />
+              ) : (
+                <MaterialCommunityIcons
+                  name={isRecording ? 'stop' : 'microphone'}
+                  size={22}
+                  color={Colors.grey800}
+                />
+              )}
+            </Pressable>
+            {showSubscriptionHelp ? (
+              <IconButton
+                Icon={<HelpCircleIcon width={22} height={22} />}
+                onPress={() => onSubscriptionHelpPress?.()}
+                size={32}
+                accessibilityLabel={t('subscription.modal_title')}
+              />
+            ) : null}
+          </>
+        )}
 
         <Text style={styles.label}>{subtask.label}</Text>
       </View>
