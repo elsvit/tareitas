@@ -1,6 +1,6 @@
 import { createTaskId } from '~/utils/tasks/taskGeneration';
 import { ETaskStatus } from '~/types/ETask';
-import { ITask } from '~/types/ITask';
+import { ISubtaskCompletionMedia, ITask } from '~/types/ITask';
 
 import { apiFetch, parseApiJson } from './client';
 
@@ -11,6 +11,8 @@ export type ServerTask = {
   date: string;
   status: ETaskStatus;
   completedSubtasks?: string[];
+  completedAudioRecords?: ISubtaskCompletionMedia[];
+  completedPhotos?: ISubtaskCompletionMedia[];
   createdAt: string;
   updatedAt: string;
 };
@@ -21,11 +23,15 @@ type CreateTaskBody = {
   date: string;
   status?: ETaskStatus;
   completedSubtasks?: string[];
+  completedAudioRecords?: ISubtaskCompletionMedia[];
+  completedPhotos?: ISubtaskCompletionMedia[];
 };
 
 type UpdateTaskBody = {
   status?: ETaskStatus;
   completedSubtasks?: string[];
+  completedAudioRecords?: ISubtaskCompletionMedia[];
+  completedPhotos?: ISubtaskCompletionMedia[];
 };
 
 type ListTasksQuery = {
@@ -168,6 +174,27 @@ export async function unapproveTaskInstance(
   return parseApiJson<ServerTask>(response);
 }
 
+export function mergeTaskFromServerWithLocal(
+  serverTask: ITask,
+  requestedTask: ITask,
+): ITask {
+  return {
+    ...serverTask,
+    completedSubtasks:
+      requestedTask.completedSubtasks !== undefined
+        ? requestedTask.completedSubtasks
+        : serverTask.completedSubtasks,
+    completedAudioRecords:
+      requestedTask.completedAudioRecords !== undefined
+        ? requestedTask.completedAudioRecords
+        : serverTask.completedAudioRecords,
+    completedPhotos:
+      requestedTask.completedPhotos !== undefined
+        ? requestedTask.completedPhotos
+        : serverTask.completedPhotos,
+  };
+}
+
 export function mapServerTaskToLocal(server: ServerTask): ITask {
   const date = server.date.slice(0, 10);
 
@@ -177,6 +204,8 @@ export function mapServerTaskToLocal(server: ServerTask): ITask {
     date,
     status: server.status,
     completedSubtasks: server.completedSubtasks,
+    completedAudioRecords: server.completedAudioRecords,
+    completedPhotos: server.completedPhotos,
     createdAt: server.createdAt,
     updatedAt: server.updatedAt,
   };
@@ -189,6 +218,8 @@ export function toCreateTaskBody(entity: ITask): CreateTaskBody {
     date: entity.date,
     status: entity.status,
     completedSubtasks: entity.completedSubtasks,
+    completedAudioRecords: entity.completedAudioRecords,
+    completedPhotos: entity.completedPhotos,
   };
 }
 
@@ -196,5 +227,7 @@ export function toUpdateTaskBody(entity: ITask): UpdateTaskBody {
   return {
     status: entity.status,
     completedSubtasks: entity.completedSubtasks,
+    completedAudioRecords: entity.completedAudioRecords,
+    completedPhotos: entity.completedPhotos,
   };
 }

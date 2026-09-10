@@ -29,6 +29,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Loading } from '~/components/ui/Loading';
 import { useCatalogForegroundSync } from '~/hooks/useCatalogForegroundSync';
+import { usePendingSubtaskPhotoRecovery } from '~/hooks/usePendingSubtaskPhotoRecovery';
 import { usePruneOrphanedTaskAssignments } from '~/hooks/usePruneOrphanedTaskAssignments';
 import { AppDispatch } from '~/store';
 import { ensureAppInstalledAt, initLanguage } from '~/store/settings';
@@ -64,6 +65,8 @@ export default function RootStack() {
   });
 
   const isBootstrapping = !fontsLoaded || isLangInitiating;
+
+  usePendingSubtaskPhotoRecovery(!isBootstrapping);
 
   useEffect(() => {
     dispatch(initLanguage());

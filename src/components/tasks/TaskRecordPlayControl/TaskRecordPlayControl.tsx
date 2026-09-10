@@ -1,5 +1,11 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
@@ -14,9 +20,16 @@ import { Colors } from '~/styles';
 type Props = {
   audioRecord: string;
   variant: 'indicator' | 'button';
+  buttonStyle?: StyleProp<ViewStyle>;
+  iconSize?: number;
 };
 
-export function TaskRecordPlayControl({ audioRecord, variant }: Props) {
+export function TaskRecordPlayControl({
+  audioRecord,
+  variant,
+  buttonStyle,
+  iconSize = 28,
+}: Props) {
   const playbackSource = useResolvedMediaUrl(audioRecord);
   const player = useAudioPlayer(playbackSource);
   const playerStatus = useAudioPlayerStatus(player);
@@ -65,11 +78,11 @@ export function TaskRecordPlayControl({ audioRecord, variant }: Props) {
       accessibilityRole="button"
       onPress={handlePlay}
       hitSlop={8}
-      style={styles.playButton}
+      style={[styles.playButton, buttonStyle]}
     >
       <MaterialCommunityIcons
         name={playerStatus.playing ? 'pause-circle' : 'play-circle'}
-        size={28}
+        size={iconSize}
         color={Colors.grey700}
       />
     </Pressable>
@@ -81,7 +94,6 @@ const styles = StyleSheet.create({
     flexShrink: 0,
   },
   playButton: {
-    marginRight: 8,
     flexShrink: 0,
   },
 });

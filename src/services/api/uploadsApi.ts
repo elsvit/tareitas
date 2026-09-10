@@ -265,13 +265,18 @@ async function uploadViaMultipart(
   return parseApiJson<UploadedImageResponse>(response);
 }
 
+function shouldUsePresignedUpload(): boolean {
+  // Local dev server stores media on disk (uploads/), not S3.
+  return !__DEV__;
+}
+
 export async function uploadFamilyImage(
   familyId: string,
   authToken: string,
   localUri: string,
   kind?: ImageStoreKind,
 ): Promise<UploadedImageResponse> {
-  if (kind) {
+  if (kind && shouldUsePresignedUpload()) {
     try {
       return await uploadViaPresign(
         familyId,

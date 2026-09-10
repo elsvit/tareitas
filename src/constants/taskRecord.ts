@@ -12,6 +12,8 @@ export const TASK_RECORD_BITRATE = 32000;
 
 export const TASK_RECORD_CHANNELS = 1;
 
+export const SUBTASK_RECORD_MAX_DURATION = 120;
+
 /**
  * Compact AAC recording preset for task voice notes.
  * Native iOS/Android use .m4a (AAC). Opus is used on web only.

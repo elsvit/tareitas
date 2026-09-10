@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 import CrossIcon from '~/assets/svg/common/cross.svg';
 import { BottomBanner, useBottomBannerScrollPadding } from '~/components/ads/BottomBanner';
 import { ScreenHeader } from '~/components/blocks';
@@ -171,6 +173,8 @@ const buildSchema = (repeats: boolean, isHabitForm = false) => {
         z.object({
           value: z.string(),
           label: z.string(),
+          isPhoto: z.boolean().optional(),
+          isAudio: z.boolean().optional(),
         }),
       ),
       hasNewTaskBonus: z.boolean(),
@@ -283,6 +287,8 @@ const normalizeSubtasks = (subtasks: ISubtask[]) =>
   subtasks.map(subtask => ({
     value: subtask.value,
     label: subtask.label.trim(),
+    isPhoto: !!subtask.isPhoto,
+    isAudio: !!subtask.isAudio,
   }));
 
 const areAssignmentFormValuesEqual = (
@@ -367,7 +373,9 @@ const areAssignmentFormValuesEqual = (
     !currentSubtasks.every(
       (subtask, index) =>
         subtask.value === initialSubtasks[index]?.value &&
-        subtask.label === initialSubtasks[index]?.label,
+        subtask.label === initialSubtasks[index]?.label &&
+        subtask.isPhoto === initialSubtasks[index]?.isPhoto &&
+        subtask.isAudio === initialSubtasks[index]?.isAudio,
     )
   ) {
     return false;
@@ -501,6 +509,8 @@ export const AssignmentTaskForm: FC<Props> = ({
       subtasks: initialSubtasks.map(subtask => ({
         value: subtask.value,
         label: subtask.label,
+        isPhoto: subtask.isPhoto,
+        isAudio: subtask.isAudio,
       })),
       hasNewTaskBonus:
         (isHabit || isRepeating) &&
@@ -610,6 +620,30 @@ export const AssignmentTaskForm: FC<Props> = ({
     append({ value: uuidv4(), label: '' });
   };
 
+  const handleAddPhotoSubtask = () => {
+    if (!canAddSubtask(subtaskFields.length)) {
+      setError('subtasks', {
+        type: 'manual',
+        message: getSubtasksMaximumMessage(),
+      });
+      return;
+    }
+
+    append({ value: uuidv4(), label: '', isPhoto: true });
+  };
+
+  const handleAddAudioSubtask = () => {
+    if (!canAddSubtask(subtaskFields.length)) {
+      setError('subtasks', {
+        type: 'manual',
+        message: getSubtasksMaximumMessage(),
+      });
+      return;
+    }
+
+    append({ value: uuidv4(), label: '', isAudio: true });
+  };
+
   const applySubtasksFromBaseTask = useCallback(
     (baseTask: (typeof baseTasks)[number] | undefined) => {
       const subtasks = (baseTask?.subtasks ?? []).slice(0, SUBTASK_MAXIMUM);
@@ -621,6 +655,8 @@ export const AssignmentTaskForm: FC<Props> = ({
           ? subtasks.map(subtask => ({
             value: subtask.value,
             label: subtask.label,
+            isPhoto: subtask.isPhoto,
+            isAudio: subtask.isAudio,
           }))
           : [],
       );
@@ -845,6 +881,8 @@ export const AssignmentTaskForm: FC<Props> = ({
           .map(subtask => ({
             value: subtask.value || uuidv4(),
             label: subtask.label.trim(),
+            ...(subtask.isPhoto ? { isPhoto: true } : {}),
+            ...(subtask.isAudio ? { isAudio: true } : {}),
           }))
         : undefined,
       ...(changesUpdate !== undefined ? { changes: changesUpdate } : {}),
@@ -1158,6 +1196,19 @@ export const AssignmentTaskForm: FC<Props> = ({
                             multiline
                             numberOfLines={2}
                             style={styles.subtaskInput}
+                            left={
+                              field.isPhoto ? (
+                                <TextInput.Icon
+                                  icon="camera"
+                                  forceTextInputFocus={false}
+                                />
+                              ) : field.isAudio ? (
+                                <TextInput.Icon
+                                  icon="microphone"
+                                  forceTextInputFocus={false}
+                                />
+                              ) : undefined
+                            }
                           />
                         )}
                       />
@@ -1181,13 +1232,46 @@ export const AssignmentTaskForm: FC<Props> = ({
                     </View>
                   ))}
                   <Space size={3} />
-                  <Button
-                    mode="contained"
-                    onPress={handleAddSubtask}
-                    disabled={isAtSubtaskMaximum}
-                  >
-                    {t('tasks.add_subtask')}
-                  </Button>
+                  <View style={styles.subtaskActionsRow}>
+                    <Button
+                      mode="contained"
+                      onPress={handleAddSubtask}
+                      disabled={isAtSubtaskMaximum}
+                      style={styles.subtaskActionButton}
+                    >
+                      {t('tasks.add_subtask')}
+                    </Button>
+                    <IconButton
+                      onPress={handleAddPhotoSubtask}
+                      disabled={isAtSubtaskMaximum}
+                      accessibilityLabel={t('tasks.subtask_add_photo')}
+                      size={48}
+                      borderRadius={12}
+                      style={styles.subtaskIconActionButton}
+                      Icon={
+                        <MaterialCommunityIcons
+                          name="camera-plus"
+                          size={22}
+                          color={Colors.grey800}
+                        />
+                      }
+                    />
+                    <IconButton
+                      onPress={handleAddAudioSubtask}
+                      disabled={isAtSubtaskMaximum}
+                      accessibilityLabel={t('tasks.subtask_add_audio')}
+                      size={48}
+                      borderRadius={12}
+                      style={styles.subtaskIconActionButton}
+                      Icon={
+                        <MaterialCommunityIcons
+                          name="microphone-plus"
+                          size={22}
+                          color={Colors.grey800}
+                        />
+                      }
+                    />
+                  </View>
                   {!!errors.subtasks && (
                     <Text style={styles.errorText}>
                       {errors.subtasks.message as string}

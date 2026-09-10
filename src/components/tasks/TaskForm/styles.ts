@@ -84,6 +84,20 @@ export const styles = StyleSheet.create({
     height: 56,
     borderRadius: 12,
   },
+  subtaskActionsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  subtaskActionButton: {
+    flex: 1,
+  },
+  subtaskIconActionButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    backgroundColor: Colors.grey200,
+  },
   otpInput: {
     flex: 1,
     marginLeft: spacing(2),
