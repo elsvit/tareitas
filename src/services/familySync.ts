@@ -27,6 +27,7 @@ import {
   setAuthUser,
   setCurrentRole,
   setCurrentUser,
+  setHasPersistedFamily,
   setMultideviceSession,
   setRequireLogin,
   syncCatalog,
@@ -164,6 +165,7 @@ export async function hydrateFamilyStore(
   dispatch(setCurrentUser(loggedInUser.id));
   dispatch(setCurrentRole(mapServerRole(loggedInUser.role)));
   dispatch(setRequireLogin(false));
+  dispatch(setHasPersistedFamily(true));
   applyFamilySubscriptionFromServer(
     dispatch,
     resolveFamilySubscriptionForClient(
@@ -425,4 +427,5 @@ export function resetFamilyForOnboarding(dispatch: AppDispatch) {
   dispatch(setCurrentUser(null));
   dispatch(setCurrentRole(null));
   dispatch(setRequireLogin(false));
+  dispatch(setHasPersistedFamily(false));
 }

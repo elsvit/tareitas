@@ -46,6 +46,8 @@ const initialState: IStateSettings = {
   pendingRemovedTaskBaseIds: [],
   pendingRemovedRewardBaseIds: [],
   requireLogin: false,
+  pendingFamilySetup: false,
+  hasPersistedFamily: false,
   lastSessionActivityAt: null,
   pendingReturnRoute: null,
   sessionPauseCount: 0,
@@ -110,6 +112,7 @@ export const settingsSlice = createSlice({
       state.refreshToken = action.payload.refreshToken;
       state.authUserId = action.payload.authUserId ?? null;
       state.authUserRole = action.payload.authUserRole ?? null;
+      state.hasPersistedFamily = true;
       state.lastSessionActivityAt =
         new Date().toISOString();
     },
@@ -215,6 +218,18 @@ export const settingsSlice = createSlice({
     ) => {
       state.requireLogin = action.payload;
     },
+    setPendingFamilySetup: (
+      state,
+      action: PayloadAction<boolean>,
+    ) => {
+      state.pendingFamilySetup = action.payload;
+    },
+    setHasPersistedFamily: (
+      state,
+      action: PayloadAction<boolean>,
+    ) => {
+      state.hasPersistedFamily = action.payload;
+    },
     touchSessionActivity: state => {
       state.lastSessionActivityAt =
         new Date().toISOString();
@@ -274,6 +289,8 @@ export const {
   syncRewardsData,
   syncFamilyImages,
   setRequireLogin,
+  setPendingFamilySetup,
+  setHasPersistedFamily,
   touchSessionActivity,
   setPendingReturnRoute,
   resumeMultideviceSession,
