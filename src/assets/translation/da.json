@@ -469,7 +469,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Kunne ikke gemme optagelsen",
     "record_permission_denied": "Mikrofontilladelse kræves for at optage",
-    "subtasks_maximum": "Maksimum {{maximum}} delopgaver tilladt"
+    "subtasks_maximum": "Maksimum {{maximum}} delopgaver tilladt",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Vaner",

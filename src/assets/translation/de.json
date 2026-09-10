@@ -469,7 +469,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Aufnahme konnte nicht gespeichert werden",
     "record_permission_denied": "Mikrofonberechtigung ist zum Aufnehmen erforderlich",
-    "subtasks_maximum": "Maximal {{maximum}} Unteraufgaben erlaubt"
+    "subtasks_maximum": "Maximal {{maximum}} Unteraufgaben erlaubt",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Routinen",

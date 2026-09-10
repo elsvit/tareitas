@@ -60,6 +60,7 @@ import {
 } from '~/utils/tasks/taskAssignmentDateValidation';
 import { isNewTaskDurationWithinEndDate } from '~/utils/tasks/taskReward';
 import {
+  buildAssignmentChangesUpdate,
   getAudioRecordForAssignmentDate,
   mergeAudioRecordIntoAssignmentChanges,
 } from '~/utils/tasks/taskRecordChanges';
@@ -278,6 +279,115 @@ const buildSchema = (repeats: boolean, isHabitForm = false) => {
     });
 };
 
+const normalizeSubtasks = (subtasks: ISubtask[]) =>
+  subtasks.map(subtask => ({
+    value: subtask.value,
+    label: subtask.label.trim(),
+  }));
+
+const areAssignmentFormValuesEqual = (
+  current: FormValues,
+  initial: FormValues,
+): boolean => {
+  if (current.childIds.length !== initial.childIds.length) {
+    return false;
+  }
+
+  if (!current.childIds.every((id, index) => id === initial.childIds[index])) {
+    return false;
+  }
+
+  if (current.title.trim() !== initial.title.trim()) {
+    return false;
+  }
+
+  if ((current.description ?? '').trim() !== (initial.description ?? '').trim()) {
+    return false;
+  }
+
+  if (current.reward !== initial.reward) {
+    return false;
+  }
+
+  if ((current.audioRecord ?? null) !== (initial.audioRecord ?? null)) {
+    return false;
+  }
+
+  if ((current.picture ?? '') !== (initial.picture ?? '')) {
+    return false;
+  }
+
+  if (current.color !== initial.color) {
+    return false;
+  }
+
+  if (current.startDate !== initial.startDate) {
+    return false;
+  }
+
+  if ((current.endDate ?? '') !== (initial.endDate ?? '')) {
+    return false;
+  }
+
+  if (current.time !== initial.time) {
+    return false;
+  }
+
+  if (current.repeats !== initial.repeats) {
+    return false;
+  }
+
+  if (
+    current.weekDays.length !== initial.weekDays.length ||
+    !current.weekDays.every((day, index) => day === initial.weekDays[index])
+  ) {
+    return false;
+  }
+
+  if ((current.baseTaskId ?? '') !== (initial.baseTaskId ?? '')) {
+    return false;
+  }
+
+  if (current.withSubtasks !== initial.withSubtasks) {
+    return false;
+  }
+
+  const currentSubtasks = normalizeSubtasks(
+    current.withSubtasks ? current.subtasks : [],
+  );
+  const initialSubtasks = normalizeSubtasks(
+    initial.withSubtasks ? initial.subtasks : [],
+  );
+
+  if (currentSubtasks.length !== initialSubtasks.length) {
+    return false;
+  }
+
+  if (
+    !currentSubtasks.every(
+      (subtask, index) =>
+        subtask.value === initialSubtasks[index]?.value &&
+        subtask.label === initialSubtasks[index]?.label,
+    )
+  ) {
+    return false;
+  }
+
+  if (current.hasNewTaskBonus !== initial.hasNewTaskBonus) {
+    return false;
+  }
+
+  if (current.newTaskBonus !== initial.newTaskBonus) {
+    return false;
+  }
+
+  if (current.newTaskDuration !== initial.newTaskDuration) {
+    return false;
+  }
+
+  return true;
+};
+
 export const AssignmentTaskForm: FC<Props> = ({
   title,
   assignment,
@@ -360,16 +470,14 @@ export const AssignmentTaskForm: FC<Props> = ({
     );
   }, [assignment, editDate, taskBaseForAssignment?.reward]);
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-    getValues,
-    setValue,
-    setError,
-    formState: { errors },
-  } = useForm<FormValues>({
-    defaultValues: {
+  const initialAudioRecord =
+    getAudioRecordForAssignmentDate(
+      assignment,
+      editDate ?? assignment?.startDate ?? initialDate,
+    ) ?? null;
+
+  const initialFormSnapshot = useMemo(
+    (): FormValues => ({
       childIds: assignment?.childId
         ? [assignment.childId]
         : singleChild?.id
@@ -378,10 +486,7 @@ export const AssignmentTaskForm: FC<Props> = ({
       title: fieldsForEditDate?.title ?? assignment?.title ?? '',
       description: fieldsForEditDate?.description ?? assignment?.description ?? '',
       reward: fieldsForEditDate?.reward ?? assignment?.reward ?? null,
-      audioRecord: getAudioRecordForAssignmentDate(
-        assignment,
-        editDate ?? assignment?.startDate ?? initialDate,
-      ) ?? null,
+      audioRecord: initialAudioRecord,
       picture: fieldsForEditDate?.picture ?? assignment?.picture ?? '',
       color: assignment?.color ?? defaultAssignmentColor,
       startDate: assignment?.startDate ?? initialDate,
@@ -405,17 +510,47 @@ export const AssignmentTaskForm: FC<Props> = ({
         fieldsForEditDate?.newTaskBonus ?? assignment?.newTaskBonus ?? null,
       newTaskDuration:
         fieldsForEditDate?.newTaskDuration ?? assignment?.newTaskDuration ?? null,
-    },
+    }),
+    [
+      assignment,
+      defaultAssignmentColor,
+      fieldsForEditDate,
+      initialAudioRecord,
+      initialDate,
+      initialSubtasks,
+      isHabit,
+      isRepeating,
+      singleChild?.id,
+      taskBaseForAssignment?.id,
+    ],
+  );
+
+  const {
+    control,
+    handleSubmit,
+    watch,
+    getValues,
+    setValue,
+    setError,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: initialFormSnapshot,
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
 
-  const repeats = watch('repeats');
-  const withSubtasks = watch('withSubtasks');
-  const hasNewTaskBonus = watch('hasNewTaskBonus');
-  const selectedColor = watch('color');
-  const watchedChildIds = watch('childIds');
-  const watchedStartDate = watch('startDate');
+  const formValues = watch();
+  const hasFormChanges = useMemo(
+    () => !areAssignmentFormValuesEqual(formValues, initialFormSnapshot),
+    [formValues, initialFormSnapshot],
+  );
+
+  const repeats = formValues.repeats;
+  const withSubtasks = formValues.withSubtasks;
+  const hasNewTaskBonus = formValues.hasNewTaskBonus;
+  const selectedColor = formValues.color;
+  const watchedChildIds = formValues.childIds;
+  const watchedStartDate = formValues.startDate;
   const recordDate = editDate ?? watchedStartDate ?? initialDate;
   const effectiveRepeats = isHabit || repeats;
 
@@ -669,6 +804,10 @@ export const AssignmentTaskForm: FC<Props> = ({
       recordDateForSave,
       parsed.data.audioRecord,
     );
+    const changesUpdate = buildAssignmentChangesUpdate(
+      assignment?.changes,
+      mergedChanges,
+    );
 
     const basePayload = {
       title: parsed.data.title,
@@ -708,7 +847,7 @@ export const AssignmentTaskForm: FC<Props> = ({
             label: subtask.label.trim(),
           }))
         : undefined,
-      ...(mergedChanges ? { changes: mergedChanges } : {}),
+      ...(changesUpdate !== undefined ? { changes: changesUpdate } : {}),
       ...(repeatsForSave && parsed.data.hasNewTaskBonus
         ? {
           newTaskBonus: parsed.data.newTaskBonus ?? undefined,
@@ -969,6 +1108,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                   render={({ field: { value, onChange } }) => (
                     <TaskRecordField
                       value={value}
+                      initialValue={initialAudioRecord}
                       onChange={onChange}
                       recordDate={recordDate}
                       assignmentId={assignment?.id}
@@ -1345,7 +1485,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               mode="contained"
               onPress={handleSubmit(onSubmit)}
               loading={isSubmitting}
-              disabled={isSubmitting}
+              disabled={isSubmitting || (isEditMode && !hasFormChanges)}
             >
               {t('button.save')}
             </Button>

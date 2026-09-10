@@ -470,7 +470,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Nepavyko išsaugoti įrašo",
     "record_permission_denied": "Įrašymui reikia mikrofono leidimo",
-    "subtasks_maximum": "Daugiausia {{maximum}} subužduočių"
+    "subtasks_maximum": "Daugiausia {{maximum}} subužduočių",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Įpročiai",

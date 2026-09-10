@@ -469,7 +469,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Impossibile salvare la registrazione",
     "record_permission_denied": "È necessaria l'autorizzazione al microfono",
-    "subtasks_maximum": "Massimo {{maximum}} sotto-attività consentite"
+    "subtasks_maximum": "Massimo {{maximum}} sotto-attività consentite",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Abitudini",

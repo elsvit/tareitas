@@ -470,7 +470,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Kunde inte spara inspelningen",
     "record_permission_denied": "Mikrofonbehörighet krävs för att spela in",
-    "subtasks_maximum": "Högst {{maximum}} deluppgifter tillåtna"
+    "subtasks_maximum": "Högst {{maximum}} deluppgifter tillåtna",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Vanor",

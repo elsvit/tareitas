@@ -470,7 +470,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Записът не можа да бъде запазен",
     "record_permission_denied": "Необходимо е разрешение за микрофон",
-    "subtasks_maximum": "Максимум {{maximum}} подзадачи"
+    "subtasks_maximum": "Максимум {{maximum}} подзадачи",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "навици",

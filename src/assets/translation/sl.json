@@ -470,7 +470,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Posnetka ni bilo mogoče shraniti",
     "record_permission_denied": "Za snemanje je potrebno dovoljenje za mikrofon",
-    "subtasks_maximum": "Največ {{maximum}} podnalog"
+    "subtasks_maximum": "Največ {{maximum}} podnalog",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Navade",

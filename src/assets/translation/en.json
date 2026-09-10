@@ -244,6 +244,7 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Could not save the recording",
     "record_permission_denied": "Microphone permission is required to record",
+    "record_press_save": "Press Save",
     "task_templates": "task templates",
     "add_task": "Add Task",
     "edit_task": "Edit Task",

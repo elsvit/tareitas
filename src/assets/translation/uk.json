@@ -487,7 +487,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Не вдалося зберегти запис",
     "record_permission_denied": "Для запису потрібен дозвіл на мікрофон",
-    "subtasks_maximum": "Максимум {{maximum}} підзавдань"
+    "subtasks_maximum": "Максимум {{maximum}} підзавдань",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Звички",

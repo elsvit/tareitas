@@ -24,6 +24,7 @@ import {
 import { IEarnedRewardPeriods } from '~/types/IReward';
 import { t } from '~/services';
 import {
+  buildAssignmentChangesUpdate,
   mergeAudioRecordIntoAssignmentChanges,
 } from '~/utils/tasks/taskRecordChanges';
 import {
@@ -167,13 +168,22 @@ export const applyOnlyThisTaskChange = (
       Object.keys(nextChanges).length > 0 ? nextChanges : undefined,
   };
 
+  const mergedChanges = mergeAudioRecordIntoAssignmentChanges(
+    intermediate,
+    date,
+    values.audioRecord,
+  );
+  const changesUpdate = buildAssignmentChangesUpdate(
+    assignment.changes,
+    mergedChanges,
+  );
+
   return {
     ...intermediate,
-    changes: mergeAudioRecordIntoAssignmentChanges(
-      intermediate,
-      date,
-      values.audioRecord,
-    ),
+    changes:
+      changesUpdate !== undefined
+        ? changesUpdate
+        : assignment.changes,
     updatedAt: new Date().toISOString(),
   };
 };

@@ -470,7 +470,8 @@
     "record_timer": "{{seconds}}s / {{max}}s",
     "record_failed": "Neizdevās saglabāt ierakstu",
     "record_permission_denied": "Ierakstīšanai nepieciešama mikrofona atļauja",
-    "subtasks_maximum": "Maksimums {{maximum}} apakšuzdevumi"
+    "subtasks_maximum": "Maksimums {{maximum}} apakšuzdevumi",
+    "record_press_save": "Press Save"
   },
   "habits": {
     "title": "Ieradumi",
