@@ -8,6 +8,7 @@ import {
   isDisplayableMediaUri,
   isObjectStoragePath,
 } from '~/services/api/uploadsApi';
+import { getRemoteImageCachePolicy } from '~/utils/imageCache';
 
 type Props = {
   imageRef: string;
@@ -55,7 +56,13 @@ export function UploadImageThumbnail({
     );
   }
 
-  return <Image source={{ uri: resolvedUrl }} style={style} />;
+  return (
+    <Image
+      source={{ uri: resolvedUrl }}
+      style={style}
+      cachePolicy={getRemoteImageCachePolicy(resolvedUrl)}
+    />
+  );
 }
 
 export function isResolvableUploadImageRef(

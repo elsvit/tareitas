@@ -21,6 +21,7 @@ import { selectUserImageUrls } from '~/store/images';
 import { Colors } from '~/styles';
 import type { ChildFormProps } from '~/types/IChild';
 import type { ParentFormProps } from '~/types/IParent';
+import { getImageSourceCachePolicy } from '~/utils/imageCache';
 import { resolvePictureSource } from '~/utils/pictureSource';
 
 import { onboardingStyles as styles } from './styles';
@@ -96,7 +97,12 @@ export function OnboardingComplete({ parent, child }: OnboardingCompleteProps) {
       >
         <View style={[styles.avatarCircle, { borderColor: Colors.blue500 }]}>
           {parentAvatar ? (
-            <Image source={parentAvatar} style={styles.avatarImage} contentFit="cover" />
+            <Image
+              source={parentAvatar}
+              style={styles.avatarImage}
+              contentFit="cover"
+              cachePolicy={getImageSourceCachePolicy(parentAvatar)}
+            />
           ) : (
             <View style={[styles.avatarImage, { backgroundColor: Colors.blue100 }]} />
           )}
@@ -104,7 +110,12 @@ export function OnboardingComplete({ parent, child }: OnboardingCompleteProps) {
         <Text style={styles.arrowText}>→</Text>
         <View style={[styles.avatarCircle, { borderColor: Colors.brightGreen500 }]}>
           {childAvatar ? (
-            <Image source={childAvatar} style={styles.avatarImage} contentFit="cover" />
+            <Image
+              source={childAvatar}
+              style={styles.avatarImage}
+              contentFit="cover"
+              cachePolicy={getImageSourceCachePolicy(childAvatar)}
+            />
           ) : (
             <View style={[styles.avatarImage, { backgroundColor: Colors.brightGreen100 }]} />
           )}
