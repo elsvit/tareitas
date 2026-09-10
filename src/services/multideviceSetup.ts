@@ -5,6 +5,7 @@ import {
   signupFamily,
 } from '~/services/api';
 import { ApiError } from '~/services/api/client';
+import { trackFamiliesCount } from '~/services/analytics';
 import type {
   IAuthUser,
   IFamilyDetails,
@@ -34,6 +35,7 @@ async function resolveFamilyDetails(
   }
 
   const families = await fetchMyFamilies(accessToken);
+  void trackFamiliesCount(families.length);
 
   if (families.length === 0) {
     throw new ApiError('NO_FAMILY', 404);
@@ -77,6 +79,7 @@ export async function signupAndLoadFamily(
   payload: ISignupFamilyPayload,
 ): Promise<LoginResult> {
   const result = await signupFamily(payload);
+  void trackFamiliesCount(1);
 
   return {
     accessToken: result.accessToken,

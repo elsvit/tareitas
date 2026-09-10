@@ -17,6 +17,7 @@ import { TaskRecordPlayControl } from '~/components/tasks/TaskRecordPlayControl'
 import { IconButton } from '~/components/ui/IconButton';
 import { Text } from '~/components/ui';
 import { SUBTASK_RECORD_MAX_DURATION, TASK_RECORDING_OPTIONS } from '~/constants/taskRecord';
+import { trackSubtaskRecordUsed } from '~/services/analytics';
 import { t } from '~/services';
 import { uploadFamilyTaskRecordWithSession } from '~/services/api/uploadFamilyTaskRecord';
 import {
@@ -131,6 +132,7 @@ export function SubtaskAudioRow({
       }
 
       onRecordComplete(nextValue);
+      void trackSubtaskRecordUsed();
     } catch (saveError) {
       if (__DEV__) {
         console.error('Subtask record save failed', saveError);

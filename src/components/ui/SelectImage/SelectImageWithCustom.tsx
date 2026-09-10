@@ -25,6 +25,7 @@ import { useIsPro, useProFeatureAccess } from '~/hooks/useIsPro';
 import { useMediaSessionPause } from '~/hooks/useSessionPause';
 import { useSubscription } from '~/hooks/useSubscription';
 import { t } from '~/services';
+import { trackDefaultImageUsed } from '~/services/analytics';
 import { uploadFamilyImageWithSession } from '~/services/api/uploadFamilyImageWithSession';
 import { createId } from '~/utils/createId';
 import {
@@ -455,7 +456,10 @@ export function SelectImageWithCustom({
             return (
               <TouchableOpacity
                 key={`${opt.value}-${index}`}
-                onPress={() => onChange?.(opt.value)}
+                onPress={() => {
+                  onChange?.(opt.value);
+                  trackDefaultImageUsed(kind);
+                }}
                 style={[
                   baseStyles.avatarOuter,
                   {

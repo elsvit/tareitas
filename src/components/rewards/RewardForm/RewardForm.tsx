@@ -22,6 +22,7 @@ import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWi
 import { SelectMulti } from '~/components/ui/SelectMulti';
 import { getRewardImageOptions } from '~/constants/rewards';
 import { t } from '~/services';
+import { trackDefaultRewardUsed } from '~/services/analytics';
 import { selectDedupedChildren } from '~/store/children/selectors';
 import {
   normalizeRewardChildIdsForSave,
@@ -193,6 +194,7 @@ export const RewardForm: FC<Props> = ({
     setValue('title', baseReward.title, { shouldValidate: true });
     setValue('reward', baseReward.reward ?? null, { shouldValidate: true });
     setValue('picture', baseReward.picture ?? '', { shouldValidate: true });
+    void trackDefaultRewardUsed();
   };
 
   const handlePreviousRewardChange = (previousReward: IRewardAssignment) => {
@@ -201,6 +203,7 @@ export const RewardForm: FC<Props> = ({
     setValue('title', previousReward.title, { shouldValidate: true });
     setValue('reward', previousReward.reward ?? null, { shouldValidate: true });
     setValue('picture', previousReward.picture ?? '', { shouldValidate: true });
+    void trackDefaultRewardUsed();
   };
 
   useEffect(() => {

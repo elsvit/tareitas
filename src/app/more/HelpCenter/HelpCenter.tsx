@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Linking, Pressable, ScrollView, View } from 'react-native';
 
+import { useFocusEffect } from '@react-navigation/native';
 import { List } from 'react-native-paper';
 
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
@@ -8,6 +9,10 @@ import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
 import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { Text } from '~/components/ui';
+import {
+  trackHelpCenterEmailStarted,
+  trackHelpCenterOpened,
+} from '~/services/analytics';
 import { t } from '~/services';
 import { useStyle } from '~/styles';
 
@@ -31,6 +36,7 @@ type HelpSectionId = 'flow' | 'write_us';
 
 export default function HelpCenter() {
   const [styles] = useStyle(themedStyles);
+  const hasTrackedOpenRef = useRef(false);
   const [expandedSections, setExpandedSections] = useState<
     Record<HelpSectionId, boolean>
   >({
@@ -39,6 +45,17 @@ export default function HelpCenter() {
   });
 
   const flowSteps = FLOW_STEP_KEYS.map(key => t(key));
+
+  useFocusEffect(
+    useCallback(() => {
+      if (hasTrackedOpenRef.current) {
+        return;
+      }
+
+      hasTrackedOpenRef.current = true;
+      void trackHelpCenterOpened();
+    }, []),
+  );
 
   const toggleSection = useCallback((sectionId: HelpSectionId) => {
     setExpandedSections(current => ({
@@ -54,6 +71,7 @@ export default function HelpCenter() {
       const canOpen = await Linking.canOpenURL(mailtoUrl);
 
       if (canOpen) {
+        void trackHelpCenterEmailStarted('other');
         await Linking.openURL(mailtoUrl);
       }
     } catch {

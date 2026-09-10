@@ -12,6 +12,11 @@ import { ButtonColors } from '~/components/ui/Button';
 import { Loading } from '~/components/ui/Loading';
 import { ChildForm } from '~/components/users/UserForm/ChildForm';
 import { ParentForm } from '~/components/users/UserForm/ParentForm';
+import {
+  trackDeviceModeUsed,
+  trackFamiliesCount,
+  trackFamilySize,
+} from '~/services/analytics';
 import { t } from '~/services';
 import { mapServerChildToLocal } from '~/services/api/memberMappers';
 import {
@@ -399,6 +404,11 @@ export function OnboardingFlow({
     }
 
     dispatch(setHasPersistedFamily(true));
+    void trackDeviceModeUsed(targetMode);
+    void trackFamilySize(1, child?.name ? 1 : 0);
+    if (isMultideviceFlow) {
+      void trackFamiliesCount(1);
+    }
     enterApp();
   };
 

@@ -24,6 +24,7 @@ import {
 import { TASK_RECORDING_OPTIONS } from '~/constants/taskRecord';
 import { useIsPro, useProFeatureAccess } from '~/hooks/useIsPro';
 import { useSubscription } from '~/hooks/useSubscription';
+import { trackTaskRecordUsed } from '~/services/analytics';
 import { t } from '~/services';
 import { uploadFamilyTaskRecordWithSession } from '~/services/api/uploadFamilyTaskRecord';
 import { useResolvedMediaUrl } from '~/hooks/useResolvedMediaUrl';
@@ -163,6 +164,7 @@ export function TaskRecordField({
 
       setMarkedDeleted(false);
       onChange?.(nextValue);
+      void trackTaskRecordUsed();
     } catch (saveError) {
       if (__DEV__) {
         console.error('Task record save failed', saveError);

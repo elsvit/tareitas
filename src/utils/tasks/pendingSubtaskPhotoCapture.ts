@@ -1,11 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
-import type { ImagePickerAsset } from 'expo-image-picker';
+import type {
+  ImagePickerAsset,
+  ImagePickerErrorResult,
+  ImagePickerResult,
+  ImagePickerSuccessResult,
+} from 'expo-image-picker';
 
 import {
   SUBTASKS_PHOTOS_MAXIMUM,
   SUBTASKS_PHOTOS_WITHOUT_SUBSCRIPTION,
 } from '~/constants/ads';
+import { trackSubtaskPhotoUsed } from '~/services/analytics';
 import { uploadFamilyImageWithSession } from '~/services/api/uploadFamilyImageWithSession';
 import { store } from '~/store/store';
 import { selectTaskAssignmentById } from '~/store/taskAssignment/selectors';
@@ -33,6 +39,17 @@ import {
 } from '~/utils/tasks/subtaskPhotoStorage';
 
 const STORAGE_KEY = 'pending_subtask_photo_capture_v1';
+
+function isPendingImagePickerSuccess(
+  result: ImagePickerResult | ImagePickerErrorResult | null,
+): result is ImagePickerSuccessResult {
+  return (
+    result != null &&
+    'canceled' in result &&
+    result.canceled === false &&
+    !!result.assets[0]?.uri
+  );
+}
 
 export type PendingSubtaskPhotoCapture = {
   taskId: string;
@@ -164,11 +181,7 @@ export async function recoverPendingSubtaskPhotoCapture(): Promise<boolean> {
 
   const pickerResult = await ImagePicker.getPendingResultAsync();
 
-  if (
-    !pickerResult ||
-    pickerResult.canceled ||
-    !pickerResult.assets?.[0]?.uri
-  ) {
+  if (!isPendingImagePickerSuccess(pickerResult)) {
     await clearPendingSubtaskPhotoCapture();
     return false;
   }
@@ -206,6 +219,7 @@ export async function recoverPendingSubtaskPhotoCapture(): Promise<boolean> {
     );
 
     dispatchSubtaskPhotoCompletion(capture, photoUrl);
+    void trackSubtaskPhotoUsed();
     await clearPendingSubtaskPhotoCapture();
 
     return true;

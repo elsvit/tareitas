@@ -154,6 +154,10 @@ class LocalizationServiceClass {
     await i18next.init(i18nextOptions);
     this.isInitialized = true;
 
+    void import('~/services/analytics').then(({ setAnalyticsLanguage }) =>
+      setAnalyticsLanguage(lang),
+    );
+
     setApiLang(lang);
     setDefaultOptions({ locale: this.getDateLocale(lang) });
 
@@ -185,6 +189,9 @@ class LocalizationServiceClass {
     setDefaultOptions({ locale: DEFAULT_DATE_LOCALE });
 
     setApiLang(lang);
+    void import('~/services/analytics').then(({ setAnalyticsLanguage }) =>
+      setAnalyticsLanguage(lang),
+    );
     this.isInitialized = true;
   }
 
@@ -197,6 +204,10 @@ class LocalizationServiceClass {
 
     setApiLang(resolvedLang);
     setDefaultOptions({ locale: this.getDateLocale(resolvedLang) });
+
+    void import('~/services/analytics').then(({ setAnalyticsLanguage }) =>
+      setAnalyticsLanguage(resolvedLang),
+    );
 
     return resolvedLang;
   }
