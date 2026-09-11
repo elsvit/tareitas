@@ -14,6 +14,11 @@ import { OTPInput } from '~/components/ui/OTPInput';
 import { UserAvatar } from '~/components/users/UserAvatar';
 import { trackDeviceModeUsed, trackFamilySize } from '~/services/analytics';
 import { t } from '~/services';
+import {
+  flushFamilyPersistMode,
+  resumeFamilyPersist,
+} from '~/services/familyPersistMode';
+import { persistor } from '~/store/store';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectUserImageUrls } from '~/store/images/selectors';
 import { selectAllParents } from '~/store/parents/selectors';
@@ -149,6 +154,11 @@ export function DeviceOnlyConnectForm({
       setLoginError(null);
       void trackDeviceModeUsed(ESyncMode.deviceOnly);
       void trackFamilySize(parents.length, children.length);
+
+      void flushFamilyPersistMode(persistor).finally(() => {
+        resumeFamilyPersist(persistor);
+      });
+
       onSuccess();
     },
     [children.length, dispatch, onSuccess, parents.length],
@@ -187,7 +197,9 @@ export function DeviceOnlyConnectForm({
     setLoginError(null);
 
     try {
-      const result = await verifyUserSwitchPassword(selectedUser, pin);
+      const result = await verifyUserSwitchPassword(selectedUser, pin, {
+        localOnly: true,
+      });
 
       if (result.ok) {
         completeLogin(selectedUser);

@@ -122,9 +122,11 @@ export async function verifyUserSwitchPassword(
   input: string,
   options: {
     preferCloudAuth?: boolean;
+    /** Never call the server — deviceOnly user switch / connect only. */
+    localOnly?: boolean;
   } = {},
 ): Promise<SwitchPasswordResult> {
-  if (options.preferCloudAuth) {
+  if (options.preferCloudAuth && !options.localOnly) {
     const cloudResult = await verifyCloudSwitchPassword(user, input);
 
     if (cloudResult.ok) {
@@ -136,6 +138,10 @@ export async function verifyUserSwitchPassword(
     const isValid = verifyPassword(user.passwordPattern, input);
 
     return isValid ? { ok: true, kind: 'local' } : { ok: false };
+  }
+
+  if (options.localOnly) {
+    return { ok: false };
   }
 
   return verifyCloudSwitchPassword(user, input);

@@ -52,17 +52,13 @@ import {
     selectAuthUserId,
     selectFamilyId,
     selectPendingReturnRoute,
-    selectRequireLogin,
     selectSyncMode,
 } from '~/store/settings/selectors';
 import {
     clearMultideviceSession,
     setCurrentRole,
     setCurrentUser,
-    setHasPersistedFamily,
-    setPendingFamilySetup,
     setPendingReturnRoute,
-    setRequireLogin,
     setSyncMode,
     setTaskCalendarDate,
 } from '~/store/settings/slice';
@@ -112,14 +108,14 @@ export function OnboardingFlow({
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const scrollRef = useRef<ScrollView>(null);
-  const requireLogin = useSelector(selectRequireLogin);
   const pendingReturnRoute = useSelector(selectPendingReturnRoute);
   const parentIds = useSelector(selectParentIds);
+  const familyId = useSelector(selectFamilyId);
   const storedSyncMode = useSelector(selectSyncMode);
 
   const introSlides = useMemo(() => getOnboardingIntroSlides(), []);
 
-  const opensOnSetup = skipIntro || requireLogin;
+  const opensOnSetup = skipIntro || storedSyncMode === null;
   const initialStep = opensOnSetup ? ONBOARDING_STEP.syncMode : 0;
 
   const [step, setStep] = useState(initialStep);
@@ -130,7 +126,9 @@ export function OnboardingFlow({
     role: ERole.admin,
   });
   const [child, setChild] = useState<ChildFormProps>();
-  const [syncMode, setSyncModeSelection] = useState(storedSyncMode);
+  const [syncMode, setSyncModeSelection] = useState(
+    storedSyncMode ?? ESyncMode.deviceOnly,
+  );
   const [signUpAdmin, setSignUpAdmin] =
     useState<Partial<SignUpAdminData>>({ role: ERole.admin });
   const [signUpChild, setSignUpChild] =
@@ -145,6 +143,13 @@ export function OnboardingFlow({
   const [isSetupMemoryReady, setIsSetupMemoryReady] = useState(
     () => initialStep !== ONBOARDING_STEP.syncMode || opensOnSetup,
   );
+
+  useEffect(() => {
+    if (storedSyncMode === null && parentIds.length > 0) {
+      setSetupPath('connect_device_only');
+      setSyncModeSelection(ESyncMode.deviceOnly);
+    }
+  }, [parentIds.length, storedSyncMode]);
 
   const isMultidevice = syncMode === ESyncMode.multidevice;
   const isMultideviceFlow =
@@ -225,12 +230,6 @@ export function OnboardingFlow({
   }, [step]);
 
   useEffect(() => {
-    if (isSyncModeStep) {
-      dispatch(setPendingFamilySetup(true));
-    }
-  }, [dispatch, isSyncModeStep]);
-
-  useEffect(() => {
     if (!isSyncModeStep) {
       setIsSetupMemoryReady(true);
       return;
@@ -292,8 +291,10 @@ export function OnboardingFlow({
     if (canExitFromSyncMode) {
       const returnRoute = pendingReturnRoute;
 
-      dispatch(setRequireLogin(false));
-      dispatch(setPendingFamilySetup(false));
+      if (!familyId) {
+        dispatch(setSyncMode(ESyncMode.deviceOnly));
+      }
+
       dispatch(setPendingReturnRoute(null));
 
       if (returnRoute) {
@@ -314,10 +315,6 @@ export function OnboardingFlow({
     }
 
     if (canGoBack) {
-      if (isSyncModeStep) {
-        dispatch(setPendingFamilySetup(false));
-      }
-
       goToStep(getPreviousStep(step));
     }
   };
@@ -326,8 +323,6 @@ export function OnboardingFlow({
     const returnRoute = pendingReturnRoute;
 
     dispatch(setPendingReturnRoute(null));
-    dispatch(setRequireLogin(false));
-    dispatch(setPendingFamilySetup(false));
     dispatch(setTaskCalendarDate(getTodayDateString()));
 
     if (returnRoute) {
@@ -403,7 +398,6 @@ export function OnboardingFlow({
       await completeDeviceOnlyFamilyCreate(persistor);
     }
 
-    dispatch(setHasPersistedFamily(true));
     void trackDeviceModeUsed(targetMode);
     void trackFamilySize(1, child?.name ? 1 : 0);
     if (isMultideviceFlow) {
@@ -418,8 +412,6 @@ export function OnboardingFlow({
         return;
       }
 
-      dispatch(setPendingFamilySetup(false));
-
       if (!isMultidevice) {
         await beginDeviceOnlyFamilyCreate(dispatch, persistor);
         goToStep(ONBOARDING_STEP.parent);
@@ -429,8 +421,13 @@ export function OnboardingFlow({
       persistor?.pause?.();
 
       try {
-        if (hasFamilyDataInMemory(store.getState())) {
-          setActiveFamilyPersistMode(selectSyncMode(store.getState()));
+        const activeMode = selectSyncMode(store.getState());
+
+        if (
+          hasFamilyDataInMemory(store.getState()) &&
+          activeMode
+        ) {
+          setActiveFamilyPersistMode(activeMode);
           await flushFamilyPersistMode(persistor);
         }
 

@@ -9,6 +9,8 @@ import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeArea
 import { SettingsSection, SettingsSections } from '~/components/settings';
 import { DEFAULT_LANG } from '~/constants/settings';
 import { logoutUser } from '~/services/api';
+import { signOutAndClearFamilyData } from '~/services/familyBootValidation';
+import { store } from '~/store/store';
 import { AvailableLanguages, LocalizationService, t } from '~/services/localization/localization';
 import {
   selectHasAuthSession,
@@ -23,13 +25,9 @@ import {
   selectShowParentLoginName,
 } from '~/store/settings/selectors';
 import {
-  clearAuthSession,
-  setCurrentRole,
-  setCurrentUser,
   setIsChildHasChangeFamily,
   setIsChildPasswordObligatory,
   setLanguage,
-  setRequireLogin,
   setShowLoginName,
   setShowParentLoginName,
 } from '~/store/settings/slice';
@@ -127,11 +125,9 @@ export default function Settings() {
       }
     }
 
-    dispatch(clearAuthSession());
-    dispatch(setCurrentUser(null));
-    dispatch(setCurrentRole(null));
-    dispatch(setRequireLogin(true));
-  }, [dispatch, refreshToken]);
+    await signOutAndClearFamilyData(dispatch, store.getState);
+    router.replace('/(onboarding)?setup=1');
+  }, [dispatch, refreshToken, router]);
 
   const languageName = useMemo(() => {
     const additionalText = currentLang === 'en' || currentLang === 'es' ? '' : ' (Language)';

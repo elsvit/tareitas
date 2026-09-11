@@ -1,25 +1,30 @@
+import { ESyncMode } from '~/store/settings/enums';
+
 /**
  * Resolves the initial route after app launch (cold start / reopen).
  *
- * 1. First install → intro onboarding (no family, not on setup screen).
- * 2. deviceOnly or multidevice with a saved family → Tasks (user may be unselected).
- * 3. Closed on "select your setup", or saved family is missing locally / on server
- *    → onboarding setup screen ("Elige tu configuración").
+ * - syncMode null → setup ("Elige tu configuración")
+ * - syncMode deviceOnly | multidevice + family loaded → Tasks (user unselected)
+ * - syncMode set but family missing → setup
+ * - no syncMode and no family → intro onboarding
  */
 export function resolveAppBootRoute(options: {
+  syncMode: ESyncMode | null | undefined;
   hasFamily: boolean;
-  requireLogin: boolean;
-  pendingFamilySetup: boolean;
 }): '/(tabs)/Tasks' | '/(onboarding)' | '/(onboarding)?setup=1' {
-  const { hasFamily, requireLogin, pendingFamilySetup } = options;
+  const { syncMode, hasFamily } = options;
+
+  const hasActiveMode =
+    syncMode === ESyncMode.deviceOnly ||
+    syncMode === ESyncMode.multidevice;
+
+  if (!hasActiveMode) {
+    return '/(onboarding)?setup=1';
+  }
 
   if (hasFamily) {
     return '/(tabs)/Tasks';
   }
 
-  if (requireLogin || pendingFamilySetup) {
-    return '/(onboarding)?setup=1';
-  }
-
-  return '/(onboarding)';
+  return '/(onboarding)?setup=1';
 }

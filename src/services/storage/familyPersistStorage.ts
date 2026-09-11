@@ -3,6 +3,26 @@ import type { Storage } from 'redux-persist';
 
 import { EStateName } from '~/store/enums';
 import { ESyncMode } from '~/store/settings/enums';
+import type { IStateSettings } from '~/store/settings/types';
+
+/**
+ * Local persistence layout:
+ *
+ * - **sharedPersistStorage** (`persist:shared:`) — settings only (syncMode, familyId,
+ *   currentUser, tokens, etc.). Same bucket for deviceOnly and multidevice.
+ *
+ * - **deviceOnlyFamilyStorage** (`persist:deviceOnly:`) — family slices when
+ *   syncMode is deviceOnly (parents, children, tasks, images, …).
+ *
+ * - **multideviceFamilyStorage** (`persist:multidevice:`) — family slices when
+ *   syncMode is multidevice.
+ *
+ * Never mix family data between the two family buckets. Always read settings.syncMode
+ * from shared storage, then load/save family slices from the matching bucket.
+ *
+ * When syncMode is null (setup / Cambiar familia), family persist stays paused and
+ * neither family bucket is written from empty in-memory state.
+ */
 
 const SHARED_PREFIX = 'persist:shared:';
 const DEVICE_ONLY_PREFIX = 'persist:deviceOnly:';
@@ -32,6 +52,19 @@ function createPrefixedStorage(prefix: string): Storage {
 
 export const sharedPersistStorage =
   createPrefixedStorage(SHARED_PREFIX);
+
+/** Write settings to shared storage (works even when redux-persist is paused). */
+export async function persistSharedSettingsSnapshot(
+  settings: IStateSettings,
+): Promise<void> {
+  const { sessionPauseCount: _sessionPauseCount, ...snapshot } =
+    settings;
+
+  await sharedPersistStorage.setItem(
+    EStateName.settings,
+    JSON.stringify(snapshot),
+  );
+}
 
 export const deviceOnlyFamilyStorage = createPrefixedStorage(
   DEVICE_ONLY_PREFIX,

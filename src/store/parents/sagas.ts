@@ -12,6 +12,7 @@ import {
   toCreateParentPayload,
   toUpdateParentPayload,
 } from '~/services/api/memberMappers';
+import { persistActiveFamilySnapshot } from '~/services/familyPersistMode';
 import { ERole } from '~/store/settings/enums';
 import { selectIsMultidevice } from '~/store/settings/selectors';
 import {
@@ -33,7 +34,7 @@ import { AddParentPayload, RemoveParentPayload, UpdateParentPayload } from './ty
 function* syncParentAvatar(
   avatar: string | undefined,
   familyId: string,
-) {
+): Generator<any, string | undefined, any> {
   return yield call(
     resolveAndCacheMemberAvatar,
     avatar,
@@ -49,6 +50,7 @@ function* addParentSaga(
 
   if (!session) {
     yield put(addParentSuccess(entity));
+    yield call(persistActiveFamilySnapshot);
 
     if (onSuccess) {
       yield call(onSuccess);
@@ -96,6 +98,7 @@ function* updateParentSaga(
 
   if (!isMultidevice) {
     yield put(updateParentSuccess(entity));
+    yield call(persistActiveFamilySnapshot);
 
     if (onSuccess) {
       yield call(onSuccess);
@@ -108,6 +111,7 @@ function* updateParentSaga(
 
   if (!session) {
     yield put(updateParentSuccess(entity));
+    yield call(persistActiveFamilySnapshot);
 
     if (onSuccess) {
       yield call(onSuccess);

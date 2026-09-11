@@ -22,12 +22,11 @@ import {
 import { clearAllImageUrls } from '~/store/images/slice';
 import { ERole, ESyncMode } from '~/store/settings/enums';
 import {
+  clearActiveSyncMode,
   clearAuthSession,
-  clearMultideviceSession,
   setAuthUser,
   setCurrentRole,
   setCurrentUser,
-  setHasPersistedFamily,
   setMultideviceSession,
   setRequireLogin,
   syncCatalog,
@@ -184,7 +183,6 @@ export async function hydrateFamilyStore(
   dispatch(setCurrentUser(loggedInUser.id));
   dispatch(setCurrentRole(mapServerRole(loggedInUser.role)));
   dispatch(setRequireLogin(false));
-  dispatch(setHasPersistedFamily(true));
   applyFamilySubscriptionFromServer(
     dispatch,
     resolveFamilySubscriptionForClient(
@@ -439,14 +437,13 @@ export function clearLocalFamilyForNewSetup(dispatch: AppDispatch) {
   dispatch(clearParents());
   dispatch(clearChildren());
   dispatch(clearAllImageUrls());
-  dispatch(clearMultideviceSession());
+  dispatch(clearAuthSession());
 }
 
 /** Wipe local family and restart onboarding from the beginning. */
 export function resetFamilyForOnboarding(dispatch: AppDispatch) {
   clearLocalFamilyForNewSetup(dispatch);
+  dispatch(clearActiveSyncMode());
   dispatch(setCurrentUser(null));
   dispatch(setCurrentRole(null));
-  dispatch(setRequireLogin(false));
-  dispatch(setHasPersistedFamily(false));
 }

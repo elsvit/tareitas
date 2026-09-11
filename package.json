@@ -15,6 +15,7 @@
     "android": "node ./scripts/run-with-translation-watch.js expo start --dev-client --android",
     "android-device": "npx expo run:android --device",
     "ios": "node ./scripts/run-with-translation-watch.js expo start --dev-client --ios",
+    "ios-device": "npx expo run:ios --device",
     "build-dev": "eas build -p android --profile development",
     "build-dev-ios": "eas build -p ios --profile development",
     "build-dev-ios-prod-api": "node ./scripts/run-with-env.js --env-file=.env.production eas build -p ios --profile development-simulator-prod-api",

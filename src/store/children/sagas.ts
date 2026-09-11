@@ -12,6 +12,7 @@ import {
   toCreateChildPayload,
   toUpdateChildPayload,
 } from '~/services/api/memberMappers';
+import { persistActiveFamilySnapshot } from '~/services/familyPersistMode';
 import {
   assertMultideviceSession,
   callMultideviceApi,
@@ -36,6 +37,7 @@ function* addChildrenSaga(
 
   if (!session) {
     yield put(addChildSuccess(entity));
+    yield call(persistActiveFamilySnapshot);
 
     if (onSuccess) {
       yield call(onSuccess);
@@ -84,6 +86,7 @@ function* updateChildrenSaga(
 
   if (!session) {
     yield put(updateChildSuccess(entity));
+    yield call(persistActiveFamilySnapshot);
 
     if (onSuccess) {
       yield call(onSuccess);

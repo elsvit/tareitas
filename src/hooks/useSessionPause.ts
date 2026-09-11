@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import type { AppDispatch } from '~/store';
 import { store } from '~/store/store';
+import { selectParentIds } from '~/store/parents/selectors';
 import {
   selectHasAuthSession,
   selectIsMultidevice,
@@ -25,7 +26,9 @@ function syncRequireLoginAfterPause() {
   const isMultidevice = selectIsMultidevice(state);
   const hasAuthSession = selectHasAuthSession(state);
 
-  if (isMultidevice && !hasAuthSession) {
+  const hasLocalFamily = selectParentIds(state).length > 0;
+
+  if (isMultidevice && !hasAuthSession && !hasLocalFamily) {
     store.dispatch(setRequireLogin(true));
   }
 }

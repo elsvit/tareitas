@@ -33,7 +33,7 @@ const initialState: IStateSettings = {
   currentUser: null,
   currentRole: null,
   taskCalendarDate: getTodayDateString(),
-  syncMode: ESyncMode.deviceOnly,
+  syncMode: null,
   familyId: null,
   subscription: null,
   authToken: null,
@@ -47,7 +47,6 @@ const initialState: IStateSettings = {
   pendingRemovedRewardBaseIds: [],
   requireLogin: false,
   pendingFamilySetup: false,
-  hasPersistedFamily: false,
   lastSessionActivityAt: null,
   pendingReturnRoute: null,
   sessionPauseCount: 0,
@@ -89,12 +88,17 @@ export const settingsSlice = createSlice({
     setTaskCalendarDate: (state, action: PayloadAction<string>) => {
       state.taskCalendarDate = resolveCalendarDateString(action.payload);
     },
-    setSyncMode: (state, action: PayloadAction<ESyncMode>) => {
+    setSyncMode: (state, action: PayloadAction<ESyncMode | null>) => {
       state.syncMode = action.payload;
 
       if (action.payload === ESyncMode.deviceOnly) {
         resetCloudSessionState(state);
       }
+    },
+    /** Clears active mode and cloud session (Cambiar familia / Cerrar sesión → setup). */
+    clearActiveSyncMode: state => {
+      state.syncMode = null;
+      resetCloudSessionState(state);
     },
     setMultideviceSession: (
       state,
@@ -112,7 +116,6 @@ export const settingsSlice = createSlice({
       state.refreshToken = action.payload.refreshToken;
       state.authUserId = action.payload.authUserId ?? null;
       state.authUserRole = action.payload.authUserRole ?? null;
-      state.hasPersistedFamily = true;
       state.lastSessionActivityAt =
         new Date().toISOString();
     },
@@ -133,8 +136,14 @@ export const settingsSlice = createSlice({
       state.authUserRole = action.payload.role;
     },
     clearMultideviceSession: state => {
-      state.syncMode = ESyncMode.deviceOnly;
       resetCloudSessionState(state);
+    },
+    /** Clears JWT credentials only; keeps familyId for local multidevice family. */
+    clearAuthTokens: state => {
+      state.authToken = null;
+      state.refreshToken = null;
+      state.authUserId = null;
+      state.authUserRole = null;
     },
     clearAuthSession: state => {
       state.familyId = null;
@@ -224,12 +233,6 @@ export const settingsSlice = createSlice({
     ) => {
       state.pendingFamilySetup = action.payload;
     },
-    setHasPersistedFamily: (
-      state,
-      action: PayloadAction<boolean>,
-    ) => {
-      state.hasPersistedFamily = action.payload;
-    },
     touchSessionActivity: state => {
       state.lastSessionActivityAt =
         new Date().toISOString();
@@ -271,10 +274,12 @@ export const {
   setCurrentUser,
   setTaskCalendarDate,
   setSyncMode,
+  clearActiveSyncMode,
   setMultideviceSession,
   setFamilySubscription,
   setAuthUser,
   clearMultideviceSession,
+  clearAuthTokens,
   clearAuthSession,
   updateAuthTokens,
   setCatalogRevisions,
@@ -290,7 +295,6 @@ export const {
   syncFamilyImages,
   setRequireLogin,
   setPendingFamilySetup,
-  setHasPersistedFamily,
   touchSessionActivity,
   setPendingReturnRoute,
   resumeMultideviceSession,

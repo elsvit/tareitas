@@ -5,22 +5,23 @@ import { useSelector } from 'react-redux';
 import { OnboardingFlow } from '~/components/onboarding';
 import { selectParentIds } from '~/store/parents/selectors';
 import {
-  selectPendingFamilySetup,
-  selectRequireLogin,
+  selectCurrentUser,
+  selectSyncMode,
 } from '~/store/settings/selectors';
 
 export default function OnboardingScreen() {
   const parentIds = useSelector(selectParentIds);
-  const requireLogin = useSelector(selectRequireLogin);
-  const pendingFamilySetup = useSelector(selectPendingFamilySetup);
+  const currentUser = useSelector(selectCurrentUser);
+  const syncMode = useSelector(selectSyncMode);
   const { setup } = useLocalSearchParams<{ setup?: string }>();
 
-  if (parentIds.length > 0) {
+  // Only skip onboarding when a user is already logged in (e.g. stray navigation).
+  // Loading a device-only family for connect must keep the avatar + PIN step.
+  if (parentIds.length > 0 && currentUser) {
     return <Redirect href="/(tabs)/Tasks" />;
   }
 
-  const skipIntro =
-    requireLogin || pendingFamilySetup || setup === '1';
+  const skipIntro = setup === '1' || syncMode === null;
 
   return <OnboardingFlow skipIntro={skipIntro} />;
 }

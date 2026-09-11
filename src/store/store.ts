@@ -1,4 +1,9 @@
-import { combineReducers, configureStore, Store } from '@reduxjs/toolkit';
+import {
+  combineReducers,
+  configureStore,
+  type Middleware,
+  Store,
+} from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 import { PersistConfig, persistReducer, persistStore } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
@@ -10,6 +15,7 @@ import { all } from 'redux-saga/effects';
 import { IS_WEB } from '~/constants';
 import {
   modeAwareFamilyStorage,
+  persistSharedSettingsSnapshot,
   sharedPersistStorage,
 } from '~/services/storage/familyPersistStorage';
 import { childrenSlice, IStateChildren } from './children';
@@ -72,6 +78,8 @@ function buildRewardsMigrate(): PersistConfig<IStateRewards>['migrate'] {
 }
 
 function buildPersistedReducers() {
+  // Family slices → deviceOnly or multidevice bucket (via modeAwareFamilyStorage).
+  // Settings → sharedPersistStorage only (same for both modes).
   const familyStorage = modeAwareFamilyStorage;
 
   const settingsPersistConfig: PersistConfig<IStateSettings> = {
@@ -222,6 +230,32 @@ function buildPersistedReducers() {
 const sagaMiddleware = createSagaMiddleware();
 let sagasStarted = false;
 
+const SHARED_SETTINGS_PERSIST_ACTIONS = new Set([
+  `${EStateName.settings}/setSyncMode`,
+  `${EStateName.settings}/setMultideviceSession`,
+  `${EStateName.settings}/clearActiveSyncMode`,
+]);
+
+const sharedSettingsPersistMiddleware: Middleware =
+  storeApi => next => action => {
+    const result = next(action);
+
+    if (
+      typeof action === 'object' &&
+      action !== null &&
+      'type' in action &&
+      SHARED_SETTINGS_PERSIST_ACTIONS.has(String(action.type))
+    ) {
+      const settings = storeApi.getState()[EStateName.settings];
+
+      if (settings) {
+        void persistSharedSettingsSnapshot(settings);
+      }
+    }
+
+    return result;
+  };
+
 type AppStore = Store<IState>;
 
 function configureAppStore(): AppStore {
@@ -241,7 +275,11 @@ function configureAppStore(): AppStore {
           ],
           ignoredActionPaths: ['payload.onSuccess'],
         },
-      }).concat(__DEV__ ? [sagaMiddleware, logger] : [sagaMiddleware]),
+      }).concat(
+        __DEV__
+          ? [sharedSettingsPersistMiddleware, sagaMiddleware, logger]
+          : [sharedSettingsPersistMiddleware, sagaMiddleware],
+      ),
     devTools: __DEV__,
   });
 }
