@@ -1,3 +1,4 @@
+import active_game from '~/assets/img/tasks/active_game.jpg';
 import alarm_evening from '~/assets/img/tasks/alarm_evening.jpg';
 import alarm_morning from '~/assets/img/tasks/alarm_morning.jpg';
 import bike from '~/assets/img/tasks/bike.jpg';
@@ -26,7 +27,6 @@ import good_night from '~/assets/img/tasks/good_night.jpg';
 import homework from '~/assets/img/tasks/homework.jpg';
 import jogging from '~/assets/img/tasks/jogging.jpg';
 import jumping from '~/assets/img/tasks/jumping.jpg';
-import line_up_shoes from '~/assets/img/tasks/line_up_shoes.jpg';
 import logic_games from '~/assets/img/tasks/logic_games.jpg';
 import make_bed from '~/assets/img/tasks/make_bed.jpg';
 import music from '~/assets/img/tasks/music.jpg';
@@ -87,6 +87,7 @@ export const BASE_TASKS_IMAGES = {
   music,
 
   // activities
+  active_game,
   training,
   jumping,
   jogging,
@@ -96,7 +97,6 @@ export const BASE_TASKS_IMAGES = {
   // in order
   make_bed,
   change_clothes,
-  line_up_shoes,
   put_in_order_books,
   put_in_order_shoes,
   put_away_toys,
