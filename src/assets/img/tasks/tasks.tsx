@@ -34,7 +34,6 @@ import organize_clothes from '~/assets/img/tasks/organize_clothes.jpg';
 import pack_backpack from '~/assets/img/tasks/pack_backpack.jpg';
 import painting from '~/assets/img/tasks/painting.jpg';
 import play_with_pet from '~/assets/img/tasks/play_with_pet.jpg';
-import prepare_clothes from '~/assets/img/tasks/prepare_clothes.jpg';
 import put_away_toys from '~/assets/img/tasks/put_away_toys.jpg';
 import put_cream from '~/assets/img/tasks/put_cream.jpg';
 import put_in_order_books from '~/assets/img/tasks/put_in_order_books.jpg';
@@ -103,7 +102,6 @@ export const BASE_TASKS_IMAGES = {
   organize_clothes,
   pack_backpack,
   serve_table,
-  prepare_clothes,
 
   // clean up
   clean_desk,
