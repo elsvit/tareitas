@@ -6,6 +6,7 @@ import {
   clearFamilyStorageBucket,
   getFamilyPersistStorageForMode,
   migrateLegacyPersistKeys,
+  persistSharedSettingsSnapshot,
   setActiveFamilyPersistMode,
   sharedPersistStorage,
 } from '~/services/storage/familyPersistStorage';
@@ -20,8 +21,6 @@ import { clearRewards } from '~/store/rewards/slice';
 import { ESyncMode } from '~/store/settings/enums';
 import {
   selectFamilyId,
-  selectHasAuthSession,
-  selectRequireLogin,
   selectSyncMode,
 } from '~/store/settings/selectors';
 import { selectChildIds } from '~/store/children/selectors';
@@ -30,12 +29,11 @@ import { clearTaskAssignment } from '~/store/taskAssignment/slice';
 import { resetTaskBase } from '~/store/taskBase/slice';
 import { clearTasks } from '~/store/tasks/slice';
 import {
+  clearActiveSyncMode,
+  clearAuthSession,
   clearMultideviceSession,
   setCurrentRole,
   setCurrentUser,
-  setHasPersistedFamily,
-  setPendingFamilySetup,
-  setRequireLogin,
   setSyncMode,
 } from '~/store/settings/slice';
 import { store, persistor } from '~/store/store';
@@ -43,7 +41,14 @@ import type { AppDispatch } from '~/store/store';
 import type { IState } from '~/store/types';
 
 function syncActiveFamilyPersistMode(getState: () => IState): void {
-  setActiveFamilyPersistMode(selectSyncMode(getState()));
+  const syncMode = selectSyncMode(getState());
+
+  if (
+    syncMode === ESyncMode.deviceOnly ||
+    syncMode === ESyncMode.multidevice
+  ) {
+    setActiveFamilyPersistMode(syncMode);
+  }
 }
 
 type PersistorLike = {
@@ -148,7 +153,7 @@ function isDeviceOnlyFamilyState(state: IState): boolean {
   );
 }
 
-async function rehydrateDeviceOnlyConnectFromStorage(
+export async function rehydrateDeviceOnlyConnectFromStorage(
   dispatch: AppDispatch,
 ): Promise<boolean> {
   await rehydrateFamilySlicesFromStorage(dispatch, ESyncMode.deviceOnly);
@@ -156,6 +161,7 @@ async function rehydrateDeviceOnlyConnectFromStorage(
   return selectParentIds(store.getState()).length > 0;
 }
 
+/** Writes settings to shared storage (never to deviceOnly / multidevice family buckets). */
 export async function persistSharedSettingsState(
   getState: () => IState,
 ): Promise<void> {
@@ -165,10 +171,7 @@ export async function persistSharedSettingsState(
     return;
   }
 
-  await sharedPersistStorage.setItem(
-    EStateName.settings,
-    JSON.stringify(settings),
-  );
+  await persistSharedSettingsSnapshot(settings);
 }
 
 async function rehydrateFamilySlicesFromStorage(
@@ -232,7 +235,28 @@ export async function beginDeviceOnlyFamilyCreate(
   await clearFamilyStorageBucket(ESyncMode.deviceOnly);
   clearFamilySlicesInMemory(dispatch);
   dispatch(clearMultideviceSession());
-  dispatch(setHasPersistedFamily(false));
+}
+
+/** Snapshot in-memory family slices to the active bucket (deviceOnly writes directly). */
+export async function persistActiveFamilySnapshot(
+  getState: () => IState = store.getState,
+): Promise<void> {
+  const syncMode = selectSyncMode(getState());
+
+  if (syncMode === ESyncMode.deviceOnly) {
+    if (selectParentIds(getState()).length === 0) {
+      return;
+    }
+
+    setActiveFamilyPersistMode(ESyncMode.deviceOnly);
+    await persistDeviceOnlyFamilyToBucket(getState);
+  } else if (syncMode === ESyncMode.multidevice) {
+    setActiveFamilyPersistMode(ESyncMode.multidevice);
+  } else {
+    return;
+  }
+
+  await flushFamilyPersistMode(persistor);
 }
 
 export async function saveDeviceOnlyFamilyForReconnect(
@@ -365,18 +389,16 @@ export async function resetFamilySetupScreenMemory(
   const readState = getState ?? store.getState;
 
   if (!force && getState && selectParentIds(getState()).length === 0) {
-    dispatch(clearMultideviceSession());
+    dispatch(clearAuthSession());
     dispatch(setCurrentUser(null));
     dispatch(setCurrentRole(null));
-    dispatch(setRequireLogin(false));
     return;
   }
 
   if (!force && getState && !hasFamilyDataInMemory(getState())) {
-    dispatch(clearMultideviceSession());
+    dispatch(clearAuthSession());
     dispatch(setCurrentUser(null));
     dispatch(setCurrentRole(null));
-    dispatch(setRequireLogin(false));
     return;
   }
 
@@ -395,10 +417,9 @@ export async function resetFamilySetupScreenMemory(
     }
 
     clearFamilySlicesInMemory(dispatch);
-    dispatch(clearMultideviceSession());
+    dispatch(clearAuthSession());
     dispatch(setCurrentUser(null));
     dispatch(setCurrentRole(null));
-    dispatch(setRequireLogin(false));
   } finally {
     // Stay paused until a setup path loads or creates a family — avoids
     // persisting empty slices over the saved bucket.
@@ -409,44 +430,85 @@ export async function prepareFamilyPersistOnBoot(
   dispatch: AppDispatch,
   getState: () => IState,
 ): Promise<void> {
-  await migrateLegacyPersistKeys();
+  persistor?.pause?.();
 
-  const settingsRaw = await sharedPersistStorage.getItem(
-    EStateName.settings,
-  );
+  try {
+    await migrateLegacyPersistKeys();
 
-  let mode = selectSyncMode(getState());
+    const settingsRaw = await sharedPersistStorage.getItem(
+      EStateName.settings,
+    );
 
-  if (settingsRaw) {
-    const parsed = parsePersistedSlice<{
-      syncMode?: ESyncMode;
-    }>(settingsRaw);
+    if (settingsRaw) {
+      const parsed = parsePersistedSlice<{
+        syncMode?: ESyncMode | null;
+      }>(settingsRaw);
 
-    if (parsed) {
-      dispatch({
-        type: REHYDRATE,
-        key: EStateName.settings,
-        payload: parsed,
-      });
+      if (parsed) {
+        dispatch({
+          type: REHYDRATE,
+          key: EStateName.settings,
+          payload: parsed,
+        });
+      }
+    }
 
-      mode =
-        parsed.syncMode === ESyncMode.multidevice
-          ? ESyncMode.multidevice
-          : ESyncMode.deviceOnly;
+    let syncMode = selectSyncMode(getState());
+
+    dispatch(setCurrentUser(null));
+    dispatch(setCurrentRole(null));
+
+    if (
+      syncMode === ESyncMode.multidevice &&
+      !selectFamilyId(getState())
+    ) {
+      setActiveFamilyPersistMode(ESyncMode.deviceOnly);
+      await rehydrateFamilySlicesFromStorage(
+        dispatch,
+        ESyncMode.deviceOnly,
+      );
+
+      if (selectParentIds(getState()).length > 0) {
+        dispatch(setSyncMode(ESyncMode.deviceOnly));
+        syncMode = ESyncMode.deviceOnly;
+      } else {
+        clearFamilySlicesInMemory(dispatch);
+      }
+    }
+
+    if (syncMode === ESyncMode.deviceOnly) {
+      setActiveFamilyPersistMode(ESyncMode.deviceOnly);
+      await rehydrateFamilySlicesFromStorage(
+        dispatch,
+        ESyncMode.deviceOnly,
+      );
+      await persistSharedSettingsState(getState);
+      return;
+    }
+
+    if (syncMode === ESyncMode.multidevice) {
+      setActiveFamilyPersistMode(ESyncMode.multidevice);
+      await rehydrateFamilySlicesFromStorage(
+        dispatch,
+        ESyncMode.multidevice,
+      );
+      await persistSharedSettingsState(getState);
+      return;
+    }
+
+    // syncMode null → setup: settings in shared storage only; keep family buckets unchanged.
+    clearFamilySlicesInMemory(dispatch);
+    await persistSharedSettingsState(getState);
+  } finally {
+    const activeMode = selectSyncMode(getState());
+
+    if (
+      activeMode === ESyncMode.deviceOnly ||
+      activeMode === ESyncMode.multidevice
+    ) {
+      resumeFamilyPersist(persistor);
     }
   }
-
-  setActiveFamilyPersistMode(mode);
-  await rehydrateFamilySlicesFromStorage(dispatch, mode);
-
-  if (
-    selectRequireLogin(getState()) &&
-    selectHasAuthSession(getState()) &&
-    selectParentIds(getState()).length > 0
-  ) {
-    dispatch(setRequireLogin(false));
-  }
-
 }
 
 export async function switchFamilyPersistMode(
@@ -514,8 +576,8 @@ export async function prepareFamilyChangeScreen(
     getState: store.getState,
   });
 
-  dispatch(setRequireLogin(true));
-  dispatch(setPendingFamilySetup(true));
-  dispatch(setHasPersistedFamily(false));
+  dispatch(clearActiveSyncMode());
+  dispatch(setCurrentUser(null));
+  dispatch(setCurrentRole(null));
   await persistSharedSettingsState(store.getState);
 }

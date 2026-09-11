@@ -114,7 +114,12 @@ export const selectTaskCalendarDate = (state: RootStateT) =>
   );
 
 export const selectSyncMode = (state: RootStateT) =>
-  (state[EStateName.settings] as Persisted<IStateSettings>).syncMode;
+  (state[EStateName.settings] as Persisted<IStateSettings>).syncMode ?? null;
+
+export const selectHasActiveSyncMode = createSelector(
+  [selectSyncMode],
+  syncMode => syncMode === ESyncMode.deviceOnly || syncMode === ESyncMode.multidevice,
+);
 
 export const selectIsMultidevice = createSelector(
   [selectSyncMode],
@@ -219,10 +224,6 @@ export const selectRequireLogin = (state: RootStateT) =>
 export const selectPendingFamilySetup = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>)
     .pendingFamilySetup ?? false;
-
-export const selectHasPersistedFamily = (state: RootStateT) =>
-  (state[EStateName.settings] as Persisted<IStateSettings>)
-    .hasPersistedFamily ?? false;
 
 export const selectLastSessionActivityAt = (
   state: RootStateT,

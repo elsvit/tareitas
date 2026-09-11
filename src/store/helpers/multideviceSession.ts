@@ -15,7 +15,7 @@ import {
   selectRefreshToken,
 } from '~/store/settings/selectors';
 import {
-  clearAuthSession,
+  clearAuthTokens,
   setRequireLogin,
   touchSessionActivity,
   updateAuthTokens,
@@ -44,7 +44,7 @@ export function* invalidateAuthSession(): Generator<
     selectIsSessionPaused,
   );
 
-  yield put(clearAuthSession());
+  yield put(clearAuthTokens());
 
   if (!isPaused) {
     yield put(setRequireLogin(true));

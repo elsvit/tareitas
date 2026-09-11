@@ -160,10 +160,11 @@ export function useUserSwitch() {
       try {
         const result = await verifyUserSwitchPassword(user, input, {
           preferCloudAuth: needsCloudReauth,
+          localOnly: !isMultidevice,
         });
 
         if (result.ok) {
-          if (result.kind === 'cloud') {
+          if (result.kind === 'cloud' && isMultidevice) {
             applyAuthTokensFromLogin(dispatch, result.auth);
             dispatch(setRequireLogin(false));
           } else if (needsCloudReauth) {

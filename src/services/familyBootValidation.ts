@@ -4,14 +4,16 @@ import { ApiError } from '~/services/api/client';
 import { clearLocalFamilyForNewSetup } from '~/services/familySync';
 import {
   flushFamilyPersistMode,
+  persistSharedSettingsState,
+  rehydrateDeviceOnlyConnectFromStorage,
   resumeFamilyPersist,
 } from '~/services/familyPersistMode';
+import { clearFamilyStorageBucket } from '~/services/storage/familyPersistStorage';
 import { ERole, ESyncMode } from '~/store/settings/enums';
 import {
   selectAuthToken,
   selectFamilyId,
   selectHasAuthSession,
-  selectHasPersistedFamily,
   selectRefreshToken,
   selectSyncMode,
 } from '~/store/settings/selectors';
@@ -19,19 +21,15 @@ import { selectParentIds } from '~/store/parents/selectors';
 import { addChildSuccess, clearChildren } from '~/store/children/slice';
 import { addParentSuccess, clearParents } from '~/store/parents/slice';
 import {
+  clearActiveSyncMode,
   clearAuthSession,
   setCurrentRole,
   setCurrentUser,
-  setHasPersistedFamily,
-  setPendingFamilySetup,
-  setRequireLogin,
 } from '~/store/settings/slice';
 import type { AppDispatch } from '~/store/store';
 import { persistor } from '~/store/store';
 import type { IState } from '~/store/types';
 import type { IFamilyDetails } from '~/types/IAuth';
-
-import { persistSharedSettingsState } from './familyPersistMode';
 
 function isFamilyMissingOnServerError(error: unknown): boolean {
   return (
@@ -138,76 +136,120 @@ async function hydrateMultideviceFamilyFromServer(
     );
   }
 
-  dispatch(setHasPersistedFamily(true));
   await flushFamilyPersistMode(persistor);
   resumeFamilyPersist(persistor);
+}
+
+async function openSetupBecauseFamilyMissing(
+  dispatch: AppDispatch,
+  getState: () => IState,
+): Promise<void> {
+  clearLocalFamilyForNewSetup(dispatch);
+  dispatch(clearActiveSyncMode());
+  dispatch(clearAuthSession());
+  dispatch(setCurrentUser(null));
+  dispatch(setCurrentRole(null));
+  await persistSharedSettingsState(getState);
 }
 
 export async function invalidateFamilyAndOpenSetup(
   dispatch: AppDispatch,
   getState: () => IState,
 ): Promise<void> {
-  clearLocalFamilyForNewSetup(dispatch);
-  dispatch(clearAuthSession());
-  dispatch(setCurrentUser(null));
-  dispatch(setCurrentRole(null));
-  dispatch(setRequireLogin(false));
-  dispatch(setPendingFamilySetup(true));
-  dispatch(setHasPersistedFamily(false));
-  await persistSharedSettingsState(getState);
+  await openSetupBecauseFamilyMissing(dispatch, getState);
+}
+
+/** Wipe all local family data and open setup (Settings → Cerrar sesión). */
+export async function signOutAndClearFamilyData(
+  dispatch: AppDispatch,
+  getState: () => IState,
+): Promise<void> {
+  persistor?.pause?.();
+
+  try {
+    await clearFamilyStorageBucket(ESyncMode.deviceOnly);
+    await clearFamilyStorageBucket(ESyncMode.multidevice);
+    await openSetupBecauseFamilyMissing(dispatch, getState);
+    await flushFamilyPersistMode(persistor);
+  } finally {
+    resumeFamilyPersist(persistor);
+  }
 }
 
 export async function validatePersistedFamilyOnBoot(
   dispatch: AppDispatch,
   getState: () => IState,
 ): Promise<void> {
-  const parentCount = selectParentIds(getState()).length;
   const syncMode = selectSyncMode(getState());
-  const isMultidevice = syncMode === ESyncMode.multidevice;
-  const hasPersistedFamily = selectHasPersistedFamily(getState());
+
+  if (!syncMode) {
+    return;
+  }
+
+  let parentCount = selectParentIds(getState()).length;
+
+  if (syncMode === ESyncMode.deviceOnly) {
+    if (parentCount > 0) {
+      return;
+    }
+
+    const recovered = await rehydrateDeviceOnlyConnectFromStorage(dispatch);
+
+    if (recovered) {
+      return;
+    }
+
+    await openSetupBecauseFamilyMissing(dispatch, getState);
+    return;
+  }
+
   const familyId = selectFamilyId(getState());
   const hasAuthSession = selectHasAuthSession(getState());
 
-  if (parentCount > 0 && !hasPersistedFamily) {
-    dispatch(setHasPersistedFamily(true));
+  if (!familyId) {
+    await openSetupBecauseFamilyMissing(dispatch, getState);
+    return;
   }
 
-  if (isMultidevice && familyId && hasAuthSession) {
+  if (parentCount > 0) {
+    if (!hasAuthSession) {
+      return;
+    }
+
     try {
       const family = await fetchFamilyDetailsForBoot(getState);
 
       if (!family) {
-        await invalidateFamilyAndOpenSetup(dispatch, getState);
-        return;
+        await openSetupBecauseFamilyMissing(dispatch, getState);
       }
-
-      if (parentCount === 0 && hasPersistedFamily) {
-        await hydrateMultideviceFamilyFromServer(
-          dispatch,
-          getState,
-          family,
-        );
-
-        if (selectParentIds(getState()).length === 0) {
-          await invalidateFamilyAndOpenSetup(dispatch, getState);
-        }
-      }
-
-      return;
     } catch {
-      if (parentCount === 0 && hasPersistedFamily) {
-        await invalidateFamilyAndOpenSetup(dispatch, getState);
-      }
-
-      return;
+      // Offline or transient error — keep local multidevice family.
     }
-  }
 
-  if (parentCount > 0) {
     return;
   }
 
-  if (hasPersistedFamily) {
-    await invalidateFamilyAndOpenSetup(dispatch, getState);
+  if (!hasAuthSession) {
+    await openSetupBecauseFamilyMissing(dispatch, getState);
+    return;
+  }
+
+  try {
+    const family = await fetchFamilyDetailsForBoot(getState);
+
+    if (!family) {
+      await openSetupBecauseFamilyMissing(dispatch, getState);
+      return;
+    }
+
+    await hydrateMultideviceFamilyFromServer(dispatch, getState, family);
+
+    parentCount = selectParentIds(getState()).length;
+
+    if (parentCount === 0) {
+      await openSetupBecauseFamilyMissing(dispatch, getState);
+    }
+  } catch {
+    await openSetupBecauseFamilyMissing(dispatch, getState);
   }
 }

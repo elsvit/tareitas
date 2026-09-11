@@ -13,7 +13,8 @@ export interface IStateSettings {
   currentUser: string | null;
   currentRole: ERole | null;
   taskCalendarDate: string;
-  syncMode: ESyncMode;
+  /** null = no active family mode → "Elige tu configuración". */
+  syncMode: ESyncMode | null;
   familyId: string | null;
   subscription: IFamilySubscription | null;
   authToken: string | null;
@@ -28,8 +29,6 @@ export interface IStateSettings {
   requireLogin: boolean;
   /** True while the user is on the family setup (sync mode) screen without a family yet. */
   pendingFamilySetup: boolean;
-  /** True after the user has created or connected a family at least once. */
-  hasPersistedFamily: boolean;
   lastSessionActivityAt: string | null;
   pendingReturnRoute: PendingReturnRoute | null;
   sessionPauseCount: number;

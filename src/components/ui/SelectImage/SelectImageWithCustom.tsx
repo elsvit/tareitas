@@ -26,6 +26,7 @@ import { useMediaSessionPause } from '~/hooks/useSessionPause';
 import { useSubscription } from '~/hooks/useSubscription';
 import { t } from '~/services';
 import { trackDefaultImageUsed } from '~/services/analytics';
+import { persistActiveFamilySnapshot } from '~/services/familyPersistMode';
 import { uploadFamilyImageWithSession } from '~/services/api/uploadFamilyImageWithSession';
 import { createId } from '~/utils/createId';
 import {
@@ -338,6 +339,7 @@ export function SelectImageWithCustom({
       } else {
         saveCustomImageUrl(nextId, savedUri);
         onChange?.(nextId);
+        void persistActiveFamilySnapshot();
       }
 
       closeManipulator();
