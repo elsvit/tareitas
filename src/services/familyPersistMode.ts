@@ -237,10 +237,59 @@ export async function beginDeviceOnlyFamilyCreate(
   dispatch(clearMultideviceSession());
 }
 
+let familySnapshotTimer: ReturnType<typeof setTimeout> | null = null;
+let familySnapshotWritesSuppressed = false;
+
+const FAMILY_SNAPSHOT_DEBOUNCE_MS = 400;
+
+export function scheduleFamilySnapshot(
+  getState: () => IState = store.getState,
+): void {
+  if (familySnapshotWritesSuppressed) {
+    return;
+  }
+
+  if (familySnapshotTimer) {
+    clearTimeout(familySnapshotTimer);
+  }
+
+  familySnapshotTimer = setTimeout(() => {
+    familySnapshotTimer = null;
+    void persistActiveFamilySnapshot(getState);
+  }, FAMILY_SNAPSHOT_DEBOUNCE_MS);
+}
+
+export async function flushScheduledFamilySnapshot(
+  getState: () => IState = store.getState,
+): Promise<void> {
+  if (familySnapshotTimer) {
+    clearTimeout(familySnapshotTimer);
+    familySnapshotTimer = null;
+  }
+
+  await persistActiveFamilySnapshot(getState);
+}
+
+export async function withFamilySnapshotWritesSuppressed<T>(
+  operation: () => Promise<T>,
+): Promise<T> {
+  familySnapshotWritesSuppressed = true;
+
+  try {
+    return await operation();
+  } finally {
+    familySnapshotWritesSuppressed = false;
+  }
+}
+
 /** Snapshot in-memory family slices to the active bucket (deviceOnly writes directly). */
 export async function persistActiveFamilySnapshot(
   getState: () => IState = store.getState,
 ): Promise<void> {
+  if (familySnapshotWritesSuppressed) {
+    return;
+  }
+
   const syncMode = selectSyncMode(getState());
 
   if (syncMode === ESyncMode.deviceOnly) {
@@ -430,6 +479,7 @@ export async function prepareFamilyPersistOnBoot(
   dispatch: AppDispatch,
   getState: () => IState,
 ): Promise<void> {
+  await withFamilySnapshotWritesSuppressed(async () => {
   persistor?.pause?.();
 
   try {
@@ -509,6 +559,7 @@ export async function prepareFamilyPersistOnBoot(
       resumeFamilyPersist(persistor);
     }
   }
+  });
 }
 
 export async function switchFamilyPersistMode(

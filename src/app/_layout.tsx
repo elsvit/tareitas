@@ -1,6 +1,7 @@
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect } from 'react';
+import { AppState } from 'react-native';
 import 'react-native-get-random-values';
 import 'react-native-reanimated';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
@@ -9,7 +10,10 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import { Loading } from '~/components/ui/Loading';
 import { validatePersistedFamilyOnBoot } from '~/services/familyBootValidation';
-import { prepareFamilyPersistOnBoot } from '~/services/familyPersistMode';
+import {
+  flushScheduledFamilySnapshot,
+  prepareFamilyPersistOnBoot,
+} from '~/services/familyPersistMode';
 import { initializeRevenueCat } from '~/services/subscriptions/revenueCatInit';
 import { persistor, store } from '~/store';
 import { Colors } from '~/styles';
@@ -22,6 +26,16 @@ export default function RootLayout() {
   useEffect(() => {
     initializeRevenueCat();
     return scheduleAppSplashFallbackHide();
+  }, []);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextState => {
+      if (nextState === 'background' || nextState === 'inactive') {
+        void flushScheduledFamilySnapshot(store.getState);
+      }
+    });
+
+    return () => subscription.remove();
   }, []);
 
   const handleBeforeLift = useCallback(async () => {
