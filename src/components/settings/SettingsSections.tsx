@@ -97,9 +97,13 @@ type SettingsSectionsProps = {
     defaultExpanded?: boolean;
     items: SettingsItem[];
   }>;
+  onSectionExpand?: (sectionId: string) => void;
 };
 
-export function SettingsSections({ sections }: SettingsSectionsProps) {
+export function SettingsSections({
+  sections,
+  onSectionExpand,
+}: SettingsSectionsProps) {
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(
     () =>
       Object.fromEntries(
@@ -121,12 +125,23 @@ export function SettingsSections({ sections }: SettingsSectionsProps) {
     });
   }, [sections]);
 
-  const handleSectionPress = useCallback((sectionId: string) => {
-    setExpandedSections(current => ({
-      ...current,
-      [sectionId]: !current[sectionId],
-    }));
-  }, []);
+  const handleSectionPress = useCallback(
+    (sectionId: string) => {
+      setExpandedSections(current => {
+        const wasExpanded = current[sectionId] ?? false;
+
+        if (!wasExpanded) {
+          onSectionExpand?.(sectionId);
+        }
+
+        return {
+          ...current,
+          [sectionId]: !wasExpanded,
+        };
+      });
+    },
+    [onSectionExpand],
+  );
 
   return (
     <>

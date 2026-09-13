@@ -772,7 +772,10 @@ export const AssignmentTaskForm: FC<Props> = ({
     }
 
     applySubtasksFromBaseTask(baseTask);
-    void trackDefaultBaseTaskUsed();
+    void trackDefaultBaseTaskUsed({
+      id: baseTask.id,
+      number_in_array: baseTasks.findIndex(item => item.id === baseTaskId),
+    });
   };
 
   const onSubmit = (values: FormValues) => {

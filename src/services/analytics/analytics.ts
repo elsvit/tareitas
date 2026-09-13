@@ -2,6 +2,7 @@ import Constants from 'expo-constants';
 
 import type { Analytics } from '@react-native-firebase/analytics';
 
+import { ANALYTICS_EVENTS } from '~/constants/analytics';
 import type { ImageStoreKind } from '~/store/images/types';
 import { ESyncMode } from '~/store/settings/enums';
 
@@ -79,7 +80,7 @@ async function setAnalyticsUserProperty(
 }
 
 export async function setAnalyticsLanguage(language: string): Promise<void> {
-  await setAnalyticsUserProperty('language', language);
+  await setAnalyticsUserProperty(ANALYTICS_USER_PROPERTIES.language, language);
 }
 
 export async function trackDeviceModeUsed(
@@ -88,67 +89,82 @@ export async function trackDeviceModeUsed(
   const mode =
     syncMode === ESyncMode.deviceOnly ? 'only_device' : 'multi_device';
 
-  await logAnalyticsEvent('device_mode_used', { mode });
+  await logAnalyticsEvent(ANALYTICS_EVENTS.device_mode_used, { mode });
 }
 
 export async function trackFamilySize(
   parentsCount: number,
   childrenCount: number,
 ): Promise<void> {
-  await logAnalyticsEvent('family_size', {
+  await logAnalyticsEvent(ANALYTICS_EVENTS.family_size, {
     parents_count: parentsCount,
     children_count: childrenCount,
   });
 }
 
 export async function trackFamiliesCount(count: number): Promise<void> {
-  await logAnalyticsEvent('families_count', { count });
+  await logAnalyticsEvent(ANALYTICS_EVENTS.families_count, { count });
 }
 
-export async function trackDefaultUserImageUsed(): Promise<void> {
-  await logAnalyticsEvent('default_user_image_used');
+export async function trackDefaultUserImageUsed(name: string): Promise<void> {
+  await logAnalyticsEvent(ANALYTICS_EVENTS.default_user_image_used, { name });
 }
 
-export async function trackDefaultTaskImageUsed(): Promise<void> {
-  await logAnalyticsEvent('default_task_image_used');
+export async function trackDefaultTaskImageUsed(name: string): Promise<void> {
+  await logAnalyticsEvent(ANALYTICS_EVENTS.default_task_image_used, { name });
 }
 
-export async function trackDefaultRewardImageUsed(): Promise<void> {
-  await logAnalyticsEvent('default_reward_image_used');
+export async function trackDefaultRewardImageUsed(
+  name: string,
+): Promise<void> {
+  await logAnalyticsEvent(ANALYTICS_EVENTS.default_reward_image_used, {
+    name,
+  });
 }
 
-export function trackDefaultImageUsed(kind: ImageStoreKind): void {
+export function trackDefaultImageUsed(
+  kind: ImageStoreKind,
+  name: string,
+): void {
+  void logAnalyticsEvent(ANALYTICS_EVENTS.default_image_used, { kind, name });
+
   if (kind === 'user') {
-    void trackDefaultUserImageUsed();
+    void trackDefaultUserImageUsed(name);
     return;
   }
 
   if (kind === 'task') {
-    void trackDefaultTaskImageUsed();
+    void trackDefaultTaskImageUsed(name);
     return;
   }
 
-  void trackDefaultRewardImageUsed();
+  void trackDefaultRewardImageUsed(name);
 }
 
-export async function trackDefaultBaseTaskUsed(): Promise<void> {
-  await logAnalyticsEvent('default_base_task_used');
+export async function trackDefaultBaseTaskUsed(options: {
+  id: string;
+  number_in_array: number;
+}): Promise<void> {
+  await logAnalyticsEvent(ANALYTICS_EVENTS.default_base_task_used, options);
 }
 
-export async function trackDefaultRewardUsed(): Promise<void> {
-  await logAnalyticsEvent('default_reward_used');
+export async function trackDefaultRewardUsed(options: {
+  id: string;
+  number_in_array: number;
+}): Promise<void> {
+  await logAnalyticsEvent(ANALYTICS_EVENTS.default_reward_used, options);
 }
 
 export async function trackTaskRecordUsed(): Promise<void> {
-  await logAnalyticsEvent('task_record_used');
+  await logAnalyticsEvent(ANALYTICS_EVENTS.task_record_used);
 }
 
 export async function trackSubtaskRecordUsed(): Promise<void> {
-  await logAnalyticsEvent('subtask_record_used');
+  await logAnalyticsEvent(ANALYTICS_EVENTS.subtask_record_used);
 }
 
 export async function trackSubtaskPhotoUsed(): Promise<void> {
-  await logAnalyticsEvent('subtask_photo_used');
+  await logAnalyticsEvent(ANALYTICS_EVENTS.subtask_photo_used);
 }
 
 export type HelpCenterEmailTopic =
@@ -165,11 +181,21 @@ export type HelpCenterEmailTopic =
   | 'other';
 
 export async function trackHelpCenterOpened(): Promise<void> {
-  await logAnalyticsEvent('help_center_opened');
+  await logAnalyticsEvent(ANALYTICS_EVENTS.help_center_opened);
 }
 
 export async function trackHelpCenterEmailStarted(
   topic: HelpCenterEmailTopic = 'other',
 ): Promise<void> {
-  await logAnalyticsEvent('help_center_email_started', { topic });
+  await logAnalyticsEvent(ANALYTICS_EVENTS.help_center_email_started, {
+    topic,
+  });
+}
+
+export async function trackLanguageScreenOpened(
+  deviceLanguage: string,
+): Promise<void> {
+  await logAnalyticsEvent(ANALYTICS_EVENTS.language_screen_opened, {
+    device_language: deviceLanguage,
+  });
 }

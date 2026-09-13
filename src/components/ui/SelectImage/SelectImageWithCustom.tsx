@@ -460,7 +460,7 @@ export function SelectImageWithCustom({
                 key={`${opt.value}-${index}`}
                 onPress={() => {
                   onChange?.(opt.value);
-                  trackDefaultImageUsed(kind);
+                  trackDefaultImageUsed(kind, opt.value);
                 }}
                 style={[
                   baseStyles.avatarOuter,
