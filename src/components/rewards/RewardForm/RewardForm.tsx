@@ -194,7 +194,10 @@ export const RewardForm: FC<Props> = ({
     setValue('title', baseReward.title, { shouldValidate: true });
     setValue('reward', baseReward.reward ?? null, { shouldValidate: true });
     setValue('picture', baseReward.picture ?? '', { shouldValidate: true });
-    void trackDefaultRewardUsed();
+    void trackDefaultRewardUsed({
+      id: baseReward.id,
+      number_in_array: baseRewards.findIndex(item => item.id === baseRewardId),
+    });
   };
 
   const handlePreviousRewardChange = (previousReward: IRewardAssignment) => {
@@ -203,7 +206,12 @@ export const RewardForm: FC<Props> = ({
     setValue('title', previousReward.title, { shouldValidate: true });
     setValue('reward', previousReward.reward ?? null, { shouldValidate: true });
     setValue('picture', previousReward.picture ?? '', { shouldValidate: true });
-    void trackDefaultRewardUsed();
+    void trackDefaultRewardUsed({
+      id: previousReward.id,
+      number_in_array: previousRewards.findIndex(
+        item => item.id === previousReward.id,
+      ),
+    });
   };
 
   useEffect(() => {

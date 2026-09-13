@@ -11,6 +11,7 @@ import { DEFAULT_LANG } from '~/constants/settings';
 import { logoutUser } from '~/services/api';
 import { signOutAndClearFamilyData } from '~/services/familyBootValidation';
 import { store } from '~/store/store';
+import { trackLanguageScreenOpened } from '~/services/analytics';
 import { AvailableLanguages, LocalizationService, t } from '~/services/localization/localization';
 import {
   selectHasAuthSession,
@@ -271,7 +272,16 @@ export default function Settings() {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        <SettingsSections sections={sections} />
+        <SettingsSections
+          sections={sections}
+          onSectionExpand={sectionId => {
+            if (sectionId === 'language') {
+              void trackLanguageScreenOpened(
+                LocalizationService.getDeviceLanguage(),
+              );
+            }
+          }}
+        />
       </ScrollView>
     </SafeAreaBgImage>
   );

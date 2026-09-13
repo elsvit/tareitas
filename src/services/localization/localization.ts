@@ -105,6 +105,9 @@ class LocalizationServiceClass {
     return deviceLocale?.split('-')[0];
   };
 
+  public getDeviceLanguage = (): string =>
+    this.getNativeDeviceLocale() ?? 'unknown';
+
   private checkIfLangAvailable = (lang: string | undefined) => {
     if (!lang) {
       return false;

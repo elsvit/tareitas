@@ -1,0 +1,17 @@
+export const ANALYTICS_EVENTS = {
+  device_mode_used: 'device_mode_used',
+  family_size: 'family_size',
+  families_count: 'families_count',
+  default_user_image_used: 'default_user_image_used',
+  default_task_image_used: 'default_task_image_used',
+  default_reward_image_used: 'default_reward_image_used',
+  default_image_used: 'default_image_used',
+  default_base_task_used: 'default_base_task_used',
+  default_reward_used: 'default_reward_used',
+  task_record_used: 'task_record_used',
+  subtask_record_used: 'subtask_record_used',
+  subtask_photo_used: 'subtask_photo_used',
+  help_center_opened: 'help_center_opened',
+  help_center_email_started: 'help_center_email_started',
+  language_screen_opened: 'language_screen_opened',
+} as const;

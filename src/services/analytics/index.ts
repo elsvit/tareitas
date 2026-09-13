@@ -11,6 +11,7 @@ export {
   trackFamilySize,
   trackHelpCenterEmailStarted,
   trackHelpCenterOpened,
+  trackLanguageScreenOpened,
   trackSubtaskPhotoUsed,
   trackSubtaskRecordUsed,
   trackTaskRecordUsed,

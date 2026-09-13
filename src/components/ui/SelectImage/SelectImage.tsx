@@ -39,7 +39,7 @@ export const SelectImage: React.FC<Props> = ({
               key={`${opt.value}-${index}`}
               onPress={() => {
                 onChange?.(opt.value);
-                void trackDefaultUserImageUsed();
+                void trackDefaultUserImageUsed(opt.value);
               }}
               style={[
                 styles.avatarOuter,
