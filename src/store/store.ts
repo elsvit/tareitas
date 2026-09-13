@@ -42,6 +42,7 @@ import { IStateImages, imagesSlice } from './images';
 import imagesSagas from './images/sagas';
 import { IStateTasks, tasksSlice } from './tasks';
 import type { IState } from './types';
+import { familySnapshotMiddleware } from './familySnapshotMiddleware';
 
 function* rootSaga() {
   yield all([
@@ -277,8 +278,17 @@ function configureAppStore(): AppStore {
         },
       }).concat(
         __DEV__
-          ? [sharedSettingsPersistMiddleware, sagaMiddleware, logger]
-          : [sharedSettingsPersistMiddleware, sagaMiddleware],
+          ? [
+              sharedSettingsPersistMiddleware,
+              familySnapshotMiddleware,
+              sagaMiddleware,
+              logger,
+            ]
+          : [
+              sharedSettingsPersistMiddleware,
+              familySnapshotMiddleware,
+              sagaMiddleware,
+            ],
       ),
     devTools: __DEV__,
   });
