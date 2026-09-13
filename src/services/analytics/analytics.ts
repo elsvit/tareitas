@@ -2,7 +2,10 @@ import Constants from 'expo-constants';
 
 import type { Analytics } from '@react-native-firebase/analytics';
 
-import { ANALYTICS_EVENTS } from '~/constants/analytics';
+import {
+  ANALYTICS_EVENTS,
+  ANALYTICS_USER_PROPERTIES,
+} from '~/constants/analytics';
 import type { ImageStoreKind } from '~/store/images/types';
 import { ESyncMode } from '~/store/settings/enums';
 
@@ -23,7 +26,8 @@ function getAnalyticsContext(): {
     return { mod: cachedModule, instance: cachedInstance };
   }
 
-  if (Constants.executionEnvironment === 'storeClient') {
+  // Production release builds only — skip dev, Expo Go, and local dev clients.
+  if (__DEV__ || Constants.executionEnvironment === 'storeClient') {
     cachedModule = null;
     cachedInstance = null;
     return null;
