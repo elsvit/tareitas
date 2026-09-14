@@ -9,7 +9,11 @@ import { RootStateT } from '~/store';
 import { addChild } from '~/store/children/slice';
 import { ECommonActions } from '~/store/common/types';
 import { EStateName } from '~/store/enums';
-import { selectCurrentUser, selectIsAdmin } from '~/store/settings/selectors';
+import {
+  selectCurrentUser,
+  selectIsAdmin,
+  selectIsMultidevice,
+} from '~/store/settings/selectors';
 import { EFormMode } from '~/types/ECommon';
 import { ChildFormProps, IChild } from '~/types/IChild';
 
@@ -18,6 +22,7 @@ export default function ChildAdd() {
   const router = useRouter();
   const currentUser = useSelector(selectCurrentUser);
   const isAdmin = useSelector(selectIsAdmin);
+  const isMultidevice = useSelector(selectIsMultidevice);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const saveError = useSelector((state: RootStateT) => {
@@ -80,7 +85,7 @@ export default function ChildAdd() {
       <ChildForm
         mode={EFormMode.Add}
         onSave={handleSave}
-        showUniqueUsername
+        showUniqueUsername={isMultidevice}
         submitError={submitError}
         isSubmitting={isSaving}
       />
