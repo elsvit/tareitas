@@ -654,7 +654,7 @@
       "title": "Elige tu configuración",
       "subtitle": "Puedes usar Tareitas solo en este dispositivo o sincronizar tu familia entre teléfonos y tabletas.",
       "multidevice": {
-        "title": "Varios dispositivos",
+        "title": "Varios dispositivos (recomendado)",
         "description": "Sincroniza tareas, recompensas y datos familiares entre dispositivos. Los miembros de la familia pueden usar la app en distintos dispositivos."
       },
       "device_only": {

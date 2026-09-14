@@ -121,13 +121,13 @@ export function OnboardingFlow({
   const [step, setStep] = useState(initialStep);
   const [transitionDirection, setTransitionDirection] =
     useState<OnboardingTransitionDirection>(1);
-  const [setupPath, setSetupPath] = useState<OnboardingSetupPath>('create');
+  const [setupPath, setSetupPath] = useState<OnboardingSetupPath>('connect');
   const [parent, setParent] = useState<Partial<ParentFormProps>>({
     role: ERole.admin,
   });
   const [child, setChild] = useState<ChildFormProps>();
   const [syncMode, setSyncModeSelection] = useState(
-    storedSyncMode ?? ESyncMode.deviceOnly,
+    storedSyncMode ?? ESyncMode.multidevice,
   );
   const [signUpAdmin, setSignUpAdmin] =
     useState<Partial<SignUpAdminData>>({ role: ERole.admin });

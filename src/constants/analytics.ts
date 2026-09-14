@@ -15,3 +15,7 @@ export const ANALYTICS_EVENTS = {
   help_center_email_started: 'help_center_email_started',
   language_screen_opened: 'language_screen_opened',
 } as const;
+
+export const ANALYTICS_STATE = {
+  language: 'language',
+} as const;
