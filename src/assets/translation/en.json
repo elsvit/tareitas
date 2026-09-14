@@ -665,7 +665,10 @@
       "connect_section_title": "Connect to existing group/family",
       "connect_device_only_section_title": "Connect to this device only",
       "device_only_connect_hint": "Select your profile and enter your PIN to open the family saved on this device.",
-      "device_only_connect_empty": "No family is saved on this device. Create a new group first."
+      "device_only_connect_empty": "No family is saved on this device. Create a new group first.",
+      "replace_device_only_title": "Replace existing family?",
+      "replace_device_only_message": "A family is already saved on this device in \"This device only\" mode. Creating a new one will erase it. Only one family can exist in this mode.",
+      "replace_device_only_confirm": "Erase and continue"
     },
     "account": {
       "header": "Account",

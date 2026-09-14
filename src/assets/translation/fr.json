@@ -615,7 +615,10 @@
       "connect_section_title": "Se connecter à un groupe/famille existant",
       "connect_device_only_section_title": "Se connecter à cet appareil uniquement",
       "device_only_connect_hint": "Sélectionnez votre profil et saisissez votre PIN pour ouvrir la famille enregistrée sur cet appareil.",
-      "device_only_connect_empty": "Aucune famille enregistrée sur cet appareil. Créez d'abord un nouveau groupe."
+      "device_only_connect_empty": "Aucune famille enregistrée sur cet appareil. Créez d'abord un nouveau groupe.",
+      "replace_device_only_title": "Remplacer la famille existante ?",
+      "replace_device_only_message": "Une famille est déjà enregistrée sur cet appareil en mode « Cet appareil uniquement ». En créer une nouvelle l'effacera. Une seule famille peut exister dans ce mode.",
+      "replace_device_only_confirm": "Effacer et continuer"
     },
     "account": {
       "header": "Compte",

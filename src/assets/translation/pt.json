@@ -614,7 +614,10 @@
       "connect_section_title": "Ligar a um grupo/família existente",
       "connect_device_only_section_title": "Ligar a apenas este dispositivo",
       "device_only_connect_hint": "Selecione o seu perfil e introduza o PIN para abrir a família guardada neste dispositivo.",
-      "device_only_connect_empty": "Não há família guardada neste dispositivo. Crie primeiro um novo grupo."
+      "device_only_connect_empty": "Não há família guardada neste dispositivo. Crie primeiro um novo grupo.",
+      "replace_device_only_title": "Substituir a família existente?",
+      "replace_device_only_message": "Já existe uma família guardada neste dispositivo no modo «Apenas este dispositivo». Criar uma nova irá apagá-la. Só pode existir uma família neste modo.",
+      "replace_device_only_confirm": "Apagar e continuar"
     },
     "account": {
       "header": "Conta",

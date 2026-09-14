@@ -5,8 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
-import { Space, Text } from '~/components/ui';
-import { switchFamilyPersistMode } from '~/services/familyPersistMode';
+import { ConfirmModal } from '~/components/modals';
+import { ButtonColors, Space, Text } from '~/components/ui';
+import {
+  hasPersistedDeviceOnlyFamily,
+  switchFamilyPersistMode,
+} from '~/services/familyPersistMode';
 import { t } from '~/services';
 import { ESyncMode } from '~/store/settings/enums';
 import { selectParentIds } from '~/store/parents/selectors';
@@ -129,6 +133,40 @@ export function OnboardingSyncModeStep({
   const [isLoadingDeviceOnlyFamily, setIsLoadingDeviceOnlyFamily] =
     useState(false);
   const [deviceOnlyLoadVersion, setDeviceOnlyLoadVersion] = useState(0);
+  const [isReplaceDeviceOnlyConfirmVisible, setIsReplaceDeviceOnlyConfirmVisible] =
+    useState(false);
+
+  const handleSyncModeSelect = useCallback(
+    async (mode: ESyncMode) => {
+      if (mode === value) {
+        return;
+      }
+
+      if (mode === ESyncMode.deviceOnly) {
+        try {
+          const hasStoredFamily = await hasPersistedDeviceOnlyFamily();
+
+          if (hasStoredFamily) {
+            setIsReplaceDeviceOnlyConfirmVisible(true);
+            return;
+          }
+        } catch (error) {
+          console.error(
+            '[Tareitas] Failed to check device-only family storage',
+            error,
+          );
+        }
+      }
+
+      onChange(mode);
+    },
+    [onChange, value],
+  );
+
+  const handleConfirmReplaceDeviceOnlyFamily = useCallback(() => {
+    onChange(ESyncMode.deviceOnly);
+    setIsReplaceDeviceOnlyConfirmVisible(false);
+  }, [onChange]);
 
   const handleSetupPathChange = useCallback(
     async (path: OnboardingSetupPath) => {
@@ -325,7 +363,9 @@ export function OnboardingSyncModeStep({
 
         {setupPath === 'create' ? (
           <RadioButton.Group
-            onValueChange={nextValue => onChange(nextValue as ESyncMode)}
+            onValueChange={nextValue =>
+              void handleSyncModeSelect(nextValue as ESyncMode)
+            }
             value={value}
           >
             <View style={styles.syncModeOptions}>
@@ -334,13 +374,23 @@ export function OnboardingSyncModeStep({
                   key={option.mode}
                   {...option}
                   selected={value === option.mode}
-                  onSelect={() => onChange(option.mode)}
+                  onSelect={() => void handleSyncModeSelect(option.mode)}
                 />
               ))}
             </View>
           </RadioButton.Group>
         ) : null}
       </View>
+
+      <ConfirmModal
+        isVisible={isReplaceDeviceOnlyConfirmVisible}
+        onRequestClose={() => setIsReplaceDeviceOnlyConfirmVisible(false)}
+        onConfirm={handleConfirmReplaceDeviceOnlyFamily}
+        title={t('onboarding.sync_mode.replace_device_only_title')}
+        message={t('onboarding.sync_mode.replace_device_only_message')}
+        confirmLabel={t('onboarding.sync_mode.replace_device_only_confirm')}
+        confirmBgColor={ButtonColors.Orange}
+      />
 
       <View style={styles.dotsRow}>
         {SETUP_PATHS.map(path => (

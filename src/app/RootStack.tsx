@@ -33,10 +33,9 @@ import { usePendingSubtaskPhotoRecovery } from '~/hooks/usePendingSubtaskPhotoRe
 import { usePruneOrphanedTaskAssignments } from '~/hooks/usePruneOrphanedTaskAssignments';
 import { AppDispatch } from '~/store';
 import { ensureAppInstalledAt, initLanguage } from '~/store/settings';
-import { selectIsLangInitiating, selectLang } from '~/store/settings/selectors';
+import { selectIsLangInitiating } from '~/store/settings/selectors';
 import { Colors } from '~/styles';
 import { lightPaperTheme } from '~/styles/paperTheme';
-import { ELang } from '~/types/ELang';
 import { hideAppSplash } from '~/utils/hideAppSplash';
 
 export default function RootStack() {
@@ -44,8 +43,6 @@ export default function RootStack() {
 
   usePruneOrphanedTaskAssignments();
   useCatalogForegroundSync();
-
-  const lang = useSelector(selectLang) ?? ELang.es;
 
   const isLangInitiating = useSelector(selectIsLangInitiating);
 
@@ -86,7 +83,6 @@ export default function RootStack() {
       <ThemeProvider value={DefaultTheme}>
         <View style={styles.root}>
           <Stack
-            key={`stack-${lang}`}
             screenOptions={{
               headerShown: false,
               contentStyle: { backgroundColor: Colors.blue400 },

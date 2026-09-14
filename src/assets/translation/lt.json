@@ -615,7 +615,10 @@
       "connect_section_title": "Prisijungti prie esamos grupės/šeimos",
       "connect_device_only_section_title": "Prisijungti tik prie šio įrenginio",
       "device_only_connect_hint": "Pasirinkite savo profilį ir įveskite PIN, kad atidarytumėte šiame įrenginyje išsaugotą šeimą.",
-      "device_only_connect_empty": "Šiame įrenginyje nėra išsaugotos šeimos. Pirmiausia sukurkite naują grupę."
+      "device_only_connect_empty": "Šiame įrenginyje nėra išsaugotos šeimos. Pirmiausia sukurkite naują grupę.",
+      "replace_device_only_title": "Pakeisti esamą šeimą?",
+      "replace_device_only_message": "Šiame įrenginyje jau išsaugota šeima režimu „Tik šis įrenginys“. Sukūrus naują, ji bus ištrinta. Šiuo režimu gali būti tik viena šeima.",
+      "replace_device_only_confirm": "Ištrinti ir tęsti"
     },
     "account": {
       "header": "Paskyra",
