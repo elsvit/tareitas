@@ -2,10 +2,7 @@ import Constants from 'expo-constants';
 
 import type { Analytics } from '@react-native-firebase/analytics';
 
-import {
-  ANALYTICS_EVENTS,
-  ANALYTICS_USER_PROPERTIES,
-} from '~/constants/analytics';
+import { ANALYTICS_EVENTS, ANALYTICS_STATE } from '~/constants/analytics';
 import type { ImageStoreKind } from '~/store/images/types';
 import { ESyncMode } from '~/store/settings/enums';
 
@@ -84,7 +81,7 @@ async function setAnalyticsUserProperty(
 }
 
 export async function setAnalyticsLanguage(language: string): Promise<void> {
-  await setAnalyticsUserProperty(ANALYTICS_USER_PROPERTIES.language, language);
+  await setAnalyticsUserProperty(ANALYTICS_STATE.language, language);
 }
 
 export async function trackDeviceModeUsed(

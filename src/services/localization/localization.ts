@@ -30,6 +30,7 @@ import { I18nManager, NativeModules } from 'react-native';
 import { ELang } from '~/types/ELang';
 import { esJson, translations } from '~/assets/translation';
 import { DEFAULT_DATE_LOCALE, DEFAULT_LANG, FALLBACK_LANG, IS_IOS } from '~/constants/settings';
+import { setAnalyticsLanguage } from '~/services/analytics';
 import { setApiLang } from '~/services/api/lang';
 import { IAvailableLanguages, KeyOfJson } from '~/types/ILang';
 
@@ -157,9 +158,7 @@ class LocalizationServiceClass {
     await i18next.init(i18nextOptions);
     this.isInitialized = true;
 
-    void import('~/services/analytics').then(({ setAnalyticsLanguage }) =>
-      setAnalyticsLanguage(lang),
-    );
+    void setAnalyticsLanguage(lang);
 
     setApiLang(lang);
     setDefaultOptions({ locale: this.getDateLocale(lang) });
@@ -192,9 +191,7 @@ class LocalizationServiceClass {
     setDefaultOptions({ locale: DEFAULT_DATE_LOCALE });
 
     setApiLang(lang);
-    void import('~/services/analytics').then(({ setAnalyticsLanguage }) =>
-      setAnalyticsLanguage(lang),
-    );
+    void setAnalyticsLanguage(lang);
     this.isInitialized = true;
   }
 
@@ -208,9 +205,7 @@ class LocalizationServiceClass {
     setApiLang(resolvedLang);
     setDefaultOptions({ locale: this.getDateLocale(resolvedLang) });
 
-    void import('~/services/analytics').then(({ setAnalyticsLanguage }) =>
-      setAnalyticsLanguage(resolvedLang),
-    );
+    void setAnalyticsLanguage(resolvedLang);
 
     return resolvedLang;
   }

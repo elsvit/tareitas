@@ -25,9 +25,9 @@ export type OnboardingSetupPath =
   | 'connect_device_only';
 
 const SETUP_PATHS: OnboardingSetupPath[] = [
-  'create',
   'connect',
   'connect_device_only',
+  'create',
 ];
 
 type OnboardingSyncModeStepProps = {
@@ -201,58 +201,6 @@ export function OnboardingSyncModeStep({
       <View
         style={[
           styles.syncModeSectionBox,
-          setupPath === 'create' && styles.syncModeSectionBoxSelected,
-        ]}
-      >
-        <Pressable
-          onPress={() => onSetupPathChange('create')}
-          style={styles.syncModeSectionHeader}
-          accessibilityRole="radio"
-          accessibilityState={{ selected: setupPath === 'create' }}
-        >
-          <RadioButton
-            value="create"
-            status={setupPath === 'create' ? 'checked' : 'unchecked'}
-            onPress={() => onSetupPathChange('create')}
-            color={Colors.blue600}
-          />
-          <Text
-            variant="titleMedium"
-            fontFamily="fredoka"
-            weight="bold"
-            color={
-              setupPath === 'create' ? Colors.blue600 : Colors.grey700
-            }
-            style={styles.syncModeSectionHeaderText}
-          >
-            {t('onboarding.sync_mode.create_section_title')}
-          </Text>
-        </Pressable>
-
-        {setupPath === 'create' ? (
-          <RadioButton.Group
-            onValueChange={nextValue => onChange(nextValue as ESyncMode)}
-            value={value}
-          >
-            <View style={styles.syncModeOptions}>
-              {syncModeOptions.map(option => (
-                <SyncModeOptionCard
-                  key={option.mode}
-                  {...option}
-                  selected={value === option.mode}
-                  onSelect={() => onChange(option.mode)}
-                />
-              ))}
-            </View>
-          </RadioButton.Group>
-        ) : null}
-      </View>
-
-      <Space size={3} />
-
-      <View
-        style={[
-          styles.syncModeSectionBox,
           setupPath === 'connect' && styles.syncModeSectionBoxSelected,
         ]}
       >
@@ -339,6 +287,58 @@ export function OnboardingSyncModeStep({
               onSuccess={onMemberLoginSuccess}
             />
           )
+        ) : null}
+      </View>
+
+      <Space size={3} />
+
+      <View
+        style={[
+          styles.syncModeSectionBox,
+          setupPath === 'create' && styles.syncModeSectionBoxSelected,
+        ]}
+      >
+        <Pressable
+          onPress={() => onSetupPathChange('create')}
+          style={styles.syncModeSectionHeader}
+          accessibilityRole="radio"
+          accessibilityState={{ selected: setupPath === 'create' }}
+        >
+          <RadioButton
+            value="create"
+            status={setupPath === 'create' ? 'checked' : 'unchecked'}
+            onPress={() => onSetupPathChange('create')}
+            color={Colors.blue600}
+          />
+          <Text
+            variant="titleMedium"
+            fontFamily="fredoka"
+            weight="bold"
+            color={
+              setupPath === 'create' ? Colors.blue600 : Colors.grey700
+            }
+            style={styles.syncModeSectionHeaderText}
+          >
+            {t('onboarding.sync_mode.create_section_title')}
+          </Text>
+        </Pressable>
+
+        {setupPath === 'create' ? (
+          <RadioButton.Group
+            onValueChange={nextValue => onChange(nextValue as ESyncMode)}
+            value={value}
+          >
+            <View style={styles.syncModeOptions}>
+              {syncModeOptions.map(option => (
+                <SyncModeOptionCard
+                  key={option.mode}
+                  {...option}
+                  selected={value === option.mode}
+                  onSelect={() => onChange(option.mode)}
+                />
+              ))}
+            </View>
+          </RadioButton.Group>
         ) : null}
       </View>
 

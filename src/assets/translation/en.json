@@ -654,7 +654,7 @@
       "title": "Choose your setup",
       "subtitle": "You can use Tareitas on this device only, or sync your family across phones and tablets.",
       "multidevice": {
-        "title": "Several devices",
+        "title": "Several devices (recommended)",
         "description": "Sync tasks, rewards, and family data across devices. Family members can use the app on different devices."
       },
       "device_only": {
