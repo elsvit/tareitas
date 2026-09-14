@@ -9,7 +9,11 @@ import { RootStateT } from '~/store';
 import { ECommonActions } from '~/store/common/types';
 import { EStateName } from '~/store/enums';
 import { addParent } from '~/store/parents/slice';
-import { selectCurrentUser, selectIsAdmin } from '~/store/settings/selectors';
+import {
+  selectCurrentUser,
+  selectIsAdmin,
+  selectIsMultidevice,
+} from '~/store/settings/selectors';
 import { EFormMode } from '~/types/ECommon';
 import { IParent, ParentFormProps } from '~/types/IParent';
 
@@ -18,6 +22,7 @@ export default function ParentAdd() {
   const router = useRouter();
   const currentUser = useSelector(selectCurrentUser);
   const isAdmin = useSelector(selectIsAdmin);
+  const isMultidevice = useSelector(selectIsMultidevice);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -80,7 +85,7 @@ export default function ParentAdd() {
       <ParentForm
         mode={EFormMode.Add}
         onSave={handleSave}
-        showUniqueUsername
+        showUniqueUsername={isMultidevice}
         submitError={submitError}
         isSubmitting={isSaving}
       />
