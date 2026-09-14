@@ -614,7 +614,10 @@
       "connect_section_title": "Connetti a gruppo/famiglia esistente",
       "connect_device_only_section_title": "Connetti a solo questo dispositivo",
       "device_only_connect_hint": "Seleziona il tuo profilo e inserisci il PIN per aprire la famiglia salvata su questo dispositivo.",
-      "device_only_connect_empty": "Nessuna famiglia salvata su questo dispositivo. Crea prima un nuovo gruppo."
+      "device_only_connect_empty": "Nessuna famiglia salvata su questo dispositivo. Crea prima un nuovo gruppo.",
+      "replace_device_only_title": "Sostituire la famiglia esistente?",
+      "replace_device_only_message": "Su questo dispositivo è già salvata una famiglia in modalità «Solo questo dispositivo». Crearne una nuova la cancellerà. In questa modalità può esistere una sola famiglia.",
+      "replace_device_only_confirm": "Cancella e continua"
     },
     "account": {
       "header": "Account",

@@ -615,7 +615,10 @@
       "connect_section_title": "Připojit se k existující skupině/rodině",
       "connect_device_only_section_title": "Připojit k pouze tomuto zařízení",
       "device_only_connect_hint": "Vyberte svůj profil a zadejte PIN pro otevření rodiny uložené v tomto zařízení.",
-      "device_only_connect_empty": "V tomto zařízení není uložena žádná rodina. Nejprve vytvořte novou skupinu."
+      "device_only_connect_empty": "V tomto zařízení není uložena žádná rodina. Nejprve vytvořte novou skupinu.",
+      "replace_device_only_title": "Nahradit existující rodinu?",
+      "replace_device_only_message": "V tomto zařízení je již uložena rodina v režimu „Pouze toto zařízení“. Vytvoření nové ji smaže. V tomto režimu může existovat pouze jedna rodina.",
+      "replace_device_only_confirm": "Smazat a pokračovat"
     },
     "account": {
       "header": "Účet",

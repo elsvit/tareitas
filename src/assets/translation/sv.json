@@ -615,7 +615,10 @@
       "connect_section_title": "Anslut till befintlig grupp/familj",
       "connect_device_only_section_title": "Anslut till endast den här enheten",
       "device_only_connect_hint": "Välj din profil och ange din PIN för att öppna familjen som sparats på den här enheten.",
-      "device_only_connect_empty": "Ingen familj är sparad på den här enheten. Skapa en ny grupp först."
+      "device_only_connect_empty": "Ingen familj är sparad på den här enheten. Skapa en ny grupp först.",
+      "replace_device_only_title": "Ersätta befintlig familj?",
+      "replace_device_only_message": "En familj är redan sparad på den här enheten i läget „Endast den här enheten”. Att skapa en ny raderar den. Endast en familj kan finnas i det här läget.",
+      "replace_device_only_confirm": "Radera och fortsätt"
     },
     "account": {
       "header": "Konto",

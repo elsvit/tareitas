@@ -193,10 +193,16 @@ export async function validatePersistedFamilyOnBoot(
       return;
     }
 
-    const recovered = await rehydrateDeviceOnlyConnectFromStorage(dispatch);
+    persistor?.pause?.();
 
-    if (recovered) {
-      return;
+    try {
+      const recovered = await rehydrateDeviceOnlyConnectFromStorage(dispatch);
+
+      if (recovered) {
+        return;
+      }
+    } finally {
+      resumeFamilyPersist(persistor);
     }
 
     await openSetupBecauseFamilyMissing(dispatch, getState);

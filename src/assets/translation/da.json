@@ -614,7 +614,10 @@
       "connect_section_title": "Forbind til eksisterende gruppe/familie",
       "connect_device_only_section_title": "Forbind til kun denne enhed",
       "device_only_connect_hint": "Vælg din profil, og indtast din PIN for at åbne familien gemt på denne enhed.",
-      "device_only_connect_empty": "Der er ingen familie gemt på denne enhed. Opret først en ny gruppe."
+      "device_only_connect_empty": "Der er ingen familie gemt på denne enhed. Opret først en ny gruppe.",
+      "replace_device_only_title": "Erstat eksisterende familie?",
+      "replace_device_only_message": "En familie er allerede gemt på denne enhed i tilstanden „Kun denne enhed”. Oprettelse af en ny vil slette den. Kun én familie kan findes i denne tilstand.",
+      "replace_device_only_confirm": "Slet og fortsæt"
     },
     "account": {
       "header": "Konto",

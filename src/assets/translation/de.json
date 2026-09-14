@@ -614,7 +614,10 @@
       "connect_section_title": "Mit bestehender Gruppe/Familie verbinden",
       "connect_device_only_section_title": "Mit nur diesem Gerät verbinden",
       "device_only_connect_hint": "Wähle dein Profil und gib deine PIN ein, um die auf diesem Gerät gespeicherte Familie zu öffnen.",
-      "device_only_connect_empty": "Auf diesem Gerät ist keine Familie gespeichert. Erstelle zuerst eine neue Gruppe."
+      "device_only_connect_empty": "Auf diesem Gerät ist keine Familie gespeichert. Erstelle zuerst eine neue Gruppe.",
+      "replace_device_only_title": "Bestehende Familie ersetzen?",
+      "replace_device_only_message": "Auf diesem Gerät ist bereits eine Familie im Modus „Nur dieses Gerät“ gespeichert. Eine neue Familie zu erstellen löscht sie. In diesem Modus kann nur eine Familie existieren.",
+      "replace_device_only_confirm": "Löschen und fortfahren"
     },
     "account": {
       "header": "Konto",

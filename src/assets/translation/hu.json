@@ -615,7 +615,10 @@
       "connect_section_title": "Csatlakozás meglévő csoporthoz/családhoz",
       "connect_device_only_section_title": "Csatlakozás csak ehhez az eszközhöz",
       "device_only_connect_hint": "Válaszd ki a profilodat, és add meg a PIN-kódot a készüléken mentett család megnyitásához.",
-      "device_only_connect_empty": "Ezen az eszközön nincs mentett család. Először hozz létre egy új csoportot."
+      "device_only_connect_empty": "Ezen az eszközön nincs mentett család. Először hozz létre egy új csoportot.",
+      "replace_device_only_title": "Lecseréli a meglévő családot?",
+      "replace_device_only_message": "Ezen az eszközön már van mentett család a „Csak ez az eszköz” módban. Új létrehozása törli azt. Ebben a módban csak egy család lehet.",
+      "replace_device_only_confirm": "Törlés és folytatás"
     },
     "account": {
       "header": "Fiók",

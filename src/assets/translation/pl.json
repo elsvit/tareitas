@@ -615,7 +615,10 @@
       "connect_section_title": "Połącz z istniejącą grupą/rodziną",
       "connect_device_only_section_title": "Połącz z tym urządzeniem",
       "device_only_connect_hint": "Wybierz swój profil i wpisz PIN, aby otworzyć rodzinę zapisaną na tym urządzeniu.",
-      "device_only_connect_empty": "Na tym urządzeniu nie zapisano rodziny. Najpierw utwórz nową grupę."
+      "device_only_connect_empty": "Na tym urządzeniu nie zapisano rodziny. Najpierw utwórz nową grupę.",
+      "replace_device_only_title": "Zastąpić istniejącą rodzinę?",
+      "replace_device_only_message": "Na tym urządzeniu jest już zapisana rodzina w trybie „Tylko to urządzenie”. Utworzenie nowej ją usunie. W tym trybie może istnieć tylko jedna rodzina.",
+      "replace_device_only_confirm": "Usuń i kontynuuj"
     },
     "account": {
       "header": "Konto",

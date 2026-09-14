@@ -614,7 +614,10 @@
       "connect_section_title": "Ühenda olemasoleva grupi/perega",
       "connect_device_only_section_title": "Ühenda ainult selle seadmega",
       "device_only_connect_hint": "Vali oma profiil ja sisesta PIN, et avada sellesse seadmesse salvestatud pere.",
-      "device_only_connect_empty": "Selles seadmes pole salvestatud perekonda. Loo esmalt uus grupp."
+      "device_only_connect_empty": "Selles seadmes pole salvestatud perekonda. Loo esmalt uus grupp.",
+      "replace_device_only_title": "Asendada olemasolev pere?",
+      "replace_device_only_message": "Sellel seadmel on juba salvestatud perekond režiimis „Ainult see seade”. Uue loomine kustutab selle. Selles režiimis saab olla ainult üks perekond.",
+      "replace_device_only_confirm": "Kustuta ja jätka"
     },
     "account": {
       "header": "Konto",

@@ -615,7 +615,10 @@
       "connect_section_title": "Poveži se s postojećom grupom/obitelji",
       "connect_device_only_section_title": "Poveži se samo s ovim uređajem",
       "device_only_connect_hint": "Odaberite svoj profil i unesite PIN kako biste otvorili obitelj spremljenu na ovom uređaju.",
-      "device_only_connect_empty": "Na ovom uređaju nema spremljene obitelji. Prvo stvorite novu grupu."
+      "device_only_connect_empty": "Na ovom uređaju nema spremljene obitelji. Prvo stvorite novu grupu.",
+      "replace_device_only_title": "Zamijeniti postojeću obitelj?",
+      "replace_device_only_message": "Na ovom uređaju već je spremljena obitelj u načinu „Samo ovaj uređaj”. Stvaranje nove obitelji izbrisat će je. U ovom načinu može postojati samo jedna obitelj.",
+      "replace_device_only_confirm": "Izbriši i nastavi"
     },
     "account": {
       "header": "Račun",

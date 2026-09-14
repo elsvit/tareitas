@@ -615,7 +615,10 @@
       "connect_section_title": "Savienoties ar esošu grupu/ģimeni",
       "connect_device_only_section_title": "Savienoties tikai ar šo ierīci",
       "device_only_connect_hint": "Izvēlieties savu profilu un ievadiet PIN, lai atvērtu šajā ierīcē saglabāto ģimeni.",
-      "device_only_connect_empty": "Šajā ierīcē nav saglabāta ģimene. Vispirms izveidojiet jaunu grupu."
+      "device_only_connect_empty": "Šajā ierīcē nav saglabāta ģimene. Vispirms izveidojiet jaunu grupu.",
+      "replace_device_only_title": "Aizvietot esošo ģimeni?",
+      "replace_device_only_message": "Šajā ierīcē jau ir saglabāta ģimene režīmā „Tikai šī ierīce”. Jaunas izveide to dzēsīs. Šajā režīmā var pastāvēt tikai viena ģimene.",
+      "replace_device_only_confirm": "Dzēst un turpināt"
     },
     "account": {
       "header": "Konts",

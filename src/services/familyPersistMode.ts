@@ -82,6 +82,46 @@ const ENTITY_FAMILY_PERSIST_KEYS = new Set<string>([
   EStateName.rewards,
 ]);
 
+/** Never overwrite stored task data with an empty in-memory slice (persist race). */
+const PROTECT_EMPTY_OVERWRITE_KEYS = new Set<string>([
+  EStateName.tasks,
+  EStateName.taskAssignment,
+]);
+
+function getEntitySliceIdCount(slice: unknown): number {
+  if (!slice || typeof slice !== 'object') {
+    return 0;
+  }
+
+  return ensureEntityState({
+    ...(slice as Parameters<typeof ensureEntityState>[0]),
+  }).ids.length;
+}
+
+async function shouldSkipEmptyOverwrite(
+  storage: ReturnType<typeof getFamilyPersistStorageForMode>,
+  key: (typeof FAMILY_PERSIST_KEYS)[number],
+  slice: unknown,
+): Promise<boolean> {
+  if (!PROTECT_EMPTY_OVERWRITE_KEYS.has(key)) {
+    return false;
+  }
+
+  if (getEntitySliceIdCount(slice) > 0) {
+    return false;
+  }
+
+  const raw = await storage.getItem(key);
+
+  if (!raw) {
+    return false;
+  }
+
+  const stored = parsePersistedSlice<unknown>(raw, key);
+
+  return getEntitySliceIdCount(stored) > 0;
+}
+
 function parsePersistedSlice<T>(raw: string, key?: string): T | null {
   try {
     let parsed: unknown = JSON.parse(raw);
@@ -137,6 +177,11 @@ async function persistDeviceOnlyFamilyToBucket(
 
   for (const key of FAMILY_PERSIST_KEYS) {
     const slice = state[key as keyof IState];
+
+    if (await shouldSkipEmptyOverwrite(storage, key, slice)) {
+      continue;
+    }
+
     const serialized = serializeFamilySliceForBucket(key, slice);
 
     if (!serialized) {
@@ -151,6 +196,19 @@ function isDeviceOnlyFamilyState(state: IState): boolean {
   return (
     selectSyncMode(state) === ESyncMode.deviceOnly || !selectFamilyId(state)
   );
+}
+
+export async function hasPersistedDeviceOnlyFamily(): Promise<boolean> {
+  const storage = getFamilyPersistStorageForMode(ESyncMode.deviceOnly);
+  const raw = await storage.getItem(EStateName.parents);
+
+  if (!raw) {
+    return false;
+  }
+
+  const payload = parsePersistedSlice<unknown>(raw, EStateName.parents);
+
+  return getEntitySliceIdCount(payload) > 0;
 }
 
 export async function rehydrateDeviceOnlyConnectFromStorage(
@@ -178,34 +236,42 @@ async function rehydrateFamilySlicesFromStorage(
   dispatch: AppDispatch,
   mode: ESyncMode,
 ): Promise<void> {
-  for (const key of FAMILY_PERSIST_KEYS) {
-    const clearAction = CLEAR_FAMILY_SLICE_ACTIONS[key];
+  cancelScheduledFamilySnapshot();
+  familyRehydrating = true;
+  persistor?.pause?.();
 
-    if (clearAction) {
-      dispatch(clearAction());
-    }
-  }
+  try {
+    for (const key of FAMILY_PERSIST_KEYS) {
+      const clearAction = CLEAR_FAMILY_SLICE_ACTIONS[key];
 
-  const storage = getFamilyPersistStorageForMode(mode);
-
-  for (const key of FAMILY_PERSIST_KEYS) {
-    const raw = await storage.getItem(key);
-
-    if (!raw) {
-      continue;
-    }
-
-    const payload = parsePersistedSlice<unknown>(raw, key);
-
-    if (payload) {
-      if (!dispatchFamilySliceHydrate(dispatch, key, payload)) {
-        dispatch({
-          type: REHYDRATE,
-          key,
-          payload,
-        });
+      if (clearAction) {
+        dispatch(clearAction());
       }
     }
+
+    const storage = getFamilyPersistStorageForMode(mode);
+
+    for (const key of FAMILY_PERSIST_KEYS) {
+      const raw = await storage.getItem(key);
+
+      if (!raw) {
+        continue;
+      }
+
+      const payload = parsePersistedSlice<unknown>(raw, key);
+
+      if (payload) {
+        if (!dispatchFamilySliceHydrate(dispatch, key, payload)) {
+          dispatch({
+            type: REHYDRATE,
+            key,
+            payload,
+          });
+        }
+      }
+    }
+  } finally {
+    familyRehydrating = false;
   }
 }
 
@@ -239,13 +305,26 @@ export async function beginDeviceOnlyFamilyCreate(
 
 let familySnapshotTimer: ReturnType<typeof setTimeout> | null = null;
 let familySnapshotWritesSuppressed = false;
+let familyRehydrating = false;
+let familySnapshotPersistChain: Promise<void> = Promise.resolve();
 
 const FAMILY_SNAPSHOT_DEBOUNCE_MS = 400;
+
+function cancelScheduledFamilySnapshot(): void {
+  if (familySnapshotTimer) {
+    clearTimeout(familySnapshotTimer);
+    familySnapshotTimer = null;
+  }
+}
+
+function shouldSkipFamilySnapshotWrite(): boolean {
+  return familySnapshotWritesSuppressed || familyRehydrating;
+}
 
 export function scheduleFamilySnapshot(
   getState: () => IState = store.getState,
 ): void {
-  if (familySnapshotWritesSuppressed) {
+  if (shouldSkipFamilySnapshotWrite()) {
     return;
   }
 
@@ -262,9 +341,10 @@ export function scheduleFamilySnapshot(
 export async function flushScheduledFamilySnapshot(
   getState: () => IState = store.getState,
 ): Promise<void> {
-  if (familySnapshotTimer) {
-    clearTimeout(familySnapshotTimer);
-    familySnapshotTimer = null;
+  cancelScheduledFamilySnapshot();
+
+  if (shouldSkipFamilySnapshotWrite()) {
+    return;
   }
 
   await persistActiveFamilySnapshot(getState);
@@ -282,11 +362,10 @@ export async function withFamilySnapshotWritesSuppressed<T>(
   }
 }
 
-/** Snapshot in-memory family slices to the active bucket (deviceOnly writes directly). */
-export async function persistActiveFamilySnapshot(
-  getState: () => IState = store.getState,
+async function writeActiveFamilySnapshot(
+  getState: () => IState,
 ): Promise<void> {
-  if (familySnapshotWritesSuppressed) {
+  if (shouldSkipFamilySnapshotWrite()) {
     return;
   }
 
@@ -299,13 +378,26 @@ export async function persistActiveFamilySnapshot(
 
     setActiveFamilyPersistMode(ESyncMode.deviceOnly);
     await persistDeviceOnlyFamilyToBucket(getState);
-  } else if (syncMode === ESyncMode.multidevice) {
-    setActiveFamilyPersistMode(ESyncMode.multidevice);
-  } else {
     return;
   }
 
-  await flushFamilyPersistMode(persistor);
+  if (syncMode === ESyncMode.multidevice) {
+    setActiveFamilyPersistMode(ESyncMode.multidevice);
+    await flushFamilyPersistMode(persistor);
+  }
+}
+
+/** Snapshot in-memory family slices to the active bucket (deviceOnly writes directly). */
+export async function persistActiveFamilySnapshot(
+  getState: () => IState = store.getState,
+): Promise<void> {
+  familySnapshotPersistChain = familySnapshotPersistChain
+    .then(() => writeActiveFamilySnapshot(getState))
+    .catch(error => {
+      console.error('[Tareitas] Failed to persist family snapshot', error);
+    });
+
+  await familySnapshotPersistChain;
 }
 
 export async function saveDeviceOnlyFamilyForReconnect(
@@ -352,6 +444,8 @@ export function resumeFamilyPersist(
 }
 
 export function clearFamilySlicesInMemory(dispatch: AppDispatch): void {
+  cancelScheduledFamilySnapshot();
+
   for (const key of FAMILY_PERSIST_KEYS) {
     const clearAction = CLEAR_FAMILY_SLICE_ACTIONS[key];
 

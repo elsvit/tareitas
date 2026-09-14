@@ -615,7 +615,10 @@
       "connect_section_title": "Yhdistä olemassa olevaan ryhmään/perheeseen",
       "connect_device_only_section_title": "Yhdistä vain tähän laitteeseen",
       "device_only_connect_hint": "Valitse profiilisi ja syötä PIN avataksesi tähän laitteeseen tallennetun perheen.",
-      "device_only_connect_empty": "Tällä laitteella ei ole tallennettua perhettä. Luo ensin uusi ryhmä."
+      "device_only_connect_empty": "Tällä laitteella ei ole tallennettua perhettä. Luo ensin uusi ryhmä.",
+      "replace_device_only_title": "Korvataanko olemassa oleva perhe?",
+      "replace_device_only_message": "Tällä laitteella on jo tallennettu perhe tilassa „Vain tämä laite”. Uuden luominen poistaa sen. Vain yksi perhe voi olla olemassa tässä tilassa.",
+      "replace_device_only_confirm": "Poista ja jatka"
     },
     "account": {
       "header": "Tili",

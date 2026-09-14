@@ -615,7 +615,10 @@
       "connect_section_title": "Verbinden met bestaande groep/familie",
       "connect_device_only_section_title": "Verbinden met alleen dit apparaat",
       "device_only_connect_hint": "Selecteer je profiel en voer je PIN in om de op dit apparaat opgeslagen familie te openen.",
-      "device_only_connect_empty": "Er is geen familie opgeslagen op dit apparaat. Maak eerst een nieuwe groep."
+      "device_only_connect_empty": "Er is geen familie opgeslagen op dit apparaat. Maak eerst een nieuwe groep.",
+      "replace_device_only_title": "Bestaande familie vervangen?",
+      "replace_device_only_message": "Er is al een familie opgeslagen op dit apparaat in de modus „Alleen dit apparaat”. Een nieuwe familie aanmaken wist de bestaande. In deze modus kan er maar één familie zijn.",
+      "replace_device_only_confirm": "Wissen en doorgaan"
     },
     "account": {
       "header": "Account",

@@ -10,6 +10,8 @@ const FAMILY_SLICE_NAMES = new Set<string>(FAMILY_PERSIST_KEYS);
 const EXTRA_FAMILY_PERSIST_ACTIONS = new Set([
   `${EStateName.tasks}/generateTasksForDate`,
   `${EStateName.tasks}/addGeneratedTask`,
+  `${EStateName.taskBase}/syncTaskBaseTranslations`,
+  `${EStateName.rewardBase}/syncRewardBaseTranslations`,
   `${EStateName.rewards}/syncEarnedRewardPeriods`,
   `${EStateName.images}/setTaskImageUrl`,
   `${EStateName.images}/setRewardImageUrl`,
