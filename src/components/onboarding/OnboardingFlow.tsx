@@ -51,6 +51,7 @@ import {
     selectAuthToken,
     selectAuthUserId,
     selectFamilyId,
+    selectLang,
     selectPendingReturnRoute,
     selectSyncMode,
 } from '~/store/settings/selectors';
@@ -113,8 +114,9 @@ export function OnboardingFlow({
   const parentIds = useSelector(selectParentIds);
   const familyId = useSelector(selectFamilyId);
   const storedSyncMode = useSelector(selectSyncMode);
+  const lang = useSelector(selectLang);
 
-  const introSlides = useMemo(() => getOnboardingIntroSlides(), []);
+  const introSlides = useMemo(() => getOnboardingIntroSlides(), [lang]);
 
   const opensOnSetup = skipIntro;
   const initialStep = opensOnSetup ? ONBOARDING_STEP.syncMode : 0;

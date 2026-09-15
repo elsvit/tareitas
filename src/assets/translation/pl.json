@@ -612,6 +612,7 @@
         "description": "Wszystko pozostaje na tym telefonie lub tablecie. Członkowie rodziny mogą korzystać z aplikacji tylko na tym urządzeniu. Możesz używać aplikacji offline."
       },
       "create_section_title": "Utwórz nową grupę/rodzinę",
+      "privacy_policy": "Polityka prywatności",
       "connect_section_title": "Połącz z istniejącą grupą/rodziną",
       "connect_device_only_section_title": "Połącz z tym urządzeniem",
       "device_only_connect_hint": "Wybierz swój profil i wpisz PIN, aby otworzyć rodzinę zapisaną na tym urządzeniu.",

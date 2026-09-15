@@ -662,6 +662,7 @@
         "description": "Everything stays on this phone or tablet. Family members can use the app only on this device. You can use the app offline."
       },
       "create_section_title": "Create new group/family",
+      "privacy_policy": "Privacy Policy",
       "connect_section_title": "Connect to existing group/family",
       "connect_device_only_section_title": "Connect to this device only",
       "device_only_connect_hint": "Select your profile and enter your PIN to open the family saved on this device.",

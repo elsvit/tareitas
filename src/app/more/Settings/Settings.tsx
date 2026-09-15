@@ -244,6 +244,8 @@ export default function Settings() {
   }, [
     activeLang,
     activeLanguageName,
+    currentLang,
+    languageName,
     handleChildPasswordObligatoryChange,
     handleChildHasChangeFamilyChange,
     handleShowLoginNameChange,

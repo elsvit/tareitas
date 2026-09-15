@@ -611,6 +611,7 @@
         "description": "Tudo fica neste telemóvel ou tablet. Os membros da família só podem usar a app neste dispositivo. Pode usar a app offline."
       },
       "create_section_title": "Criar novo grupo/família",
+      "privacy_policy": "Política de privacidade",
       "connect_section_title": "Ligar a um grupo/família existente",
       "connect_device_only_section_title": "Ligar a apenas este dispositivo",
       "device_only_connect_hint": "Selecione o seu perfil e introduza o PIN para abrir a família guardada neste dispositivo.",

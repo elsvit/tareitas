@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
   },
 
   dateBadge: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 8,
     paddingVertical: 6,
     borderRadius: 12,
     borderWidth: 2,

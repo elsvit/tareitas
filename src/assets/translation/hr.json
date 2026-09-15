@@ -612,6 +612,7 @@
         "description": "Sve ostaje na ovom telefonu ili tabletu. Članovi obitelji mogu koristiti aplikaciju samo na ovom uređaju. Aplikaciju možete koristiti offline."
       },
       "create_section_title": "Stvori novu grupu/obitelj",
+      "privacy_policy": "Pravila privatnosti",
       "connect_section_title": "Poveži se s postojećom grupom/obitelji",
       "connect_device_only_section_title": "Poveži se samo s ovim uređajem",
       "device_only_connect_hint": "Odaberite svoj profil i unesite PIN kako biste otvorili obitelj spremljenu na ovom uređaju.",

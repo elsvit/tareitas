@@ -612,6 +612,7 @@
         "description": "Minden ezen a telefonon vagy tableten marad. A családtagok csak ezen az eszközön használhatják az alkalmazást. Offline is használhatja az alkalmazást."
       },
       "create_section_title": "Új csoport/család létrehozása",
+      "privacy_policy": "Adatvédelmi irányelvek",
       "connect_section_title": "Csatlakozás meglévő csoporthoz/családhoz",
       "connect_device_only_section_title": "Csatlakozás csak ehhez az eszközhöz",
       "device_only_connect_hint": "Válaszd ki a profilodat, és add meg a PIN-kódot a készüléken mentett család megnyitásához.",

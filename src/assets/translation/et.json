@@ -611,6 +611,7 @@
         "description": "Kõik jääb sellesse telefoni või tahvelarvutisse. Pereliikmed saavad rakendust kasutada ainult selles seadmes. Saate rakendust kasutada võrguühenduseta."
       },
       "create_section_title": "Loo uus grupp/pere",
+      "privacy_policy": "Privaatsuspoliitika",
       "connect_section_title": "Ühenda olemasoleva grupi/perega",
       "connect_device_only_section_title": "Ühenda ainult selle seadmega",
       "device_only_connect_hint": "Vali oma profiil ja sisesta PIN, et avada sellesse seadmesse salvestatud pere.",

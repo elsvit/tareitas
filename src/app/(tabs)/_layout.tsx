@@ -1,6 +1,5 @@
 import { Tabs } from 'expo-router';
-import { t } from 'i18next';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
@@ -19,7 +18,8 @@ import { IS_ANDROID } from '~/constants/settings';
 import { ThemeColors } from '~/constants/theme';
 import { useColorScheme } from '~/hooks/use-color-scheme';
 import { useTabBarBottomInset, TAB_BAR_MIN_PADDING_BOTTOM, TAB_BAR_PADDING_TOP, TAB_BAR_CONTENT_HEIGHT } from '~/hooks/useTabBarBottomInset';
-import { selectIsRecurringTabSeparated } from '~/store/settings/selectors';
+import { t } from '~/services';
+import { selectIsRecurringTabSeparated, selectLang } from '~/store/settings/selectors';
 import { EMainTabs } from '~/types/ENavigation';
 
 const TAB_BAR_COLOR = '#016FE8';
@@ -45,33 +45,37 @@ export default function TabLayout() {
     TAB_BAR_PADDING_TOP + TAB_BAR_CONTENT_HEIGHT + tabBarPaddingBottom;
 
   const isRoutinesTabSeparated = useSelector(selectIsRecurringTabSeparated);
+  const lang = useSelector(selectLang);
 
-  const MAIN_TABS = [
-    {
-      name: EMainTabs.Tasks,
-      Icon: TasksIcon,
-      ActiveIcon: TasksActiveIcon,
-      title: t('tasks.title') || 'Tasks',
-    },
-    {
-      name: EMainTabs.Habits,
-      Icon: RoutinesIcon,
-      ActiveIcon: RoutinesActiveIcon,
-      title: t('habits.title') || 'Habits',
-    },
-    {
-      name: EMainTabs.Rewards,
-      Icon: RewardsIcon,
-      ActiveIcon: RewardsActiveIcon,
-      title: t('rewards.title') || 'Rewards',
-    },
-    {
-      name: EMainTabs.More,
-      Icon: MoreIcon,
-      ActiveIcon: MoreActiveIcon,
-      title: t('more.title') || 'More',
-    },
-  ];
+  const MAIN_TABS = useMemo(
+    () => [
+      {
+        name: EMainTabs.Tasks,
+        Icon: TasksIcon,
+        ActiveIcon: TasksActiveIcon,
+        title: t('tasks.title') || 'Tasks',
+      },
+      {
+        name: EMainTabs.Habits,
+        Icon: RoutinesIcon,
+        ActiveIcon: RoutinesActiveIcon,
+        title: t('habits.title') || 'Habits',
+      },
+      {
+        name: EMainTabs.Rewards,
+        Icon: RewardsIcon,
+        ActiveIcon: RewardsActiveIcon,
+        title: t('rewards.title') || 'Rewards',
+      },
+      {
+        name: EMainTabs.More,
+        Icon: MoreIcon,
+        ActiveIcon: MoreActiveIcon,
+        title: t('more.title') || 'More',
+      },
+    ],
+    [lang],
+  );
 
   const compactTabLabels = MAIN_TABS.filter(
     tab => isRoutinesTabSeparated || tab.name !== EMainTabs.Habits,

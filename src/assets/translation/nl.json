@@ -612,6 +612,7 @@
         "description": "Alles blijft op deze telefoon of tablet. Gezinsleden kunnen de app alleen op dit apparaat gebruiken. Je kunt de app offline gebruiken."
       },
       "create_section_title": "Nieuwe groep/familie maken",
+      "privacy_policy": "Privacybeleid",
       "connect_section_title": "Verbinden met bestaande groep/familie",
       "connect_device_only_section_title": "Verbinden met alleen dit apparaat",
       "device_only_connect_hint": "Selecteer je profiel en voer je PIN in om de op dit apparaat opgeslagen familie te openen.",

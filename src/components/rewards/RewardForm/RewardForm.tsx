@@ -310,7 +310,7 @@ export const RewardForm: FC<Props> = ({
                     render={({ field: { value, onChange } }) => (
                       <>
                         <SelectMulti
-                          label={t('users.childs')}
+                          label={t('users.children')}
                           options={childOptions}
                           value={value}
                           onChange={onChange}
