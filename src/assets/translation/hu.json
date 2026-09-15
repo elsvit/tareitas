@@ -600,7 +600,7 @@
       "skip_for_now": "Kihagyás most"
     },
     "sync_mode": {
-      "header": "Hogyan szeretné használni a Tareitast?",
+      "header": "Mód",
       "title": "Válassza ki a beállítást",
       "subtitle": "Használhatja a Tareitast csak ezen az eszközön, vagy szinkronizálhatja családját telefonok és tabletek között.",
       "multidevice": {

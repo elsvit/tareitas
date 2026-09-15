@@ -600,7 +600,7 @@
       "skip_for_now": "Ohita toistaiseksi"
     },
     "sync_mode": {
-      "header": "Miten haluat käyttää Tareitasta?",
+      "header": "Tila",
       "title": "Valitse asetukset",
       "subtitle": "Voit käyttää Tareitasta vain tällä laitteella tai synkronoida perheesi puhelimien ja tablettien välillä.",
       "multidevice": {

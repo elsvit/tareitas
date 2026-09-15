@@ -600,7 +600,7 @@
       "skip_for_now": "Preskoči za sada"
     },
     "sync_mode": {
-      "header": "Kako želite koristiti Tareitas?",
+      "header": "Način",
       "title": "Odaberite postavku",
       "subtitle": "Možete koristiti Tareitas samo na ovom uređaju ili sinkronizirati obitelj između telefona i tableta.",
       "multidevice": {

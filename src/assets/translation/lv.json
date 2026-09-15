@@ -600,7 +600,7 @@
       "skip_for_now": "Pagaidām izlaist"
     },
     "sync_mode": {
-      "header": "Kā vēlaties izmantot Tareitas?",
+      "header": "Režīms",
       "title": "Izvēlieties iestatījumu",
       "subtitle": "Varat izmantot Tareitas tikai šajā ierīcē vai sinhronizēt ģimeni starp tālruņiem un planšetdatoriem.",
       "multidevice": {

@@ -599,7 +599,7 @@
       "skip_for_now": "Jäta praegu vahele"
     },
     "sync_mode": {
-      "header": "Kuidas soovite Tareitast kasutada?",
+      "header": "Režiim",
       "title": "Valige seadistus",
       "subtitle": "Saate kasutada Tareitast ainult selles seadmes või sünkroniseerida pere telefonide ja tahvelarvutite vahel.",
       "multidevice": {

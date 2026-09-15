@@ -600,7 +600,7 @@
       "skip_for_now": "Nu overslaan"
     },
     "sync_mode": {
-      "header": "Hoe wilt u Tareitas gebruiken?",
+      "header": "Modus",
       "title": "Kies uw instelling",
       "subtitle": "U kunt Tareitas alleen op dit apparaat gebruiken of uw gezin synchroniseren tussen telefoons en tablets.",
       "multidevice": {
