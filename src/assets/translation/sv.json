@@ -600,7 +600,7 @@
       "skip_for_now": "Hoppa över för nu"
     },
     "sync_mode": {
-      "header": "Hur vill du använda Tareitas?",
+      "header": "Läge",
       "title": "Välj din inställning",
       "subtitle": "Du kan använda Tareitas endast på den här enheten eller synka din familj mellan telefoner och surfplattor.",
       "multidevice": {

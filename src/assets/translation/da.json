@@ -599,7 +599,7 @@
       "skip_for_now": "Spring over for nu"
     },
     "sync_mode": {
-      "header": "Hvordan vil du bruge Tareitas?",
+      "header": "Tilstand",
       "title": "Vælg din opsætning",
       "subtitle": "Du kan bruge Tareitas kun på denne enhed, eller synkronisere din familie på tværs af telefoner og tablets.",
       "multidevice": {

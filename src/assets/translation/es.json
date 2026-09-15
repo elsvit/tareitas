@@ -650,7 +650,7 @@
       "skip_for_now": "Omitir por ahora"
     },
     "sync_mode": {
-      "header": "¿Cómo quieres usar Tareitas?",
+      "header": "Modo",
       "title": "Elige tu configuración",
       "subtitle": "Puedes usar Tareitas solo en este dispositivo o sincronizar tu familia entre teléfonos y tabletas.",
       "multidevice": {

@@ -599,7 +599,7 @@
       "skip_for_now": "Vorerst überspringen"
     },
     "sync_mode": {
-      "header": "Wie möchtest du Tareitas nutzen?",
+      "header": "Modus",
       "title": "Wähle deine Einrichtung",
       "subtitle": "Du kannst Tareitas nur auf diesem Gerät nutzen oder deine Familie zwischen Handys und Tablets synchronisieren.",
       "multidevice": {

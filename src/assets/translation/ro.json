@@ -600,7 +600,7 @@
       "skip_for_now": "Omite deocamdată"
     },
     "sync_mode": {
-      "header": "Cum vrei să folosești Tareitas?",
+      "header": "Mod",
       "title": "Alege configurarea",
       "subtitle": "Poți folosi Tareitas doar pe acest dispozitiv sau poți sincroniza familia între telefoane și tablete.",
       "multidevice": {
