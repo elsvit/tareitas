@@ -33,6 +33,8 @@ export interface IStateSettings {
   pendingReturnRoute: PendingReturnRoute | null;
   sessionPauseCount: number;
   appInstalledAt: string | null;
+  /** False on first launch until intro slides are finished; undefined = legacy user. */
+  onboardingIntroCompleted?: boolean;
 }
 
 export type PendingReturnRoute = {

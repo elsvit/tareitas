@@ -51,6 +51,7 @@ const initialState: IStateSettings = {
   pendingReturnRoute: null,
   sessionPauseCount: 0,
   appInstalledAt: null,
+  onboardingIntroCompleted: false,
 };
 
 export const settingsSlice = createSlice({
@@ -258,6 +259,12 @@ export const settingsSlice = createSlice({
         state.appInstalledAt = new Date().toISOString();
       }
     },
+    setOnboardingIntroCompleted: (
+      state,
+      action: PayloadAction<boolean>,
+    ) => {
+      state.onboardingIntroCompleted = action.payload;
+    },
   },
 });
 
@@ -301,4 +308,5 @@ export const {
   pauseSessionChecks,
   resumeSessionChecks,
   ensureAppInstalledAt,
+  setOnboardingIntroCompleted,
 } = settingsSlice.actions;

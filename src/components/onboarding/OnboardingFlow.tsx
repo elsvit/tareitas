@@ -58,6 +58,7 @@ import {
     clearMultideviceSession,
     setCurrentRole,
     setCurrentUser,
+    setOnboardingIntroCompleted,
     setPendingReturnRoute,
     setSyncMode,
     setTaskCalendarDate,
@@ -115,7 +116,7 @@ export function OnboardingFlow({
 
   const introSlides = useMemo(() => getOnboardingIntroSlides(), []);
 
-  const opensOnSetup = skipIntro || storedSyncMode === null;
+  const opensOnSetup = skipIntro;
   const initialStep = opensOnSetup ? ONBOARDING_STEP.syncMode : 0;
 
   const [step, setStep] = useState(initialStep);
@@ -449,7 +450,13 @@ export function OnboardingFlow({
     }
 
     if (step < lastStep) {
-      goToStep(step + 1);
+      const nextStep = step + 1;
+
+      if (nextStep === ONBOARDING_STEP.syncMode) {
+        dispatch(setOnboardingIntroCompleted(true));
+      }
+
+      goToStep(nextStep);
     }
   };
 
