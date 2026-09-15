@@ -1,5 +1,9 @@
 import { REHYDRATE } from 'redux-persist';
 
+import {
+  recordCrashlyticsError,
+  recordPersistedSliceParseFailure,
+} from '~/services/crashlytics';
 import { dispatchFamilySliceHydrate } from '~/services/familyPersistHydrate';
 import {
   FAMILY_PERSIST_KEYS,
@@ -88,6 +92,26 @@ const PROTECT_EMPTY_OVERWRITE_KEYS = new Set<string>([
   EStateName.taskAssignment,
 ]);
 
+const CRITICAL_PARSE_KEYS = new Set<string>([
+  EStateName.tasks,
+  EStateName.taskAssignment,
+]);
+
+function reportPersistedSliceParseFailure(
+  key: string | undefined,
+  reason: 'json_parse_error' | 'empty_after_parse',
+  options?: { error?: unknown; raw?: string },
+): void {
+  if (!key || !CRITICAL_PARSE_KEYS.has(key)) {
+    return;
+  }
+
+  recordPersistedSliceParseFailure(key, reason, {
+    error: options?.error,
+    rawLength: options?.raw?.length ?? 0,
+  });
+}
+
 function getEntitySliceIdCount(slice: unknown): number {
   if (!slice || typeof slice !== 'object') {
     return 0;
@@ -130,10 +154,14 @@ function parsePersistedSlice<T>(raw: string, key?: string): T | null {
       parsed = JSON.parse(parsed);
     }
 
+    if (parsed === null || parsed === undefined) {
+      reportPersistedSliceParseFailure(key, 'empty_after_parse', { raw });
+      return null;
+    }
+
     if (
       key &&
       ENTITY_FAMILY_PERSIST_KEYS.has(key) &&
-      parsed &&
       typeof parsed === 'object'
     ) {
       normalizeEntityState(
@@ -142,7 +170,8 @@ function parsePersistedSlice<T>(raw: string, key?: string): T | null {
     }
 
     return parsed as T;
-  } catch {
+  } catch (error) {
+    reportPersistedSliceParseFailure(key, 'json_parse_error', { error, raw });
     return null;
   }
 }
@@ -394,7 +423,7 @@ export async function persistActiveFamilySnapshot(
   familySnapshotPersistChain = familySnapshotPersistChain
     .then(() => writeActiveFamilySnapshot(getState))
     .catch(error => {
-      console.error('[Tareitas] Failed to persist family snapshot', error);
+      recordCrashlyticsError('family_snapshot_persist_failure', error);
     });
 
   await familySnapshotPersistChain;
