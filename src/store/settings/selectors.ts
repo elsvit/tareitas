@@ -141,6 +141,18 @@ export const selectIsAdFreeBySubscription = createSelector(
 export const selectAppInstalledAt = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>).appInstalledAt;
 
+export const selectOnboardingIntroCompleted = (state: RootStateT) => {
+  const completed = (state[EStateName.settings] as Persisted<IStateSettings>)
+    .onboardingIntroCompleted;
+
+  // Users who installed before this flag existed already passed intro/setup.
+  if (completed === undefined) {
+    return true;
+  }
+
+  return completed;
+};
+
 export const selectShouldEnforceFreeTierLimits = createSelector(
   [selectAppInstalledAt],
   appInstalledAt => shouldEnforceFreeTierLimits(appInstalledAt),

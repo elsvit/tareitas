@@ -6,7 +6,10 @@ import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { selectParentIds } from '~/store/parents/selectors';
-import { selectSyncMode } from '~/store/settings/selectors';
+import {
+  selectOnboardingIntroCompleted,
+  selectSyncMode,
+} from '~/store/settings/selectors';
 import { Colors } from '~/styles';
 import { resolveAppBootRoute } from '~/utils/navigation/resolveAppBootRoute';
 
@@ -15,6 +18,7 @@ export default function Index() {
   const navigationState = useRootNavigationState();
   const parentIds = useSelector(selectParentIds);
   const syncMode = useSelector(selectSyncMode);
+  const onboardingIntroCompleted = useSelector(selectOnboardingIntroCompleted);
 
   useEffect(() => {
     if (!navigationState?.key) {
@@ -24,10 +28,17 @@ export default function Index() {
     const href = resolveAppBootRoute({
       syncMode,
       hasFamily: parentIds.length > 0,
+      onboardingIntroCompleted,
     });
 
     router.replace(href);
-  }, [navigationState?.key, parentIds.length, router, syncMode]);
+  }, [
+    navigationState?.key,
+    onboardingIntroCompleted,
+    parentIds.length,
+    router,
+    syncMode,
+  ]);
 
   return <View style={{ flex: 1, backgroundColor: Colors.blue400 }} />;
 }
