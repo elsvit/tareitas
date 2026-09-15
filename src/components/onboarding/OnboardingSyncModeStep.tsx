@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Pressable, TouchableOpacity, View } from 'react-native';
 import { RadioButton } from 'react-native-paper';
+import { openBrowserAsync, WebBrowserPresentationStyle } from 'expo-web-browser';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
@@ -14,6 +15,8 @@ import {
 import { t } from '~/services';
 import { ESyncMode } from '~/store/settings/enums';
 import { selectParentIds } from '~/store/parents/selectors';
+import { selectLang } from '~/store/settings/selectors';
+import { getPrivacyPolicyUrl } from '~/utils/privacyPolicyUrl';
 import type { AppDispatch } from '~/store/store';
 import { persistor } from '~/store/store';
 import { Colors } from '~/styles';
@@ -130,6 +133,11 @@ export function OnboardingSyncModeStep({
 }: OnboardingSyncModeStepProps) {
   const dispatch = useDispatch<AppDispatch>();
   const parentIds = useSelector(selectParentIds);
+  const appLang = useSelector(selectLang);
+  const privacyPolicyUrl = useMemo(
+    () => getPrivacyPolicyUrl(appLang),
+    [appLang],
+  );
   const [isLoadingDeviceOnlyFamily, setIsLoadingDeviceOnlyFamily] =
     useState(false);
   const [deviceOnlyLoadVersion, setDeviceOnlyLoadVersion] = useState(0);
@@ -167,6 +175,16 @@ export function OnboardingSyncModeStep({
     onChange(ESyncMode.deviceOnly);
     setIsReplaceDeviceOnlyConfirmVisible(false);
   }, [onChange]);
+
+  const handlePrivacyPolicyPress = useCallback(async () => {
+    try {
+      await openBrowserAsync(privacyPolicyUrl, {
+        presentationStyle: WebBrowserPresentationStyle.AUTOMATIC,
+      });
+    } catch (error) {
+      console.error('[Tareitas] Failed to open privacy policy', error);
+    }
+  }, [privacyPolicyUrl]);
 
   const handleSetupPathChange = useCallback(
     async (path: OnboardingSetupPath) => {
@@ -381,6 +399,16 @@ export function OnboardingSyncModeStep({
           </RadioButton.Group>
         ) : null}
       </View>
+
+      <Pressable
+        onPress={() => void handlePrivacyPolicyPress()}
+        accessibilityRole="link"
+        style={styles.privacyPolicyLink}
+      >
+        <Text variant="bodyMedium" style={styles.privacyPolicyLinkText}>
+          {t('onboarding.sync_mode.privacy_policy')}
+        </Text>
+      </Pressable>
 
       <ConfirmModal
         isVisible={isReplaceDeviceOnlyConfirmVisible}

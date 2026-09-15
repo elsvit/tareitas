@@ -33,7 +33,7 @@ import { usePendingSubtaskPhotoRecovery } from '~/hooks/usePendingSubtaskPhotoRe
 import { usePruneOrphanedTaskAssignments } from '~/hooks/usePruneOrphanedTaskAssignments';
 import { AppDispatch } from '~/store';
 import { ensureAppInstalledAt, initLanguage } from '~/store/settings';
-import { selectIsLangInitiating } from '~/store/settings/selectors';
+import { selectIsLangInitiating, selectLang } from '~/store/settings/selectors';
 import { Colors } from '~/styles';
 import { lightPaperTheme } from '~/styles/paperTheme';
 import { hideAppSplash } from '~/utils/hideAppSplash';
@@ -45,6 +45,7 @@ export default function RootStack() {
   useCatalogForegroundSync();
 
   const isLangInitiating = useSelector(selectIsLangInitiating);
+  const lang = useSelector(selectLang);
 
   const [fontsLoaded] = useFonts({
     Roboto_400Regular,
@@ -81,7 +82,7 @@ export default function RootStack() {
   return (
     <PaperProvider theme={lightPaperTheme}>
       <ThemeProvider value={DefaultTheme}>
-        <View style={styles.root}>
+        <View style={styles.root} key={lang ?? 'default'}>
           <Stack
             screenOptions={{
               headerShown: false,

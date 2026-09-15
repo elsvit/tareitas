@@ -102,6 +102,17 @@ export const onboardingStyles = StyleSheet.create({
   syncModeSectionHeaderText: {
     flex: 1,
   },
+  privacyPolicyLink: {
+    alignSelf: 'center',
+    marginTop: spacing(4),
+    marginBottom: spacing(2),
+    paddingVertical: spacing(0.5),
+  },
+  privacyPolicyLinkText: {
+    color: Colors.blue600,
+    textDecorationLine: 'underline',
+    textAlign: 'center',
+  },
   syncModeOptions: {
     gap: spacing(2),
   },

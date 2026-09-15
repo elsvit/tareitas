@@ -612,6 +612,7 @@
         "description": "Tout reste sur ce téléphone ou cette tablette. Les membres de la famille ne peuvent utiliser l'application que sur cet appareil. Vous pouvez utiliser l'application hors ligne."
       },
       "create_section_title": "Créer un nouveau groupe/famille",
+      "privacy_policy": "Politique de confidentialité",
       "connect_section_title": "Se connecter à un groupe/famille existant",
       "connect_device_only_section_title": "Se connecter à cet appareil uniquement",
       "device_only_connect_hint": "Sélectionnez votre profil et saisissez votre PIN pour ouvrir la famille enregistrée sur cet appareil.",

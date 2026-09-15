@@ -612,6 +612,7 @@
         "description": "Viss paliek šajā tālrunī vai planšetdatorā. Ģimenes locekļi var lietot lietotni tikai šajā ierīcē. Lietotni var izmantot bezsaistē."
       },
       "create_section_title": "Izveidot jaunu grupu/ģimeni",
+      "privacy_policy": "Privātuma politika",
       "connect_section_title": "Savienoties ar esošu grupu/ģimeni",
       "connect_device_only_section_title": "Savienoties tikai ar šo ierīci",
       "device_only_connect_hint": "Izvēlieties savu profilu un ievadiet PIN, lai atvērtu šajā ierīcē saglabāto ģimeni.",

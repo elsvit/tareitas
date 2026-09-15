@@ -612,6 +612,7 @@
         "description": "Allt stannar på den här telefonen eller surfplattan. Familjemedlemmar kan bara använda appen på den här enheten. Du kan använda appen offline."
       },
       "create_section_title": "Skapa ny grupp/familj",
+      "privacy_policy": "Integritetspolicy",
       "connect_section_title": "Anslut till befintlig grupp/familj",
       "connect_device_only_section_title": "Anslut till endast den här enheten",
       "device_only_connect_hint": "Välj din profil och ange din PIN för att öppna familjen som sparats på den här enheten.",

@@ -662,6 +662,7 @@
         "description": "Todo permanece en este teléfono o tableta. Los miembros de la familia solo pueden usar la app en este dispositivo. Puedes usar la app sin conexión."
       },
       "create_section_title": "Crear nuevo grupo/familia",
+      "privacy_policy": "Política de privacidad",
       "connect_section_title": "Conectar a un grupo/familia existente",
       "connect_device_only_section_title": "Conectar a solo este dispositivo",
       "device_only_connect_hint": "Selecciona tu perfil e introduce tu PIN para abrir la familia guardada en este dispositivo.",

@@ -2,6 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { ScrollView } from 'react-native';
 
 import { useRouter } from 'expo-router';
+import { useSelector } from 'react-redux';
 import { Divider, List } from 'react-native-paper';
 import { SvgProps } from 'react-native-svg';
 
@@ -18,6 +19,7 @@ import { ScreenHeaderWithLogo, SelectUserPrompt } from "~/components/blocks";
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { SCREEN_TEXT } from '~/constants/formField';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
+import { selectLang } from '~/store/settings/selectors';
 import { useIsPro } from '~/hooks/useIsPro';
 import { useSubscription } from '~/hooks/useSubscription';
 import { t } from '~/services';
@@ -43,6 +45,7 @@ export default function More() {
   const { user: currentUser, isParent } = useCurrentUser();
   const { isPro } = useIsPro();
   const { yearlyPrice, isLoading: isSubscriptionLoading } = useSubscription();
+  const lang = useSelector(selectLang);
 
   const [styles] = useStyle(themedStyles);
 
@@ -55,7 +58,7 @@ export default function More() {
           : yearlyPrice
             ? t('subscription.yearly_price', { price: yearlyPrice })
             : t('subscription.subscribe'),
-    [isPro, isSubscriptionLoading, yearlyPrice],
+    [isPro, isSubscriptionLoading, lang, yearlyPrice],
   );
 
   const MORE_ITEMS = useMemo(
@@ -99,7 +102,7 @@ export default function More() {
           navigateTo: EScreens.HelpCenter,
         },
       ].filter(item => item.visible !== false),
-    [isParent, subscriptionDescription],
+    [isParent, lang, subscriptionDescription],
   );
 
   const title = t('more.title');

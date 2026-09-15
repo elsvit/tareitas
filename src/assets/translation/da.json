@@ -611,6 +611,7 @@
         "description": "Alt bliver på denne telefon eller tablet. Familiemedlemmer kan kun bruge appen på denne enhed. Du kan bruge appen offline."
       },
       "create_section_title": "Opret ny gruppe/familie",
+      "privacy_policy": "Privatlivspolitik",
       "connect_section_title": "Forbind til eksisterende gruppe/familie",
       "connect_device_only_section_title": "Forbind til kun denne enhed",
       "device_only_connect_hint": "Vælg din profil, og indtast din PIN for at åbne familien gemt på denne enhed.",
