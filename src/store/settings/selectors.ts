@@ -237,6 +237,12 @@ export const selectPendingFamilySetup = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>)
     .pendingFamilySetup ?? false;
 
+export const selectPendingOnboardingChildUserId = (
+  state: RootStateT,
+) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .pendingOnboardingChildUserId ?? null;
+
 export const selectLastSessionActivityAt = (
   state: RootStateT,
 ) =>

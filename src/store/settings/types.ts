@@ -35,6 +35,8 @@ export interface IStateSettings {
   appInstalledAt: string | null;
   /** False on first launch until intro slides are finished; undefined = legacy user. */
   onboardingIntroCompleted?: boolean;
+  /** Non-null while multidevice signup waits for the child profile step. */
+  pendingOnboardingChildUserId?: string | null;
 }
 
 export type PendingReturnRoute = {
