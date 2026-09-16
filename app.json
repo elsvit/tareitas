@@ -40,6 +40,8 @@
     },
     "plugins": [
       "./plugins/withPlayServicesAdsKotlinFix.js",
+      "./plugins/withRemoveAudioForegroundService.js",
+      "./plugins/withAndroidReleaseSigning.js",
       [
         "expo-build-properties",
         {
