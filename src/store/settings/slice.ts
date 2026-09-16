@@ -52,6 +52,7 @@ const initialState: IStateSettings = {
   sessionPauseCount: 0,
   appInstalledAt: null,
   onboardingIntroCompleted: false,
+  pendingOnboardingChildUserId: null,
 };
 
 export const settingsSlice = createSlice({
@@ -99,6 +100,7 @@ export const settingsSlice = createSlice({
     /** Clears active mode and cloud session (Cambiar familia / Cerrar sesión → setup). */
     clearActiveSyncMode: state => {
       state.syncMode = null;
+      state.pendingOnboardingChildUserId = null;
       resetCloudSessionState(state);
     },
     setMultideviceSession: (
@@ -265,6 +267,12 @@ export const settingsSlice = createSlice({
     ) => {
       state.onboardingIntroCompleted = action.payload;
     },
+    setPendingOnboardingChildUserId: (
+      state,
+      action: PayloadAction<string | null>,
+    ) => {
+      state.pendingOnboardingChildUserId = action.payload;
+    },
   },
 });
 
@@ -309,4 +317,5 @@ export const {
   resumeSessionChecks,
   ensureAppInstalledAt,
   setOnboardingIntroCompleted,
+  setPendingOnboardingChildUserId,
 } = settingsSlice.actions;

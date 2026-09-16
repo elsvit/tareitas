@@ -52,6 +52,7 @@ import {
     selectAuthUserId,
     selectFamilyId,
     selectLang,
+    selectPendingOnboardingChildUserId,
     selectPendingReturnRoute,
     selectSyncMode,
 } from '~/store/settings/selectors';
@@ -60,6 +61,7 @@ import {
     setCurrentRole,
     setCurrentUser,
     setOnboardingIntroCompleted,
+    setPendingOnboardingChildUserId,
     setPendingReturnRoute,
     setSyncMode,
     setTaskCalendarDate,
@@ -114,12 +116,19 @@ export function OnboardingFlow({
   const parentIds = useSelector(selectParentIds);
   const familyId = useSelector(selectFamilyId);
   const storedSyncMode = useSelector(selectSyncMode);
+  const pendingOnboardingChildUserId = useSelector(
+    selectPendingOnboardingChildUserId,
+  );
   const lang = useSelector(selectLang);
 
   const introSlides = useMemo(() => getOnboardingIntroSlides(), [lang]);
 
   const opensOnSetup = skipIntro;
-  const initialStep = opensOnSetup ? ONBOARDING_STEP.syncMode : 0;
+  const initialStep = pendingOnboardingChildUserId
+    ? ONBOARDING_STEP.signUpChild
+    : opensOnSetup
+      ? ONBOARDING_STEP.syncMode
+      : 0;
 
   const [step, setStep] = useState(initialStep);
   const [transitionDirection, setTransitionDirection] =
@@ -137,7 +146,7 @@ export function OnboardingFlow({
   const [signUpChild, setSignUpChild] =
     useState<Partial<ChildFormProps>>();
   const [placeholderChildUserId, setPlaceholderChildUserId] =
-    useState<string | null>(null);
+    useState<string | null>(pendingOnboardingChildUserId);
   const [signUpError, setSignUpError] = useState<string | null>(null);
   const [isSubmittingAdminSignUp, setIsSubmittingAdminSignUp] =
     useState(false);
@@ -325,6 +334,7 @@ export function OnboardingFlow({
   const enterApp = () => {
     const returnRoute = pendingReturnRoute;
 
+    dispatch(setPendingOnboardingChildUserId(null));
     dispatch(setPendingReturnRoute(null));
     dispatch(setTaskCalendarDate(getTodayDateString()));
 
@@ -526,6 +536,9 @@ export function OnboardingFlow({
             createdBy: existingAdminId,
           }),
         );
+        dispatch(
+          setPendingOnboardingChildUserId(placeholderChildUserId),
+        );
         goToStep(ONBOARDING_STEP.signUpChild);
         return;
       }
@@ -552,6 +565,8 @@ export function OnboardingFlow({
       }
 
       dispatch(setSyncMode(ESyncMode.multidevice));
+      dispatch(setPendingOnboardingChildUserId(childUserId));
+      setPlaceholderChildUserId(childUserId);
 
       try {
         await hydrateFamilyStore(
@@ -564,11 +579,10 @@ export function OnboardingFlow({
           },
         );
       } catch (hydrateError) {
+        dispatch(setPendingOnboardingChildUserId(null));
         clearFamilyStore(dispatch);
         throw hydrateError;
       }
-
-      setPlaceholderChildUserId(childUserId);
 
       const profile = await syncOnboardingAdminProfile(
         result.accessToken,
@@ -608,6 +622,9 @@ export function OnboardingFlow({
 
       goToStep(ONBOARDING_STEP.signUpChild);
     } catch (caught) {
+      if (!selectFamilyId(store.getState())) {
+        dispatch(setPendingOnboardingChildUserId(null));
+      }
       setSignUpError(formatOnboardingSignupError(caught));
     } finally {
       setIsSubmittingAdminSignUp(false);
