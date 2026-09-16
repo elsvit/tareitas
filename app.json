@@ -94,7 +94,12 @@
           "photosPermission": "Allow access to your photos to set custom task and reward images."
         }
       ],
-      "expo-audio",
+      [
+        "expo-audio",
+        {
+          "enableBackgroundPlayback": false
+        }
+      ],
       [
         "expo-camera",
         {
