@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import 'react-native-get-random-values';
 
 import { useRouter, useRootNavigationState } from 'expo-router';
@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { selectParentIds } from '~/store/parents/selectors';
 import {
   selectOnboardingIntroCompleted,
-  selectShouldResumeOnboardingChildProfile,
+  selectPendingOnboardingChildUserId,
   selectSyncMode,
 } from '~/store/settings/selectors';
 import { Colors } from '~/styles';
@@ -17,23 +17,26 @@ import { resolveAppBootRoute } from '~/utils/navigation/resolveAppBootRoute';
 export default function Index() {
   const router = useRouter();
   const navigationState = useRootNavigationState();
+  const hasBootRouted = useRef(false);
   const parentIds = useSelector(selectParentIds);
   const syncMode = useSelector(selectSyncMode);
   const onboardingIntroCompleted = useSelector(selectOnboardingIntroCompleted);
-  const resumeOnboardingChildProfile = useSelector(
-    selectShouldResumeOnboardingChildProfile,
+  const pendingOnboardingChildUserId = useSelector(
+    selectPendingOnboardingChildUserId,
   );
 
   useEffect(() => {
-    if (!navigationState?.key) {
+    if (!navigationState?.key || hasBootRouted.current) {
       return;
     }
+
+    hasBootRouted.current = true;
 
     const href = resolveAppBootRoute({
       syncMode,
       hasFamily: parentIds.length > 0,
       onboardingIntroCompleted,
-      resumeOnboardingChildProfile,
+      pendingOnboardingChildUserId,
     });
 
     router.replace(href);
@@ -41,7 +44,7 @@ export default function Index() {
     navigationState?.key,
     onboardingIntroCompleted,
     parentIds.length,
-    resumeOnboardingChildProfile,
+    pendingOnboardingChildUserId,
     router,
     syncMode,
   ]);

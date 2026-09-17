@@ -6,24 +6,24 @@ import { OnboardingFlow } from '~/components/onboarding';
 import { selectParentIds } from '~/store/parents/selectors';
 import {
   selectCurrentUser,
-  selectShouldResumeOnboardingChildProfile,
+  selectPendingOnboardingChildUserId,
 } from '~/store/settings/selectors';
 
 export default function OnboardingScreen() {
   const parentIds = useSelector(selectParentIds);
   const currentUser = useSelector(selectCurrentUser);
-  const resumeOnboardingChildProfile = useSelector(
-    selectShouldResumeOnboardingChildProfile,
+  const pendingOnboardingChildUserId = useSelector(
+    selectPendingOnboardingChildUserId,
   );
   const { setup } = useLocalSearchParams<{ setup?: string }>();
 
   // Only skip onboarding when a user is already logged in (e.g. stray navigation).
   // Loading a device-only family for connect must keep the avatar + PIN step.
-  // Multidevice signup keeps onboarding open until the child profile step finishes.
+  // Multidevice signup keeps onboarding open until enterApp() on the completion screen.
   if (
     parentIds.length > 0 &&
     currentUser &&
-    !resumeOnboardingChildProfile
+    !pendingOnboardingChildUserId
   ) {
     return <Redirect href="/(tabs)/Tasks" />;
   }

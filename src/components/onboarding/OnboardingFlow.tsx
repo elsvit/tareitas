@@ -41,11 +41,12 @@ import {
     syncOnboardingAdminProfile,
     syncOnboardingChildProfile,
 } from '~/services/onboardingSignup';
-import type { AppDispatch } from '~/store';
-import { addChild, addChildSuccess, clearChildren, updateChildSuccess } from '~/store/children/slice';
+import type { AppDispatch, RootStateT } from '~/store';
+import { addChildSuccess, clearChildren, updateChildSuccess } from '~/store/children/slice';
+import { selectChildById } from '~/store/children/selectors';
 import { selectUserImageUrls, setUserImageUrl } from '~/store/images';
-import { selectParentIds } from '~/store/parents/selectors';
-import { addParent, addParentSuccess, clearParents, updateParentSuccess } from '~/store/parents/slice';
+import { selectParentById, selectParentIds } from '~/store/parents/selectors';
+import { addParentSuccess, clearParents, updateParentSuccess } from '~/store/parents/slice';
 import { EFamilyRole, ERole, ESyncMode } from '~/store/settings/enums';
 import {
     selectAuthToken,
@@ -124,20 +125,33 @@ export function OnboardingFlow({
     selectShouldResumeOnboardingChildProfile,
   );
   const lang = useSelector(selectLang);
+  const authUserId = useSelector(selectAuthUserId);
+  const storedSignupAdmin = useSelector((state: RootStateT) =>
+    authUserId ? selectParentById(state, authUserId) : undefined,
+  );
+  const storedSignupChild = useSelector((state: RootStateT) =>
+    pendingOnboardingChildUserId
+      ? selectChildById(state, pendingOnboardingChildUserId)
+      : undefined,
+  );
 
   const introSlides = useMemo(() => getOnboardingIntroSlides(), [lang]);
 
   const opensOnSetup = skipIntro;
   const initialStep = shouldResumeChildProfile
     ? ONBOARDING_STEP.signUpChild
-    : opensOnSetup
-      ? ONBOARDING_STEP.syncMode
-      : 0;
+    : pendingOnboardingChildUserId
+      ? ONBOARDING_STEP.complete
+      : opensOnSetup
+        ? ONBOARDING_STEP.syncMode
+        : 0;
 
   const [step, setStep] = useState(initialStep);
   const [transitionDirection, setTransitionDirection] =
     useState<OnboardingTransitionDirection>(1);
-  const [setupPath, setSetupPath] = useState<OnboardingSetupPath>('connect');
+  const [setupPath, setSetupPath] = useState<OnboardingSetupPath>(() =>
+    pendingOnboardingChildUserId ? 'create' : 'connect',
+  );
   const [parent, setParent] = useState<Partial<ParentFormProps>>({
     role: ERole.admin,
   });
@@ -193,6 +207,16 @@ export function OnboardingFlow({
   const isChildStep =
     !isMultideviceFlow && step === ONBOARDING_STEP.child;
   const isCompleteStep = step === ONBOARDING_STEP.complete;
+  const completeParent = isMultideviceFlow
+    ? signUpAdmin.name
+      ? signUpAdmin
+      : storedSignupAdmin
+    : parent;
+  const completeChild = isMultideviceFlow
+    ? signUpChild?.name
+      ? (signUpChild as ChildFormProps)
+      : storedSignupChild
+    : child;
   const canExitFromSyncMode =
     opensOnSetup && parentIds.length > 0 && isSyncModeStep;
   const canGoBack =
@@ -238,6 +262,20 @@ export function OnboardingFlow({
       currentStep === ONBOARDING_STEP.child
     ) {
       return ONBOARDING_STEP.parent;
+    }
+
+    if (
+      isMultideviceFlow &&
+      currentStep === ONBOARDING_STEP.complete
+    ) {
+      return ONBOARDING_STEP.signUpChild;
+    }
+
+    if (
+      !isMultideviceFlow &&
+      currentStep === ONBOARDING_STEP.complete
+    ) {
+      return ONBOARDING_STEP.child;
     }
 
     return currentStep - 1;
@@ -355,73 +393,63 @@ export function OnboardingFlow({
     router.replace('/(tabs)/Tasks');
   };
 
-  const finishOnboarding = async () => {
-    if (!parent.name) {
-      return;
+  const finishMultideviceCreateOnboarding = async () => {
+    const adminUserId = selectAuthUserId(store.getState());
+
+    if (adminUserId) {
+      dispatch(setCurrentUser(adminUserId));
+      dispatch(setCurrentRole(ERole.admin));
     }
 
-    if (!isMultideviceFlow && !child?.name) {
+    await flushFamilyPersistMode(persistor);
+    resumeFamilyPersist(persistor);
+    void trackDeviceModeUsed(ESyncMode.multidevice);
+    void trackFamilySize(1, signUpChild?.name ? 1 : 0);
+    void trackFamiliesCount(1);
+    enterApp();
+  };
+
+  const finishDeviceOnlyOnboarding = async () => {
+    if (!parent.name || !child?.name) {
       return;
     }
 
     const parentId = uuidv4();
-    const targetMode = isMultideviceFlow
-      ? ESyncMode.multidevice
-      : ESyncMode.deviceOnly;
 
-    dispatch(setSyncMode(targetMode));
-    setActiveFamilyPersistMode(targetMode);
+    dispatch(setSyncMode(ESyncMode.deviceOnly));
+    setActiveFamilyPersistMode(ESyncMode.deviceOnly);
     dispatch(clearParents());
 
-    const parentEntity = {
-      ...parent,
-      name: parent.name,
-      role: ERole.admin,
-      id: parentId,
-      createdAt: new Date().toISOString(),
-      createdBy: parentId,
-    };
-
-    if (isMultideviceFlow) {
-      dispatch(addParent({ entity: parentEntity }));
-    } else {
-      dispatch(addParentSuccess(parentEntity));
-    }
+    dispatch(
+      addParentSuccess({
+        ...parent,
+        name: parent.name,
+        role: ERole.admin,
+        id: parentId,
+        createdAt: new Date().toISOString(),
+        createdBy: parentId,
+      }),
+    );
 
     dispatch(clearChildren());
 
-    if (child?.name) {
-      const childId = uuidv4();
-      const childEntity = {
+    const childId = uuidv4();
+
+    dispatch(
+      addChildSuccess({
         ...child,
         name: child.name,
         id: childId,
         createdAt: new Date().toISOString(),
         createdBy: parentId,
-      };
-
-      if (isMultideviceFlow) {
-        dispatch(addChild({ entity: childEntity }));
-      } else {
-        dispatch(addChildSuccess(childEntity));
-      }
-    }
+      }),
+    );
 
     dispatch(setCurrentUser(parentId));
     dispatch(setCurrentRole(ERole.admin));
-
-    if (isMultideviceFlow) {
-      await flushFamilyPersistMode(persistor);
-      resumeFamilyPersist(persistor);
-    } else {
-      await completeDeviceOnlyFamilyCreate(persistor);
-    }
-
-    void trackDeviceModeUsed(targetMode);
-    void trackFamilySize(1, child?.name ? 1 : 0);
-    if (isMultideviceFlow) {
-      void trackFamiliesCount(1);
-    }
+    await completeDeviceOnlyFamilyCreate(persistor);
+    void trackDeviceModeUsed(ESyncMode.deviceOnly);
+    void trackFamilySize(1, 1);
     enterApp();
   };
 
@@ -463,7 +491,11 @@ export function OnboardingFlow({
     }
 
     if (isCompleteStep) {
-      void finishOnboarding();
+      if (isMultideviceFlow && setupPath === 'create') {
+        void finishMultideviceCreateOnboarding();
+      } else {
+        void finishDeviceOnlyOnboarding();
+      }
       return;
     }
 
@@ -705,7 +737,7 @@ export function OnboardingFlow({
         );
       }
 
-      enterApp();
+      goToStep(ONBOARDING_STEP.complete);
     } catch (caught) {
       setSignUpError(formatOnboardingSignupError(caught));
     } finally {
@@ -805,7 +837,9 @@ export function OnboardingFlow({
     }
 
     if (isCompleteStep) {
-      return <OnboardingComplete parent={parent} child={child} />;
+      return (
+        <OnboardingComplete parent={completeParent} child={completeChild} />
+      );
     }
 
     return null;
