@@ -2,7 +2,8 @@ import { createSelector } from '@reduxjs/toolkit';
 
 import type { RootStateT } from '~/store';
 import { EStateName } from '~/store/enums';
-import { selectChildById } from '~/store/children/selectors';
+import { selectChildById, selectChildIds } from '~/store/children/selectors';
+import { isPlaceholderOnboardingChildUsername } from '~/utils/onboarding/pendingOnboardingChild';
 import { selectParentById } from '~/store/parents/selectors';
 import { resolveCalendarDateString } from '~/utils/date';
 
@@ -242,6 +243,27 @@ export const selectPendingOnboardingChildUserId = (
 ) =>
   (state[EStateName.settings] as Persisted<IStateSettings>)
     .pendingOnboardingChildUserId ?? null;
+
+export const selectShouldResumeOnboardingChildProfile = createSelector(
+  [
+    selectPendingOnboardingChildUserId,
+    selectChildIds,
+    (state: RootStateT) => state,
+  ],
+  (pendingChildUserId, childIds, state) => {
+    if (!pendingChildUserId) {
+      return false;
+    }
+
+    const child = selectChildById(state, pendingChildUserId);
+
+    if (!child) {
+      return childIds.length === 0;
+    }
+
+    return isPlaceholderOnboardingChildUsername(child.username);
+  },
+);
 
 export const selectLastSessionActivityAt = (
   state: RootStateT,

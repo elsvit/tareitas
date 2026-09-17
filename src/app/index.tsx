@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { selectParentIds } from '~/store/parents/selectors';
 import {
   selectOnboardingIntroCompleted,
-  selectPendingOnboardingChildUserId,
+  selectShouldResumeOnboardingChildProfile,
   selectSyncMode,
 } from '~/store/settings/selectors';
 import { Colors } from '~/styles';
@@ -20,8 +20,8 @@ export default function Index() {
   const parentIds = useSelector(selectParentIds);
   const syncMode = useSelector(selectSyncMode);
   const onboardingIntroCompleted = useSelector(selectOnboardingIntroCompleted);
-  const pendingOnboardingChildUserId = useSelector(
-    selectPendingOnboardingChildUserId,
+  const resumeOnboardingChildProfile = useSelector(
+    selectShouldResumeOnboardingChildProfile,
   );
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function Index() {
       syncMode,
       hasFamily: parentIds.length > 0,
       onboardingIntroCompleted,
-      pendingOnboardingChildUserId,
+      resumeOnboardingChildProfile,
     });
 
     router.replace(href);
@@ -41,7 +41,7 @@ export default function Index() {
     navigationState?.key,
     onboardingIntroCompleted,
     parentIds.length,
-    pendingOnboardingChildUserId,
+    resumeOnboardingChildProfile,
     router,
     syncMode,
   ]);

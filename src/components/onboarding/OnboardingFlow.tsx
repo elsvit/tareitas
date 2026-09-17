@@ -54,6 +54,7 @@ import {
     selectLang,
     selectPendingOnboardingChildUserId,
     selectPendingReturnRoute,
+    selectShouldResumeOnboardingChildProfile,
     selectSyncMode,
 } from '~/store/settings/selectors';
 import {
@@ -119,12 +120,15 @@ export function OnboardingFlow({
   const pendingOnboardingChildUserId = useSelector(
     selectPendingOnboardingChildUserId,
   );
+  const shouldResumeChildProfile = useSelector(
+    selectShouldResumeOnboardingChildProfile,
+  );
   const lang = useSelector(selectLang);
 
   const introSlides = useMemo(() => getOnboardingIntroSlides(), [lang]);
 
   const opensOnSetup = skipIntro;
-  const initialStep = pendingOnboardingChildUserId
+  const initialStep = shouldResumeChildProfile
     ? ONBOARDING_STEP.signUpChild
     : opensOnSetup
       ? ONBOARDING_STEP.syncMode
@@ -146,7 +150,9 @@ export function OnboardingFlow({
   const [signUpChild, setSignUpChild] =
     useState<Partial<ChildFormProps>>();
   const [placeholderChildUserId, setPlaceholderChildUserId] =
-    useState<string | null>(pendingOnboardingChildUserId);
+    useState<string | null>(
+      shouldResumeChildProfile ? pendingOnboardingChildUserId : null,
+    );
   const [signUpError, setSignUpError] = useState<string | null>(null);
   const [isSubmittingAdminSignUp, setIsSubmittingAdminSignUp] =
     useState(false);

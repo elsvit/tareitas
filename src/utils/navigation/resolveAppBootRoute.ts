@@ -12,20 +12,20 @@ export function resolveAppBootRoute(options: {
   syncMode: ESyncMode | null | undefined;
   hasFamily: boolean;
   onboardingIntroCompleted: boolean;
-  pendingOnboardingChildUserId?: string | null;
+  resumeOnboardingChildProfile?: boolean;
 }): '/(tabs)/Tasks' | '/(onboarding)' | '/(onboarding)?setup=1' {
   const {
     syncMode,
     hasFamily,
     onboardingIntroCompleted,
-    pendingOnboardingChildUserId,
+    resumeOnboardingChildProfile,
   } = options;
 
   const hasActiveMode =
     syncMode === ESyncMode.deviceOnly ||
     syncMode === ESyncMode.multidevice;
 
-  if (pendingOnboardingChildUserId && hasFamily) {
+  if (resumeOnboardingChildProfile && hasFamily) {
     return '/(onboarding)?setup=1';
   }
 
