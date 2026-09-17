@@ -10,6 +10,9 @@ import {
   mapServerTaskToLocal,
 } from '~/services/api/tasksApi';
 import {
+  cancelRewardRedemption,
+  dedupePendingServerRedemptions,
+  getDuplicatePendingServerRedemptions,
   listFamilyRewards,
   listRewardRedemptions,
   completeRewardRedemption,
@@ -30,7 +33,11 @@ import {
   assertMultideviceSession,
   callMultideviceApi,
 } from '~/store/helpers/multideviceSession';
-import { selectCanReviewTasks } from '~/store/settings/selectors';
+import {
+  selectCanReviewTasks,
+  selectCurrentUser,
+  selectIsChild,
+} from '~/store/settings/selectors';
 import {
   addChildSuccess,
   removeChildSuccess,
@@ -211,7 +218,7 @@ export function* syncRewardsDataFromServerSaga(): Generator<
     return;
   }
 
-  const [serverRewards, serverRedemptions] = yield* callMultideviceApi(
+  let [serverRewards, serverRedemptions] = yield* callMultideviceApi(
     async token => {
       const rewards = await listFamilyRewards(
         token,
@@ -225,6 +232,39 @@ export function* syncRewardsDataFromServerSaga(): Generator<
       return [rewards, redemptions] as const;
     },
   );
+
+  const isChild: boolean = yield select(selectIsChild);
+  const currentUser: string | null = yield select(selectCurrentUser);
+
+  if (isChild && currentUser) {
+    const duplicatePending = getDuplicatePendingServerRedemptions(
+      serverRedemptions,
+    ).filter(redemption => redemption.childUserId === currentUser);
+    const cancelledIds = new Set<string>();
+
+    for (const duplicate of duplicatePending) {
+      try {
+        yield* callMultideviceApi(token =>
+          cancelRewardRedemption(
+            token,
+            session.familyId,
+            duplicate.id,
+          ),
+        );
+        cancelledIds.add(duplicate.id);
+      } catch {
+        // Keep server snapshot when cleanup fails; dedupe still limits UI rows.
+      }
+    }
+
+    if (cancelledIds.size > 0) {
+      serverRedemptions = serverRedemptions.filter(
+        redemption => !cancelledIds.has(redemption.id),
+      );
+    }
+  }
+
+  serverRedemptions = dedupePendingServerRedemptions(serverRedemptions);
 
   const state: IState = yield select(
     (currentState: IState) => currentState,
