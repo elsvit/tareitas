@@ -25,7 +25,10 @@ import {
   clearAuthSession,
   setCurrentRole,
   setCurrentUser,
+  setPendingOnboardingChildUserId,
 } from '~/store/settings/slice';
+import { selectPendingOnboardingChildUserId } from '~/store/settings/selectors';
+import { shouldResumeOnboardingChildProfile } from '~/utils/onboarding/pendingOnboardingChild';
 import type { AppDispatch } from '~/store/store';
 import { persistor } from '~/store/store';
 import type { IState } from '~/store/types';
@@ -176,10 +179,30 @@ export async function signOutAndClearFamilyData(
   }
 }
 
+async function clearStalePendingOnboardingOnBoot(
+  dispatch: AppDispatch,
+  getState: () => IState,
+): Promise<void> {
+  const pendingChildUserId = selectPendingOnboardingChildUserId(getState());
+
+  if (!pendingChildUserId) {
+    return;
+  }
+
+  if (shouldResumeOnboardingChildProfile(getState)) {
+    return;
+  }
+
+  dispatch(setPendingOnboardingChildUserId(null));
+  await persistSharedSettingsState(getState);
+}
+
 export async function validatePersistedFamilyOnBoot(
   dispatch: AppDispatch,
   getState: () => IState,
 ): Promise<void> {
+  await clearStalePendingOnboardingOnBoot(dispatch, getState);
+
   const syncMode = selectSyncMode(getState());
 
   if (!syncMode) {

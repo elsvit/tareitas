@@ -6,14 +6,14 @@ import { OnboardingFlow } from '~/components/onboarding';
 import { selectParentIds } from '~/store/parents/selectors';
 import {
   selectCurrentUser,
-  selectPendingOnboardingChildUserId,
+  selectShouldResumeOnboardingChildProfile,
 } from '~/store/settings/selectors';
 
 export default function OnboardingScreen() {
   const parentIds = useSelector(selectParentIds);
   const currentUser = useSelector(selectCurrentUser);
-  const pendingOnboardingChildUserId = useSelector(
-    selectPendingOnboardingChildUserId,
+  const resumeOnboardingChildProfile = useSelector(
+    selectShouldResumeOnboardingChildProfile,
   );
   const { setup } = useLocalSearchParams<{ setup?: string }>();
 
@@ -23,7 +23,7 @@ export default function OnboardingScreen() {
   if (
     parentIds.length > 0 &&
     currentUser &&
-    !pendingOnboardingChildUserId
+    !resumeOnboardingChildProfile
   ) {
     return <Redirect href="/(tabs)/Tasks" />;
   }
