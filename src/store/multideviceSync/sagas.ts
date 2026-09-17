@@ -6,6 +6,7 @@ import {
   mapServerTaskAssignmentToLocal,
 } from '~/services/api/taskAssignmentsApi';
 import {
+  dedupeServerTasks,
   listTaskInstances,
   mapServerTaskToLocal,
 } from '~/services/api/tasksApi';
@@ -13,6 +14,7 @@ import {
   cancelRewardRedemption,
   dedupePendingServerRedemptions,
   getDuplicatePendingServerRedemptions,
+  dedupePendingServerRedemptions,
   listFamilyRewards,
   listRewardRedemptions,
   completeRewardRedemption,
@@ -200,7 +202,7 @@ export function* syncTaskAssignmentsFromServerSaga(): Generator<
   yield put(replaceTaskAssignments(assignmentsWithPictures));
   yield put(
     replaceTasksFromServer({
-      tasks: serverTasks.map(mapServerTaskToLocal),
+      tasks: dedupeServerTasks(serverTasks).map(mapServerTaskToLocal),
       from,
       to,
     }),
@@ -276,7 +278,9 @@ export function* syncRewardsDataFromServerSaga(): Generator<
   const children = selectAllChildren(state);
   const validChildIds = selectDedupedChildIds(state);
 
-  let reconciledRedemptions = serverRedemptions;
+  let reconciledRedemptions = dedupePendingServerRedemptions(
+    serverRedemptions,
+  );
 
   if (canReviewRewards) {
     reconciledRedemptions = [];
