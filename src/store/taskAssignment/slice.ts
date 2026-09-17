@@ -66,7 +66,38 @@ export const taskAssignmentSlice = createSlice({
       state,
       action: PayloadAction<ITaskAssignment[]>,
     ) => {
-      taskAssignmentAdapter.setAll(state, action.payload);
+      const serverIds = new Set(action.payload.map(assignment => assignment.id));
+
+      if (action.payload.length > 0) {
+        taskAssignmentAdapter.upsertMany(state, action.payload);
+      }
+
+      const staleIds = (state.ids as string[]).filter(id => {
+        if (serverIds.has(id)) {
+          return false;
+        }
+
+        const assignment = state.entities[id];
+
+        if (!assignment) {
+          return false;
+        }
+
+        if (!assignment.createdAt) {
+          return false;
+        }
+
+        const createdAt = Date.parse(assignment.createdAt);
+        const isRecent =
+          Number.isFinite(createdAt) &&
+          Date.now() - createdAt < 60_000;
+
+        return !isRecent;
+      });
+
+      if (staleIds.length > 0) {
+        taskAssignmentAdapter.removeMany(state, staleIds);
+      }
     },
     clearTaskAssignment: (state) => {
       entityReducers.clearEntities(state);

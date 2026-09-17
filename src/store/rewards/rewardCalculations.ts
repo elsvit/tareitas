@@ -19,6 +19,8 @@ import {
   IEarnedRewardPeriodEntry,
   IEarnedRewardPeriods,
   IReward,
+  IRewardAssignment,
+  RewardAssignmentFormProps,
 } from '~/types/IReward';
 import { createTaskId, shouldShowAssignmentOnDate } from '~/utils/tasks/taskGeneration';
 import { getEffectiveTaskReward } from '~/utils/tasks/taskReward';
@@ -470,6 +472,52 @@ export const getChildCurrentRewardBalance = (
     getApprovedPeriodBalance(lastClosedPeriod) +
     openMonthsReward -
     sumReservedRewardCosts(state, childId)
+  );
+};
+
+export const isDuplicateRewardAssignmentForChild = (
+  existing: IRewardAssignment[],
+  values: RewardAssignmentFormProps,
+): boolean => {
+  const childId = values.childIds?.[0];
+
+  if (!childId) {
+    return false;
+  }
+
+  return existing.some(assignment => {
+    if (assignment.childIds?.[0] !== childId) {
+      return false;
+    }
+
+    return (
+      assignment.title.trim() === values.title.trim() &&
+      assignment.reward === values.reward &&
+      (assignment.picture ?? '') === (values.picture ?? '')
+    );
+  });
+};
+
+export const isRewardAssignmentAvailableForChild = (
+  rewardAssignmentId: string,
+  childId: string,
+  rewards: IReward[],
+): boolean => {
+  const instances = rewards.filter(
+    reward =>
+      reward.rewardAssignmentId === rewardAssignmentId &&
+      reward.childId === childId,
+  );
+
+  if (instances.some(reward => !!reward.completedDate)) {
+    return false;
+  }
+
+  return !instances.some(
+    reward =>
+      !reward.completedDate &&
+      (reward.status === ERewardStatus.Selected ||
+        reward.status === ERewardStatus.Approved),
   );
 };
 

@@ -293,6 +293,20 @@ function* addRewardSaga(
   action: PayloadAction<AddRewardPayload>,
 ): Generator<any, void, any> {
   const { entity, onSuccess } = action.payload;
+  const allRewards: IReward[] = yield select(selectAllRewards);
+  const hasExistingRedemption = allRewards.some(
+    reward =>
+      reward.rewardAssignmentId === entity.rewardAssignmentId &&
+      reward.childId === entity.childId &&
+      (!!reward.completedDate ||
+        reward.status === ERewardStatus.Selected ||
+        reward.status === ERewardStatus.Approved),
+  );
+
+  if (hasExistingRedemption) {
+    return;
+  }
+
   const session = yield* assertMultideviceSession();
 
   if (!session) {

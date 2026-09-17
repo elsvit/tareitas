@@ -18,10 +18,10 @@ import { t } from '~/services';
 import {
   RewardListItemView,
   selectChildApprovedRewardItems,
+  selectChildCatalogRewardItems,
   selectChildCompletedRewardItems,
   selectChildRewardBalance,
   selectChildSelectedRewardItems,
-  selectRewardListItemsForChild,
 } from '~/store/rewards/selectors';
 import {
   addReward,
@@ -109,7 +109,7 @@ function useChildRewardActions(childId: string) {
 
 function ChildRewardsCatalogTab({ childId }: { childId: string }) {
   const childBalance = useSelector(selectChildRewardBalance(childId));
-  const items = useSelector(selectRewardListItemsForChild(childId));
+  const items = useSelector(selectChildCatalogRewardItems(childId));
   const { handleChildSelect, handleChildRedeem } = useChildRewardActions(childId);
 
   const renderItem = useCallback<ListRenderItem<RewardListItemView>>(

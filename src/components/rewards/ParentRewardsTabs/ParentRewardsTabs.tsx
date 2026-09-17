@@ -2,8 +2,6 @@ import { format } from 'date-fns';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useMemo, useState } from 'react';
 import {
-  FlatList,
-  ListRenderItem,
   SectionListRenderItem,
   StyleSheet,
   useWindowDimensions,
@@ -23,7 +21,9 @@ import { IconButton } from '~/components/ui/IconButton';
 import { useTabScreenFabBottom } from '~/hooks/useTabBarBottomInset';
 import { t } from '~/services';
 import { RootStateT } from '~/store';
-import { selectAllRewardAssignment } from '~/store/rewardAssignment/selectors';
+import {
+  selectInitialRewardAssignmentsByChildSections,
+} from '~/store/rewards/selectors';
 import { isDateInClosedRewardPeriod } from '~/store/rewards/earnedRewardPeriodUtils';
 import {
   buildPeriodApprovalUpdates,
@@ -39,7 +39,7 @@ import {
 } from '~/store/rewards/selectors';
 import { approvePeriod, updateReward } from '~/store/rewards/slice';
 import { selectCanReviewTasks } from '~/store/settings/selectors';
-import { Colors, spacing } from '~/styles';
+import { Colors } from '~/styles';
 import { EScreens } from '~/types';
 import { ERewardStatus } from '~/types/EReward';
 import { IReward, IRewardAssignment } from '~/types/IReward';
@@ -289,7 +289,7 @@ function CompletedRewardsTab() {
 function RewardsListTab() {
   const router = useRouter();
   const fabBottom = useTabScreenFabBottom(16);
-  const rewardAssignments = useSelector(selectAllRewardAssignment);
+  const rewardSections = useSelector(selectInitialRewardAssignmentsByChildSections);
 
   const handleAddReward = useCallback(() => {
     router.push(`/${EScreens.RewardAdd}` as any);
@@ -302,7 +302,12 @@ function RewardsListTab() {
     [router],
   );
 
-  const renderAssignmentItem = useCallback<ListRenderItem<IRewardAssignment>>(
+  const renderAssignmentItem = useCallback<
+    SectionListRenderItem<
+      IRewardAssignment,
+      { childId: string; title: string; currentReward: number }
+    >
+  >(
     ({ item }) => (
       <RewardItem
         title={item.title}
@@ -315,14 +320,21 @@ function RewardsListTab() {
     [handleEditReward],
   );
 
+  const sections = useMemo(
+    () =>
+      rewardSections.map(section => ({
+        ...section,
+        subtitle: `${t('rewards.current_reward')}: ⭐ ${section.currentReward}`,
+      })),
+    [rewardSections],
+  );
+
   return (
     <View style={styles.listTab}>
-      <FlatList
-        data={rewardAssignments}
-        renderItem={renderAssignmentItem}
+      <SegmentedSectionList
+        sections={sections}
         keyExtractor={item => item.id}
-        contentContainerStyle={styles.listContent}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        renderItem={renderAssignmentItem}
         ListEmptyComponent={
           <Text style={styles.emptyText}>{t('rewards.no_rewards')}</Text>
         }
@@ -479,15 +491,6 @@ export function ParentRewardsTabs() {
 const styles = StyleSheet.create({
   listTab: {
     flex: 1,
-  },
-  listContent: {
-    flexGrow: 1,
-    paddingHorizontal: spacing(4),
-    paddingTop: spacing(2),
-    paddingBottom: 96,
-  },
-  separator: {
-    height: 8,
   },
   emptyText: {
     marginTop: 24,

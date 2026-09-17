@@ -21,6 +21,8 @@ type Props = {
   picture?: string | number;
   reward?: number;
   color?: string;
+  childName?: string;
+  childColor?: string;
   onPress?: () => void;
   footer?: React.ReactNode;
 };
@@ -32,15 +34,38 @@ const RowContent: React.FC<{
   picture?: string | number;
   reward?: number;
   textColor: string;
+  childName?: string;
+  childColor?: string;
   footer?: React.ReactNode;
   customUrls: Record<string, string>;
-}> = ({ title, picture, reward, textColor, footer, customUrls }) => {
+}> = ({
+  title,
+  picture,
+  reward,
+  textColor,
+  childName,
+  childColor,
+  footer,
+  customUrls,
+}) => {
   const rewardText = reward != null ? String(reward) : '';
   const isLongReward = rewardText.length > 3;
 
   return (
     <View style={styles.row}>
       <View style={styles.leftColumn}>
+        {!!childName && (
+          <Text
+            variant="bodySmall"
+            fontFamily="fredoka"
+            weight="medium"
+            numberOfLines={2}
+            style={[styles.childName, { color: childColor ?? textColor }]}
+          >
+            {childName}
+          </Text>
+        )}
+
         <View style={styles.imageContainer}>
           <ResolvedPicture
             picture={picture}
@@ -108,6 +133,8 @@ export const RewardBaseListItem: React.FC<Props> = ({
   picture,
   reward,
   color = '#F59F00',
+  childName,
+  childColor,
   onPress,
   footer,
 }) => {
@@ -124,6 +151,8 @@ export const RewardBaseListItem: React.FC<Props> = ({
       picture={picture}
       reward={reward}
       textColor={color}
+      childName={childName}
+      childColor={childColor}
       footer={footer}
       customUrls={customUrls}
     />
@@ -199,6 +228,14 @@ const styles = StyleSheet.create({
   leftColumn: {
     alignItems: 'center',
     flexShrink: 0,
+  },
+
+  childName: {
+    width: IMAGE_SIZE,
+    maxWidth: IMAGE_SIZE,
+    marginBottom: 6,
+    fontSize: 13,
+    textAlign: 'left',
   },
 
   imageContainer: {

@@ -42,8 +42,10 @@ export default function RewardEdit() {
     }
   }, [saveError]);
 
-  const handleSave = (values: RewardAssignmentFormProps) => {
-    if (!reward || isSaving) {
+  const handleSave = (valuesList: RewardAssignmentFormProps[]) => {
+    const values = valuesList[0];
+
+    if (!reward || !values || isSaving) {
       return;
     }
 
