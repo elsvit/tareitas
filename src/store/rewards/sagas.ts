@@ -339,21 +339,39 @@ function* removeRewardSaga(
   action: PayloadAction<RemoveRewardPayload>,
 ): Generator<any, void, any> {
   const { entity: id, onSuccess } = action.payload;
+  const existingReward: IReward | undefined = yield select((state: RootStateT) =>
+    selectRewardById(state, id),
+  );
   const session = yield* assertMultideviceSession();
 
-  if (session) {
-    try {
-      yield* callMultideviceApi(token =>
-        cancelRewardRedemption(token, session.familyId, id),
-      );
-    } catch (error) {
-      if (!(error instanceof ApiError && error.status === 404)) {
-        throw error;
-      }
+  if (!session) {
+    yield put(removeRewardSuccess(id));
+
+    if (onSuccess) {
+      yield call(onSuccess);
     }
+
+    return;
   }
 
   yield put(removeRewardSuccess(id));
+
+  try {
+    yield* callMultideviceApi(token =>
+      cancelRewardRedemption(token, session.familyId, id),
+    );
+  } catch (error) {
+    if (existingReward) {
+      yield put(addRewardSuccess(existingReward));
+    }
+
+    if (
+      !(error instanceof ApiError) ||
+      (error.status !== 404 && error.status !== 409)
+    ) {
+      throw error;
+    }
+  }
 
   if (onSuccess) {
     yield call(onSuccess);

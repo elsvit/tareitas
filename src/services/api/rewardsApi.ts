@@ -232,6 +232,79 @@ export async function completeRewardRedemption(
   return parseApiJson<ServerRewardRedemption>(response);
 }
 
+export async function cancelRewardRedemption(
+  token: string,
+  familyId: string,
+  redemptionId: string,
+) {
+  await apiFetch(
+    `/families/${familyId}/rewards/redemptions/${redemptionId}/cancel`,
+    {
+      method: 'POST',
+      token,
+    },
+  );
+}
+
+export function dedupePendingServerRedemptions(
+  redemptions: ServerRewardRedemption[],
+): ServerRewardRedemption[] {
+  const latestPendingByKey = new Map<string, ServerRewardRedemption>();
+  const deduped: ServerRewardRedemption[] = [];
+
+  for (const redemption of redemptions) {
+    if (redemption.status !== ServerRewardRedemptionStatus.pending) {
+      deduped.push(redemption);
+      continue;
+    }
+
+    const key = `${redemption.rewardId}_${redemption.childUserId}`;
+    const existing = latestPendingByKey.get(key);
+
+    if (
+      !existing ||
+      redemption.createdAt.localeCompare(existing.createdAt) > 0
+    ) {
+      latestPendingByKey.set(key, redemption);
+    }
+  }
+
+  return [...deduped, ...latestPendingByKey.values()];
+}
+
+export function getDuplicatePendingServerRedemptions(
+  redemptions: ServerRewardRedemption[],
+): ServerRewardRedemption[] {
+  const pendingByKey = new Map<string, ServerRewardRedemption[]>();
+
+  for (const redemption of redemptions) {
+    if (redemption.status !== ServerRewardRedemptionStatus.pending) {
+      continue;
+    }
+
+    const key = `${redemption.rewardId}_${redemption.childUserId}`;
+    const group = pendingByKey.get(key) ?? [];
+    group.push(redemption);
+    pendingByKey.set(key, group);
+  }
+
+  const duplicates: ServerRewardRedemption[] = [];
+
+  for (const group of pendingByKey.values()) {
+    if (group.length <= 1) {
+      continue;
+    }
+
+    const sorted = [...group].sort((a, b) =>
+      b.createdAt.localeCompare(a.createdAt),
+    );
+
+    duplicates.push(...sorted.slice(1));
+  }
+
+  return duplicates;
+}
+
 export function mapServerFamilyRewardToAssignment(
   server: ServerFamilyReward,
 ): IRewardAssignment {
