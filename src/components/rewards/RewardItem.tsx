@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import * as Haptics from 'expo-haptics';
+
 import { RewardBaseListItem } from '~/components/rewards/RewardBaseListItem';
+import { RewardSelectSparkleAnimation } from '~/components/rewards/RewardSelectSparkleAnimation';
 import { RewardStatusBadge } from '~/components/rewards/RewardStatusBadge';
 import { Text } from '~/components/ui';
 import {
@@ -10,6 +13,7 @@ import {
   REWARD_STATUS_COLORS,
 } from '~/constants/rewards/rewardStatus';
 import { t } from '~/services';
+import { playAppSound } from '~/services/appSounds';
 import { RootStateT } from '~/store';
 import { ECommonActions } from '~/store/common/types';
 import { EStateName } from '~/store/enums';
@@ -82,6 +86,8 @@ export const RewardItem: React.FC<Props> = ({
   onComplete,
   completedDate,
 }) => {
+  const [selectAnimationTrigger, setSelectAnimationTrigger] = useState(0);
+
   const rewardActionError = useSelector((state: RootStateT) => {
     const common = state[EStateName.common];
 
@@ -91,6 +97,17 @@ export const RewardItem: React.FC<Props> = ({
       null
     );
   });
+
+  const handleSelectPress = useCallback(() => {
+    if (!onSelect) {
+      return;
+    }
+
+    setSelectAnimationTrigger(current => current + 1);
+    void playAppSound('rewardSelect');
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    onSelect();
+  }, [onSelect]);
 
   const renderChildFooter = () => {
     const leftLabel = getChildLeftLabel(status, canAfford);
@@ -105,10 +122,10 @@ export const RewardItem: React.FC<Props> = ({
       actionHandler = onRedeem;
     } else if (status === ERewardStatus.Rejected) {
       actionLabel = t('rewards.action.redeem_again');
-      actionHandler = onSelect;
+      actionHandler = handleSelectPress;
     } else if (canAfford) {
       actionLabel = t('rewards.action.select');
-      actionHandler = onSelect;
+      actionHandler = handleSelectPress;
     }
 
     return (
@@ -200,6 +217,9 @@ export const RewardItem: React.FC<Props> = ({
 
   return (
     <View style={styles.wrapper}>
+      {mode === 'child' ? (
+        <RewardSelectSparkleAnimation trigger={selectAnimationTrigger} />
+      ) : null}
       <RewardBaseListItem
         title={title}
         picture={picture}
@@ -231,6 +251,7 @@ export const RewardItem: React.FC<Props> = ({
 const styles = StyleSheet.create({
   wrapper: {
     width: '100%',
+    position: 'relative',
   },
   footer: {
     flexDirection: 'row',
