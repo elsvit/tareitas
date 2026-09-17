@@ -49,6 +49,8 @@ export {
   redeemFamilyReward,
   approveRewardRedemption,
   rejectRewardRedemption,
+  cancelRewardRedemption,
+  dedupePendingServerRedemptions,
   mapServerFamilyRewardToAssignment,
   mapServerRedemptionToLocal,
   toCreateFamilyRewardBody,
