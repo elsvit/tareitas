@@ -195,6 +195,27 @@ export function mergeTaskFromServerWithLocal(
   };
 }
 
+export function dedupeServerTasks(
+  tasks: ServerTask[],
+): ServerTask[] {
+  const latestByKey = new Map<string, ServerTask>();
+
+  for (const task of tasks) {
+    const date = task.date.slice(0, 10);
+    const key = `${task.assignmentId}_${date}`;
+    const existing = latestByKey.get(key);
+
+    if (
+      !existing ||
+      task.updatedAt.localeCompare(existing.updatedAt) > 0
+    ) {
+      latestByKey.set(key, task);
+    }
+  }
+
+  return [...latestByKey.values()];
+}
+
 export function mapServerTaskToLocal(server: ServerTask): ITask {
   const date = server.date.slice(0, 10);
 

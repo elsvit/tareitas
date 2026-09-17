@@ -49,23 +49,35 @@ export const tasksSlice = createSlice({
     ) => {
       const { tasks, from, to } = action.payload;
       const serverIds = new Set(tasks.map(task => task.id));
+      const canonicalIdByAssignmentDate = new Map(
+        tasks.map(task => [`${task.assignmentId}_${task.date}`, task.id]),
+      );
 
       if (tasks.length > 0) {
         tasksAdapter.upsertMany(state, tasks);
       }
 
-      const stalePendingIds = (state.ids as string[]).filter(id => {
+      const staleOrDuplicateIds = (state.ids as string[]).filter(id => {
         const task = state.entities[id];
 
         if (!task || task.date < from || task.date > to) {
           return false;
         }
 
+        const assignmentDateKey = `${task.assignmentId}_${task.date}`;
+        const canonicalId = canonicalIdByAssignmentDate.get(
+          assignmentDateKey,
+        );
+
+        if (canonicalId && id !== canonicalId) {
+          return true;
+        }
+
         return !serverIds.has(id) && task.status === ETaskStatus.Pending;
       });
 
-      if (stalePendingIds.length > 0) {
-        tasksAdapter.removeMany(state, stalePendingIds);
+      if (staleOrDuplicateIds.length > 0) {
+        tasksAdapter.removeMany(state, staleOrDuplicateIds);
       }
     },
     generateTasksForDate: (

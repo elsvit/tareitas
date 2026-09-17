@@ -195,32 +195,17 @@ export const selectAuthUserRole = (state: RootStateT) =>
 
 export const selectCanReviewTasks = createSelector(
   [
+    selectIsMultidevice,
     selectHasAuthSession,
-    selectResolvedAuthUserId,
-    (state: RootStateT) => state,
+    selectCurrentUser,
+    selectIsParent,
   ],
-  (hasAuthSession, cloudUserId, state) => {
-    if (!hasAuthSession) {
+  (isMultidevice, hasAuthSession, currentUserId, isParent) => {
+    if (!isMultidevice || !hasAuthSession) {
       return true;
     }
 
-    if (!cloudUserId) {
-      return false;
-    }
-
-    if (selectChildById(state, cloudUserId)) {
-      return false;
-    }
-
-    const parent = selectParentById(state, cloudUserId);
-
-    if (parent) {
-      return (
-        parent.role === ERole.admin || parent.role === ERole.parent
-      );
-    }
-
-    return false;
+    return Boolean(currentUserId && isParent);
   },
 );
 
