@@ -12,20 +12,22 @@ export function resolveAppBootRoute(options: {
   syncMode: ESyncMode | null | undefined;
   hasFamily: boolean;
   onboardingIntroCompleted: boolean;
-  resumeOnboardingChildProfile?: boolean;
+  pendingOnboardingChildUserId?: string | null;
 }): '/(tabs)/Tasks' | '/(onboarding)' | '/(onboarding)?setup=1' {
   const {
     syncMode,
     hasFamily,
     onboardingIntroCompleted,
-    resumeOnboardingChildProfile,
+    pendingOnboardingChildUserId,
   } = options;
 
   const hasActiveMode =
     syncMode === ESyncMode.deviceOnly ||
     syncMode === ESyncMode.multidevice;
 
-  if (resumeOnboardingChildProfile && hasFamily) {
+  // Multidevice signup stays in onboarding until enterApp() clears the flag
+  // (child form and/or completion screen).
+  if (pendingOnboardingChildUserId && hasFamily) {
     return '/(onboarding)?setup=1';
   }
 

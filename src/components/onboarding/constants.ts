@@ -10,5 +10,5 @@ export const ONBOARDING_STEP = {
   complete: 6,
 } as const;
 
-export const ONBOARDING_MULTIDEVICE_TOTAL = 6;
+export const ONBOARDING_MULTIDEVICE_TOTAL = 7;
 export const ONBOARDING_DEVICE_ONLY_TOTAL = 7;
