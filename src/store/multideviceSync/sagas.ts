@@ -12,12 +12,11 @@ import {
 } from '~/services/api/tasksApi';
 import {
   cancelRewardRedemption,
+  completeRewardRedemption,
   dedupePendingServerRedemptions,
   getDuplicatePendingServerRedemptions,
-  dedupePendingServerRedemptions,
   listFamilyRewards,
   listRewardRedemptions,
-  completeRewardRedemption,
   mapServerFamilyRewardToAssignment,
   mapServerRedemptionToLocal,
   ServerRewardRedemption,
@@ -38,7 +37,9 @@ import {
 import {
   selectCanReviewTasks,
   selectCurrentUser,
+  selectHasAuthSession,
   selectIsChild,
+  selectTaskCalendarDate,
 } from '~/store/settings/selectors';
 import {
   addChildSuccess,
@@ -63,11 +64,6 @@ import { replaceTaskAssignments } from '~/store/taskAssignment/slice';
 import { replaceTasksFromServer } from '~/store/tasks/slice';
 import type { IState } from '~/store/types';
 import { IReward } from '~/types/IReward';
-import {
-  selectCurrentUser,
-  selectHasAuthSession,
-  selectTaskCalendarDate,
-} from '~/store/settings/selectors';
 
 function findLocalCompletedRedemption(
   localEntities: Record<string, IReward | undefined>,
@@ -278,9 +274,7 @@ export function* syncRewardsDataFromServerSaga(): Generator<
   const children = selectAllChildren(state);
   const validChildIds = selectDedupedChildIds(state);
 
-  let reconciledRedemptions = dedupePendingServerRedemptions(
-    serverRedemptions,
-  );
+  let reconciledRedemptions = serverRedemptions;
 
   if (canReviewRewards) {
     reconciledRedemptions = [];
