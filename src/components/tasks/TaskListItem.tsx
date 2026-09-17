@@ -32,6 +32,7 @@ import {
 import { useIsPro, useProFeatureAccess } from '~/hooks/useIsPro';
 import { useSubscription } from '~/hooks/useSubscription';
 import { t } from '~/services';
+import { playAppSound } from '~/services/appSounds';
 import { RootStateT } from '~/store';
 import { ECommonActions } from '~/store/common/types';
 import { EStateName } from '~/store/enums';
@@ -142,11 +143,16 @@ export const TaskListItem: React.FC<Props> = ({
     (taskView?.reward != null ? String(taskView.reward) : '');
 
   const triggerCompletionAnimation = useCallback(() => {
-    if (!isChildView || rewardText === '') {
+    if (!isChildView) {
       return;
     }
 
-    setRewardAnimationTrigger(current => current + 1);
+    void playAppSound('taskComplete');
+
+    if (rewardText !== '') {
+      setRewardAnimationTrigger(current => current + 1);
+    }
+
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   }, [isChildView, rewardText]);
 
