@@ -8,7 +8,10 @@ import { RewardForm } from '~/components/rewards/RewardForm';
 import { RootStateT } from '~/store';
 import { ECommonActions } from '~/store/common/types';
 import { EStateName } from '~/store/enums';
-import { addRewardAssignment } from '~/store/rewardAssignment/slice';
+import { selectAllRewardAssignment } from '~/store/rewardAssignment/selectors';
+import { addRewardAssignmentsBatch } from '~/store/rewardAssignment/slice';
+import { isDuplicateRewardAssignmentForChild } from '~/store/rewards/rewardCalculations';
+import { store } from '~/store/store';
 import { EFormMode } from '~/types/ECommon';
 import { EMainTabs } from '~/types/ENavigation';
 import { IRewardAssignment, RewardAssignmentFormProps } from '~/types/IReward';
@@ -21,14 +24,17 @@ export default function RewardAdd() {
   const isSaving = useSelector((state: RootStateT) => {
     const common = state[EStateName.common];
 
-    return common[ECommonActions.LOADING][addRewardAssignment.type] ?? false;
+    return (
+      common[ECommonActions.LOADING][addRewardAssignmentsBatch.type] ?? false
+    );
   });
 
   const saveError = useSelector((state: RootStateT) => {
     const common = state[EStateName.common];
 
     return (
-      common[ECommonActions.ERROR][addRewardAssignment.type]?.message ?? null
+      common[ECommonActions.ERROR][addRewardAssignmentsBatch.type]?.message ??
+      null
     );
   });
 
@@ -38,23 +44,35 @@ export default function RewardAdd() {
     }
   }, [saveError]);
 
-  const handleSave = (values: RewardAssignmentFormProps) => {
-    if (isSaving) {
+  const handleSave = (valuesList: RewardAssignmentFormProps[]) => {
+    if (valuesList.length === 0 || isSaving) {
       return;
     }
 
     setSubmitError(null);
 
-    const id = uuidv4();
-    const newRewardAssignment: IRewardAssignment = {
-      id,
-      createdAt: new Date().toISOString(),
-      ...values,
-    } as IRewardAssignment;
+    const existingAssignments = selectAllRewardAssignment(store.getState());
+    const uniqueValues = valuesList.filter(
+      values => !isDuplicateRewardAssignmentForChild(existingAssignments, values),
+    );
+
+    if (uniqueValues.length === 0) {
+      return;
+    }
+
+    const newRewardAssignments = uniqueValues.map(values => {
+      const id = uuidv4();
+
+      return {
+        id,
+        createdAt: new Date().toISOString(),
+        ...values,
+      } as IRewardAssignment;
+    });
 
     dispatch(
-      addRewardAssignment({
-        entity: newRewardAssignment,
+      addRewardAssignmentsBatch({
+        entities: newRewardAssignments,
         onSuccess: () => {
           if (router.canGoBack()) {
             router.back();

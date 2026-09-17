@@ -18,6 +18,7 @@ import {
   getChildCurrentRewardBalance,
   getLastApprovedMonth,
   isPeriodClosed,
+  isRewardAssignmentAvailableForChild,
   normalizeEarnedRewardPeriods,
 } from './rewardCalculations';
 import { rewardsAdapter } from './slice';
@@ -105,29 +106,67 @@ export const selectChildRewardBalance = (childId: string) =>
     getChildCurrentRewardBalance(state, childId),
   );
 
-export const selectRewardListItemsForChild = (childId: string) =>
-  createSelector(
-    [
-      selectAllRewardAssignment,
-      selectAllRewards,
-      (state: IState) => state.rewards.entities,
-      selectChildRewardBalance(childId),
-      selectDedupedChildIds,
-    ],
-    (assignments, rewards, _rewardEntities, balance, validChildIds) =>
-      assignments
-        .filter(assignment =>
-          isRewardAssignedToChild(assignment, childId, validChildIds),
-        )
-        .map(assignment =>
-          buildRewardListItemView(
-            assignment,
-            childId,
-            findActiveRewardInstance(rewards, assignment.id, childId) ?? null,
-            balance,
-          ),
-        ),
+const getAssignmentTargetChildIds = (
+  assignment: IRewardAssignment,
+  validChildIds: string[],
+): string[] => {
+  if (assignment.childIds?.length) {
+    return assignment.childIds.filter(id => validChildIds.includes(id));
+  }
+
+  return validChildIds;
+};
+
+export const isRewardAssignmentInInitialState = (
+  assignment: IRewardAssignment,
+  rewards: IReward[],
+  validChildIds: string[],
+): boolean => {
+  const targetChildIds = getAssignmentTargetChildIds(assignment, validChildIds);
+
+  if (!targetChildIds.length) {
+    return true;
+  }
+
+  return targetChildIds.every(childId =>
+    isRewardAssignmentAvailableForChild(assignment.id, childId, rewards),
   );
+};
+
+export const selectInitialRewardAssignments = createSelector(
+  [selectAllRewardAssignment, selectAllRewards, selectDedupedChildIds],
+  (assignments, rewards, validChildIds) =>
+    assignments.filter(assignment =>
+      isRewardAssignmentInInitialState(assignment, rewards, validChildIds),
+    ),
+);
+
+export const selectInitialRewardAssignmentsByChildSections = createSelector(
+  [
+    selectAllRewardAssignment,
+    selectAllRewards,
+    selectAllChildren,
+    selectDedupedChildIds,
+    selectBalanceCalculationState,
+  ],
+  (assignments, rewards, children, validChildIds, state) =>
+    children
+      .map(child => ({
+        childId: child.id,
+        title: child.name,
+        currentReward: getChildCurrentRewardBalance(state, child.id),
+        data: assignments.filter(
+          assignment =>
+            isRewardAssignedToChild(assignment, child.id, validChildIds) &&
+            isRewardAssignmentAvailableForChild(
+              assignment.id,
+              child.id,
+              rewards,
+            ),
+        ),
+      }))
+      .filter(section => section.data.length > 0),
+);
 
 export const selectRewardsByStatus = (status: ERewardStatus) =>
   createSelector([selectAllRewards, selectAllRewardAssignment], (rewards, assignments) =>
@@ -242,14 +281,7 @@ export const selectChildCatalogRewardItems = (childId: string) =>
           isRewardAssignedToChild(assignment, childId, validChildIds),
         )
         .filter(assignment =>
-          !rewards.some(
-            reward =>
-              reward.rewardAssignmentId === assignment.id &&
-              reward.childId === childId &&
-              !reward.completedDate &&
-              (reward.status === ERewardStatus.Selected ||
-                reward.status === ERewardStatus.Approved),
-          ),
+          isRewardAssignmentAvailableForChild(assignment.id, childId, rewards),
         )
         .map(assignment => {
           const rejectedInstance = rewards.find(
@@ -268,6 +300,9 @@ export const selectChildCatalogRewardItems = (childId: string) =>
           );
         }),
   );
+
+export const selectRewardListItemsForChild = (childId: string) =>
+  selectChildCatalogRewardItems(childId);
 
 export const selectChildSelectedRewardItems = (childId: string) =>
   createSelector(

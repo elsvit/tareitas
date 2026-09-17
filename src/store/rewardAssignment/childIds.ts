@@ -48,10 +48,6 @@ export function normalizeRewardChildIdsForSave(
   childIds: string[] | undefined,
   validChildIds: string[],
 ): string[] | undefined {
-  if (isAllChildrenRewardAssignment(childIds, validChildIds)) {
-    return undefined;
-  }
-
   const filtered = filterValidChildIds(childIds, validChildIds);
 
   return filtered?.length ? filtered : undefined;
@@ -76,6 +72,25 @@ export function rewardChildIdsForForm(
   const filtered = filterValidChildIds(childIds, validChildIds);
 
   return filtered?.length ? filtered : validChildIds;
+}
+
+export function rewardChildIdsForEditForm(
+  childIds: string[] | undefined,
+  validChildIds: string[],
+): string[] {
+  const ids = rewardChildIdsForForm(childIds, validChildIds);
+
+  if (!ids.length) {
+    return [];
+  }
+
+  return [ids[0]];
+}
+
+export function getRewardAssignmentDisplayChildId(
+  assignment: { childIds?: string[] },
+): string | undefined {
+  return assignment.childIds?.[0];
 }
 
 export function filterValidChildIds(

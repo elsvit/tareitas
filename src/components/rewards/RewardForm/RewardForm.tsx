@@ -26,6 +26,7 @@ import { trackDefaultRewardUsed } from '~/services/analytics';
 import { selectDedupedChildren } from '~/store/children/selectors';
 import {
   normalizeRewardChildIdsForSave,
+  rewardChildIdsForEditForm,
   rewardChildIdsForForm,
 } from '~/store/rewardAssignment/childIds';
 import { selectPreviousRewardTemplates } from '~/store/rewardAssignment/selectors';
@@ -46,7 +47,7 @@ type Props = {
   title?: string;
   mode: EFormMode;
   reward?: Partial<IRewardAssignment>;
-  onSave?: (values: RewardAssignmentFormProps) => void;
+  onSave?: (values: RewardAssignmentFormProps[]) => void;
   onValidityChange?: (valid: boolean) => void;
   showScreenHeader?: boolean;
   submitError?: string | null;
@@ -83,7 +84,9 @@ const schema = z
         .min(0, t('rewards.reward_positive') || 'Reward must be ≥ 0'),
     ),
     picture: z.string().trim().min(1, requiredMessage),
-    childIds: z.array(z.string()),
+    childIds: z
+      .array(z.string())
+      .min(1, t('rewards.select_children') || requiredMessage),
   });
 
 export const RewardForm: FC<Props> = ({
@@ -128,7 +131,9 @@ export const RewardForm: FC<Props> = ({
     [childOptions],
   );
 
-  const initialChildIds = rewardChildIdsForForm(reward?.childIds, allChildIds);
+  const initialChildIds = isEditMode
+    ? rewardChildIdsForEditForm(reward?.childIds, allChildIds)
+    : rewardChildIdsForForm(reward?.childIds, allChildIds);
   const hasInitializedChildIds = useRef(false);
 
   const currentRole = useSelector(selectCurrentRole);
@@ -175,11 +180,21 @@ export const RewardForm: FC<Props> = ({
 
     setValue(
       'childIds',
-      rewardChildIdsForForm(reward?.childIds, allChildIds),
+      isEditMode
+        ? rewardChildIdsForEditForm(reward?.childIds, allChildIds)
+        : rewardChildIdsForForm(reward?.childIds, allChildIds),
       { shouldValidate: true },
     );
     hasInitializedChildIds.current = true;
-  }, [allChildIds, mode, reward?.childIds, reward?.id, setValue]);
+  }, [allChildIds, isEditMode, mode, reward?.childIds, reward?.id, setValue]);
+
+  useEffect(() => {
+    if (children.length !== 1 || !children[0]?.id) {
+      return;
+    }
+
+    setValue('childIds', [children[0].id], { shouldValidate: true });
+  }, [children, setValue]);
 
   const handleBaseRewardChange = (baseRewardId: string) => {
     setValue('baseRewardId', baseRewardId);
@@ -243,15 +258,31 @@ export const RewardForm: FC<Props> = ({
       return;
     }
 
-    onSave?.({
-      title: parsed.data.title,
-      reward: parsed.data.reward,
-      picture: parsed.data.picture,
-      childIds: normalizeRewardChildIdsForSave(
-        parsed.data.childIds,
-        allChildIds,
-      ),
-    });
+    const selectedChildIds = isEditMode
+      ? parsed.data.childIds.slice(0, 1)
+      : parsed.data.childIds;
+
+    const payloads: RewardAssignmentFormProps[] = selectedChildIds
+      .map(childId =>
+        normalizeRewardChildIdsForSave([childId], allChildIds),
+      )
+      .filter((childIds): childIds is string[] => !!childIds?.length)
+      .map(childIds => ({
+        title: parsed.data.title,
+        reward: parsed.data.reward,
+        picture: parsed.data.picture,
+        childIds,
+      }));
+
+    if (!payloads.length) {
+      setError('childIds', {
+        type: 'manual',
+        message: t('rewards.select_children') || requiredMessage,
+      });
+      return;
+    }
+
+    onSave?.(payloads);
   };
 
   const handleDelete = () => {
@@ -309,12 +340,21 @@ export const RewardForm: FC<Props> = ({
                     name="childIds"
                     render={({ field: { value, onChange } }) => (
                       <>
-                        <SelectMulti
-                          label={t('users.children')}
-                          options={childOptions}
-                          value={value}
-                          onChange={onChange}
-                        />
+                        {isEditMode ? (
+                          <Select
+                            label={t('users.child')}
+                            options={childOptions}
+                            value={value[0] ?? ''}
+                            onChange={nextValue => onChange([nextValue])}
+                          />
+                        ) : (
+                          <SelectMulti
+                            label={t('users.children')}
+                            options={childOptions}
+                            value={value}
+                            onChange={onChange}
+                          />
+                        )}
                         {!!errors.childIds && (
                           <Text style={styles.errorText}>
                             {errors.childIds.message}

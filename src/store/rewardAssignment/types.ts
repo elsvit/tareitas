@@ -10,6 +10,11 @@ export type AddRewardAssignmentPayload = {
   onSuccess?: () => void;
 };
 
+export type AddRewardAssignmentsBatchPayload = {
+  entities: IRewardAssignment[];
+  onSuccess?: () => void;
+};
+
 export type UpdateRewardAssignmentPayload = AddRewardAssignmentPayload;
 
 export type RemoveRewardAssignmentPayload = {

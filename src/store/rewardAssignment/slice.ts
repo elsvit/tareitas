@@ -26,6 +26,7 @@ export const rewardAssignmentSlice = createSlice({
   initialState,
   reducers: {
     addRewardAssignment: noopEntityRequestReducer,
+    addRewardAssignmentsBatch: noopEntityRequestReducer,
     addRewardAssignmentSuccess: (
       state,
       action: PayloadAction<IRewardAssignment>,
@@ -125,6 +126,7 @@ export const rewardAssignmentSlice = createSlice({
 
 export const {
   addRewardAssignment,
+  addRewardAssignmentsBatch,
   addRewardAssignmentSuccess,
   updateRewardAssignment,
   updateRewardAssignmentSuccess,

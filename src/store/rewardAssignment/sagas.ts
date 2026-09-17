@@ -24,6 +24,7 @@ import {
 } from './childIds';
 import {
   addRewardAssignment,
+  addRewardAssignmentsBatch,
   addRewardAssignmentSuccess,
   removeRewardAssignment,
   removeRewardAssignmentSuccess,
@@ -32,9 +33,11 @@ import {
 } from './slice';
 import {
   AddRewardAssignmentPayload,
+  AddRewardAssignmentsBatchPayload,
   RemoveRewardAssignmentPayload,
   UpdateRewardAssignmentPayload,
 } from './types';
+import type { IRewardAssignment } from '~/types/IReward';
 import type { IState } from '../types';
 
 function* getValidChildIds(): Generator<any, string[], any> {
@@ -71,10 +74,9 @@ function* persistRewardChildIdsOnServer(
   }
 }
 
-function* addRewardAssignmentSaga(
-  action: PayloadAction<AddRewardAssignmentPayload>,
+function* persistRewardAssignment(
+  entity: IRewardAssignment,
 ): Generator<any, void, any> {
-  const { entity, onSuccess } = action.payload;
   const session = yield* assertMultideviceSession();
   const validChildIds: string[] = yield* getValidChildIds();
   const savedChildIds = resolveSavedRewardChildIds(
@@ -90,10 +92,6 @@ function* addRewardAssignmentSaga(
         childIds: savedChildIds,
       }),
     );
-
-    if (onSuccess) {
-      yield call(onSuccess);
-    }
 
     return;
   }
@@ -151,6 +149,28 @@ function* addRewardAssignmentSaga(
       createdAt: serverReward.createdAt ?? entity.createdAt,
     }),
   );
+}
+
+function* addRewardAssignmentSaga(
+  action: PayloadAction<AddRewardAssignmentPayload>,
+): Generator<any, void, any> {
+  const { entity, onSuccess } = action.payload;
+
+  yield* persistRewardAssignment(entity);
+
+  if (onSuccess) {
+    yield call(onSuccess);
+  }
+}
+
+function* addRewardAssignmentsBatchSaga(
+  action: PayloadAction<AddRewardAssignmentsBatchPayload>,
+): Generator<any, void, any> {
+  const { entities, onSuccess } = action.payload;
+
+  for (const entity of entities) {
+    yield* persistRewardAssignment(entity);
+  }
 
   if (onSuccess) {
     yield call(onSuccess);
@@ -324,6 +344,10 @@ function* removeRewardAssignmentSaga(
 }
 
 export default [
+  takeLatestWithFetchable(
+    addRewardAssignmentsBatch,
+    addRewardAssignmentsBatchSaga,
+  ),
   takeLatestWithFetchable(addRewardAssignment, addRewardAssignmentSaga),
   takeLatestWithFetchable(updateRewardAssignment, updateRewardAssignmentSaga),
   takeLatestWithFetchable(removeRewardAssignment, removeRewardAssignmentSaga),

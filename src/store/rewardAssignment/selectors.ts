@@ -10,12 +10,14 @@ import { rewardAssignmentAdapter } from './slice';
 export {
   dedupeChildren,
   filterValidChildIds,
+  getRewardAssignmentDisplayChildId,
   isAllChildrenRewardAssignment,
   isRewardAssignedToChild,
   mapServerChildUserIdsToChildIds,
   normalizeRewardChildIdsForSave,
   remapChildIds,
   resolveSavedRewardChildIds,
+  rewardChildIdsForEditForm,
   rewardChildIdsForForm,
 } from './childIds';
 

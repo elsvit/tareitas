@@ -29,6 +29,8 @@ type Props = {
   picture?: string;
   reward: number;
   mode: RewardItemMode;
+  childName?: string;
+  childColor?: string;
   status?: ERewardStatus;
   canAfford?: boolean;
   completedDate?: string;
@@ -67,6 +69,8 @@ export const RewardItem: React.FC<Props> = ({
   picture,
   reward,
   mode,
+  childName,
+  childColor,
   status,
   canAfford = false,
   onPress,
@@ -200,6 +204,8 @@ export const RewardItem: React.FC<Props> = ({
         title={title}
         picture={picture}
         reward={reward}
+        childName={mode === 'child' ? undefined : childName}
+        childColor={mode === 'child' ? undefined : childColor}
         onPress={onPress}
         footer={
           mode === 'child'
