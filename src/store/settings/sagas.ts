@@ -1,8 +1,12 @@
 import { call, put, select } from 'redux-saga/effects';
 
 import { collectFamilyMemberCredentialUpdates } from '~/services/familySync';
-import { LocalizationService } from '~/services/localization/localization';
+import {
+  AvailableLanguages,
+  LocalizationService,
+} from '~/services/localization/localization';
 import { DEFAULT_LANG } from '~/constants/settings';
+import { ELang } from '~/types/ELang';
 import { updateChild } from '~/store/children/slice';
 import {
   ensureSessionNotIdle,
@@ -200,12 +204,30 @@ function* refreshAuthSessionSaga(): Generator<any, void, any> {
   yield call(resumeMultideviceSessionSaga);
 }
 
+function resolveBootLanguage(storeLang: ELang | null): ELang {
+  if (
+    storeLang &&
+    AvailableLanguages.some(language => language.code === storeLang)
+  ) {
+    return storeLang;
+  }
+
+  const deviceLang = LocalizationService.getDeviceLanguage() as ELang;
+
+  if (AvailableLanguages.some(language => language.code === deviceLang)) {
+    return deviceLang;
+  }
+
+  return DEFAULT_LANG;
+}
+
 function* initLanguageSaga(): Generator<any, void, any> {
-  const storeLang = yield select(selectLang);
-  let lang = DEFAULT_LANG;
+  const storeLang: ELang | null = yield select(selectLang);
+  const langToApply = resolveBootLanguage(storeLang);
+  let lang = langToApply;
 
   try {
-    lang = yield call(LocalizationService.init, storeLang);
+    lang = yield call(LocalizationService.init, langToApply);
   } catch {
     try {
       lang = yield call(LocalizationService.init, DEFAULT_LANG);

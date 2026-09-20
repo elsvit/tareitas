@@ -46,7 +46,7 @@ import { trackDefaultBaseTaskUsed } from '~/services/analytics';
 import { selectAllChildren } from '~/store/children/selectors';
 import { selectEarnedRewardPeriods } from '~/store/rewards/selectors';
 import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
-import { selectIsAdmin, selectIsChild } from '~/store/settings/selectors';
+import { selectIsChild, selectIsParent } from '~/store/settings/selectors';
 import { selectAllTaskBaseInDefaultOrder } from '~/store/taskBase/selectors';
 import { Colors, userColors } from '~/styles';
 import { EFormMode, ERecurringEditScope, WeekDay } from '~/types/ECommon';
@@ -439,7 +439,7 @@ export const AssignmentTaskForm: FC<Props> = ({
   const earnedRewardPeriods = useSelector(selectEarnedRewardPeriods);
   const hasProFeatureAccess = useProFeatureAccess();
   const baseTasks = useSelector(selectAllTaskBaseInDefaultOrder);
-  const isAdmin = useSelector(selectIsAdmin);
+  const isParentOrAdmin = useSelector(selectIsParent);
   const isChild = useSelector(selectIsChild);
   const isParentView = !isChild;
   const isEditMode = mode === EFormMode.Edit;
@@ -1601,7 +1601,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               </>
             ) : null}
 
-            {isEditMode && isAdmin && (
+            {isEditMode && isParentOrAdmin && (
               <>
                 <Space size={3} />
                 <Button

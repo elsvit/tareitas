@@ -19,6 +19,7 @@ import { Text } from '~/components/ui';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { useHasCompletedTasksInPast } from '~/hooks/useHasCompletedTasksInPast';
 import { useMultideviceScreenSync } from '~/hooks/useMultideviceScreenSync';
+import { useTabScreenListBottomPadding } from '~/hooks/useTabBarBottomInset';
 import { useTaskCalendarDate } from '~/hooks/useTaskCalendarDate';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
@@ -54,6 +55,8 @@ export default function Habits() {
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const listBottomPadding = useTabScreenListBottomPadding();
 
   const children = useSelector(selectAllChildren);
   const taskBaseList = useSelector(selectAllTaskBase);
@@ -298,7 +301,10 @@ export default function Habits() {
             keyExtractor={keyExtractor}
             ItemSeparatorComponent={renderSeparator}
             ListEmptyComponent={ListEmptyComponent}
-            contentContainerStyle={styles.listContent}
+            contentContainerStyle={[
+              styles.listContent,
+              { paddingBottom: listBottomPadding },
+            ]}
             showsVerticalScrollIndicator={false}
             style={styles.list}
           />
@@ -335,7 +341,6 @@ const styles = StyleSheet.create({
 
   listContent: {
     flexGrow: 1,
-    paddingBottom: 80,
   },
 
   separator: {

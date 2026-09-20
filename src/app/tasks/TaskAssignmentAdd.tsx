@@ -1,6 +1,6 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -21,6 +21,7 @@ import { selectUsesCloudSync } from '~/store/settings/selectors';
 import { syncTaskAssignments } from '~/store/settings/slice';
 import { store } from '~/store/store';
 import { EFormMode } from '~/types/ECommon';
+import { EMainTabs } from '~/types/ENavigation';
 import { ETaskRepeatType } from '~/types/ETask';
 import { ITaskAssignment, TaskAssignmentFormProps } from '~/types/ITask';
 
@@ -31,6 +32,8 @@ export default function TaskAssignmentAdd() {
   const dispatch = useDispatch();
   const router = useRouter();
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [pendingNavigation, setPendingNavigation] = useState(false);
+  const pendingCalendarDateRef = useRef<string | null>(null);
 
   const { params } = useRoute<
     RouteProp<Record<string, { date?: string; isHabit?: string | boolean }>, string>
@@ -59,8 +62,52 @@ export default function TaskAssignmentAdd() {
   useEffect(() => {
     if (saveError) {
       setSubmitError(saveError);
+      setPendingNavigation(false);
     }
   }, [saveError]);
+
+  useEffect(() => {
+    if (!pendingNavigation || isSaving || saveError) {
+      return;
+    }
+
+    setPendingNavigation(false);
+
+    const calendarDate =
+      pendingCalendarDateRef.current ??
+      selectedDate ??
+      new Date().toISOString().slice(0, 10);
+
+    if (isMultidevice) {
+      dispatch(syncTaskAssignments());
+    } else {
+      const assignments = selectAllTaskAssignment(store.getState());
+
+      dispatch(
+        generateTasksForDate({
+          date: calendarDate,
+          assignments,
+        }),
+      );
+    }
+
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace(
+        isHabit ? `/(tabs)/${EMainTabs.Habits}` : `/(tabs)/${EMainTabs.Tasks}`,
+      );
+    }
+  }, [
+    dispatch,
+    isHabit,
+    isMultidevice,
+    isSaving,
+    pendingNavigation,
+    router,
+    saveError,
+    selectedDate,
+  ]);
 
   const handleSave = (valuesList: TaskAssignmentFormProps[]) => {
     if (valuesList.length === 0 || isSaving) {
@@ -70,6 +117,8 @@ export default function TaskAssignmentAdd() {
     setSubmitError(null);
 
     const calendarDate = selectedDate ?? valuesList[0].startDate;
+    pendingCalendarDateRef.current = calendarDate;
+
     const newAssignments = valuesList.map(values => {
       const id = uuidv4();
 
@@ -99,22 +148,7 @@ export default function TaskAssignmentAdd() {
       addTaskAssignmentsBatch({
         entities: newAssignments,
         onSuccess: () => {
-          if (isMultidevice) {
-            dispatch(syncTaskAssignments());
-          } else {
-            const assignments = selectAllTaskAssignment(store.getState());
-
-            dispatch(
-              generateTasksForDate({
-                date: calendarDate,
-                assignments,
-              }),
-            );
-          }
-
-          if (router.canGoBack()) {
-            router.back();
-          }
+          setPendingNavigation(true);
         },
       }),
     );

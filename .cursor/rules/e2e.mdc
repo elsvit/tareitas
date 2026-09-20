@@ -11,6 +11,13 @@ globs:
 
 # E2E Rules
 
+## Do not change app logic for tests
+
+* E2E work is **flows, subflows, credentials, and `testID`s only** — do not change product behavior, navigation, validation, or component logic to make a test pass.
+* **Adapt the test to the app**, not the app to the test. Examples of forbidden changes: auto-closing menus on select, altering save/back navigation, changing form validation, or tweaking layouts/styles for Maestro.
+* Allowed in app code: add or expose stable `testID`s (and minimal accessibility hooks if needed for detection). If a selector is hard to target, prefer a dedicated `testID` over behavior changes.
+* If the app behaves correctly but the test fails, fix the **flow** (waits, scroll, tap target, env) — not business logic.
+
 ## Flows
 
 * `yarn e2e` — main flow (`e2e/flows/main.yaml`), env from `e2e/config/credentials.yaml` via `scripts/run-e2e.js`.
@@ -45,7 +52,7 @@ globs:
 * User switch: `user-switch-button`, `header-current-user-name`, `select-users-modal`, `user-switch-child-{username}`, `user-switch-parent-{slug}`, `user-switch-pin-slots`, `user-switch-pin-save`
 * Child stars: `child-rewards-balance-value`
 * Task form: `task-assignment-add-screen`, `task-assignment-form-scroll`, `task-assignment-children-select`, `task-assignment-children-select-menu`, `task-assignment-child-{username}`, `task-assignment-title`, `task-assignment-description`, `task-assignment-reward`, `task-assignment-reward-error`, `task-assignment-avatar-{value}`, `task-assignment-color-{name}`, `task-assignment-save`
-* `SelectMulti` closes its menu after each option tap — wait for `task-assignment-children-select-menu` to disappear before continuing.
+* After selecting a child in `SelectMulti`, dismiss the menu by tapping outside (e.g. `task-assignment-title`) — not `task-assignment-children-select` again (double-taps the row and unchecks).
 * On task form use `scrollUntilVisible` on `task-assignment-save` (short timeout) — avoid `swipe` from form edges (can trigger back navigation).
 * Never use `hideKeyboard` or `eraseText` on the task form — on Android they trigger system back and leave the form. Dismiss keyboard by tapping `task-assignment-description` instead.
 * Create-task flow: select child → title `${TASK_1_TITLE}` → description `Description` → save (reward empty) → scroll up → assert `task-assignment-reward-error` → reward `${TASK_1_REWARD}` → save → assert task in list.

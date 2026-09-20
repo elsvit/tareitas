@@ -20,6 +20,7 @@ export default function RewardAdd() {
   const dispatch = useDispatch();
   const router = useRouter();
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [pendingNavigation, setPendingNavigation] = useState(false);
 
   const isSaving = useSelector((state: RootStateT) => {
     const common = state[EStateName.common];
@@ -41,8 +42,23 @@ export default function RewardAdd() {
   useEffect(() => {
     if (saveError) {
       setSubmitError(saveError);
+      setPendingNavigation(false);
     }
   }, [saveError]);
+
+  useEffect(() => {
+    if (!pendingNavigation || isSaving || saveError) {
+      return;
+    }
+
+    setPendingNavigation(false);
+
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace(`/(tabs)/${EMainTabs.Rewards}`);
+    }
+  }, [isSaving, pendingNavigation, router, saveError]);
 
   const handleSave = (valuesList: RewardAssignmentFormProps[]) => {
     if (valuesList.length === 0 || isSaving) {
@@ -74,12 +90,7 @@ export default function RewardAdd() {
       addRewardAssignmentsBatch({
         entities: newRewardAssignments,
         onSuccess: () => {
-          if (router.canGoBack()) {
-            router.back();
-            return;
-          }
-
-          router.replace(`/${EMainTabs.Rewards}` as any);
+          setPendingNavigation(true);
         },
       }),
     );

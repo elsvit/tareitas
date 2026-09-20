@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import { Text } from '~/components/ui';
+import { useTabScreenListBottomPadding } from '~/hooks/useTabBarBottomInset';
 import { Colors, spacing } from '~/styles';
 
 export type SegmentedSection<TItem, TSectionExtra = Record<string, unknown>> = {
@@ -31,6 +32,8 @@ export function SegmentedSectionList<TItem, TSectionExtra = Record<string, unkno
   ListEmptyComponent,
   contentContainerStyle,
 }: Props<TItem, TSectionExtra>) {
+  const listBottomPadding = useTabScreenListBottomPadding();
+
   const renderSectionHeader = useCallback(
     ({
       section,
@@ -65,7 +68,11 @@ export function SegmentedSectionList<TItem, TSectionExtra = Record<string, unkno
       ItemSeparatorComponent={renderSeparator}
       SectionSeparatorComponent={() => <View style={styles.sectionGap} />}
       ListEmptyComponent={ListEmptyComponent}
-      contentContainerStyle={[styles.listContent, contentContainerStyle]}
+      contentContainerStyle={[
+        styles.listContent,
+        { paddingBottom: listBottomPadding },
+        contentContainerStyle,
+      ]}
       showsVerticalScrollIndicator={false}
       stickySectionHeadersEnabled={false}
       style={styles.list}
@@ -80,7 +87,6 @@ const styles = StyleSheet.create({
   listContent: {
     flexGrow: 1,
     paddingHorizontal: 16,
-    paddingBottom: 96,
   },
   sectionHeader: {
     paddingTop: spacing(2),

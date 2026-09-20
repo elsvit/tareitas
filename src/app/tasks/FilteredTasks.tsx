@@ -87,8 +87,8 @@ export default function FilteredTasks() {
   );
 
   const screenTitle = filters.isHabit
-    ? t('habits.completed_history')
-    : t('tasks.completed_history');
+    ? t('habits.completed_habits')
+    : t('tasks.completed_tasks');
 
   const renderItem = useCallback<SectionListRenderItem<ScheduledTaskItem>>(
     ({ item }) => <TaskListItem item={item} isChildView={isChild} />,

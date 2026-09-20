@@ -18,6 +18,7 @@ alwaysApply: false
 - Never delete, rename, or change translation keys in `en.json` unless explicitly requested.
 - Never add a translation key to only one language; add it to `en.json` first, then every locale.
 - Preserve the exact JSON structure and nesting.
+- Keep key order consistent with `en.json` (see **Key ordering** below).
 - Preserve placeholders exactly. For example:
   - `{{name}}`
   - `{{count}}`
@@ -30,6 +31,42 @@ alwaysApply: false
 - Keep the same tone and level of formality as the English source.
 - Keep terminology consistent throughout the application.
 
+## Key ordering
+
+Top-level sections (`common`, `button`, `tasks`, `habits`, etc.) keep their existing order — do not reorder them.
+
+Inside every nested object (all levels below the top):
+
+1. `"title"` first, when present.
+2. All string/text keys next, sorted **alphabetically** by key name.
+3. All nested objects last, sorted **alphabetically** by key name; apply the same rules recursively inside each object.
+
+String keys must never appear **after** a nested object at the same level.
+
+Example — wrong:
+
+```json
+"tasks": {
+  "title": "Tasks",
+  "done": "Done",
+  "taskStatus": { "...": "..." },
+  "completed_tasks": "Completed Tasks"
+}
+```
+
+Example — correct:
+
+```json
+"tasks": {
+  "title": "Tasks",
+  "completed_tasks": "Completed Tasks",
+  "done": "Done",
+  "taskStatus": { "...": "..." }
+}
+```
+
+After editing `en.json`, run `yarn translations:sort` then `yarn translations:align` so every locale matches the sorted structure.
+
 ## Adding or changing text
 
 When a new English translation is added:
@@ -38,8 +75,9 @@ When a new English translation is added:
 2. Translate the value into the appropriate language.
 3. Keep the JSON structure identical across all languages.
 4. Check that no placeholders or formatting were changed.
-5. Run `yarn translations:align` to prune extra keys and add missing ones.
-6. Run `yarn translations:audit` to verify parity and find untranslated strings.
+5. Run `yarn translations:sort` to sort keys in `en.json`.
+6. Run `yarn translations:align` to prune extra keys and add missing ones.
+7. Run `yarn translations:audit` to verify parity and find untranslated strings.
 
 When an existing English translation changes:
 

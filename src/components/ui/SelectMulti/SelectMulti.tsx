@@ -99,7 +99,6 @@ export function SelectMulti({
       : [...current, optionValue];
 
     updateValue(next);
-    closeMenu();
   };
 
   const removeSelectedValue = (optionValue: any) => {

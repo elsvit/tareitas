@@ -1,7 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit';
 
 import type { RootStateT } from '~/store';
+import { ECommonActions } from '~/store/common/types';
 import { EStateName } from '~/store/enums';
+import { syncRewardsData } from '~/store/settings/slice';
 import { selectChildById, selectChildIds } from '~/store/children/selectors';
 import { isPlaceholderOnboardingChildUsername } from '~/utils/onboarding/pendingOnboardingChild';
 import { selectParentById } from '~/store/parents/selectors';
@@ -300,3 +302,7 @@ export const selectPendingRemovedRewardBaseIds = (
 ) =>
   (state[EStateName.settings] as Persisted<IStateSettings>)
     .pendingRemovedRewardBaseIds ?? [];
+
+export const selectIsRewardsDataSyncing = (state: RootStateT) =>
+  state[EStateName.common][ECommonActions.LOADING][syncRewardsData.type] ??
+  false;
