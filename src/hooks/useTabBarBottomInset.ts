@@ -32,3 +32,19 @@ export const useTabScreenFabBottom = (gap = 8): number => {
 
   return IS_ANDROID ? tabBarHeight + gap : gap;
 };
+
+export const TAB_SCREEN_FAB_SIZE = 56;
+export const TAB_SCREEN_LIST_EXTRA_PADDING = 32;
+
+/** Scroll list bottom inset on tab screens (tab bar + optional FAB). */
+export const useTabScreenListBottomPadding = (): number => {
+  const tabBarHeight = useTabBarHeight();
+  const fabBottom = useTabScreenFabBottom();
+
+  return useMemo(
+    () =>
+      Math.max(tabBarHeight, fabBottom + TAB_SCREEN_FAB_SIZE) +
+      TAB_SCREEN_LIST_EXTRA_PADDING,
+    [fabBottom, tabBarHeight],
+  );
+};

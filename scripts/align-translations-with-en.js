@@ -3,6 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const { sortTranslations } = require('./sort-translation-keys');
+
 const translationsDir = path.join(__dirname, '..', 'src', 'assets', 'translation');
 const sourceFile = path.join(translationsDir, 'en.json');
 
@@ -32,7 +34,16 @@ function alignToEnglish(englishNode, localeNode) {
   );
 }
 
-const englishJson = JSON.parse(fs.readFileSync(sourceFile, 'utf8'));
+const englishJson = sortTranslations(
+  JSON.parse(fs.readFileSync(sourceFile, 'utf8')),
+);
+const sortedEnglishContent = `${JSON.stringify(englishJson, null, 2)}\n`;
+const currentEnglishContent = fs.readFileSync(sourceFile, 'utf8');
+
+if (currentEnglishContent !== sortedEnglishContent) {
+  fs.writeFileSync(sourceFile, sortedEnglishContent, 'utf8');
+  console.log('Sorted en.json');
+}
 
 const files = fs
   .readdirSync(translationsDir)

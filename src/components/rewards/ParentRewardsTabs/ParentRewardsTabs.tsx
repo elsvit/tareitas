@@ -14,10 +14,12 @@ import PlusIcon from '~/assets/svg/common/plus.svg';
 import { ConfirmModal } from '~/components/modals';
 import { RewardHistoryItem } from '~/components/rewards/RewardHistoryItem';
 import { RewardItem } from '~/components/rewards/RewardItem';
+import { RewardsListEmptyState } from '~/components/rewards/RewardsListEmptyState';
 import { RewardsTabBar, RewardsTabRoute } from '~/components/rewards/RewardsTabBar';
 import { SegmentedSectionList } from '~/components/rewards/SegmentedSectionList';
 import { Text } from '~/components/ui';
 import { IconButton } from '~/components/ui/IconButton';
+import { useDebouncedPress } from '~/hooks/useDebouncedPress';
 import { useTabScreenFabBottom } from '~/hooks/useTabBarBottomInset';
 import { t } from '~/services';
 import { RootStateT } from '~/store';
@@ -291,9 +293,10 @@ function RewardsListTab() {
   const fabBottom = useTabScreenFabBottom(16);
   const rewardSections = useSelector(selectInitialRewardAssignmentsByChildSections);
 
-  const handleAddReward = useCallback(() => {
+  const navigateToAddReward = useCallback(() => {
     router.push(`/${EScreens.RewardAdd}` as any);
   }, [router]);
+  const handleAddReward = useDebouncedPress(navigateToAddReward);
 
   const handleEditReward = useCallback(
     (id: string) => {
@@ -336,7 +339,7 @@ function RewardsListTab() {
         keyExtractor={item => item.id}
         renderItem={renderAssignmentItem}
         ListEmptyComponent={
-          <Text style={styles.emptyText}>{t('rewards.no_rewards')}</Text>
+          <RewardsListEmptyState messageKey="rewards.no_rewards" />
         }
       />
       <View style={[styles.fab, { bottom: fabBottom }]}>

@@ -19,16 +19,19 @@ const FlowArrow = () => (
   <ChevronRightIcon width={14} height={14} fill={Colors.grey500} />
 );
 
+const AddButtonVisual = () => (
+  <View style={styles.visual}>
+    <View style={styles.addButton}>
+      <PlusIcon width={18} height={18} fill="#FFFFFF" />
+    </View>
+  </View>
+);
+
 export const HelpCenterFlowStepVisual: React.FC<Props> = ({ stepIndex }) => {
   switch (stepIndex) {
     case 0:
-      return (
-        <View style={styles.visual}>
-          <View style={styles.addButton}>
-            <PlusIcon width={18} height={18} fill="#FFFFFF" />
-          </View>
-        </View>
-      );
+    case 4:
+      return <AddButtonVisual />;
 
     case 1:
       return (
@@ -55,7 +58,7 @@ export const HelpCenterFlowStepVisual: React.FC<Props> = ({ stepIndex }) => {
         </View>
       );
 
-    case 4:
+    case 5:
       return (
         <View style={styles.visual}>
           <RewardStatusBadge
@@ -71,7 +74,7 @@ export const HelpCenterFlowStepVisual: React.FC<Props> = ({ stepIndex }) => {
         </View>
       );
 
-    case 5:
+    case 6:
       return (
         <View style={styles.visual}>
           <RewardStatusBadge
@@ -88,7 +91,7 @@ export const HelpCenterFlowStepVisual: React.FC<Props> = ({ stepIndex }) => {
         </View>
       );
 
-    case 6:
+    case 7:
       return (
         <View style={styles.visual}>
           <RewardStatusBadge

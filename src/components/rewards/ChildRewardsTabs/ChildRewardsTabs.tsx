@@ -11,9 +11,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { RewardItem } from '~/components/rewards/RewardItem';
+import { RewardsListEmptyState } from '~/components/rewards/RewardsListEmptyState';
 import { RewardsTabBar, RewardsTabRoute } from '~/components/rewards/RewardsTabBar';
 import { Text } from '~/components/ui';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
+import { useTabScreenListBottomPadding } from '~/hooks/useTabBarBottomInset';
 import { t } from '~/services';
 import {
   RewardListItemView,
@@ -107,7 +109,13 @@ function useChildRewardActions(childId: string) {
   return { handleChildSelect, handleChildRedeem };
 }
 
-function ChildRewardsCatalogTab({ childId }: { childId: string }) {
+function ChildRewardsCatalogTab({
+  childId,
+  listBottomPadding,
+}: {
+  childId: string;
+  listBottomPadding: number;
+}) {
   const childBalance = useSelector(selectChildRewardBalance(childId));
   const items = useSelector(selectChildCatalogRewardItems(childId));
   const { handleChildSelect, handleChildRedeem } = useChildRewardActions(childId);
@@ -141,16 +149,25 @@ function ChildRewardsCatalogTab({ childId }: { childId: string }) {
       renderItem={renderItem}
       keyExtractor={item => `${item.assignmentId}_${item.status ?? 'available'}`}
       extraData={childBalance}
-      contentContainerStyle={styles.listContent}
+      contentContainerStyle={[
+        styles.listContent,
+        { paddingBottom: listBottomPadding },
+      ]}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       ListEmptyComponent={
-        <Text style={styles.emptyText}>{t('rewards.no_rewards')}</Text>
+        <RewardsListEmptyState messageKey="rewards.no_rewards" />
       }
     />
   );
 }
 
-function ChildSelectedRewardsTab({ childId }: { childId: string }) {
+function ChildSelectedRewardsTab({
+  childId,
+  listBottomPadding,
+}: {
+  childId: string;
+  listBottomPadding: number;
+}) {
   const childBalance = useSelector(selectChildRewardBalance(childId));
   const items = useSelector(selectChildSelectedRewardItems(childId));
   const { handleChildRedeem } = useChildRewardActions(childId);
@@ -177,7 +194,10 @@ function ChildSelectedRewardsTab({ childId }: { childId: string }) {
       renderItem={renderItem}
       keyExtractor={item => item.id}
       extraData={childBalance}
-      contentContainerStyle={styles.listContent}
+      contentContainerStyle={[
+        styles.listContent,
+        { paddingBottom: listBottomPadding },
+      ]}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       ListEmptyComponent={
         <Text style={styles.emptyText}>{t('rewards.no_selected')}</Text>
@@ -186,7 +206,13 @@ function ChildSelectedRewardsTab({ childId }: { childId: string }) {
   );
 }
 
-function ChildApprovedRewardsTab({ childId }: { childId: string }) {
+function ChildApprovedRewardsTab({
+  childId,
+  listBottomPadding,
+}: {
+  childId: string;
+  listBottomPadding: number;
+}) {
   const items = useSelector(selectChildApprovedRewardItems(childId));
 
   const renderItem = useCallback<ListRenderItem<RewardListItemView>>(
@@ -208,7 +234,10 @@ function ChildApprovedRewardsTab({ childId }: { childId: string }) {
       data={items}
       renderItem={renderItem}
       keyExtractor={item => item.id}
-      contentContainerStyle={styles.listContent}
+      contentContainerStyle={[
+        styles.listContent,
+        { paddingBottom: listBottomPadding },
+      ]}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       ListEmptyComponent={
         <Text style={styles.emptyText}>{t('rewards.no_approved')}</Text>
@@ -217,7 +246,13 @@ function ChildApprovedRewardsTab({ childId }: { childId: string }) {
   );
 }
 
-function ChildCompletedRewardsTab({ childId }: { childId: string }) {
+function ChildCompletedRewardsTab({
+  childId,
+  listBottomPadding,
+}: {
+  childId: string;
+  listBottomPadding: number;
+}) {
   const items = useSelector(selectChildCompletedRewardItems(childId));
 
   const renderItem = useCallback<ListRenderItem<RewardListItemView>>(
@@ -238,7 +273,10 @@ function ChildCompletedRewardsTab({ childId }: { childId: string }) {
       data={items}
       renderItem={renderItem}
       keyExtractor={item => item.id}
-      contentContainerStyle={styles.listContent}
+      contentContainerStyle={[
+        styles.listContent,
+        { paddingBottom: listBottomPadding },
+      ]}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       ListEmptyComponent={
         <Text style={styles.emptyText}>{t('rewards.no_completed')}</Text>
@@ -249,6 +287,7 @@ function ChildCompletedRewardsTab({ childId }: { childId: string }) {
 
 export function ChildRewardsTabs() {
   const layout = useWindowDimensions();
+  const listBottomPadding = useTabScreenListBottomPadding();
   const { currentUserId } = useCurrentUser();
   const childId = currentUserId ?? '';
   const [index, setIndex] = useState(0);
@@ -278,18 +317,38 @@ export function ChildRewardsTabs() {
     ({ route }: { route: { key: string } }) => {
       switch (route.key) {
         case 'rewards':
-          return <ChildRewardsCatalogTab childId={childId} />;
+          return (
+            <ChildRewardsCatalogTab
+              childId={childId}
+              listBottomPadding={listBottomPadding}
+            />
+          );
         case 'selected':
-          return <ChildSelectedRewardsTab childId={childId} />;
+          return (
+            <ChildSelectedRewardsTab
+              childId={childId}
+              listBottomPadding={listBottomPadding}
+            />
+          );
         case 'approved':
-          return <ChildApprovedRewardsTab childId={childId} />;
+          return (
+            <ChildApprovedRewardsTab
+              childId={childId}
+              listBottomPadding={listBottomPadding}
+            />
+          );
         case 'completed':
-          return <ChildCompletedRewardsTab childId={childId} />;
+          return (
+            <ChildCompletedRewardsTab
+              childId={childId}
+              listBottomPadding={listBottomPadding}
+            />
+          );
         default:
           return null;
       }
     },
-    [childId],
+    [childId, listBottomPadding],
   );
 
   return (
@@ -308,7 +367,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingHorizontal: spacing(4),
     paddingTop: spacing(2),
-    paddingBottom: 96,
   },
   separator: {
     height: 8,

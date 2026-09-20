@@ -45,8 +45,25 @@ export const selectRewardAssignmentsForChild = (childId: string) =>
 
 export const selectPreviousRewardTemplates = createSelector(
   [selectAllRewardAssignment],
-  assignments =>
-    [...assignments].sort((left, right) =>
+  assignments => {
+    const sorted = [...assignments].sort((left, right) =>
       (right.createdAt ?? '').localeCompare(left.createdAt ?? ''),
-    ),
+    );
+
+    const seenTitles = new Set<string>();
+    const uniqueByTitle: IRewardAssignment[] = [];
+
+    for (const assignment of sorted) {
+      const titleKey = assignment.title.trim().toLowerCase();
+
+      if (seenTitles.has(titleKey)) {
+        continue;
+      }
+
+      seenTitles.add(titleKey);
+      uniqueByTitle.push(assignment);
+    }
+
+    return uniqueByTitle;
+  },
 );

@@ -10,7 +10,10 @@ import { SettingsSection, SettingsSections } from '~/components/settings';
 import { DEFAULT_LANG } from '~/constants/settings';
 import { logoutUser } from '~/services/api';
 import { signOutAndClearFamilyData } from '~/services/familyBootValidation';
-import { flushScheduledFamilySnapshot } from '~/services/familyPersistMode';
+import {
+  flushScheduledFamilySnapshot,
+  persistSharedSettingsState,
+} from '~/services/familyPersistMode';
 import { store } from '~/store/store';
 import { trackLanguageScreenOpened } from '~/services/analytics';
 import { AvailableLanguages, LocalizationService, t } from '~/services/localization/localization';
@@ -83,6 +86,7 @@ export default function Settings() {
         dispatch(setLanguage(resolvedLang));
         dispatch(syncTaskBaseTranslations());
         dispatch(syncRewardBaseTranslations());
+        await persistSharedSettingsState(store.getState);
         await flushScheduledFamilySnapshot(store.getState);
       } catch (error) {
         console.error('Language change failed:', error);

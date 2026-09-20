@@ -20,7 +20,7 @@ import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { useHasCompletedTasksInPast } from '~/hooks/useHasCompletedTasksInPast';
 import { useMultideviceScreenSync } from '~/hooks/useMultideviceScreenSync';
 import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
-import { useTabBarHeight, useTabScreenFabBottom } from '~/hooks/useTabBarBottomInset';
+import { useTabScreenListBottomPadding } from '~/hooks/useTabBarBottomInset';
 import { useTaskCalendarDate } from '~/hooks/useTaskCalendarDate';
 import { t } from '~/services';
 import { selectAllChildren } from '~/store/children/selectors';
@@ -47,9 +47,6 @@ import {
 } from '~/utils/tasks/taskCalendarFilter';
 import { compareTaskTimes } from '~/utils/tasks/taskSort';
 
-const TAB_SCREEN_FAB_SIZE = 56;
-const TAB_SCREEN_LIST_EXTRA_PADDING = 32;
-
 export default function Tasks() {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -60,11 +57,7 @@ export default function Tasks() {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const tabBarHeight = useTabBarHeight();
-  const fabBottom = useTabScreenFabBottom();
-  const listBottomPadding =
-    Math.max(tabBarHeight, fabBottom + TAB_SCREEN_FAB_SIZE) +
-    TAB_SCREEN_LIST_EXTRA_PADDING;
+  const listBottomPadding = useTabScreenListBottomPadding();
 
   const children = useSelector(selectAllChildren);
   const taskBaseList = useSelector(selectAllTaskBase);

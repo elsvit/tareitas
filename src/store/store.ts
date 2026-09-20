@@ -237,6 +237,7 @@ const SHARED_SETTINGS_PERSIST_ACTIONS = new Set([
   `${EStateName.settings}/clearActiveSyncMode`,
   `${EStateName.settings}/setPendingOnboardingChildUserId`,
   `${EStateName.settings}/setOnboardingIntroCompleted`,
+  `${EStateName.settings}/setLanguage`,
 ]);
 
 const sharedSettingsPersistMiddleware: Middleware =

@@ -32,8 +32,7 @@ import {
 import { selectPreviousRewardTemplates } from '~/store/rewardAssignment/selectors';
 import { removeRewardAssignment } from '~/store/rewardAssignment/slice';
 import { selectAllRewardBase } from '~/store/rewardBase/selectors';
-import { ERole } from '~/store/settings/enums';
-import { selectCurrentRole } from '~/store/settings/selectors';
+import { selectIsParent } from '~/store/settings/selectors';
 import { EFormMode } from '~/types/ECommon';
 import {
   IRewardAssignment,
@@ -136,8 +135,7 @@ export const RewardForm: FC<Props> = ({
     : rewardChildIdsForForm(reward?.childIds, allChildIds);
   const hasInitializedChildIds = useRef(false);
 
-  const currentRole = useSelector(selectCurrentRole);
-  const isAdmin = currentRole === ERole.admin;
+  const isParentOrAdmin = useSelector(selectIsParent);
 
   const {
     control,
@@ -507,7 +505,7 @@ export const RewardForm: FC<Props> = ({
               {t('button.save')}
             </Button>
 
-            {isEditMode && isAdmin && (
+            {isEditMode && isParentOrAdmin && (
               <>
                 <Space size={3} />
                 <Button

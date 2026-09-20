@@ -19,14 +19,16 @@ appId: net.tareitas
 - tapOn:
     id: task-assignment-child-${E2E_CHILD_USERNAME}
 
+# Dismiss menu and focus title — tap outside, not children-select again (double-tap unchecks).
+- tapOn:
+    id: task-assignment-title
+
 - extendedWaitUntil:
     notVisible:
       id: task-assignment-children-select-menu
     timeout: 5000
 
 # Title and description — reward stays empty. Never hideKeyboard (Android treats it as back).
-- tapOn:
-    id: task-assignment-title
 - inputText: ${TASK_1_TITLE}
 
 - tapOn:

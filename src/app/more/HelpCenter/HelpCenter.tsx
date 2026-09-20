@@ -30,6 +30,7 @@ const FLOW_STEP_KEYS = [
   'helpCenter.flow_step_5',
   'helpCenter.flow_step_6',
   'helpCenter.flow_step_7',
+  'helpCenter.flow_step_8',
 ] as const;
 
 type HelpSectionId = 'flow' | 'write_us';
@@ -95,7 +96,7 @@ export default function HelpCenter() {
       >
         <List.Section style={styles.section}>
           <List.Accordion
-            title={t('helpCenter.flow')}
+            title={t('helpCenter.how_it_works')}
             expanded={expandedSections.flow}
             onPress={() => toggleSection('flow')}
             right={({ isExpanded }) =>
