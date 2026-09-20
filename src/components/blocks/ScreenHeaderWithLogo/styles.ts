@@ -27,6 +27,10 @@ export const styles = StyleSheet.create({
     flexShrink: 1,
     maxWidth: 120,
   },
+  childRewardsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   childRewardsValue: {
     color: Colors.orange500,
   },

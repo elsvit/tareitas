@@ -98,6 +98,7 @@ type Props = {
   submitError?: string | null;
   isSubmitting?: boolean;
   isDeleting?: boolean;
+  screenTestID?: string;
 };
 
 type FormValues = {
@@ -412,6 +413,7 @@ export const AssignmentTaskForm: FC<Props> = ({
   submitError = null,
   isSubmitting = false,
   isDeleting = false,
+  screenTestID,
 }) => {
   const headerTitle =
     title ??
@@ -670,6 +672,7 @@ export const AssignmentTaskForm: FC<Props> = ({
       children.map(child => ({
         label: child.name,
         value: child.id,
+        testIdKey: child.username?.trim() || child.id,
       })),
     [children],
   );
@@ -986,8 +989,9 @@ export const AssignmentTaskForm: FC<Props> = ({
           containerStyle={styles.screenHeader}
         />
       )}
-      <View style={styles.formRoot}>
+      <View style={styles.formRoot} testID={screenTestID}>
         <ScrollView
+          testID="task-assignment-form-scroll"
           contentContainerStyle={[
             styles.container,
             bottomBannerScrollPadding > 0 && {
@@ -1022,10 +1026,12 @@ export const AssignmentTaskForm: FC<Props> = ({
                           />
                         ) : (
                           <SelectMulti
-                            label={t('users.childs')}
+                            label={t('users.children')}
                             options={childOptions}
                             value={value}
                             onChange={onChange}
+                            testID="task-assignment-children-select"
+                            optionTestIDPrefix="task-assignment-child"
                           />
                         )}
                         {!!errors.childIds && (
@@ -1070,6 +1076,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               render={({ field: { value, onChange } }) => (
                 <>
                   <TextInput
+                    testID="task-assignment-title"
                     label={t('common.title')}
                     value={value}
                     onChangeText={onChange}
@@ -1089,6 +1096,7 @@ export const AssignmentTaskForm: FC<Props> = ({
               name="description"
               render={({ field: { value, onChange } }) => (
                 <TextInput
+                  testID="task-assignment-description"
                   label={t('tasks.description')}
                   value={value}
                   onChangeText={onChange}
@@ -1109,6 +1117,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                   render={({ field: { value, onChange } }) => (
                     <>
                       <TextInput
+                        testID="task-assignment-reward"
                         label={t('tasks.reward')}
                         value={
                           value != null && !Number.isNaN(value)
@@ -1135,7 +1144,10 @@ export const AssignmentTaskForm: FC<Props> = ({
                         mode="outlined"
                       />
                       {!!errors.reward && (
-                        <Text style={styles.errorText}>
+                        <Text
+                          testID="task-assignment-reward-error"
+                          style={styles.errorText}
+                        >
                           {errors.reward.message}
                         </Text>
                       )}
@@ -1550,6 +1562,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                   loadedPhotosAutoRows
                   showLoadedPhotosLabel={false}
                   loadPhotoButtonBelowLoadedPhotos
+                  optionTestIDPrefix="task-assignment-avatar"
                 />
               )}
             />
@@ -1564,6 +1577,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                   options={COLOR_OPTIONS}
                   value={value}
                   onChange={onChange}
+                  optionTestIDPrefix="task-assignment-color"
                 />
               )}
             />
@@ -1571,6 +1585,7 @@ export const AssignmentTaskForm: FC<Props> = ({
             <Space size={5} />
 
             <Button
+              testID="task-assignment-save"
               mode="contained"
               onPress={handleSubmit(onSubmit)}
               loading={isSubmitting}

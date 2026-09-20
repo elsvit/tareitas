@@ -9,6 +9,7 @@ type Props = {
   borderRadius?: number;
   disabled?: boolean;
   accessibilityLabel?: string;
+  testID?: string;
   style?: StyleProp<ViewStyle>;
 };
 
@@ -20,6 +21,7 @@ export const IconButton: React.FC<Props> = ({
   borderRadius,
   disabled = false,
   accessibilityLabel,
+  testID,
   style,
 }) => {
   return (
@@ -28,6 +30,7 @@ export const IconButton: React.FC<Props> = ({
       disabled={disabled}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
+      testID={testID}
       hitSlop={8}
       style={({ pressed }) => [
         styles.button,

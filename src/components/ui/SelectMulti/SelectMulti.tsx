@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
-import { Menu, TextInput as PaperTextInput } from 'react-native-paper';
+import { Icon, Menu, TextInput as PaperTextInput } from 'react-native-paper';
 
 import CrossIcon from '~/assets/svg/common/cross.svg';
 import { Text } from '~/components/ui/Text';
@@ -16,17 +16,27 @@ export type SelectMultiProps = {
   options: IOptions<any>[];
   value: any[];
   onChange: (value: any[]) => void;
+  testID?: string;
+  optionTestIDPrefix?: string;
 };
 
 const FLOATING_LABEL_VALUE = '\u200B';
+const MENU_WIDTH_RATIO = 0.9;
 
 export function SelectMulti({
   label,
   options,
   value,
   onChange,
+  testID,
+  optionTestIDPrefix,
 }: SelectMultiProps) {
   const [visible, setVisible] = React.useState(false);
+  const [anchorWidth, setAnchorWidth] = React.useState(0);
+
+  const menuTestID = testID ? `${testID}-menu` : undefined;
+  const menuWidth =
+    anchorWidth > 0 ? Math.round(anchorWidth * MENU_WIDTH_RATIO) : undefined;
 
   const valueToLabel = React.useMemo(
     () => new Map(options.map(opt => [opt.value, opt.label] as const)),
@@ -89,6 +99,7 @@ export function SelectMulti({
       : [...current, optionValue];
 
     updateValue(next);
+    closeMenu();
   };
 
   const removeSelectedValue = (optionValue: any) => {
@@ -101,14 +112,23 @@ export function SelectMulti({
   };
 
   const renderAnchor = () => (
-    <View style={styles.anchorWrapper}>
+    <Pressable
+      testID={testID}
+      accessible={Boolean(testID)}
+      accessibilityRole="button"
+      accessibilityState={{ expanded: visible }}
+      collapsable={false}
+      importantForAccessibility={testID ? 'yes' : 'auto'}
+      onPress={openMenu}
+      style={styles.anchorWrapper}
+    >
       <TextInput
         mode="outlined"
         label={label}
         value={shouldFloatLabel ? FLOATING_LABEL_VALUE : ''}
         editable={false}
         multiline={false}
-        onPressIn={openMenu}
+        pointerEvents="none"
         outlineStyle={styles.outlineStyle}
         style={styles.input}
         contentStyle={[
@@ -129,7 +149,10 @@ export function SelectMulti({
       {hasSelection ? (
         <Pressable
           hitSlop={8}
-          onPress={clearAllSelected}
+          onPress={event => {
+            event.stopPropagation();
+            clearAllSelected();
+          }}
           style={styles.clearAllButton}
           accessibilityLabel="Clear all selected"
         >
@@ -157,7 +180,10 @@ export function SelectMulti({
               </Text>
               <Pressable
                 hitSlop={8}
-                onPress={() => removeSelectedValue(item)}
+                onPress={event => {
+                  event.stopPropagation();
+                  removeSelectedValue(item);
+                }}
                 style={styles.chipRemove}
                 accessibilityLabel="Remove selected item"
               >
@@ -167,34 +193,65 @@ export function SelectMulti({
           ))}
         </ScrollView>
       ) : null}
-    </View>
+    </Pressable>
   );
 
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      onLayout={event => setAnchorWidth(event.nativeEvent.layout.width)}
+    >
       <Menu
         visible={visible}
         onDismiss={closeMenu}
         theme={FORM_FIELD_MENU_THEME}
-        contentStyle={styles.menuContent}
+        contentStyle={[
+          styles.menuContent,
+          menuWidth ? { width: menuWidth } : undefined,
+        ]}
         anchor={renderAnchor()}
       >
-        <ScrollView style={styles.menuScroll} bounces={false}>
+        <ScrollView
+          testID={menuTestID}
+          style={styles.menuScroll}
+          bounces={false}
+          keyboardShouldPersistTaps="handled"
+        >
           {options.map(option => {
             const selected = selectedValues.includes(option.value);
-            const handlePress = () => toggleOption(option.value);
+            const optionTestID = optionTestIDPrefix
+              ? `${optionTestIDPrefix}-${option.testIdKey ?? option.value}`
+              : undefined;
 
             return (
-              <Menu.Item
+              <Pressable
                 key={String(option.value)}
-                title={option.label}
-                onPress={handlePress}
-                leadingIcon={
-                  selected ? 'checkbox-marked' : 'checkbox-blank-outline'
-                }
+                testID={optionTestID}
+                accessible={Boolean(optionTestID)}
+                accessibilityRole="button"
+                collapsable={false}
+                importantForAccessibility={optionTestID ? 'yes' : 'auto'}
+                onPress={() => toggleOption(option.value)}
                 style={styles.menuItem}
-                titleStyle={styles.menuItemTitle}
-              />
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 12,
+                    paddingHorizontal: 16,
+                  }}
+                >
+                  <Icon
+                    source={
+                      selected ? 'checkbox-marked' : 'checkbox-blank-outline'
+                    }
+                    size={24}
+                    color={FORM_FIELD.menuText}
+                  />
+                  <Text style={styles.menuItemTitle}>{option.label}</Text>
+                </View>
+              </Pressable>
             );
           })}
         </ScrollView>

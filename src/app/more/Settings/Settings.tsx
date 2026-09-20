@@ -271,6 +271,7 @@ export default function Settings() {
         containerStyle={styles.screenHeader}
       />
       <ScrollView
+        testID="settings-screen"
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}

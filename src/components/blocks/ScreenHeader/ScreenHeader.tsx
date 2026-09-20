@@ -77,6 +77,7 @@ export const ScreenHeader: React.FC<IScreenHeader> = ({
       <TouchableOpacity
         style={styles.backButton}
         onPress={handleBackPress}
+        testID="screen-header-back"
       >
         <ChevronLeftIcon width={24} height={24} fill={SCREEN_TEXT.primary} />
       </TouchableOpacity>

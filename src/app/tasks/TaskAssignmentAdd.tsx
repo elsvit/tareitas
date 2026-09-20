@@ -131,6 +131,7 @@ export default function TaskAssignmentAdd() {
       onSave={handleSave}
       submitError={submitError}
       isSubmitting={isSaving}
+      screenTestID="task-assignment-add-screen"
     />
   );
 }

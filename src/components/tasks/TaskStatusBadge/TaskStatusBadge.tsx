@@ -11,6 +11,7 @@ type Props = {
   onPress?: () => void;
   compact?: boolean;
   labelKey?: string;
+  testID?: string;
 };
 
 const STATUS_LABEL_KEYS: Record<ETaskStatus, string> = {
@@ -25,6 +26,7 @@ export const TaskStatusBadge: React.FC<Props> = ({
   onPress,
   compact = false,
   labelKey,
+  testID,
 }) => {
   const resolvedStatus = normalizeTaskStatus(status);
   const color =
@@ -35,6 +37,7 @@ export const TaskStatusBadge: React.FC<Props> = ({
 
   const content = (
     <View
+      testID={testID}
       style={[
         styles.badge,
         compact && styles.badgeCompact,

@@ -197,6 +197,8 @@ export const TaskListItem: React.FC<Props> = ({
     status,
   } = taskView;
 
+  const taskTestId = `task-list-item-${name.replace(/[^a-zA-Z0-9_-]/g, '')}`;
+
   const hasSubtasks = subtasks.length > 0;
   const isStatusUpdating = usesCloudSync && isSyncing;
   const isPeriodLocked =
@@ -590,13 +592,18 @@ export const TaskListItem: React.FC<Props> = ({
         status={status}
         onPress={canChildPressStatus ? handleChildStatusPress : undefined}
         compact
+        testID={`${taskTestId}-status-${status.toLowerCase()}`}
       />
     </View>
   ) : (
     <View style={styles.statusColumn}>
       {status === ETaskStatus.Completed && showReviewActions ? (
         <>
-          <TaskStatusBadge status={ETaskStatus.Completed} compact />
+          <TaskStatusBadge
+            status={ETaskStatus.Completed}
+            compact
+            testID={`${taskTestId}-status-completed`}
+          />
           <TaskStatusBadge
             status={ETaskStatus.Approved}
             labelKey="tasks.taskStatus.approve"
@@ -604,6 +611,7 @@ export const TaskListItem: React.FC<Props> = ({
               isStatusUpdating ? undefined : () => setStatus(ETaskStatus.Approved)
             }
             compact
+            testID={`${taskTestId}-status-approve`}
           />
           <TaskStatusBadge
             status={ETaskStatus.Rejected}
@@ -612,6 +620,7 @@ export const TaskListItem: React.FC<Props> = ({
               isStatusUpdating ? undefined : () => setStatus(ETaskStatus.Rejected)
             }
             compact
+            testID={`${taskTestId}-status-reject`}
           />
         </>
       ) : (
@@ -626,6 +635,7 @@ export const TaskListItem: React.FC<Props> = ({
               : undefined
           }
           compact
+          testID={`${taskTestId}-status-${status.toLowerCase()}`}
         />
       )}
       {status === ETaskStatus.Completed &&
@@ -844,7 +854,7 @@ export const TaskListItem: React.FC<Props> = ({
   );
 
   return (
-    <View style={styles.wrapper}>
+    <View style={styles.wrapper} testID={taskTestId}>
       <View style={[styles.container, { borderColor: taskColor }]}>
         <LinearGradient
           colors={gradientColors}

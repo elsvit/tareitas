@@ -43,6 +43,7 @@ export const TaskScreenFabs: React.FC<Props> = ({
           onPress={onAdd}
           size={56}
           backgroundColor={Colors.blue500}
+          testID="tasks-add-button"
         />
       )}
     </View>

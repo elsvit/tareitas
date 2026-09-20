@@ -274,6 +274,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
                   render={({ field: { value, onChange } }) => (
                     <>
                       <TextInput
+                        testID="child-form-username"
                         label={t('users.unique_username')}
                         value={value ?? ''}
                         onChangeText={text => onChange(sanitizeUsernameInput(text))}
@@ -298,6 +299,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
               render={({ field: { value, onChange } }) => (
                 <>
                   <TextInput
+                    testID="child-form-name"
                     label={t('users.name') || 'Name'}
                     value={value}
                     onChangeText={onChange}
@@ -326,6 +328,8 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
                       title={t('users.child_password')}
                       onChange={onChange}
                       maxLength={4}
+                      testID="child-form-password-button"
+                      pinInputTestID="child-form-password-pin"
                     />
                     {/* <GesturePasswordIconButton
                       title={t('users.child_password')}
@@ -362,6 +366,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
                   loadedPhotosAutoRows
                   showLoadedPhotosLabel={false}
                   loadPhotoButtonBelowLoadedPhotos
+                  optionTestIDPrefix="child-form-avatar"
                 />
               )}
             />
@@ -386,6 +391,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
 
             {showSubmitButton && (
               <Button
+                testID="child-form-save"
                 mode="contained"
                 onPress={handleSubmit(onSubmit)}
                 loading={isSubmitting}
@@ -433,6 +439,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
         formBody
       ) : (
         <ScrollView
+          testID="child-form-screen"
           contentContainerStyle={styles.container}
           keyboardShouldPersistTaps="handled"
         >

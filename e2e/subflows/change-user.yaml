@@ -1,0 +1,29 @@
+appId: net.tareitas
+---
+- tapOn:
+    id: user-switch-button
+
+- extendedWaitUntil:
+    visible:
+      id: select-users-modal
+    timeout: 15000
+
+- tapOn:
+    id: ${USER_SWITCH_TARGET}
+
+- extendedWaitUntil:
+    visible:
+      id: user-switch-pin-modal
+    timeout: 15000
+
+- tapOn:
+    id: user-switch-pin-slots
+- inputText: ${USER_SWITCH_PIN}
+
+- tapOn:
+    id: user-switch-pin-save
+
+- extendedWaitUntil:
+    visible:
+      id: tasks-screen
+    timeout: 45000

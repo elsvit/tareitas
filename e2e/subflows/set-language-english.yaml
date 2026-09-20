@@ -1,0 +1,19 @@
+appId: net.tareitas
+---
+- tapOn:
+    id: tab-more
+- tapOn:
+    id: more-menu-settings
+
+- extendedWaitUntil:
+    visible:
+      id: settings-screen
+    timeout: 15000
+
+- tapOn:
+    id: settings-section-language
+- tapOn:
+    id: settings-language-en
+
+- tapOn:
+    id: screen-header-back

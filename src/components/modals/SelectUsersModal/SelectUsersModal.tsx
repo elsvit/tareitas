@@ -83,7 +83,7 @@ export const SelectUsersModal: React.FC<Props> = ({
       <SafeAreaView style={styles.backdropContainer}>
         <Pressable style={styles.backdrop} onPress={onRequestClose} />
 
-        <View style={styles.sheet}>
+        <View style={styles.sheet} testID="select-users-modal">
           <View style={styles.header}>
             <Text variant="titleMedium" weight="bold">
               {t('users.select_user_please')}
@@ -107,7 +107,12 @@ export const SelectUsersModal: React.FC<Props> = ({
                   {t('users.no_parents')}
                 </Text>
               ) : (
-                parents.map(parent => (
+                parents.map(parent => {
+                  const parentTestIdKey =
+                    parent.username?.trim() ||
+                    parent.name.trim().toLowerCase().replace(/\s+/g, '-');
+
+                  return (
                   <UserListItem
                     key={parent.id}
                     name={parent.name}
@@ -117,8 +122,10 @@ export const SelectUsersModal: React.FC<Props> = ({
                     avatar={parent.avatar}
                     color={parent.color}
                     onPress={() => onSelectUser(toParentUser(parent))}
+                    testID={`user-switch-parent-${parentTestIdKey}`}
                   />
-                ))
+                  );
+                })
               )}
             </View>
 
@@ -136,7 +143,12 @@ export const SelectUsersModal: React.FC<Props> = ({
                   {t('users.no_children')}
                 </Text>
               ) : (
-                children.map(child => (
+                children.map(child => {
+                  const childTestIdKey =
+                    child.username?.trim() ||
+                    child.name.trim().toLowerCase().replace(/\s+/g, '-');
+
+                  return (
                   <UserListItem
                     key={child.id}
                     name={child.name}
@@ -145,8 +157,10 @@ export const SelectUsersModal: React.FC<Props> = ({
                     avatar={child.avatar}
                     color={child.color}
                     onPress={() => onSelectUser(toChildUser(child))}
+                    testID={`user-switch-child-${childTestIdKey}`}
                   />
-                ))
+                  );
+                })
               )}
             </View>
 

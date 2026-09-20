@@ -10,17 +10,24 @@ import {
 
 export type TextInputProps = ComponentProps<typeof PaperTextInput>;
 
-export function TextInput({
-  outlineStyle,
-  outlineColor,
-  activeOutlineColor,
-  textColor,
-  theme,
-  style,
-  ...rest
-}: TextInputProps) {
+const TextInputRoot = React.forwardRef<
+  React.ComponentRef<typeof PaperTextInput>,
+  TextInputProps
+>(function TextInput(
+  {
+    outlineStyle,
+    outlineColor,
+    activeOutlineColor,
+    textColor,
+    theme,
+    style,
+    ...rest
+  },
+  ref,
+) {
   return (
     <PaperTextInput
+      ref={ref}
       mode="outlined"
       outlineStyle={[styles.outline, outlineStyle as any]}
       outlineColor={outlineColor ?? FORM_FIELD.border}
@@ -31,9 +38,17 @@ export function TextInput({
       {...rest}
     />
   );
-}
+});
 
-TextInput.Icon = PaperTextInput.Icon;
+type TextInputComponent = typeof TextInputRoot & {
+  Affix: typeof PaperTextInput.Affix;
+  Icon: typeof PaperTextInput.Icon;
+};
+
+export const TextInput = Object.assign(TextInputRoot, {
+  Affix: PaperTextInput.Affix,
+  Icon: PaperTextInput.Icon,
+}) as TextInputComponent;
 
 const styles = StyleSheet.create({
   outline: {

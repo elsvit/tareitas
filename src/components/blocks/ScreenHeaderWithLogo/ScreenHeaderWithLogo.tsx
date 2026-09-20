@@ -105,8 +105,9 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
 
     return (
       <View
-        style={styles.childRewards}
+        style={[styles.childRewards, styles.childRewardsRow]}
         accessibilityLabel={t('rewards.current_rewards')}
+        testID="child-rewards-balance"
       >
         <Text
           variant="titleMedium"
@@ -114,7 +115,16 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
           weight="bold"
           style={styles.childRewardsValue}
         >
-          ⭐ {childBalance}
+          ⭐{' '}
+        </Text>
+        <Text
+          testID="child-rewards-balance-value"
+          variant="titleMedium"
+          fontFamily="fredoka"
+          weight="bold"
+          style={styles.childRewardsValue}
+        >
+          {childBalance}
         </Text>
       </View>
     );
@@ -161,8 +171,10 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
         accessibilityLabel={t('users.login')}
         onPress={handlePress}
         style={styles.userSwitch}
+        testID="user-switch-button"
       >
         <Text
+          testID="header-current-user-name"
           variant="bodyMedium"
           fontFamily="fredoka"
           weight="medium"

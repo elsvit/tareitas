@@ -1,0 +1,4 @@
+appId: net.tareitas
+---
+# Use: yarn e2e (loads e2e/config/credentials.yaml via scripts/run-e2e.js)
+- runFlow: flows/main.yaml

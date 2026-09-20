@@ -38,6 +38,10 @@ export const ChildListItem: React.FC<Props> = ({ id, onPress }) => {
 
   if (!child) return null;
 
+  const listItemTestID = child.username
+    ? `users-child-list-item-${child.username}`
+    : `users-child-list-item-${child.id}`;
+
   return (
     <UserListItem
       name={child.name}
@@ -47,6 +51,7 @@ export const ChildListItem: React.FC<Props> = ({ id, onPress }) => {
       color={child.color}
       onPress={canEdit || onPress ? handlePress : undefined}
       showEditIcon={canEdit}
+      testID={listItemTestID}
     />
   );
 };

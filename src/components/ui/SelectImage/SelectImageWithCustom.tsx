@@ -111,6 +111,8 @@ type Props = {
   showLoadedPhotosLabel?: boolean;
   /** When true, shows loaded photos above the load button instead of below it. */
   loadPhotoButtonBelowLoadedPhotos?: boolean;
+  /** Prefix for built-in avatar option testIDs, e.g. child-form-avatar-girl_dark */
+  optionTestIDPrefix?: string;
 };
 
 export function SelectImageWithCustom({
@@ -125,6 +127,7 @@ export function SelectImageWithCustom({
   loadedPhotosAutoRows = false,
   showLoadedPhotosLabel = true,
   loadPhotoButtonBelowLoadedPhotos = false,
+  optionTestIDPrefix,
 }: Props) {
   const dispatch = useDispatch();
   const isMultidevice = useSelector(selectIsMultidevice);
@@ -458,6 +461,11 @@ export function SelectImageWithCustom({
             return (
               <TouchableOpacity
                 key={`${opt.value}-${index}`}
+                testID={
+                  optionTestIDPrefix
+                    ? `${optionTestIDPrefix}-${opt.value}`
+                    : undefined
+                }
                 onPress={() => {
                   onChange?.(opt.value);
                   trackDefaultImageUsed(kind, opt.value);

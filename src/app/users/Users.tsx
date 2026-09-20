@@ -33,6 +33,7 @@ export default function Users() {
 
   return (
     <SafeAreaBgImage>
+      <View testID="users-screen" style={styles.screen}>
       <ScreenHeader
         hasBackButton
         title={t('users.title')}
@@ -85,17 +86,25 @@ export default function Users() {
 
         {isAdmin && (
           <View style={styles.sectionAction}>
-            <Button mode="contained" onPress={handleAddChild}>
+            <Button
+              mode="contained"
+              onPress={handleAddChild}
+              testID="users-add-child-button"
+            >
               {t('users.add_child')}
             </Button>
           </View>
         )}
       </ScrollView>
+      </View>
     </SafeAreaBgImage>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   screenHeader: {
     backgroundColor: 'transparent',
     borderBottomWidth: 0,

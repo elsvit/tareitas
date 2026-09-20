@@ -249,6 +249,8 @@ export function useUserSwitch() {
         title={passwordTitle}
         errorMessage={passwordError ?? undefined}
         maxLength={4}
+        testID="user-switch-pin-modal"
+        pinInputTestID="user-switch-pin"
       />
 
       <GesturePasswordModal

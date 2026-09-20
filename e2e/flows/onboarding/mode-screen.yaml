@@ -1,0 +1,41 @@
+appId: net.tareitas
+---
+- runFlow: ../../subflows/navigate-through-onboarding-intro.yaml
+
+# Three setup sections are present.
+- assertVisible:
+    id: onboarding-section-multidevice-connect
+- assertVisible:
+    id: onboarding-section-device-only-connect
+- assertVisible:
+    id: onboarding-section-create
+
+# Default: section 1 (multidevice connect) is selected.
+- assertVisible:
+    id: onboarding-multidevice-connect-form
+- assertVisible:
+    id: onboarding-multidevice-connect-admin
+- assertVisible:
+    id: onboarding-multidevice-connect-member
+
+# Section 2: deviceOnly connect.
+- tapOn:
+    id: onboarding-section-device-only-connect-header
+- assertNotVisible:
+    id: onboarding-multidevice-connect-form
+
+# Section 3: Create new family (multidevice + deviceOnly options).
+- tapOn:
+    id: onboarding-section-create-header
+- assertNotVisible:
+    id: onboarding-multidevice-connect-form
+- assertVisible:
+    id: onboarding-create-multidevice
+- assertVisible:
+    id: onboarding-create-device-only
+
+# Back to default section 1.
+- tapOn:
+    id: onboarding-section-multidevice-connect-header
+- assertVisible:
+    id: onboarding-multidevice-connect-form

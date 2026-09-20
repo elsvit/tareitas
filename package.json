@@ -32,6 +32,9 @@
     "translations:sync": "node ./scripts/sync-translations.js",
     "translations:watch": "node ./scripts/sync-translations.js --watch",
     "translations:audit": "node ./scripts/audit-translations.js",
+    "translations:align": "node ./scripts/align-translations-with-en.js",
+    "e2e": "node scripts/run-e2e.js e2e/flows/main.yaml",
+    "e2e:onboarding": "node scripts/run-e2e.js e2e/flows/onboarding/mode-screen.yaml",
     "translations:repair": "node ./scripts/apply-translation-repairs.js && node ./scripts/fix-remaining-translations.js"
   },
   "dependencies": {
