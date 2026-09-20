@@ -1,0 +1,16 @@
+appId: net.tareitas
+---
+# First install only: intro slides → mode screen.
+- extendedWaitUntil:
+    visible:
+      id: onboarding-next-button
+    timeout: 30000
+- repeat:
+    times: 3
+    commands:
+      - tapOn:
+          id: onboarding-next-button
+- extendedWaitUntil:
+    visible:
+      id: onboarding-setup-screen
+    timeout: 15000

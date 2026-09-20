@@ -1,0 +1,50 @@
+appId: net.tareitas
+---
+- tapOn:
+    id: users-add-child-button
+
+- extendedWaitUntil:
+    visible:
+      id: child-form-screen
+    timeout: 15000
+
+- tapOn:
+    id: child-form-username
+- inputText: ${E2E_CHILD2_USERNAME}
+- hideKeyboard
+
+- tapOn:
+    id: child-form-name
+- inputText: ${E2E_CHILD2_NAME}
+- hideKeyboard
+
+- tapOn:
+    id: child-form-avatar-girl_dark
+
+- tapOn:
+    id: child-form-password-button
+
+- extendedWaitUntil:
+    visible:
+      id: child-form-password-pin-modal
+    timeout: 10000
+
+- tapOn:
+    id: child-form-password-pin-slots
+- inputText: ${E2E_CHILD2_PIN}
+
+- tapOn:
+    id: child-form-password-pin-save
+
+- scrollUntilVisible:
+    element:
+      id: child-form-save
+    direction: DOWN
+
+- tapOn:
+    id: child-form-save
+
+- extendedWaitUntil:
+    visible:
+      id: users-screen
+    timeout: 45000

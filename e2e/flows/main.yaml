@@ -1,0 +1,99 @@
+appId: net.tareitas
+---
+- runFlow: ../subflows/wait-for-mode-screen.yaml
+- runFlow: ../subflows/connect-admin-login.yaml
+- runFlow: ../subflows/set-language-english.yaml
+
+- tapOn:
+    id: tab-more
+- tapOn:
+    id: more-menu-users
+
+- extendedWaitUntil:
+    visible:
+      id: users-screen
+    timeout: 15000
+
+- scrollUntilVisible:
+    element:
+      id: users-child-list-item-${E2E_CHILD2_USERNAME}
+      optional: true
+    direction: DOWN
+    timeout: 5000
+
+- runFlow:
+    label: Create child when missing
+    when:
+      notVisible:
+        id: users-child-list-item-${E2E_CHILD2_USERNAME}
+    file: ../subflows/create-child2.yaml
+
+- assertVisible:
+    id: users-child-list-item-${E2E_CHILD2_USERNAME}
+
+- tapOn:
+    id: screen-header-back
+
+- tapOn:
+    id: tab-tasks
+
+- extendedWaitUntil:
+    visible:
+      id: tasks-screen
+    timeout: 15000
+
+- runFlow:
+    file: ../subflows/create-task1-for-tarecitaschild1.yaml
+    env:
+      E2E_CHILD_USERNAME: ${E2E_CHILD_USERNAME}
+      TASK_1_TITLE: ${TASK_1_TITLE}
+      TASK_1_REWARD: ${TASK_1_REWARD}
+
+- runFlow: ../subflows/change-user-to-child1.yaml
+
+- tapOn:
+    id: task-list-item-${TASK_1_TITLE}-status-pending
+
+- extendedWaitUntil:
+    visible:
+      id: task-list-item-${TASK_1_TITLE}-status-completed
+    timeout: 30000
+
+- extendedWaitUntil:
+    visible:
+      id: child-rewards-balance-value
+    timeout: 10000
+
+- copyTextFrom:
+    id: child-rewards-balance-value
+- evalScript: ${output.initialStars = maestro.copiedText.trim()}
+
+- runFlow: ../subflows/change-user-to-mama.yaml
+
+- assertVisible:
+    id: task-list-item-${TASK_1_TITLE}-status-completed
+- assertVisible:
+    id: task-list-item-${TASK_1_TITLE}-status-approve
+- assertVisible:
+    id: task-list-item-${TASK_1_TITLE}-status-reject
+
+- tapOn:
+    id: task-list-item-${TASK_1_TITLE}-status-approve
+
+- extendedWaitUntil:
+    visible:
+      id: task-list-item-${TASK_1_TITLE}-status-approved
+    timeout: 30000
+
+- runFlow: ../subflows/change-user-to-child1.yaml
+
+- evalScript: ${output.expectedStars = String(parseInt(output.initialStars, 10) + parseInt(TASK_1_REWARD, 10))}
+
+- extendedWaitUntil:
+    visible:
+      id: child-rewards-balance-value
+    timeout: 10000
+
+- copyTextFrom:
+    id: child-rewards-balance-value
+- assertTrue: ${maestro.copiedText.trim() === output.expectedStars}

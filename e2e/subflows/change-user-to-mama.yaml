@@ -1,0 +1,11 @@
+appId: net.tareitas
+---
+- runFlow:
+    file: change-user.yaml
+    env:
+      USER_SWITCH_TARGET: user-switch-parent-mama
+      USER_SWITCH_PIN: ${E2E_ADMIN_PIN}
+
+- copyTextFrom:
+    id: header-current-user-name
+- assertTrue: ${maestro.copiedText.trim() === E2E_ADMIN_NAME}

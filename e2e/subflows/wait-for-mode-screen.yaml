@@ -1,0 +1,7 @@
+appId: net.tareitas
+---
+# Standard E2E entry: onboarding already completed, app opens on setup screen.
+- extendedWaitUntil:
+    visible:
+      id: onboarding-setup-screen
+    timeout: 30000

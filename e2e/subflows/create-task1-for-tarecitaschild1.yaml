@@ -1,0 +1,84 @@
+appId: net.tareitas
+---
+- tapOn:
+    id: tasks-add-button
+
+- extendedWaitUntil:
+    visible:
+      id: task-assignment-add-screen
+    timeout: 15000
+
+- tapOn:
+    id: task-assignment-children-select
+
+- extendedWaitUntil:
+    visible:
+      id: task-assignment-children-select-menu
+    timeout: 5000
+
+- tapOn:
+    id: task-assignment-child-${E2E_CHILD_USERNAME}
+
+- extendedWaitUntil:
+    notVisible:
+      id: task-assignment-children-select-menu
+    timeout: 5000
+
+# Title and description — reward stays empty. Never hideKeyboard (Android treats it as back).
+- tapOn:
+    id: task-assignment-title
+- inputText: ${TASK_1_TITLE}
+
+- tapOn:
+    id: task-assignment-description
+- inputText: Description
+
+- assertVisible:
+    id: task-assignment-add-screen
+
+- scrollUntilVisible:
+    element:
+      id: task-assignment-save
+    direction: DOWN
+    timeout: 8000
+
+- tapOn:
+    id: task-assignment-save
+
+# Reward is required — scroll up to error below reward input.
+- scrollUntilVisible:
+    element:
+      id: task-assignment-reward-error
+    direction: UP
+    timeout: 8000
+
+- assertVisible:
+    id: task-assignment-reward-error
+- assertVisible:
+    id: task-assignment-add-screen
+
+- tapOn:
+    id: task-assignment-reward
+- inputText: ${TASK_1_REWARD}
+
+- tapOn:
+    id: task-assignment-description
+
+- scrollUntilVisible:
+    element:
+      id: task-assignment-save
+    direction: DOWN
+    timeout: 8000
+
+- tapOn:
+    id: task-assignment-save
+
+- extendedWaitUntil:
+    visible:
+      id: tasks-screen
+    timeout: 45000
+
+- assertVisible:
+    id: task-list-item-${TASK_1_TITLE}
+- assertVisible:
+    id: task-list-item-${TASK_1_TITLE}-status-pending

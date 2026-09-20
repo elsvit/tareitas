@@ -283,6 +283,7 @@ export default function Tasks() {
 
   return (
     <SafeAreaBgImage includeBottomInset={false}>
+      <View testID="tasks-screen" style={styles.tasksScreen}>
       <ScreenHeaderWithLogo containerStyle={{ backgroundColor: 'transparent' }} />
       {!currentUser ? (
         <SelectUserPrompt />
@@ -332,11 +333,15 @@ export default function Tasks() {
           />
         </View>
       )}
+      </View>
     </SafeAreaBgImage>
   );
 }
 
 const styles = StyleSheet.create({
+  tasksScreen: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     paddingHorizontal: 16,

@@ -30,6 +30,7 @@ type Props = {
   color?: string;
   onPress?: () => void;
   showEditIcon?: boolean;
+  testID?: string;
 };
 
 export const UserListItem: React.FC<Props> = ({
@@ -41,6 +42,7 @@ export const UserListItem: React.FC<Props> = ({
   color,
   onPress,
   showEditIcon = false,
+  testID,
 }) => {
   const userUrls = useSelector(selectUserImageUrls);
 
@@ -66,7 +68,10 @@ export const UserListItem: React.FC<Props> = ({
   );
 
   return (
-    <View style={[styles.container, color && { borderColor: color }]}>
+    <View
+      testID={testID}
+      style={[styles.container, color && { borderColor: color }]}
+    >
       {gradientColors ? (
         <LinearGradient
           colors={gradientColors}

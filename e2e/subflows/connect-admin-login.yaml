@@ -1,0 +1,40 @@
+appId: net.tareitas
+---
+# Assumes setup screen is visible with multidevice connect section selected.
+- assertVisible:
+    id: onboarding-multidevice-connect-form
+- assertVisible:
+    id: onboarding-multidevice-connect-admin
+
+- tapOn:
+    id: onboarding-multidevice-connect-admin-email
+- eraseText: 100
+- inputText: ${E2E_ADMIN_EMAIL}
+
+# Dismiss keyboard without hideKeyboard (avoids layout jump).
+- tapOn:
+    id: onboarding-multidevice-connect-pin-label
+
+# Never use scrollUntilVisible on pin-slots — if the testID is missing it swipes
+# until the app leaves the screen. Wait, then one bounded scroll if needed.
+- extendedWaitUntil:
+    visible:
+      id: onboarding-multidevice-connect-pin-slots
+    timeout: 5000
+
+- tapOn:
+    id: onboarding-multidevice-connect-pin-slots
+- inputText: ${E2E_ADMIN_PIN}
+
+- extendedWaitUntil:
+    visible:
+      id: onboarding-multidevice-connect-pin-save
+    timeout: 5000
+
+- tapOn:
+    id: onboarding-multidevice-connect-pin-save
+
+- extendedWaitUntil:
+    visible:
+      id: tasks-screen
+    timeout: 45000

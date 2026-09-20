@@ -1,0 +1,61 @@
+---
+
+description: General rules for E2E testing
+globs:
+
+* "e2e/**/*.yaml"
+* "e2e/**/*.yml"
+  alwaysApply: false
+
+---
+
+# E2E Rules
+
+## Flows
+
+* `yarn e2e` — main flow (`e2e/flows/main.yaml`), env from `e2e/config/credentials.yaml` via `scripts/run-e2e.js`.
+* `yarn e2e:onboarding` — first-install onboarding only (`e2e/flows/onboarding/mode-screen.yaml`).
+* Do not duplicate env vars in flow files; use `${VAR}` from credentials config.
+* Do not use `onboarding-next-button` in the standard flow.
+
+## Credentials (`e2e/config/credentials.yaml`)
+
+* `E2E_ADMIN_EMAIL`, `E2E_ADMIN_NAME`, `E2E_ADMIN_PIN`
+* `E2E_CHILD_USERNAME`, `E2E_CHILD1_NAME`, `E2E_CHILD_PIN`
+* `E2E_CHILD2_USERNAME`, `E2E_CHILD2_NAME`, `E2E_CHILD2_PIN`
+* `TASK_1_TITLE`, `TASK_1_REWARD`
+
+## Selectors
+
+* Use stable `testID` values; Maestro `id` selectors only.
+* Never use visible text as selectors.
+
+## Setup screen testIDs
+
+* `onboarding-setup-screen`, `onboarding-setup-scroll`, `onboarding-multidevice-connect-*` (incl. `onboarding-multidevice-connect-pin-label`, `onboarding-multidevice-connect-pin-slots`, `onboarding-multidevice-connect-pin-slot-0`), `onboarding-section-*`, `onboarding-create-multidevice`, `onboarding-create-device-only`
+* Never use `scrollUntilVisible` on `*-pin-slots` — if the testID is missing Maestro swipes until the app leaves the screen. Use `extendedWaitUntil` + tap `pin-label` to dismiss keyboard instead.
+
+## Main app testIDs
+
+* Tabs: `tab-tasks`, `tab-more`
+* `tasks-screen`, `tasks-add-button`
+* More: `more-menu-settings`, `more-menu-users`
+* Settings: `settings-screen`, `settings-section-language`, `settings-language-en`
+* Users / child form: `users-screen`, `users-add-child-button`, `users-child-list-item-{username}`, `child-form-*`
+* User switch: `user-switch-button`, `header-current-user-name`, `select-users-modal`, `user-switch-child-{username}`, `user-switch-parent-{slug}`, `user-switch-pin-slots`, `user-switch-pin-save`
+* Child stars: `child-rewards-balance-value`
+* Task form: `task-assignment-add-screen`, `task-assignment-form-scroll`, `task-assignment-children-select`, `task-assignment-children-select-menu`, `task-assignment-child-{username}`, `task-assignment-title`, `task-assignment-description`, `task-assignment-reward`, `task-assignment-reward-error`, `task-assignment-avatar-{value}`, `task-assignment-color-{name}`, `task-assignment-save`
+* `SelectMulti` closes its menu after each option tap — wait for `task-assignment-children-select-menu` to disappear before continuing.
+* On task form use `scrollUntilVisible` on `task-assignment-save` (short timeout) — avoid `swipe` from form edges (can trigger back navigation).
+* Never use `hideKeyboard` or `eraseText` on the task form — on Android they trigger system back and leave the form. Dismiss keyboard by tapping `task-assignment-description` instead.
+* Create-task flow: select child → title `${TASK_1_TITLE}` → description `Description` → save (reward empty) → scroll up → assert `task-assignment-reward-error` → reward `${TASK_1_REWARD}` → save → assert task in list.
+* Task list: `task-list-item-{title}`, `task-list-item-{title}-status-pending|completed|approved|approve|reject`
+* `screen-header-back`
+
+## Subflows
+
+* `set-language-english.yaml`
+* `create-child2.yaml`
+* `create-task1-for-tarecitaschild1.yaml`
+* `change-user.yaml` (params: `USER_SWITCH_TARGET`, `USER_SWITCH_PIN`)
+* `change-user-to-child1.yaml`, `change-user-to-mama.yaml`

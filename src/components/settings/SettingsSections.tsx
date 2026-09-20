@@ -14,14 +14,16 @@ import type { SettingsItem } from './types';
 
 type SettingsSectionItemProps = {
   item: SettingsItem;
+  testID?: string;
 };
 
-export function SettingsSectionItem({ item }: SettingsSectionItemProps) {
+export function SettingsSectionItem({ item, testID }: SettingsSectionItemProps) {
   const [styles] = useStyle(settingsSectionStyles);
 
   if (item.type === 'select') {
     return (
       <List.Item
+        testID={testID}
         title={item.title}
         style={[styles.item, styles.accordion]}
         theme={SETTINGS_LIST_THEME}
@@ -58,6 +60,7 @@ type SettingsCollapsibleSectionProps = {
   expanded: boolean;
   onPress: () => void;
   children: React.ReactNode;
+  testID?: string;
 };
 
 export function SettingsCollapsibleSection({
@@ -66,12 +69,14 @@ export function SettingsCollapsibleSection({
   expanded,
   onPress,
   children,
+  testID,
 }: SettingsCollapsibleSectionProps) {
   const [styles] = useStyle(settingsSectionStyles);
 
   return (
     <List.Section style={styles.section}>
       <List.Accordion
+        testID={testID}
         title={title}
         description={description}
         expanded={expanded}
@@ -148,13 +153,18 @@ export function SettingsSections({
       {sections.map(section => (
         <SettingsCollapsibleSection
           key={section.id}
+          testID={`settings-section-${section.id}`}
           title={section.title}
           description={section.description}
           expanded={expandedSections[section.id] ?? false}
           onPress={() => handleSectionPress(section.id)}
         >
           {section.items.map(item => (
-            <SettingsSectionItem key={`${section.id}-${item.id}`} item={item} />
+            <SettingsSectionItem
+              key={`${section.id}-${item.id}`}
+              item={item}
+              testID={`settings-${section.id}-${item.id}`}
+            />
           ))}
         </SettingsCollapsibleSection>
       ))}

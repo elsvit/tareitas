@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { Keyboard, View } from 'react-native';
+import { Keyboard, Pressable, View } from 'react-native';
 
 import { OTPInput as OTPInputNative, type OTPInputRef } from 'input-otp-native';
 
@@ -14,6 +14,9 @@ interface OTPInputProps {
   value: string;
   onChange: (newValue: string) => void;
   onComplete?: (value: string) => void;
+  testID?: string;
+  textInputTestID?: string;
+  saveButtonTestID?: string;
 }
 
 export const OTPInput = ({
@@ -21,9 +24,16 @@ export const OTPInput = ({
   value,
   onChange,
   onComplete,
+  testID,
+  textInputTestID = 'otp-input',
+  saveButtonTestID = 'otp-input-save',
 }: OTPInputProps) => {
   const otpInputRef = useRef<OTPInputRef>(null);
   const saveButtonRef = useRef<React.ComponentRef<typeof Button>>(null);
+
+  const focusPinInput = useCallback(() => {
+    otpInputRef.current?.focus();
+  }, []);
 
   const focusSaveButton = useCallback(() => {
     requestAnimationFrame(() => {
@@ -51,18 +61,37 @@ export const OTPInput = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      testID={testID}
+      accessible={Boolean(testID)}
+      collapsable={false}
+      importantForAccessibility={testID ? 'yes' : 'auto'}
+    >
       <OTPInputNative
         ref={otpInputRef}
         maxLength={maxLength}
         value={value}
         onChange={onChange}
         onComplete={handleDigitsComplete}
+        testID={textInputTestID}
         render={({ slots }) => (
-          <View style={styles.slotsRow}>
+          <Pressable
+            style={styles.slotsRow}
+            testID={testID ? `${testID}-slots` : undefined}
+            accessible={Boolean(testID)}
+            accessibilityRole="button"
+            collapsable={false}
+            importantForAccessibility={testID ? 'yes' : 'auto'}
+            onPress={focusPinInput}
+          >
             {slots.map((slot, index) => (
               <View
                 key={index}
+                testID={testID ? `${testID}-slot-${index}` : undefined}
+                accessible={Boolean(testID)}
+                collapsable={false}
+                importantForAccessibility={testID ? 'yes' : 'auto'}
                 style={[
                   styles.slot,
                   {
@@ -73,7 +102,7 @@ export const OTPInput = ({
                 <Text style={styles.slotText}>{slot.char ?? ''}</Text>
               </View>
             ))}
-          </View>
+          </Pressable>
         )}
       />
       <View style={styles.footer}>
@@ -86,6 +115,7 @@ export const OTPInput = ({
           onPress={handleSave}
           bgColor={ButtonColors.Green}
           disabled={value.length < maxLength}
+          testID={saveButtonTestID}
         >
           {t('button.save') || 'Save'}
         </Button>

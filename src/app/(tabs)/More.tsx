@@ -38,6 +38,7 @@ export interface IMoreItem {
   onPress?: () => void;
   items?: IMoreItem[];
   visible?: boolean;
+  testID?: string;
 }
 
 export default function More() {
@@ -68,6 +69,7 @@ export default function More() {
           title: t('settings.title'),
           Icon: SettingsIcon,
           navigateTo: EScreens.Settings,
+          testID: 'more-menu-settings',
         },
         {
           title: t('users.title'),
@@ -186,6 +188,12 @@ export default function More() {
                   title={item.title}
                   description={item.description}
                   descriptionStyle={styles.description}
+                  testID={
+                    item.testID ??
+                    (item.navigateTo === EScreens.Users
+                      ? 'more-menu-users'
+                      : undefined)
+                  }
                   left={props => (
                     <item.Icon
                       {...props}

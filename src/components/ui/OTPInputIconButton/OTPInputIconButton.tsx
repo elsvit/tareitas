@@ -17,6 +17,8 @@ type Props = {
   bgColor?: ButtonColors;
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
+  testID?: string;
+  pinInputTestID?: string;
 };
 
 export const OTPInputIconButton: React.FC<Props> = ({
@@ -26,6 +28,8 @@ export const OTPInputIconButton: React.FC<Props> = ({
   Icon: IconProp,
   disabled,
   style,
+  testID,
+  pinInputTestID,
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -46,6 +50,7 @@ export const OTPInputIconButton: React.FC<Props> = ({
         onPress={() => setOpen(true)}
         disabled={disabled}
         size={44}
+        testID={testID}
       />
 
       <OTPInputModal
@@ -54,6 +59,8 @@ export const OTPInputIconButton: React.FC<Props> = ({
         title={title}
         maxLength={maxLength}
         onComplete={handleComplete}
+        testID={pinInputTestID ? `${pinInputTestID}-modal` : undefined}
+        pinInputTestID={pinInputTestID}
       />
     </View>
   );

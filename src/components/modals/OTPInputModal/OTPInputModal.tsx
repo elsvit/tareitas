@@ -19,6 +19,8 @@ type Props = {
   errorMessage?: string;
   maxLength?: number;
   dismissOnBackdrop?: boolean;
+  testID?: string;
+  pinInputTestID?: string;
 };
 
 export const OTPInputModal: React.FC<Props> = ({
@@ -29,6 +31,8 @@ export const OTPInputModal: React.FC<Props> = ({
   errorMessage,
   maxLength = 4,
   dismissOnBackdrop = true,
+  testID,
+  pinInputTestID,
 }) => {
   const [value, setValue] = useState('');
 
@@ -64,7 +68,7 @@ export const OTPInputModal: React.FC<Props> = ({
           onPress={dismissOnBackdrop ? handleClose : undefined}
         />
 
-        <View style={styles.sheet}>
+        <View style={styles.sheet} testID={testID}>
           <View style={styles.header}>
             {!!title && (
               <Text variant="titleMedium" weight="bold">
@@ -87,6 +91,10 @@ export const OTPInputModal: React.FC<Props> = ({
             value={value}
             onChange={handleChange}
             onComplete={handleComplete}
+            testID={pinInputTestID}
+            saveButtonTestID={
+              pinInputTestID ? `${pinInputTestID}-save` : 'otp-input-save'
+            }
           />
         </View>
       </SafeAreaView>

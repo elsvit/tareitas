@@ -16,6 +16,7 @@ type SelectColorProps = {
   errorMessage?: string;
   onChange: (value: string) => void;
   style?: StyleProp<ViewStyle>;
+  optionTestIDPrefix?: string;
 };
 
 // Helpers & local styles for color picker
@@ -41,6 +42,7 @@ export const SelectColor: React.FC<SelectColorProps> = ({
   errorMessage,
   onChange,
   style,
+  optionTestIDPrefix,
 }) => {
   return (
     <View style={style}>
@@ -55,6 +57,11 @@ export const SelectColor: React.FC<SelectColorProps> = ({
           return (
             <TouchableOpacity
               key={String(opt.value)}
+              testID={
+                optionTestIDPrefix
+                  ? `${optionTestIDPrefix}-${String(opt.label).toLowerCase()}`
+                  : undefined
+              }
               accessibilityRole="button"
               accessibilityLabel={`${opt.label} color`}
               onPress={() => onChange(opt.value as string)}

@@ -43,7 +43,9 @@ for (const loc of files.map(file => file.replace('.json', ''))) {
   }
 
   const flat = locales[loc];
+  const localeKeys = Object.keys(flat);
   const missing = enKeys.filter(key => !(key in flat));
+  const extra = localeKeys.filter(key => !(key in en));
   const sameAsFr =
     loc === 'fr'
       ? []
@@ -62,7 +64,12 @@ for (const loc of files.map(file => file.replace('.json', ''))) {
       !/^[A-Z0-9_]+$/.test(flat[key]),
   );
 
-  if (!missing.length && !sameAsFr.length && !sameAsEn.length) {
+  if (
+    !missing.length &&
+    !extra.length &&
+    !sameAsFr.length &&
+    !sameAsEn.length
+  ) {
     console.log(`${loc}: OK`);
     continue;
   }
@@ -73,6 +80,13 @@ for (const loc of files.map(file => file.replace('.json', ''))) {
     missing.slice(0, 5).forEach(key => console.log(`    - ${key}`));
     if (missing.length > 5) {
       console.log(`    ... +${missing.length - 5} more`);
+    }
+  }
+  if (extra.length) {
+    console.log(`  extra keys (not in en.json): ${extra.length}`);
+    extra.slice(0, 5).forEach(key => console.log(`    - ${key}`));
+    if (extra.length > 5) {
+      console.log(`    ... +${extra.length - 5} more`);
     }
   }
   if (sameAsFr.length) {

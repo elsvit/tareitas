@@ -8,6 +8,8 @@ export interface IId {
 export interface IOptions<T> {
   label: string;
   value: T;
+  /** Stable suffix for E2E testIDs, e.g. child username */
+  testIdKey?: string;
 }
 
 export interface IImageOption {

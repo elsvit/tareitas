@@ -130,6 +130,12 @@ export default function TabLayout() {
             options={{
               title,
               href: hideThisTab ? null : undefined,
+              tabBarButton: props => (
+                <HapticTab
+                  {...props}
+                  testID={`tab-${name.toLowerCase()}`}
+                />
+              ),
               tabBarIcon: ({ focused }) => (
                 <BottomTab
                   Icon={Icon}

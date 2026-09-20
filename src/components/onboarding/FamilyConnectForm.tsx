@@ -130,7 +130,7 @@ export function FamilyConnectForm({
   };
 
   return (
-    <View>
+    <View testID="onboarding-multidevice-connect-form">
       <RadioButton.Group
         onValueChange={value =>
           handleLoginModeChange(value as ConnectLoginMode)
@@ -156,6 +156,11 @@ export function FamilyConnectForm({
                 ]}
                 accessibilityRole="radio"
                 accessibilityState={{ selected }}
+                testID={
+                  option.value === 'admin'
+                    ? 'onboarding-multidevice-connect-admin'
+                    : 'onboarding-multidevice-connect-member'
+                }
               >
                 <RadioButton value={option.value} color={Colors.blue600} />
                 <Text
@@ -173,6 +178,11 @@ export function FamilyConnectForm({
       </RadioButton.Group>
 
       <TextInput
+        testID={
+          loginMode === 'admin'
+            ? 'onboarding-multidevice-connect-admin-email'
+            : 'onboarding-multidevice-connect-member-username'
+        }
         label={
           loginMode === 'admin'
                   ? t('onboarding.login.email')
@@ -181,14 +191,23 @@ export function FamilyConnectForm({
         value={identifier}
         onChangeText={setIdentifier}
         autoCapitalize="none"
+        selectTextOnFocus
         keyboardType={
           loginMode === 'admin' ? 'email-address' : 'default'
         }
       />
       <Space size={2} />
-      <Text variant="bodyMedium">{t('onboarding.login.pin')}</Text>
+      <Text
+        variant="bodyMedium"
+        testID="onboarding-multidevice-connect-pin-label"
+      >
+        {t('onboarding.login.pin')}
+      </Text>
       <Space size={1} />
       <OTPInput
+        testID="onboarding-multidevice-connect-pin"
+        textInputTestID="onboarding-multidevice-connect-pin-input"
+        saveButtonTestID="onboarding-multidevice-connect-pin-save"
         maxLength={4}
         value={pin}
         onChange={setPin}
@@ -204,6 +223,7 @@ export function FamilyConnectForm({
       ) : null}
       <Space size={2} />
       <Button
+        testID="onboarding-multidevice-connect-submit"
         mode="contained"
         bgColor={ButtonColors.Green}
         loading={isSubmitting}

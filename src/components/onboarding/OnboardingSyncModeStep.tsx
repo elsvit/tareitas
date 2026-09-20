@@ -55,6 +55,7 @@ type SyncModeOption = {
 type SyncModeOptionCardProps = SyncModeOption & {
   selected: boolean;
   onSelect: () => void;
+  testID: string;
 };
 
 function SyncModeOptionCard({
@@ -64,11 +65,13 @@ function SyncModeOptionCard({
   accentColor,
   selected,
   onSelect,
+  testID,
 }: SyncModeOptionCardProps) {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
   return (
     <View
+      testID={testID}
       style={[
         styles.syncModeOption,
         selected && {
@@ -82,6 +85,7 @@ function SyncModeOptionCard({
         style={styles.syncModeOptionRow}
         accessibilityRole="radio"
         accessibilityState={{ selected }}
+        testID={`${testID}-select`}
       >
         <RadioButton value={mode} color={accentColor} onPress={onSelect} />
         <View style={styles.syncModeOptionContent}>
@@ -247,7 +251,7 @@ export function OnboardingSyncModeStep({
   ];
 
   return (
-    <View>
+    <View testID="onboarding-setup-screen">
       <OnboardingStepHeader
         title={t('onboarding.sync_mode.title')}
         description={t('onboarding.sync_mode.subtitle')}
@@ -255,6 +259,7 @@ export function OnboardingSyncModeStep({
       />
 
       <View
+        testID="onboarding-section-multidevice-connect"
         style={[
           styles.syncModeSectionBox,
           setupPath === 'connect' && styles.syncModeSectionBoxSelected,
@@ -265,6 +270,7 @@ export function OnboardingSyncModeStep({
           style={styles.syncModeSectionHeader}
           accessibilityRole="radio"
           accessibilityState={{ selected: setupPath === 'connect' }}
+          testID="onboarding-section-multidevice-connect-header"
         >
           <RadioButton
             value="connect"
@@ -293,6 +299,7 @@ export function OnboardingSyncModeStep({
       <Space size={3} />
 
       <View
+        testID="onboarding-section-device-only-connect"
         style={[
           styles.syncModeSectionBox,
           setupPath === 'connect_device_only' &&
@@ -306,6 +313,7 @@ export function OnboardingSyncModeStep({
           accessibilityState={{
             selected: setupPath === 'connect_device_only',
           }}
+          testID="onboarding-section-device-only-connect-header"
         >
           <RadioButton
             value="connect_device_only"
@@ -349,6 +357,7 @@ export function OnboardingSyncModeStep({
       <Space size={3} />
 
       <View
+        testID="onboarding-section-create"
         style={[
           styles.syncModeSectionBox,
           setupPath === 'create' && styles.syncModeSectionBoxSelected,
@@ -359,6 +368,7 @@ export function OnboardingSyncModeStep({
           style={styles.syncModeSectionHeader}
           accessibilityRole="radio"
           accessibilityState={{ selected: setupPath === 'create' }}
+          testID="onboarding-section-create-header"
         >
           <RadioButton
             value="create"
@@ -391,6 +401,11 @@ export function OnboardingSyncModeStep({
                 <SyncModeOptionCard
                   key={option.mode}
                   {...option}
+                  testID={
+                    option.mode === ESyncMode.multidevice
+                      ? 'onboarding-create-multidevice'
+                      : 'onboarding-create-device-only'
+                  }
                   selected={value === option.mode}
                   onSelect={() => void handleSyncModeSelect(option.mode)}
                 />

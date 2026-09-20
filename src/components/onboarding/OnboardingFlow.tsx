@@ -335,6 +335,15 @@ export function OnboardingFlow({
 
     const hideSubscription = Keyboard.addListener(hideEvent, () => {
       setKeyboardInset(0);
+
+      if (
+        isSyncModeStep &&
+        (setupPath === 'connect' || setupPath === 'connect_device_only')
+      ) {
+        requestAnimationFrame(() => {
+          scrollRef.current?.scrollToEnd({ animated: false });
+        });
+      }
     });
 
     return () => {
@@ -855,6 +864,7 @@ export function OnboardingFlow({
       />
       <ScrollView
         ref={scrollRef}
+        testID="onboarding-setup-scroll"
         style={styles.flex}
         contentContainerStyle={[
           styles.container,
@@ -892,7 +902,12 @@ export function OnboardingFlow({
             ) : (
               <View />
             )}
-            <Button mode="contained" onPress={onNext} style={styles.footerBtn}>
+            <Button
+              testID="onboarding-next-button"
+              mode="contained"
+              onPress={onNext}
+              style={styles.footerBtn}
+            >
               {isCompleteStep ? t('onboarding.complete.cta') : t('button.next')}
             </Button>
           </View>

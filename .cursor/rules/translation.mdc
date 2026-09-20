@@ -11,10 +11,12 @@ alwaysApply: false
 
 - All application translations are stored in `src/assets/translation`.
 - Translation files are JSON files.
-- Keep all translation files structurally identical.
-- Every translation key that exists in the source language must exist in every supported language.
-- Never delete, rename, or change translation keys unless explicitly requested.
-- Never add a translation key to only one language.
+- **`en.json` is the single source of truth for keys.**
+- Keep all translation files structurally identical to `en.json`.
+- Every key in `en.json` must exist in every other language file.
+- No language file may contain keys that are not in `en.json` (remove unused/orphan keys).
+- Never delete, rename, or change translation keys in `en.json` unless explicitly requested.
+- Never add a translation key to only one language; add it to `en.json` first, then every locale.
 - Preserve the exact JSON structure and nesting.
 - Preserve placeholders exactly. For example:
   - `{{name}}`
@@ -36,7 +38,8 @@ When a new English translation is added:
 2. Translate the value into the appropriate language.
 3. Keep the JSON structure identical across all languages.
 4. Check that no placeholders or formatting were changed.
-5. Run the project's translation validation/audit scripts if available.
+5. Run `yarn translations:align` to prune extra keys and add missing ones.
+6. Run `yarn translations:audit` to verify parity and find untranslated strings.
 
 When an existing English translation changes:
 
