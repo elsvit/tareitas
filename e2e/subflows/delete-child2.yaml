@@ -1,0 +1,57 @@
+appId: net.tareitas
+---
+- runFlow: change-user-to-mama.yaml
+
+- tapOn:
+    id: tab-more
+- tapOn:
+    id: more-menu-users
+
+- extendedWaitUntil:
+    visible:
+      id: users-screen
+    timeout: 15000
+
+- scrollUntilVisible:
+    element:
+      id: users-child-list-item-${E2E_CHILD2_USERNAME}
+    direction: DOWN
+    timeout: 8000
+
+- assertVisible:
+    id: users-child-list-item-${E2E_CHILD2_USERNAME}
+
+- tapOn:
+    id: users-child-list-item-${E2E_CHILD2_USERNAME}
+
+- extendedWaitUntil:
+    visible:
+      id: child-form-screen
+    timeout: 15000
+
+- scrollUntilVisible:
+    element:
+      id: child-form-delete
+    direction: DOWN
+    timeout: 8000
+
+- tapOn:
+    id: child-form-delete
+
+- extendedWaitUntil:
+    visible:
+      id: child-form-delete-confirm
+    timeout: 5000
+
+- tapOn:
+    id: child-form-delete-confirm
+
+- extendedWaitUntil:
+    visible:
+      id: users-screen
+    timeout: 15000
+
+- extendedWaitUntil:
+    notVisible:
+      id: users-child-list-item-${E2E_CHILD2_USERNAME}
+    timeout: 10000

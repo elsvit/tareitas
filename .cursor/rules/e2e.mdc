@@ -29,8 +29,8 @@ globs:
 
 * `E2E_ADMIN_EMAIL`, `E2E_ADMIN_NAME`, `E2E_ADMIN_PIN`
 * `E2E_CHILD_USERNAME`, `E2E_CHILD1_NAME`, `E2E_CHILD_PIN`
-* `E2E_CHILD2_USERNAME`, `E2E_CHILD2_NAME`, `E2E_CHILD2_PIN`
-* `TASK_1_TITLE`, `TASK_1_REWARD`
+* `E2E_CHILD2_USERNAME`, `E2E_CHILD2_NAME`, `E2E_CHILD2_AVATAR`, `E2E_CHILD2_PIN`
+* `TASK_1_TITLE`, `TASK_1_AVATAR`, `TASK_1_REWARD`
 
 ## Selectors
 
@@ -48,14 +48,15 @@ globs:
 * `tasks-screen`, `tasks-add-button`
 * More: `more-menu-settings`, `more-menu-users`
 * Settings: `settings-screen`, `settings-section-language`, `settings-language-en`
-* Users / child form: `users-screen`, `users-add-child-button`, `users-child-list-item-{username}`, `child-form-*`
+* Users / child form: `users-screen`, `users-add-child-button`, `users-child-list-item-{username}`, `child-form-*`, `child-form-delete`, `child-form-delete-confirm`, `child-form-delete-cancel`
+* Child form: scroll to `users-add-child-button` before tap; never use `hideKeyboard` (Android back closes the form). Tap the next field immediately before each `inputText`. Form order: username → name → password → avatar → save — set password before scrolling to `child-form-avatar-${E2E_CHILD2_AVATAR}`.
 * User switch: `user-switch-button`, `header-current-user-name`, `select-users-modal`, `user-switch-child-{username}`, `user-switch-parent-{slug}`, `user-switch-pin-slots`, `user-switch-pin-save`
 * Child stars: `child-rewards-balance-value`
 * Task form: `task-assignment-add-screen`, `task-assignment-form-scroll`, `task-assignment-children-select`, `task-assignment-children-select-menu`, `task-assignment-child-{username}`, `task-assignment-title`, `task-assignment-description`, `task-assignment-reward`, `task-assignment-reward-error`, `task-assignment-avatar-{value}`, `task-assignment-color-{name}`, `task-assignment-save`
-* After selecting a child in `SelectMulti`, dismiss the menu by tapping outside (e.g. `task-assignment-title`) — not `task-assignment-children-select` again (double-taps the row and unchecks).
+* After selecting a child in `SelectMulti`, dismiss the menu by tapping outside (e.g. `task-assignment-title`) — not `task-assignment-children-select` again (double-taps the row and unchecks). Then **tap the target field again immediately before `inputText`** — never put `extendedWaitUntil` or scroll steps between `tapOn` and `inputText` on the same field (Android loses focus and text is not entered).
 * On task form use `scrollUntilVisible` on `task-assignment-save` (short timeout) — avoid `swipe` from form edges (can trigger back navigation).
-* Never use `hideKeyboard` or `eraseText` on the task form — on Android they trigger system back and leave the form. Dismiss keyboard by tapping `task-assignment-description` instead.
-* Create-task flow: select child → title `${TASK_1_TITLE}` → description `Description` → save (reward empty) → scroll up → assert `task-assignment-reward-error` → reward `${TASK_1_REWARD}` → save → assert task in list.
+* Never use `hideKeyboard` or `eraseText` on the task form — on Android they trigger system back and leave the form. Dismiss keyboard by scrolling to and tapping `task-assignment-avatar-${TASK_1_AVATAR}` (not `task-assignment-description`, which can leave the keyboard open).
+* Create-task flow: select child → title `${TASK_1_TITLE}` → description `Description` → tap `task-assignment-avatar-${TASK_1_AVATAR}` → save (reward empty) → scroll up → assert `task-assignment-reward-error` → reward `${TASK_1_REWARD}` → tap avatar again → save → assert task in list.
 * Task list: `task-list-item-{title}`, `task-list-item-{title}-status-pending|completed|approved|approve|reject`
 * `screen-header-back`
 
@@ -66,3 +67,4 @@ globs:
 * `create-task1-for-tarecitaschild1.yaml`
 * `change-user.yaml` (params: `USER_SWITCH_TARGET`, `USER_SWITCH_PIN`)
 * `change-user-to-child1.yaml`, `change-user-to-mama.yaml`
+* `delete-child2.yaml` — switch to admin, open Users, delete `${E2E_CHILD2_USERNAME}`, assert removed from list
