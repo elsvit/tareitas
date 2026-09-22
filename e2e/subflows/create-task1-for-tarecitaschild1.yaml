@@ -37,7 +37,10 @@ appId: net.tareitas
     id: task-assignment-description
 - inputText: Description
 
-# Dismiss keyboard and select task avatar — never hideKeyboard (Android back).
+# Dismiss keyboard before scrolling — open keyboard blocks avatar/color taps on iOS.
+- tapOn:
+    id: task-assignment-title
+
 - scrollUntilVisible:
     element:
       id: task-assignment-avatar-${TASK_1_AVATAR}
@@ -47,19 +50,30 @@ appId: net.tareitas
 - tapOn:
     id: task-assignment-avatar-${TASK_1_AVATAR}
 
-- assertVisible:
-    id: task-assignment-add-screen
+- scrollUntilVisible:
+    element:
+      id: task-assignment-color-blue500
+    direction: DOWN
+    timeout: 8000
+
+- tapOn:
+    id: task-assignment-color-blue500
 
 - scrollUntilVisible:
     element:
-      id: task-assignment-save
+      id: task-assignment-scroll-end
     direction: DOWN
     timeout: 8000
 
 - tapOn:
     id: task-assignment-save
 
-# Reward is required — scroll up to error below reward input.
+# Reward is required — wait for validation error, then scroll up to it.
+- extendedWaitUntil:
+    visible:
+      id: task-assignment-reward-error
+    timeout: 5000
+
 - scrollUntilVisible:
     element:
       id: task-assignment-reward-error
@@ -75,19 +89,13 @@ appId: net.tareitas
     id: task-assignment-reward
 - inputText: ${TASK_1_REWARD}
 
-# Dismiss keyboard before save — tap avatar (description keeps keyboard open on Android).
-- scrollUntilVisible:
-    element:
-      id: task-assignment-avatar-${TASK_1_AVATAR}
-    direction: DOWN
-    timeout: 8000
-
+# Dismiss keyboard before save — numeric reward field keeps keyboard open on iOS.
 - tapOn:
-    id: task-assignment-avatar-${TASK_1_AVATAR}
+    id: task-assignment-title
 
 - scrollUntilVisible:
     element:
-      id: task-assignment-save
+      id: task-assignment-scroll-end
     direction: DOWN
     timeout: 8000
 

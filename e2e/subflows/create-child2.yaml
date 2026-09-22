@@ -53,9 +53,10 @@ appId: net.tareitas
 - tapOn:
     id: child-form-avatar-${E2E_CHILD2_AVATAR}
 
+# Scroll to form bottom so Save sits above the viewport edge (do not use centerElement — it times out on iOS).
 - scrollUntilVisible:
     element:
-      id: child-form-save
+      id: child-form-scroll-end
     direction: DOWN
     timeout: 8000
 

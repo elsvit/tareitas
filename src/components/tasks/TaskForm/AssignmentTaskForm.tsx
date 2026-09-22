@@ -1617,6 +1617,10 @@ export const AssignmentTaskForm: FC<Props> = ({
             )}
 
             <Space size={4} />
+            <View
+              testID="task-assignment-scroll-end"
+              style={styles.scrollEndAnchor}
+            />
           </Card.Content>
         </Card>
         </ScrollView>

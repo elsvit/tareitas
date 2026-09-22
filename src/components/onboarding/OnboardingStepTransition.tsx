@@ -1,7 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 
-import Animated, { SlideInLeft, SlideInRight } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  SlideInLeft,
+  SlideInRight,
+} from 'react-native-reanimated';
 
 import { onboardingStyles as styles } from './styles';
 
@@ -13,20 +17,36 @@ type OnboardingStepTransitionProps = {
   children: React.ReactNode;
 };
 
+function getEnteringAnimation(
+  direction: OnboardingTransitionDirection,
+) {
+  // Slide entering animations can leave an invisible touch blocker on iOS.
+  if (Platform.OS === 'ios') {
+    return FadeIn.duration(200);
+  }
+
+  return direction > 0
+    ? SlideInRight.duration(280)
+    : SlideInLeft.duration(280);
+}
+
 export function OnboardingStepTransition({
   stepKey,
   direction,
   children,
 }: OnboardingStepTransitionProps) {
   return (
-    <View style={styles.stepTransitionHost} pointerEvents="box-none">
+    <View
+      style={[
+        styles.stepTransitionHost,
+        Platform.OS === 'ios' && styles.stepTransitionHostIos,
+      ]}
+      pointerEvents="box-none"
+    >
       <Animated.View
         key={stepKey}
-        entering={
-          direction > 0
-            ? SlideInRight.duration(280)
-            : SlideInLeft.duration(280)
-        }
+        entering={getEnteringAnimation(direction)}
+        pointerEvents="box-none"
         style={styles.stepTransitionContent}
       >
         {children}

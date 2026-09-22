@@ -48,8 +48,17 @@ export const onboardingStyles = StyleSheet.create({
     overflow: 'hidden',
     width: '100%',
   },
+  stepTransitionHostIos: {
+    overflow: 'visible',
+  },
   stepTransitionContent: {
     width: '100%',
+  },
+  setupMemoryLoading: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 200,
+    paddingVertical: spacing(6),
   },
   stepDescription: {
     opacity: 0.85,

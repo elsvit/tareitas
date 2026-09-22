@@ -1,5 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Keyboard, Platform, ScrollView, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Keyboard,
+  Platform,
+  ScrollView,
+  View,
+} from 'react-native';
 
 import { useRouter } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +15,6 @@ import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { Button, ProgressBar } from '~/components/ui';
 import { ButtonColors } from '~/components/ui/Button';
-import { Loading } from '~/components/ui/Loading';
 import { ChildForm } from '~/components/users/UserForm/ChildForm';
 import { ParentForm } from '~/components/users/UserForm/ParentForm';
 import {
@@ -207,6 +212,8 @@ export function OnboardingFlow({
   const isChildStep =
     !isMultideviceFlow && step === ONBOARDING_STEP.child;
   const isCompleteStep = step === ONBOARDING_STEP.complete;
+  const showSetupMemoryLoading =
+    isSyncModeStep && !isSetupMemoryReady;
   const completeParent = isMultideviceFlow
     ? signUpAdmin.name
       ? signUpAdmin
@@ -766,10 +773,6 @@ export function OnboardingFlow({
     }
 
     if (isSyncModeStep) {
-      if (!isSetupMemoryReady) {
-        return <Loading />;
-      }
-
       return (
         <OnboardingSyncModeStep
           setupPath={setupPath}
@@ -873,13 +876,19 @@ export function OnboardingFlow({
           },
         ]}
         showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
+        keyboardShouldPersistTaps={
+          Platform.OS === 'ios' ? 'always' : 'handled'
+        }
         keyboardDismissMode="interactive"
       >
         <ProgressBar progress={progress} style={styles.progressBar} />
 
         {isIntroStep ? (
           renderStepContent()
+        ) : showSetupMemoryLoading ? (
+          <View style={styles.setupMemoryLoading}>
+            <ActivityIndicator size="large" color="#4F46E5" />
+          </View>
         ) : (
           <OnboardingStepTransition stepKey={step} direction={transitionDirection}>
             {renderStepContent()}

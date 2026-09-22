@@ -12,6 +12,14 @@ export const styles = StyleSheet.create({
   container: {
     padding: 16,
   },
+  scrollContent: {
+    // Extra space so bottom actions can scroll above the home indicator / Maestro viewport edge.
+    paddingBottom: spacing(32),
+  },
+  scrollEndAnchor: {
+    height: 1,
+    width: '100%',
+  },
   titleContainer: {
     margin: spacing(2),
     alignItems: 'center',
