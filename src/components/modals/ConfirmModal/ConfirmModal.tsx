@@ -18,6 +18,8 @@ export type ConfirmModalProps = {
   cancelLabel?: string;
   confirmBgColor?: ButtonColors;
   dismissOnBackdrop?: boolean;
+  confirmTestID?: string;
+  cancelTestID?: string;
 };
 
 export const ConfirmModal: React.FC<ConfirmModalProps> = ({
@@ -30,6 +32,8 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   cancelLabel = t('button.cancel'),
   confirmBgColor = ButtonColors.Green,
   dismissOnBackdrop = true,
+  confirmTestID,
+  cancelTestID,
 }) => {
   const handleConfirm = () => {
     onConfirm();
@@ -62,6 +66,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
           <View style={styles.actions}>
             <Button
+              testID={cancelTestID}
               mode="contained"
               bgColor={ButtonColors.Gray}
               textColor={SCREEN_TEXT.primary}
@@ -69,7 +74,12 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
             >
               {cancelLabel}
             </Button>
-            <Button mode="contained" bgColor={confirmBgColor} onPress={handleConfirm}>
+            <Button
+              testID={confirmTestID}
+              mode="contained"
+              bgColor={confirmBgColor}
+              onPress={handleConfirm}
+            >
               {confirmLabel}
             </Button>
           </View>

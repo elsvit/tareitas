@@ -412,6 +412,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
               <>
                 <Space size={3} />
                 <Button
+                  testID="child-form-delete"
                   mode="contained"
                   bgColor={ButtonColors.Red}
                   onPress={handleDelete}
@@ -453,6 +454,8 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
         onConfirm={handleConfirmDelete}
         title={t('users.delete')}
         message={t('users.delete_confirm')}
+        confirmTestID="child-form-delete-confirm"
+        cancelTestID="child-form-delete-cancel"
       />
     </>
   );

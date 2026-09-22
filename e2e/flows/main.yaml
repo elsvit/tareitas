@@ -19,7 +19,7 @@ appId: net.tareitas
       id: users-child-list-item-${E2E_CHILD2_USERNAME}
       optional: true
     direction: DOWN
-    timeout: 5000
+    timeout: 8000
 
 - runFlow:
     label: Create child when missing
@@ -27,6 +27,11 @@ appId: net.tareitas
       notVisible:
         id: users-child-list-item-${E2E_CHILD2_USERNAME}
     file: ../subflows/create-child2.yaml
+    env:
+      E2E_CHILD2_USERNAME: ${E2E_CHILD2_USERNAME}
+      E2E_CHILD2_NAME: ${E2E_CHILD2_NAME}
+      E2E_CHILD2_AVATAR: ${E2E_CHILD2_AVATAR}
+      E2E_CHILD2_PIN: ${E2E_CHILD2_PIN}
 
 - assertVisible:
     id: users-child-list-item-${E2E_CHILD2_USERNAME}
@@ -97,3 +102,5 @@ appId: net.tareitas
 - copyTextFrom:
     id: child-rewards-balance-value
 - assertTrue: ${maestro.copiedText.trim() === output.expectedStars}
+
+- runFlow: ../subflows/delete-child2.yaml

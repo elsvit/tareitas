@@ -12,6 +12,8 @@ type Props = Omit<
   title?: string;
   message?: string;
   confirmLabel?: string;
+  confirmTestID?: string;
+  cancelTestID?: string;
 };
 
 export const DeleteModal: React.FC<Props> = ({

@@ -1,5 +1,11 @@
 appId: net.tareitas
 ---
+- scrollUntilVisible:
+    element:
+      id: users-add-child-button
+    direction: DOWN
+    timeout: 8000
+
 - tapOn:
     id: users-add-child-button
 
@@ -11,15 +17,11 @@ appId: net.tareitas
 - tapOn:
     id: child-form-username
 - inputText: ${E2E_CHILD2_USERNAME}
-- hideKeyboard
 
+# Never hideKeyboard on Android (system back closes the form). Tap next field before inputText.
 - tapOn:
     id: child-form-name
 - inputText: ${E2E_CHILD2_NAME}
-- hideKeyboard
-
-- tapOn:
-    id: child-form-avatar-girl_dark
 
 - tapOn:
     id: child-form-password-button
@@ -36,10 +38,26 @@ appId: net.tareitas
 - tapOn:
     id: child-form-password-pin-save
 
+- extendedWaitUntil:
+    notVisible:
+      id: child-form-password-pin-modal
+    timeout: 5000
+
+# Avatar is below password on the form — scroll to it and tap to select + dismiss keyboard.
+- scrollUntilVisible:
+    element:
+      id: child-form-avatar-${E2E_CHILD2_AVATAR}
+    direction: DOWN
+    timeout: 8000
+
+- tapOn:
+    id: child-form-avatar-${E2E_CHILD2_AVATAR}
+
 - scrollUntilVisible:
     element:
       id: child-form-save
     direction: DOWN
+    timeout: 8000
 
 - tapOn:
     id: child-form-save
