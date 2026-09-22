@@ -423,6 +423,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
             )}
 
             <Space size={4} />
+            <View testID="child-form-scroll-end" style={styles.scrollEndAnchor} />
           </Card.Content>
         </Card>
   );
@@ -441,7 +442,7 @@ export const ChildForm = React.forwardRef<UserFormHandle, Props>(function ChildF
       ) : (
         <ScrollView
           testID="child-form-screen"
-          contentContainerStyle={styles.container}
+          contentContainerStyle={[styles.container, styles.scrollContent]}
           keyboardShouldPersistTaps="handled"
         >
           {formBody}

@@ -11,6 +11,10 @@ export const styles = StyleSheet.create({
   container: {
     padding: 16,
   },
+  scrollEndAnchor: {
+    height: 1,
+    width: '100%',
+  },
   formRoot: {
     flex: 1,
   },

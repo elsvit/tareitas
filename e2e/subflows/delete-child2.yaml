@@ -29,9 +29,10 @@ appId: net.tareitas
       id: child-form-screen
     timeout: 15000
 
+# Scroll to form bottom before tapping Delete (do not use centerElement — it times out on iOS).
 - scrollUntilVisible:
     element:
-      id: child-form-delete
+      id: child-form-scroll-end
     direction: DOWN
     timeout: 8000
 
