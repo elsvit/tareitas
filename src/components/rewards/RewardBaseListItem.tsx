@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   Platform,
   Pressable,
@@ -11,6 +11,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector } from 'react-redux';
 
 import { BASE_REWARDS_IMAGES } from '~/assets/img/rewards/rewards';
+import { useDebouncedPress } from '~/hooks/useDebouncedPress';
 import { Text } from '~/components/ui';
 import { ResolvedPicture } from '~/components/ui/ResolvedPicture/ResolvedPicture';
 import { selectRewardImageUrls } from '~/store/images';
@@ -138,6 +139,11 @@ export const RewardBaseListItem: React.FC<Props> = ({
   onPress,
   footer,
 }) => {
+  const debouncedOnPress = useDebouncedPress(
+    useCallback(() => {
+      onPress?.();
+    }, [onPress]),
+  );
   const customUrls = useSelector(selectRewardImageUrls);
   const gradientColors = useMemo(
     () =>
@@ -170,7 +176,7 @@ export const RewardBaseListItem: React.FC<Props> = ({
         {onPress ? (
           Platform.OS === 'android' ? (
             <TouchableOpacity
-              onPress={onPress}
+              onPress={debouncedOnPress}
               activeOpacity={0.9}
               accessibilityRole="button"
               style={styles.pressable}
@@ -179,7 +185,7 @@ export const RewardBaseListItem: React.FC<Props> = ({
             </TouchableOpacity>
           ) : (
             <Pressable
-              onPress={onPress}
+              onPress={debouncedOnPress}
               accessibilityRole="button"
               style={({ pressed }) => [
                 styles.pressable,

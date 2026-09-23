@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
+  InteractionManager,
   Modal,
+  Platform,
   Pressable,
   ScrollView,
   TouchableOpacity,
@@ -55,6 +57,22 @@ import { styles as baseStyles } from './styles';
 
 const AVATAR_SIZE = 40;
 const AVATAR_GAP = spacing(3);
+
+/** iOS keeps an invisible Modal layer if ImagePicker opens while a Modal is visible. */
+function waitForOverlayDismiss(): Promise<void> {
+  return new Promise(resolve => {
+    InteractionManager.runAfterInteractions(() => {
+      if (Platform.OS === 'ios') {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => resolve());
+        });
+        return;
+      }
+
+      resolve();
+    });
+  });
+}
 
 type AvatarGridProps = {
   maxRows?: number;
@@ -283,15 +301,17 @@ export function SelectImageWithCustom({
   const handleChooseFromGallery = useCallback(async () => {
     setIsPicking(true);
     setUploadError(null);
+    closePickModal();
 
     try {
+      await waitForOverlayDismiss();
+
       const uri = await pickAndCropFromGallery();
 
       if (!uri) {
         return;
       }
 
-      closePickModal();
       setDraftUri(uri);
       setIsManipulatorOpen(true);
     } finally {
@@ -302,13 +322,18 @@ export function SelectImageWithCustom({
   const handleAdjustCrop = useCallback(async () => {
     setIsCropping(true);
     setUploadError(null);
+    setIsManipulatorOpen(false);
 
     try {
+      await waitForOverlayDismiss();
+
       const uri = await pickAndCropFromGallery();
 
       if (uri) {
         setDraftUri(uri);
       }
+
+      setIsManipulatorOpen(true);
     } finally {
       setIsCropping(false);
     }

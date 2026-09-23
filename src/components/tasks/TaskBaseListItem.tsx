@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   Platform,
   Pressable,
@@ -14,6 +14,7 @@ import { BASE_TASKS_IMAGES } from '~/assets/img/tasks/tasks';
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
 import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
 import { DEFAULT_BASE_TASK_COLOR } from '~/constants/tasks';
+import { useDebouncedPress } from '~/hooks/useDebouncedPress';
 import { TaskRewardBadge } from '~/components/tasks/TaskRewardBadge';
 import { Text } from '~/components/ui';
 import { ResolvedPicture } from '~/components/ui/ResolvedPicture/ResolvedPicture';
@@ -138,6 +139,11 @@ export const TaskBaseListItem: React.FC<Props> = ({
   subtasks,
   onPress,
 }) => {
+  const debouncedOnPress = useDebouncedPress(
+    useCallback(() => {
+      onPress?.();
+    }, [onPress]),
+  );
   const customUrls = useSelector(selectTaskImageUrls);
   const gradientColors = useMemo(
     () =>
@@ -169,7 +175,7 @@ export const TaskBaseListItem: React.FC<Props> = ({
         {onPress ? (
           Platform.OS === 'android' ? (
             <TouchableOpacity
-              onPress={onPress}
+              onPress={debouncedOnPress}
               activeOpacity={0.9}
               accessibilityRole="button"
               style={styles.pressable}
@@ -178,7 +184,7 @@ export const TaskBaseListItem: React.FC<Props> = ({
             </TouchableOpacity>
           ) : (
             <Pressable
-              onPress={onPress}
+              onPress={debouncedOnPress}
               accessibilityRole="button"
               style={({ pressed }) => [
                 styles.pressable,

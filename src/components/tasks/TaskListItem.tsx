@@ -29,6 +29,7 @@ import {
   SUBTASKS_RECORDS_MAXIMUM,
   SUBTASKS_RECORDS_WITHOUT_SUBSCRIPTION,
 } from '~/constants/ads';
+import { useDebouncedPress } from '~/hooks/useDebouncedPress';
 import { useIsPro, useProFeatureAccess } from '~/hooks/useIsPro';
 import { useSubscription } from '~/hooks/useSubscription';
 import { t } from '~/services';
@@ -79,6 +80,11 @@ export const TaskListItem: React.FC<Props> = ({
   isChildView = false,
   onPress,
 }) => {
+  const debouncedOnPress = useDebouncedPress(
+    useCallback(() => {
+      onPress?.();
+    }, [onPress]),
+  );
   const dispatch = useDispatch();
   const customUrls = useSelector(selectTaskImageUrls);
   const usesCloudSync = useSelector(selectUsesCloudSync);
@@ -517,7 +523,7 @@ export const TaskListItem: React.FC<Props> = ({
     if (Platform.OS === 'android') {
       return (
         <TouchableOpacity
-          onPress={onPress}
+          onPress={debouncedOnPress}
           activeOpacity={0.9}
           accessibilityRole="button"
           style={style}
@@ -529,7 +535,7 @@ export const TaskListItem: React.FC<Props> = ({
 
     return (
       <Pressable
-        onPress={onPress}
+        onPress={debouncedOnPress}
         accessibilityRole="button"
         style={({ pressed }) => [style, pressed && styles.pressed]}
       >
