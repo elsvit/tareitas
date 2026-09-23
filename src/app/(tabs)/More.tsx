@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { ScrollView } from 'react-native';
 
 import { useRouter } from 'expo-router';
@@ -19,6 +19,7 @@ import { ScreenHeaderWithLogo, SelectUserPrompt } from "~/components/blocks";
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { SCREEN_TEXT } from '~/constants/formField';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
+import { useDebouncedPress } from '~/hooks/useDebouncedPress';
 import { selectLang } from '~/store/settings/selectors';
 import { useIsPro } from '~/hooks/useIsPro';
 import { useSubscription } from '~/hooks/useSubscription';
@@ -109,16 +110,19 @@ export default function More() {
 
   const title = t('more.title');
 
-  const handlePress = (
-    navigateTo: EScreens | undefined,
-    navigateToParams?: any,
-  ) => {
-    navigateTo &&
-      router.push({
-        pathname: navigateTo as any,
-        params: navigateToParams,
-      });
-  };
+  const handlePress = useCallback(
+    (navigateTo: EScreens | undefined, navigateToParams?: any) => {
+      if (navigateTo) {
+        router.push({
+          pathname: navigateTo as any,
+          params: navigateToParams,
+        });
+      }
+    },
+    [router],
+  );
+
+  const debouncedHandlePress = useDebouncedPress(handlePress);
 
   const keyExtractor = (item: IMoreItem, index: number) =>
     `${item.title}-${index}`;
@@ -166,7 +170,7 @@ export default function More() {
                         )}
                         onPress={() =>
                           subItem.navigateTo &&
-                          handlePress(
+                          debouncedHandlePress(
                             subItem.navigateTo,
                             subItem.navigateToParams,
                           )
@@ -202,7 +206,7 @@ export default function More() {
                       height={24}
                     />
                   )}
-                  onPress={() => handlePress(item.navigateTo)}
+                  onPress={() => debouncedHandlePress(item.navigateTo)}
                   style={styles.item}
                   titleStyle={styles.title}
                 />

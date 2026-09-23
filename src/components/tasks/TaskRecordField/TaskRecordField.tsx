@@ -3,12 +3,12 @@ import { ActivityIndicator, Pressable, View } from 'react-native';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
+  requestRecordingPermissionsAsync,
   setAudioModeAsync,
   useAudioPlayer,
   useAudioPlayerStatus,
   useAudioRecorder,
   useAudioRecorderState,
-  requestRecordingPermissionsAsync,
 } from 'expo-audio';
 import { useSelector } from 'react-redux';
 
@@ -23,16 +23,16 @@ import {
 } from '~/constants/ads';
 import { TASK_RECORDING_OPTIONS } from '~/constants/taskRecord';
 import { useIsPro, useProFeatureAccess } from '~/hooks/useIsPro';
-import { useSubscription } from '~/hooks/useSubscription';
-import { trackTaskRecordUsed } from '~/services/analytics';
-import { t } from '~/services';
-import { uploadFamilyTaskRecordWithSession } from '~/services/api/uploadFamilyTaskRecord';
 import { useResolvedMediaUrl } from '~/hooks/useResolvedMediaUrl';
-import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
+import { useSubscription } from '~/hooks/useSubscription';
+import { t } from '~/services';
+import { trackTaskRecordUsed } from '~/services/analytics';
+import { uploadFamilyTaskRecordWithSession } from '~/services/api/uploadFamilyTaskRecord';
 import {
   selectFamilyId,
   selectIsMultidevice,
 } from '~/store/settings/selectors';
+import { selectAllTaskAssignment } from '~/store/taskAssignment/selectors';
 import { Colors } from '~/styles';
 import { createId } from '~/utils/createId';
 import { canAddTaskRecord } from '~/utils/tasks/taskRecordLimits';
@@ -119,6 +119,12 @@ export function TaskRecordField({
     }
 
     await recorder.stop();
+
+    // iOS keeps .playAndRecord after recording — playback is inaudible until we switch mode.
+    await setAudioModeAsync({
+      allowsRecording: false,
+      playsInSilentMode: true,
+    });
 
     const uri = recorder.uri ?? recorder.getStatus().url;
 
@@ -251,10 +257,15 @@ export function TaskRecordField({
     onChange?.(null);
   };
 
-  const handlePlay = () => {
+  const handlePlay = async () => {
     if (markedDeleted || !playbackSource) {
       return;
     }
+
+    await setAudioModeAsync({
+      allowsRecording: false,
+      playsInSilentMode: true,
+    });
 
     if (playerStatus.playing) {
       player.pause();
@@ -327,7 +338,7 @@ export function TaskRecordField({
                   ? t('tasks.record_pause')
                   : t('tasks.record_play')
               }
-              onPress={handlePlay}
+              onPress={() => void handlePlay()}
               disabled={isPlaybackDisabled}
               style={[
                 styles.iconActionButton,
@@ -374,7 +385,7 @@ export function TaskRecordField({
       </View>
 
       <View style={styles.timerSlot}>
-        {hasPendingAudioChange ? (
+        {hasPendingAudioChange && !isRecording ? (
           <Text variant="bodySmall" style={styles.pendingSaveText}>
             {t('tasks.record_press_save')}
           </Text>
