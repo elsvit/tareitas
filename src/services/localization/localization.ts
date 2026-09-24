@@ -25,11 +25,12 @@ import {
   uk as ukDateLocale,
 } from 'date-fns/locale';
 import i18next, { InitOptions } from 'i18next';
-import { I18nManager, NativeModules } from 'react-native';
+import { I18nManager } from 'react-native';
 
 import { ELang } from '~/types/ELang';
+import { getDeviceLocales } from '~/services/localization/deviceLocales';
 import { esJson, translations } from '~/assets/translation';
-import { DEFAULT_DATE_LOCALE, DEFAULT_LANG, FALLBACK_LANG, IS_IOS } from '~/constants/settings';
+import { DEFAULT_DATE_LOCALE, DEFAULT_LANG, FALLBACK_LANG } from '~/constants/settings';
 import { setAnalyticsLanguage } from '~/services/analytics';
 import { setApiLang } from '~/services/api/lang';
 import { IAvailableLanguages, KeyOfJson } from '~/types/ILang';
@@ -74,6 +75,86 @@ export const AvailableLanguages: IAvailableLanguages[] = [...LANGUAGE_DEFINITION
   (left, right) => left.name.localeCompare(right.name),
 );
 
+const SUPPORTED_LANG_CODES = new Set<ELang>(
+  AvailableLanguages.map(language => language.code),
+);
+
+function normalizeLanguageCode(code: string | null | undefined): string | undefined {
+  if (!code) {
+    return undefined;
+  }
+
+  const normalized = code.trim().replace('_', '-').toLowerCase();
+
+  return normalized.split('-')[0];
+}
+
+function isSupportedLanguageCode(code: string | undefined): code is ELang {
+  return Boolean(code && SUPPORTED_LANG_CODES.has(code as ELang));
+}
+
+function languageCodeFromLocaleIdentifier(
+  localeIdentifier: string | null | undefined,
+): string | undefined {
+  return normalizeLanguageCode(localeIdentifier);
+}
+
+/** First app-supported language from the device preferred locale list. */
+export function getSupportedDeviceLanguage(): ELang | null {
+  for (const locale of getDeviceLocales()) {
+    const candidates = [locale.languageCode, locale.languageTag];
+
+    for (const candidate of candidates) {
+      const code = normalizeLanguageCode(candidate);
+
+      if (isSupportedLanguageCode(code)) {
+        return code;
+      }
+    }
+  }
+
+  const localeIdentifier = I18nManager.getConstants?.()?.localeIdentifier;
+  const fromI18nManager = languageCodeFromLocaleIdentifier(localeIdentifier);
+
+  if (isSupportedLanguageCode(fromI18nManager)) {
+    return fromI18nManager;
+  }
+
+  try {
+    const intlLocale = Intl.DateTimeFormat().resolvedOptions().locale;
+    const fromIntl = languageCodeFromLocaleIdentifier(intlLocale);
+
+    if (isSupportedLanguageCode(fromIntl)) {
+      return fromIntl;
+    }
+  } catch {
+    // Intl may be unavailable in some environments.
+  }
+
+  return null;
+}
+
+/**
+ * Boot language: device preferred language first, then Spanish fallback.
+ * Stored language applies only after the user picks a language in Settings.
+ */
+export function resolveInitialAppLanguage(options: {
+  storedLang: ELang | null;
+  langUserSelected?: boolean;
+}): ELang {
+  const deviceLang = getSupportedDeviceLanguage();
+  const userPinnedLanguage =
+    options.langUserSelected &&
+    options.storedLang &&
+    isSupportedLanguageCode(options.storedLang);
+
+  if (userPinnedLanguage) {
+    return options.storedLang as ELang;
+  }
+
+  return deviceLang ?? DEFAULT_LANG;
+}
+
 export const getDateLocaleForLang = (lang: ELang | null | undefined): Locale => {
   if (!lang) {
     return DEFAULT_DATE_LOCALE;
@@ -96,18 +177,20 @@ const buildI18nResources = () =>
 class LocalizationServiceClass {
   private isInitialized = false;
 
-  private getNativeDeviceLocale = () => {
-    let deviceLocale = IS_IOS
-      ? NativeModules.SettingsManager?.settings?.AppleLocale ||
-        NativeModules.SettingsManager?.settings?.AppleLanguages[0]
-      : NativeModules.I18nManager?.localeIdentifier;
-    deviceLocale = deviceLocale?.replace('_', '-');
+  public getDeviceLanguage = (): string => {
+    const supported = getSupportedDeviceLanguage();
 
-    return deviceLocale?.split('-')[0];
+    if (supported) {
+      return supported;
+    }
+
+    const primaryLocale = getDeviceLocales()[0];
+    const primaryCode = normalizeLanguageCode(
+      primaryLocale?.languageCode ?? primaryLocale?.languageTag,
+    );
+
+    return primaryCode ?? 'unknown';
   };
-
-  public getDeviceLanguage = (): string =>
-    this.getNativeDeviceLocale() ?? 'unknown';
 
   private checkIfLangAvailable = (lang: string | undefined) => {
     if (!lang) {
@@ -139,7 +222,9 @@ class LocalizationServiceClass {
     I18nManager.forceRTL(false);
     I18nManager.allowRTL(false);
 
-    let lang: ELang = this.resolveLang(initLang ?? (this.getNativeDeviceLocale() as ELang));
+    const bootLang =
+      initLang ?? getSupportedDeviceLanguage() ?? DEFAULT_LANG;
+    let lang: ELang = this.resolveLang(bootLang);
     const isLangAvailable = this.checkIfLangAvailable(lang);
     lang = isLangAvailable ? lang : DEFAULT_LANG;
 
@@ -174,7 +259,7 @@ class LocalizationServiceClass {
     I18nManager.forceRTL(false);
     I18nManager.allowRTL(false);
 
-    const lang = DEFAULT_LANG;
+    const lang = getSupportedDeviceLanguage() ?? DEFAULT_LANG;
 
     i18next.init({
       resources: buildI18nResources(),
@@ -188,7 +273,7 @@ class LocalizationServiceClass {
       },
     });
 
-    setDefaultOptions({ locale: DEFAULT_DATE_LOCALE });
+    setDefaultOptions({ locale: this.getDateLocale(lang) });
 
     setApiLang(lang);
     void setAnalyticsLanguage(lang);

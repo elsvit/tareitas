@@ -13,7 +13,7 @@
       "android"
     ],
     "ios": {
-      "buildNumber": "6",
+      "buildNumber": "7",
       "supportsTablet": true,
       "bundleIdentifier": "net.tareitas",
       "googleServicesFile": "./GoogleService-Info.plist",
@@ -63,6 +63,7 @@
         }
       ],
       "expo-router",
+      "expo-localization",
       [
         "@react-native-firebase/app",
         {

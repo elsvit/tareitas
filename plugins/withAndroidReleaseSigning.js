@@ -13,20 +13,23 @@ module.exports = function withAndroidReleaseSigning(config) {
         }
 `;
 
-    // Ensure the release signing configuration exists.
+    // Ensure the release signing configuration exists inside signingConfigs.
     if (!contents.includes('keyAlias "upload"')) {
-      const signingConfigsEnd = contents.indexOf('\n    }\n    buildTypes {');
+      const signingConfigsMatch = contents.match(
+        /signingConfigs\s*\{\s*debug\s*\{[\s\S]*?\n\s*\}/
+      );
 
-      if (signingConfigsEnd === -1) {
+      if (!signingConfigsMatch) {
         throw new Error(
           'Could not find signingConfigs block in android/app/build.gradle'
         );
       }
 
+      const insertAt = signingConfigsMatch.index + signingConfigsMatch[0].length;
       contents =
-        contents.slice(0, signingConfigsEnd + 6) +
+        contents.slice(0, insertAt) +
         releaseSigningConfig +
-        contents.slice(signingConfigsEnd + 6);
+        contents.slice(insertAt);
     }
 
     // Make release builds use the release signing configuration.

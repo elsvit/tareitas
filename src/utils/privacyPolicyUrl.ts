@@ -1,4 +1,8 @@
-import { AvailableLanguages, LocalizationService } from '~/services/localization/localization';
+import {
+  AvailableLanguages,
+  getSupportedDeviceLanguage,
+  LocalizationService,
+} from '~/services/localization/localization';
 import { ELang } from '~/types/ELang';
 
 const PRIVACY_POLICY_BASE_URL = 'https://tareitas.net/privacy-policy';
@@ -18,7 +22,8 @@ export function resolvePrivacyPolicyLang(
     return appLang;
   }
 
-  const deviceLang = LocalizationService.getDeviceLanguage();
+  const deviceLang =
+    getSupportedDeviceLanguage() ?? LocalizationService.getDeviceLanguage();
 
   if (isSupportedLang(deviceLang)) {
     return deviceLang;

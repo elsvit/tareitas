@@ -47,6 +47,11 @@ export const getSettingsState = (state: RootStateT) => state[EStateName.settings
 export const selectLang = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>).lang;
 
+export const selectLangUserSelected = (state: RootStateT) =>
+  Boolean(
+    (state[EStateName.settings] as Persisted<IStateSettings>).langUserSelected,
+  );
+
 export const selectIsLangInitiating = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>).isLangInitiating;
 

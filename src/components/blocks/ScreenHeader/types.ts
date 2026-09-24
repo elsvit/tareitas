@@ -5,6 +5,7 @@ export interface IIconButton {
   icon?: React.FC<SvgProps>;
   imageSource?: ImageSourcePropType;
   onPress: () => void;
+  testID?: string;
 }
 
 export interface IScreenHeader {

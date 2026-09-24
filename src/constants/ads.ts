@@ -19,13 +19,13 @@ export const ADMOB_BANNER_ID = Platform.select({
   default: '',
 })!;
 
-export const AD_TASK_AMOUNT_START = 10;
+export const AD_TASK_AMOUNT_START = 77;
 
 /** Days after install with full access before free-tier limits apply. */
 export const START_SUBSCRIPTION_DAYS = 14;
 
-export const IMAGES_WITHOUT_SUBSCRIPTION = 7;
-export const IMAGES_MAXIMUM = 100;
+export const IMAGES_WITHOUT_SUBSCRIPTION = 10;
+export const IMAGES_MAXIMUM = 200;
 
 export const TASKS_RECORDS_WITHOUT_SUBSCRIPTION = 2; // per day
 export const TASKS_RECORDS_MAXIMUN = 100; // per day
