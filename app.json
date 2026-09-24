@@ -13,6 +13,7 @@
       "android"
     ],
     "ios": {
+      "buildNumber": "6",
       "supportsTablet": true,
       "bundleIdentifier": "net.tareitas",
       "googleServicesFile": "./GoogleService-Info.plist",
@@ -26,7 +27,7 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#60A5FA",
-        "foregroundImage": "./assets/images/icon1024.png",
+        "foregroundImage": "./assets/images/icon1024-rounded.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
@@ -40,6 +41,7 @@
     },
     "plugins": [
       "./plugins/withPlayServicesAdsKotlinFix.js",
+      "./plugins/withHermesDsym.js",
       "./plugins/withRemoveAudioForegroundService.js",
       "./plugins/withAndroidReleaseSigning.js",
       [
@@ -55,7 +57,8 @@
               "RNFBApp",
               "RNFBAnalytics",
               "RNFBCrashlytics"
-            ]
+            ],
+            "buildReactNativeFromSource": true
           }
         }
       ],
@@ -79,7 +82,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/icon1024.png",
+          "image": "./assets/images/icon1024-rounded.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#60A5FA",
