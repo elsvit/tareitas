@@ -4,6 +4,8 @@ import { ERole, ESyncMode } from '~/store/settings/enums';
 
 export interface IStateSettings {
   lang: ELang | null;
+  /** True after the user picks a language in Settings; auto-detect does not set this. */
+  langUserSelected?: boolean;
   isLangInitiating: boolean | null;
   isHabitsTabSeparated: boolean;
   isChildPasswordObligatory: boolean;
@@ -42,4 +44,9 @@ export interface IStateSettings {
 export type PendingReturnRoute = {
   pathname: string;
   params?: Record<string, string>;
+};
+
+export type SetLanguagePayload = {
+  lang: ELang;
+  userSelected?: boolean;
 };

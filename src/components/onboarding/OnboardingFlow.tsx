@@ -81,6 +81,8 @@ import type { ChildFormProps } from '~/types/IChild';
 import type { ParentFormProps } from '~/types/IParent';
 
 import { OnboardingComplete } from './OnboardingComplete';
+import { OnboardingLanguageIcon } from './OnboardingLanguageIcon';
+import { OnboardingLanguagePickerModal } from './OnboardingLanguagePickerModal';
 import { OnboardingIntroSlide } from './OnboardingIntroSlide';
 import { OnboardingSignUpAdminStep } from './OnboardingSignUpAdminStep';
 import { OnboardingSignUpChildStep } from './OnboardingSignUpChildStep';
@@ -180,6 +182,8 @@ export function OnboardingFlow({
   const [isSetupMemoryReady, setIsSetupMemoryReady] = useState(
     () => initialStep !== ONBOARDING_STEP.syncMode || opensOnSetup,
   );
+  const [isLanguagePickerVisible, setIsLanguagePickerVisible] =
+    useState(false);
 
   useEffect(() => {
     if (storedSyncMode === null && parentIds.length > 0) {
@@ -864,6 +868,17 @@ export function OnboardingFlow({
         containerStyle={styles.screenHeader}
         hasBackButton={canGoBack}
         onBackPress={onBack}
+        rightButtons={[
+          {
+            icon: OnboardingLanguageIcon,
+            testID: 'onboarding-language-button',
+            onPress: () => setIsLanguagePickerVisible(true),
+          },
+        ]}
+      />
+      <OnboardingLanguagePickerModal
+        isVisible={isLanguagePickerVisible}
+        onRequestClose={() => setIsLanguagePickerVisible(false)}
       />
       <ScrollView
         ref={scrollRef}

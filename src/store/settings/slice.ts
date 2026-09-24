@@ -6,7 +6,7 @@ import { ELang } from '~/types/ELang';
 import { getTodayDateString, resolveCalendarDateString } from '~/utils/date';
 import type { IFamilySubscription } from '~/types/ISubscription';
 
-import type { IStateSettings, PendingReturnRoute } from './types';
+import type { IStateSettings, PendingReturnRoute, SetLanguagePayload } from './types';
 
 function resetCloudSessionState(state: IStateSettings) {
   state.familyId = null;
@@ -62,9 +62,12 @@ export const settingsSlice = createSlice({
     initLanguage: state => {
       state.isLangInitiating = true;
     },
-    setLanguage: (state, action: PayloadAction<ELang>) => {
-      state.lang = action.payload;
-      state.isLangInitiating = false; // Set to false when language is set
+    setLanguage: (state, action: PayloadAction<SetLanguagePayload>) => {
+      state.lang = action.payload.lang;
+      state.isLangInitiating = false;
+      if (action.payload.userSelected) {
+        state.langUserSelected = true;
+      }
     },
     setIsRecurringTabSeparated: (state, action: PayloadAction<boolean>) => {
       state.isHabitsTabSeparated = action.payload;

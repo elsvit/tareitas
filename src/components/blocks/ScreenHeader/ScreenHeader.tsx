@@ -29,6 +29,7 @@ export const ScreenHeader: React.FC<IScreenHeader> = ({
       return (
         <TouchableOpacity
           key={`btn-${position}-${index}`}
+          testID={btn.testID}
           style={
             position === 'left'
               ? styles.leftButton
@@ -43,6 +44,7 @@ export const ScreenHeader: React.FC<IScreenHeader> = ({
       return (
         <TouchableOpacity
           key={`btn-${position}-${index}`}
+          testID={btn.testID}
           style={
             position === 'left'
               ? styles.leftButton

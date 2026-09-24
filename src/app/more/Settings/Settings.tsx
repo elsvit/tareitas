@@ -83,7 +83,7 @@ export default function Settings() {
 
       try {
         const resolvedLang = await LocalizationService.changeLanguage(selectedLang);
-        dispatch(setLanguage(resolvedLang));
+        dispatch(setLanguage({ lang: resolvedLang, userSelected: true }));
         dispatch(syncTaskBaseTranslations());
         dispatch(syncRewardBaseTranslations());
         await persistSharedSettingsState(store.getState);
