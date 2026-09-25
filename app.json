@@ -13,7 +13,7 @@
       "android"
     ],
     "ios": {
-      "buildNumber": "45",
+      "buildNumber": "46",
       "supportsTablet": true,
       "bundleIdentifier": "net.tareitas",
       "googleServicesFile": "./GoogleService-Info.plist",
