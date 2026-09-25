@@ -10,7 +10,13 @@ appId: net.tareitas
 - assertVisible:
     id: onboarding-section-create
 
-# Default: section 1 (multidevice connect) is selected.
+# Initially no section is selected.
+- assertNotVisible:
+    id: onboarding-multidevice-connect-form
+
+# Section 1: join existing family (multidevice connect).
+- tapOn:
+    id: onboarding-section-multidevice-connect-header
 - assertVisible:
     id: onboarding-multidevice-connect-form
 - assertVisible:

@@ -156,8 +156,8 @@ export function OnboardingFlow({
   const [step, setStep] = useState(initialStep);
   const [transitionDirection, setTransitionDirection] =
     useState<OnboardingTransitionDirection>(1);
-  const [setupPath, setSetupPath] = useState<OnboardingSetupPath>(() =>
-    pendingOnboardingChildUserId ? 'create' : 'connect',
+  const [setupPath, setSetupPath] = useState<OnboardingSetupPath | null>(
+    () => (pendingOnboardingChildUserId ? 'create' : null),
   );
   const [parent, setParent] = useState<Partial<ParentFormProps>>({
     role: ERole.admin,

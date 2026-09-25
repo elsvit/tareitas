@@ -89,8 +89,8 @@ export const EditRecurringTaskScopeModal: React.FC<Props> = ({
 
       <View style={styles.sheet}>
         <View style={styles.header}>
-          <Text variant="titleMedium" weight="bold">
-            {t(titleKey)}
+          <Text variant="titleLarge" weight="bold" style={styles.headerTitle}>
+            {`${t(titleKey)}:`}
           </Text>
         </View>
 

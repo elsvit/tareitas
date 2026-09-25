@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Välj din inställning",
-      "connect_device_only_section_title": "Anslut till endast den här enheten",
-      "connect_section_title": "Anslut till befintlig grupp/familj",
-      "create_section_title": "Skapa ny grupp/familj",
+      "connect_device_only_section_title": "Använd bara den här enheten",
+      "connect_section_title": "Gå med i en befintlig familj/grupp",
+      "create_section_title": "Skapa en ny familj/grupp",
       "device_only_connect_empty": "Ingen familj är sparad på den här enheten. Skapa en ny grupp först.",
       "device_only_connect_hint": "Välj din profil och ange din PIN för att öppna familjen som sparats på den här enheten.",
-      "header": "Läge",
+      "header": "Logga in / Registrera",
       "privacy_policy": "Integritetspolicy",
       "replace_device_only_confirm": "Radera och fortsätt",
       "replace_device_only_message": "En familj är redan sparad på den här enheten i läget „Endast den här enheten”. Att skapa en ny raderar den. Endast en familj kan finnas i det här läget.",
       "replace_device_only_title": "Ersätta befintlig familj?",
-      "subtitle": "Du kan använda Tareitas endast på den här enheten eller synka din familj mellan telefoner och surfplattor.",
+      "subtitle": "Du kan synka data mellan telefoner och surfplattor i din familj / grupp (rekommenderas) eller spara data endast på den här enheten.",
       "device_only": {
         "title": "Endast den här enheten",
         "description": "Allt stannar på den här telefonen eller surfplattan. Familjemedlemmar kan bara använda appen på den här enheten. Du kan använda appen offline."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Flera enheter",
         "description": "Synka uppgifter, belöningar och familjedata mellan enheter. Familjemedlemmar kan använda appen på olika enheter."
-      }
+      },
+      "subtitle_help_label": "Hjälp med inloggning och registrering",
+      "connect_section_subtitle": "Logga in och synka dina data mellan enheter.",
+      "connect_device_only_section_subtitle": "Spara dina data endast på den här enheten.",
+      "create_section_subtitle": "Registrera dig och skapa en ny familj/grupp."
     }
   }
 }

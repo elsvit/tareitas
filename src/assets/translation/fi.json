@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Valitse asetukset",
-      "connect_device_only_section_title": "Yhdistä vain tähän laitteeseen",
-      "connect_section_title": "Yhdistä olemassa olevaan ryhmään/perheeseen",
-      "create_section_title": "Luo uusi ryhmä/perhe",
+      "connect_device_only_section_title": "Käytä vain tätä laitetta",
+      "connect_section_title": "Liity olemassa olevaan perheeseen/ryhmään",
+      "create_section_title": "Luo uusi perhe/ryhmä",
       "device_only_connect_empty": "Tällä laitteella ei ole tallennettua perhettä. Luo ensin uusi ryhmä.",
       "device_only_connect_hint": "Valitse profiilisi ja syötä PIN avataksesi tähän laitteeseen tallennetun perheen.",
-      "header": "Tila",
+      "header": "Kirjaudu / Rekisteröidy",
       "privacy_policy": "Tietosuojakäytäntö",
       "replace_device_only_confirm": "Poista ja jatka",
       "replace_device_only_message": "Tällä laitteella on jo tallennettu perhe tilassa „Vain tämä laite”. Uuden luominen poistaa sen. Vain yksi perhe voi olla olemassa tässä tilassa.",
       "replace_device_only_title": "Korvataanko olemassa oleva perhe?",
-      "subtitle": "Voit käyttää Tareitasta vain tällä laitteella tai synkronoida perheesi puhelimien ja tablettien välillä.",
+      "subtitle": "Voit synkronoida tietoja perheen / ryhmän puhelimien ja tablettien välillä (suositeltu) tai tallentaa tiedot vain tähän laitteeseen.",
       "device_only": {
         "title": "Vain tämä laite",
         "description": "Kaikki pysyy tässä puhelimessa tai tabletissa. Perheenjäsenet voivat käyttää sovellusta vain tällä laitteella. Voit käyttää sovellusta offline-tilassa."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Useita laitteita",
         "description": "Synkronoi tehtävät, palkinnot ja perhetiedot laitteiden välillä. Perheenjäsenet voivat käyttää sovellusta eri laitteilla."
-      }
+      },
+      "subtitle_help_label": "Ohje kirjautumiseen ja rekisteröitymiseen",
+      "connect_section_subtitle": "Kirjaudu sisään ja synkronoi tietosi laitteiden välillä.",
+      "connect_device_only_section_subtitle": "Säilytä tietosi vain tällä laitteella.",
+      "create_section_subtitle": "Rekisteröidy ja luo uusi perhe/ryhmä."
     }
   }
 }

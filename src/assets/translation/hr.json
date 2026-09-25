@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Odaberite postavku",
-      "connect_device_only_section_title": "Poveži se samo s ovim uređajem",
-      "connect_section_title": "Poveži se s postojećom grupom/obitelji",
-      "create_section_title": "Stvori novu grupu/obitelj",
+      "connect_device_only_section_title": "Koristi samo ovaj uređaj",
+      "connect_section_title": "Pridruži se postojećoj obitelji/grupi",
+      "create_section_title": "Stvori novu obitelj/grupu",
       "device_only_connect_empty": "Na ovom uređaju nema spremljene obitelji. Prvo stvorite novu grupu.",
       "device_only_connect_hint": "Odaberite svoj profil i unesite PIN kako biste otvorili obitelj spremljenu na ovom uređaju.",
-      "header": "Način",
+      "header": "Prijava / Registracija",
       "privacy_policy": "Pravila privatnosti",
       "replace_device_only_confirm": "Izbriši i nastavi",
       "replace_device_only_message": "Na ovom uređaju već je spremljena obitelj u načinu „Samo ovaj uređaj”. Stvaranje nove obitelji izbrisat će je. U ovom načinu može postojati samo jedna obitelj.",
       "replace_device_only_title": "Zamijeniti postojeću obitelj?",
-      "subtitle": "Možete koristiti Tareitas samo na ovom uređaju ili sinkronizirati obitelj između telefona i tableta.",
+      "subtitle": "Možete sinkronizirati podatke između telefona i tableta u obitelji / grupi (preporučeno) ili spremiti podatke samo na ovom uređaju.",
       "device_only": {
         "title": "Samo ovaj uređaj",
         "description": "Sve ostaje na ovom telefonu ili tabletu. Članovi obitelji mogu koristiti aplikaciju samo na ovom uređaju. Aplikaciju možete koristiti offline."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Više uređaja",
         "description": "Sinkronizirajte zadatke, nagrade i obiteljske podatke između uređaja. Članovi obitelji mogu koristiti aplikaciju na različitim uređajima."
-      }
+      },
+      "subtitle_help_label": "Pomoć za prijavu i registraciju",
+      "connect_section_subtitle": "Prijavi se i sinkroniziraj podatke između uređaja.",
+      "connect_device_only_section_subtitle": "Spremi podatke samo na ovom uređaju.",
+      "create_section_subtitle": "Registriraj se i stvori novu obitelj/grupu."
     }
   }
 }

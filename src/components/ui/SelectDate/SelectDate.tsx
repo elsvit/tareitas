@@ -8,7 +8,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import CalendarIcon from '~/assets/svg/common/calendar.svg';
 import { Button, ButtonColors, Text, TextInput } from '~/components/ui';
-import { FORM_FIELD, SCREEN_TEXT } from '~/constants/formField';
+import {
+  FORM_FIELD,
+  IOS_FORM_PICKER_PROPS,
+  SCREEN_TEXT,
+} from '~/constants/formField';
 import { t } from '~/services';
 
 import {
@@ -140,6 +144,7 @@ export function SelectDate({
                 minimumDate={pickerMinimumDate}
                 maximumDate={pickerMaximumDate}
                 onChange={handleDraftChange}
+                {...IOS_FORM_PICKER_PROPS}
               />
             </View>
 

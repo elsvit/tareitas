@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Escolha a configuração",
-      "connect_device_only_section_title": "Ligar a apenas este dispositivo",
-      "connect_section_title": "Ligar a um grupo/família existente",
-      "create_section_title": "Criar novo grupo/família",
+      "connect_device_only_section_title": "Usar apenas este dispositivo",
+      "connect_section_title": "Juntar-se a uma família/grupo existente",
+      "create_section_title": "Criar uma nova família/grupo",
       "device_only_connect_empty": "Não há família guardada neste dispositivo. Crie primeiro um novo grupo.",
       "device_only_connect_hint": "Selecione o seu perfil e introduza o PIN para abrir a família guardada neste dispositivo.",
-      "header": "Modo",
+      "header": "Iniciar sessão / Registar",
       "privacy_policy": "Política de privacidade",
       "replace_device_only_confirm": "Apagar e continuar",
       "replace_device_only_message": "Já existe uma família guardada neste dispositivo no modo «Apenas este dispositivo». Criar uma nova irá apagá-la. Só pode existir uma família neste modo.",
       "replace_device_only_title": "Substituir a família existente?",
-      "subtitle": "Pode usar o Tareitas apenas neste dispositivo ou sincronizar a família entre telemóveis e tablets.",
+      "subtitle": "Pode sincronizar dados entre telemóveis e tablets da sua família / grupo (recomendado) ou guardar os dados apenas neste dispositivo.",
       "device_only": {
         "title": "Apenas este dispositivo",
         "description": "Tudo fica neste telemóvel ou tablet. Os membros da família só podem usar a app neste dispositivo. Pode usar a app offline."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Vários dispositivos",
         "description": "Sincronize tarefas, recompensas e dados familiares entre dispositivos. Os membros da família podem usar a app em dispositivos diferentes."
-      }
+      },
+      "subtitle_help_label": "Ajuda sobre início de sessão e registo",
+      "connect_section_subtitle": "Inicie sessão e sincronize os seus dados entre dispositivos.",
+      "connect_device_only_section_subtitle": "Mantenha os seus dados guardados apenas neste dispositivo.",
+      "create_section_subtitle": "Registe-se e crie uma nova família/grupo."
     }
   }
 }

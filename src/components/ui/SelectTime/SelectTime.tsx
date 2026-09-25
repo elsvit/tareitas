@@ -8,7 +8,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import TimeIcon from '~/assets/svg/common/time.svg';
 import { Button, ButtonColors, Text, TextInput } from '~/components/ui';
-import { FORM_FIELD, SCREEN_TEXT } from '~/constants/formField';
+import {
+  FORM_FIELD,
+  IOS_FORM_PICKER_PROPS,
+  SCREEN_TEXT,
+} from '~/constants/formField';
 import { t } from '~/services';
 
 import {
@@ -123,6 +127,7 @@ export function SelectTime({ label, value, onChange }: SelectTimeProps) {
                 mode="time"
                 display="spinner"
                 onChange={handleDraftChange}
+                {...IOS_FORM_PICKER_PROPS}
               />
             </View>
 

@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Kies uw instelling",
-      "connect_device_only_section_title": "Verbinden met alleen dit apparaat",
-      "connect_section_title": "Verbinden met bestaande groep/familie",
-      "create_section_title": "Nieuwe groep/familie maken",
+      "connect_device_only_section_title": "Alleen dit apparaat gebruiken",
+      "connect_section_title": "Deelnemen aan bestaand gezin/groep",
+      "create_section_title": "Nieuw gezin/groep aanmaken",
       "device_only_connect_empty": "Er is geen familie opgeslagen op dit apparaat. Maak eerst een nieuwe groep.",
       "device_only_connect_hint": "Selecteer je profiel en voer je PIN in om de op dit apparaat opgeslagen familie te openen.",
-      "header": "Modus",
+      "header": "Inloggen / Registreren",
       "privacy_policy": "Privacybeleid",
       "replace_device_only_confirm": "Wissen en doorgaan",
       "replace_device_only_message": "Er is al een familie opgeslagen op dit apparaat in de modus „Alleen dit apparaat”. Een nieuwe familie aanmaken wist de bestaande. In deze modus kan er maar één familie zijn.",
       "replace_device_only_title": "Bestaande familie vervangen?",
-      "subtitle": "U kunt Tareitas alleen op dit apparaat gebruiken of uw gezin synchroniseren tussen telefoons en tablets.",
+      "subtitle": "Je kunt gegevens synchroniseren tussen telefoons en tablets in je gezin / groep (aanbevolen) of gegevens alleen op dit apparaat opslaan.",
       "device_only": {
         "title": "Alleen dit apparaat",
         "description": "Alles blijft op deze telefoon of tablet. Gezinsleden kunnen de app alleen op dit apparaat gebruiken. Je kunt de app offline gebruiken."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Meerdere apparaten",
         "description": "Synchroniseer taken, beloningen en gezinsgegevens tussen apparaten. Gezinsleden kunnen de app op verschillende apparaten gebruiken."
-      }
+      },
+      "subtitle_help_label": "Hulp bij inloggen en registreren",
+      "connect_section_subtitle": "Log in en synchroniseer je gegevens tussen apparaten.",
+      "connect_device_only_section_subtitle": "Bewaar je gegevens alleen op dit apparaat.",
+      "create_section_subtitle": "Registreer en maak een nieuw gezin/groep aan."
     }
   }
 }

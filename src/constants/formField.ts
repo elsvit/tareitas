@@ -11,6 +11,12 @@ export const FORM_FIELD = {
   menuText: Colors.grey900,
 } as const;
 
+/** iOS native pickers follow system theme unless overridden (sheet is always light). */
+export const IOS_FORM_PICKER_PROPS = {
+  themeVariant: 'light',
+  textColor: FORM_FIELD.text,
+} as const;
+
 export const FORM_FIELD_PAPER_THEME = {
   colors: {
     onSurfaceVariant: FORM_FIELD.label,

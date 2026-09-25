@@ -16,6 +16,7 @@ import { t } from '~/services';
 import { ESyncMode } from '~/store/settings/enums';
 import { selectParentIds } from '~/store/parents/selectors';
 import { selectLang } from '~/store/settings/selectors';
+import { LOGIN_SIGNUP_HELP_URL } from '~/constants/helpCenter';
 import { getPrivacyPolicyUrl } from '~/utils/privacyPolicyUrl';
 import type { AppDispatch } from '~/store/store';
 import { persistor } from '~/store/store';
@@ -37,8 +38,58 @@ const SETUP_PATHS: OnboardingSetupPath[] = [
   'create',
 ];
 
+type SyncModeSectionHeaderProps = {
+  selected: boolean;
+  title: string;
+  subtitle: string;
+  accentColor: string;
+  radioValue: string;
+  onPress: () => void;
+  testID: string;
+};
+
+function SyncModeSectionHeader({
+  selected,
+  title,
+  subtitle,
+  accentColor,
+  radioValue,
+  onPress,
+  testID,
+}: SyncModeSectionHeaderProps) {
+  return (
+    <Pressable
+      onPress={onPress}
+      style={styles.syncModeSectionHeader}
+      accessibilityRole="radio"
+      accessibilityState={{ selected }}
+      testID={testID}
+    >
+      <RadioButton
+        value={radioValue}
+        status={selected ? 'checked' : 'unchecked'}
+        onPress={onPress}
+        color={accentColor}
+      />
+      <View style={styles.syncModeSectionHeaderText}>
+        <Text
+          variant="titleMedium"
+          fontFamily="fredoka"
+          weight="bold"
+          color={selected ? accentColor : Colors.grey700}
+        >
+          {title}
+        </Text>
+        <Text variant="bodyMedium" style={styles.syncModeSectionSubtitle}>
+          {subtitle}
+        </Text>
+      </View>
+    </Pressable>
+  );
+}
+
 type OnboardingSyncModeStepProps = {
-  setupPath: OnboardingSetupPath;
+  setupPath: OnboardingSetupPath | null;
   onSetupPathChange: (path: OnboardingSetupPath) => void;
   value: ESyncMode;
   onChange: (mode: ESyncMode) => void;
@@ -190,6 +241,16 @@ export function OnboardingSyncModeStep({
     }
   }, [privacyPolicyUrl]);
 
+  const handleSubtitleHelpPress = useCallback(async () => {
+    try {
+      await openBrowserAsync(LOGIN_SIGNUP_HELP_URL, {
+        presentationStyle: WebBrowserPresentationStyle.AUTOMATIC,
+      });
+    } catch (error) {
+      console.error('[Tareitas] Failed to open login/signup help', error);
+    }
+  }, []);
+
   const handleSetupPathChange = useCallback(
     async (path: OnboardingSetupPath) => {
       if (path === 'connect_device_only') {
@@ -253,8 +314,9 @@ export function OnboardingSyncModeStep({
   return (
     <View testID="onboarding-setup-screen">
       <OnboardingStepHeader
-        title={t('onboarding.sync_mode.title')}
         description={t('onboarding.sync_mode.subtitle')}
+        descriptionHelpUrl={LOGIN_SIGNUP_HELP_URL}
+        onDescriptionHelpPress={handleSubtitleHelpPress}
         accentColor={Colors.blue600}
       />
 
@@ -265,31 +327,15 @@ export function OnboardingSyncModeStep({
           setupPath === 'connect' && styles.syncModeSectionBoxSelected,
         ]}
       >
-        <Pressable
+        <SyncModeSectionHeader
+          selected={setupPath === 'connect'}
+          title={t('onboarding.sync_mode.connect_section_title')}
+          subtitle={t('onboarding.sync_mode.connect_section_subtitle')}
+          accentColor={Colors.blue600}
+          radioValue="connect"
           onPress={() => handleSetupPathChange('connect')}
-          style={styles.syncModeSectionHeader}
-          accessibilityRole="radio"
-          accessibilityState={{ selected: setupPath === 'connect' }}
           testID="onboarding-section-multidevice-connect-header"
-        >
-          <RadioButton
-            value="connect"
-            status={setupPath === 'connect' ? 'checked' : 'unchecked'}
-            onPress={() => handleSetupPathChange('connect')}
-            color={Colors.blue600}
-          />
-          <Text
-            variant="titleMedium"
-            fontFamily="fredoka"
-            weight="bold"
-            color={
-              setupPath === 'connect' ? Colors.blue600 : Colors.grey700
-            }
-            style={styles.syncModeSectionHeaderText}
-          >
-            {t('onboarding.sync_mode.connect_section_title')}
-          </Text>
-        </Pressable>
+        />
 
         {setupPath === 'connect' ? (
           <FamilyConnectForm onSuccess={onMemberLoginSuccess} />
@@ -306,39 +352,17 @@ export function OnboardingSyncModeStep({
             styles.syncModeSectionBoxSelected,
         ]}
       >
-        <Pressable
+        <SyncModeSectionHeader
+          selected={setupPath === 'connect_device_only'}
+          title={t('onboarding.sync_mode.connect_device_only_section_title')}
+          subtitle={t(
+            'onboarding.sync_mode.connect_device_only_section_subtitle',
+          )}
+          accentColor={Colors.orange500}
+          radioValue="connect_device_only"
           onPress={() => handleSetupPathChange('connect_device_only')}
-          style={styles.syncModeSectionHeader}
-          accessibilityRole="radio"
-          accessibilityState={{
-            selected: setupPath === 'connect_device_only',
-          }}
           testID="onboarding-section-device-only-connect-header"
-        >
-          <RadioButton
-            value="connect_device_only"
-            status={
-              setupPath === 'connect_device_only'
-                ? 'checked'
-                : 'unchecked'
-            }
-            onPress={() => handleSetupPathChange('connect_device_only')}
-            color={Colors.orange500}
-          />
-          <Text
-            variant="titleMedium"
-            fontFamily="fredoka"
-            weight="bold"
-            color={
-              setupPath === 'connect_device_only'
-                ? Colors.orange500
-                : Colors.grey700
-            }
-            style={styles.syncModeSectionHeaderText}
-          >
-            {t('onboarding.sync_mode.connect_device_only_section_title')}
-          </Text>
-        </Pressable>
+        />
 
         {setupPath === 'connect_device_only' ? (
           isLoadingDeviceOnlyFamily ? (
@@ -363,31 +387,15 @@ export function OnboardingSyncModeStep({
           setupPath === 'create' && styles.syncModeSectionBoxSelected,
         ]}
       >
-        <Pressable
+        <SyncModeSectionHeader
+          selected={setupPath === 'create'}
+          title={t('onboarding.sync_mode.create_section_title')}
+          subtitle={t('onboarding.sync_mode.create_section_subtitle')}
+          accentColor={Colors.blue600}
+          radioValue="create"
           onPress={() => onSetupPathChange('create')}
-          style={styles.syncModeSectionHeader}
-          accessibilityRole="radio"
-          accessibilityState={{ selected: setupPath === 'create' }}
           testID="onboarding-section-create-header"
-        >
-          <RadioButton
-            value="create"
-            status={setupPath === 'create' ? 'checked' : 'unchecked'}
-            onPress={() => onSetupPathChange('create')}
-            color={Colors.blue600}
-          />
-          <Text
-            variant="titleMedium"
-            fontFamily="fredoka"
-            weight="bold"
-            color={
-              setupPath === 'create' ? Colors.blue600 : Colors.grey700
-            }
-            style={styles.syncModeSectionHeaderText}
-          >
-            {t('onboarding.sync_mode.create_section_title')}
-          </Text>
-        </Pressable>
+        />
 
         {setupPath === 'create' ? (
           <RadioButton.Group

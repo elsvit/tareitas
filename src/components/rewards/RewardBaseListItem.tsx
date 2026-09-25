@@ -13,10 +13,10 @@ import { useSelector } from 'react-redux';
 import { BASE_REWARDS_IMAGES } from '~/assets/img/rewards/rewards';
 import { useDebouncedPress } from '~/hooks/useDebouncedPress';
 import { Text } from '~/components/ui';
+import { ListItemImageEditOverlay } from '~/components/ui/ListItemImageEditOverlay';
 import { ResolvedPicture } from '~/components/ui/ResolvedPicture/ResolvedPicture';
 import { selectRewardImageUrls } from '~/store/images';
 import { lightenColor } from '~/utils/color';
-
 type Props = {
   title: string;
   picture?: string | number;
@@ -25,10 +25,48 @@ type Props = {
   childName?: string;
   childColor?: string;
   onPress?: () => void;
+  showEditIcon?: boolean;
   footer?: React.ReactNode;
 };
 
 const IMAGE_SIZE = 56;
+
+function RowPressable({
+  onPress,
+  style,
+  children,
+}: {
+  onPress?: () => void;
+  style?: object;
+  children: React.ReactNode;
+}) {
+  if (!onPress) {
+    return <View style={style}>{children}</View>;
+  }
+
+  if (Platform.OS === 'android') {
+    return (
+      <TouchableOpacity
+        onPress={onPress}
+        activeOpacity={0.9}
+        accessibilityRole="button"
+        style={style}
+      >
+        {children}
+      </TouchableOpacity>
+    );
+  }
+
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      style={({ pressed }) => [style, pressed && styles.pressed]}
+    >
+      {children}
+    </Pressable>
+  );
+}
 
 const RowContent: React.FC<{
   title: string;
@@ -38,6 +76,9 @@ const RowContent: React.FC<{
   childName?: string;
   childColor?: string;
   footer?: React.ReactNode;
+  showEditIcon?: boolean;
+  onImagePress?: () => void;
+  onRowPress?: () => void;
   customUrls: Record<string, string>;
 }> = ({
   title,
@@ -47,6 +88,9 @@ const RowContent: React.FC<{
   childName,
   childColor,
   footer,
+  showEditIcon = false,
+  onImagePress,
+  onRowPress,
   customUrls,
 }) => {
   const rewardText = reward != null ? String(reward) : '';
@@ -67,22 +111,28 @@ const RowContent: React.FC<{
           </Text>
         )}
 
-        <View style={styles.imageContainer}>
-          <ResolvedPicture
-            picture={picture}
-            customUrls={customUrls}
-            builtInImages={BASE_REWARDS_IMAGES}
-            style={styles.image}
-            contentFit="contain"
-            placeholder={
-              <View style={styles.placeholder}>
-                <Text fontFamily="fredoka" weight="bold">
-                  🎁
-                </Text>
-              </View>
-            }
-          />
-        </View>
+        <ListItemImageEditOverlay
+          show={showEditIcon}
+          iconColor={textColor}
+          onPress={onImagePress}
+        >
+          <View style={styles.imageContainer}>
+            <ResolvedPicture
+              picture={picture}
+              customUrls={customUrls}
+              builtInImages={BASE_REWARDS_IMAGES}
+              style={styles.image}
+              contentFit="contain"
+              placeholder={
+                <View style={styles.placeholder}>
+                  <Text fontFamily="fredoka" weight="bold">
+                    🎁
+                  </Text>
+                </View>
+              }
+            />
+          </View>
+        </ListItemImageEditOverlay>
 
         {reward != null && (
           <View
@@ -112,19 +162,22 @@ const RowContent: React.FC<{
         )}
       </View>
 
-      <View style={styles.texts} collapsable={false}>
+      <RowPressable
+        onPress={onRowPress}
+        style={styles.texts}
+      >
         <Text
           variant="titleLarge"
           fontFamily="fredoka"
           weight="bold"
           numberOfLines={2}
-          style={{ color: textColor, lineHeight: 22 }}
+          style={[styles.titleText, { color: textColor }]}
         >
           {title}
         </Text>
 
         {footer ? <View style={styles.footer}>{footer}</View> : null}
-      </View>
+      </RowPressable>
     </View>
   );
 };
@@ -137,8 +190,10 @@ export const RewardBaseListItem: React.FC<Props> = ({
   childName,
   childColor,
   onPress,
+  showEditIcon: showEditIconProp,
   footer,
 }) => {
+  const showEditIcon = showEditIconProp ?? Boolean(onPress);
   const debouncedOnPress = useDebouncedPress(
     useCallback(() => {
       onPress?.();
@@ -160,6 +215,9 @@ export const RewardBaseListItem: React.FC<Props> = ({
       childName={childName}
       childColor={childColor}
       footer={footer}
+      showEditIcon={showEditIcon}
+      onImagePress={showEditIcon ? debouncedOnPress : undefined}
+      onRowPress={onPress ? debouncedOnPress : undefined}
       customUrls={customUrls}
     />
   );
@@ -173,35 +231,7 @@ export const RewardBaseListItem: React.FC<Props> = ({
         locations={[0.2, 0.8]}
         style={styles.gradient}
       >
-        {onPress ? (
-          Platform.OS === 'android' ? (
-            <TouchableOpacity
-              onPress={debouncedOnPress}
-              activeOpacity={0.9}
-              accessibilityRole="button"
-              style={styles.pressable}
-            >
-              {content}
-            </TouchableOpacity>
-          ) : (
-            <Pressable
-              onPress={debouncedOnPress}
-              accessibilityRole="button"
-              style={({ pressed }) => [
-                styles.pressable,
-                pressed && styles.pressed,
-              ]}
-              android_ripple={{
-                color: lightenColor(color, 0.08),
-                borderless: false,
-              }}
-            >
-              {content}
-            </Pressable>
-          )
-        ) : (
-          content
-        )}
+        {content}
       </LinearGradient>
     </View>
   );
@@ -215,10 +245,6 @@ const styles = StyleSheet.create({
   },
 
   gradient: {},
-
-  pressable: {
-    borderRadius: 16,
-  },
 
   pressed: {
     opacity: 0.9,
@@ -271,6 +297,11 @@ const styles = StyleSheet.create({
     minWidth: 0,
     marginLeft: 12,
     justifyContent: 'space-between',
+  },
+  titleText: {
+    flex: 1,
+    minWidth: 0,
+    lineHeight: 22,
   },
 
   rewardBadge: {
