@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Choisissez votre configuration",
-      "connect_device_only_section_title": "Se connecter à cet appareil uniquement",
-      "connect_section_title": "Se connecter à un groupe/famille existant",
-      "create_section_title": "Créer un nouveau groupe/famille",
+      "connect_device_only_section_title": "Utiliser uniquement cet appareil",
+      "connect_section_title": "Rejoindre une famille/groupe existant(e)",
+      "create_section_title": "Créer une nouvelle famille/groupe",
       "device_only_connect_empty": "Aucune famille enregistrée sur cet appareil. Créez d'abord un nouveau groupe.",
       "device_only_connect_hint": "Sélectionnez votre profil et saisissez votre PIN pour ouvrir la famille enregistrée sur cet appareil.",
-      "header": "Mode",
+      "header": "Connexion / Inscription",
       "privacy_policy": "Politique de confidentialité",
       "replace_device_only_confirm": "Effacer et continuer",
       "replace_device_only_message": "Une famille est déjà enregistrée sur cet appareil en mode « Cet appareil uniquement ». En créer une nouvelle l'effacera. Une seule famille peut exister dans ce mode.",
       "replace_device_only_title": "Remplacer la famille existante ?",
-      "subtitle": "Vous pouvez utiliser Tareitas sur cet appareil uniquement ou synchroniser votre famille entre téléphones et tablettes.",
+      "subtitle": "Vous pouvez synchroniser les données entre les téléphones et tablettes de votre famille / groupe (recommandé) ou enregistrer les données uniquement sur cet appareil.",
       "device_only": {
         "title": "Cet appareil uniquement",
         "description": "Tout reste sur ce téléphone ou cette tablette. Les membres de la famille ne peuvent utiliser l'application que sur cet appareil. Vous pouvez utiliser l'application hors ligne."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Plusieurs appareils",
         "description": "Synchronisez tâches, récompenses et données familiales entre appareils. Les membres de la famille peuvent utiliser l'application sur différents appareils."
-      }
+      },
+      "subtitle_help_label": "Aide connexion et inscription",
+      "connect_section_subtitle": "Connectez-vous et synchronisez vos données sur tous vos appareils.",
+      "connect_device_only_section_subtitle": "Conservez vos données uniquement sur cet appareil.",
+      "create_section_subtitle": "Inscrivez-vous et créez une nouvelle famille/groupe."
     }
   }
 }

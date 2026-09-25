@@ -1,6 +1,8 @@
 appId: net.tareitas
 ---
-# Assumes setup screen is visible with multidevice connect section selected.
+# Assumes setup screen is visible; select join existing family first.
+- tapOn:
+    id: onboarding-section-multidevice-connect-header
 - assertVisible:
     id: onboarding-multidevice-connect-form
 - assertVisible:

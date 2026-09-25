@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Wähle deine Einrichtung",
-      "connect_device_only_section_title": "Mit nur diesem Gerät verbinden",
-      "connect_section_title": "Mit bestehender Gruppe/Familie verbinden",
-      "create_section_title": "Neue Gruppe/Familie erstellen",
+      "connect_device_only_section_title": "Nur dieses Gerät nutzen",
+      "connect_section_title": "Bestehender Familie/Gruppe beitreten",
+      "create_section_title": "Neue Familie/Gruppe erstellen",
       "device_only_connect_empty": "Auf diesem Gerät ist keine Familie gespeichert. Erstelle zuerst eine neue Gruppe.",
       "device_only_connect_hint": "Wähle dein Profil und gib deine PIN ein, um die auf diesem Gerät gespeicherte Familie zu öffnen.",
-      "header": "Modus",
+      "header": "Anmelden / Registrieren",
       "privacy_policy": "Datenschutzrichtlinie",
       "replace_device_only_confirm": "Löschen und fortfahren",
       "replace_device_only_message": "Auf diesem Gerät ist bereits eine Familie im Modus „Nur dieses Gerät“ gespeichert. Eine neue Familie zu erstellen löscht sie. In diesem Modus kann nur eine Familie existieren.",
       "replace_device_only_title": "Bestehende Familie ersetzen?",
-      "subtitle": "Du kannst Tareitas nur auf diesem Gerät nutzen oder deine Familie zwischen Handys und Tablets synchronisieren.",
+      "subtitle": "Du kannst Daten auf Smartphones und Tablets in deiner Familie / Gruppe synchronisieren (empfohlen) oder Daten nur auf diesem Gerät speichern.",
       "device_only": {
         "title": "Nur dieses Gerät",
         "description": "Alles bleibt auf diesem Handy oder Tablet. Familienmitglieder können die App nur auf diesem Gerät nutzen. Du kannst die App offline verwenden."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Mehrere Geräte",
         "description": "Synchronisiere Aufgaben, Belohnungen und Familiendaten zwischen Geräten. Familienmitglieder können die App auf verschiedenen Geräten nutzen."
-      }
+      },
+      "subtitle_help_label": "Hilfe zu Anmeldung und Registrierung",
+      "connect_section_subtitle": "Melde dich an und synchronisiere deine Daten geräteübergreifend.",
+      "connect_device_only_section_subtitle": "Speichere deine Daten nur auf diesem Gerät.",
+      "create_section_subtitle": "Registriere dich und erstelle eine neue Familie/Gruppe."
     }
   }
 }

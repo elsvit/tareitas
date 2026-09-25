@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Vælg din opsætning",
-      "connect_device_only_section_title": "Forbind til kun denne enhed",
-      "connect_section_title": "Forbind til eksisterende gruppe/familie",
-      "create_section_title": "Opret ny gruppe/familie",
+      "connect_device_only_section_title": "Brug kun denne enhed",
+      "connect_section_title": "Tilslut en eksisterende familie/gruppe",
+      "create_section_title": "Opret ny familie/gruppe",
       "device_only_connect_empty": "Der er ingen familie gemt på denne enhed. Opret først en ny gruppe.",
       "device_only_connect_hint": "Vælg din profil, og indtast din PIN for at åbne familien gemt på denne enhed.",
-      "header": "Tilstand",
+      "header": "Log ind / Tilmeld",
       "privacy_policy": "Privatlivspolitik",
       "replace_device_only_confirm": "Slet og fortsæt",
       "replace_device_only_message": "En familie er allerede gemt på denne enhed i tilstanden „Kun denne enhed”. Oprettelse af en ny vil slette den. Kun én familie kan findes i denne tilstand.",
       "replace_device_only_title": "Erstat eksisterende familie?",
-      "subtitle": "Du kan bruge Tareitas kun på denne enhed, eller synkronisere din familie på tværs af telefoner og tablets.",
+      "subtitle": "Du kan synkronisere data på tværs af telefoner og tablets i din familie / gruppe (anbefalet) eller gemme data kun på denne enhed.",
       "device_only": {
         "title": "Kun denne enhed",
         "description": "Alt bliver på denne telefon eller tablet. Familiemedlemmer kan kun bruge appen på denne enhed. Du kan bruge appen offline."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Flere enheder",
         "description": "Synkroniser opgaver, belønninger og familiedata på tværs af enheder. Familiemedlemmer kan bruge appen på forskellige enheder."
-      }
+      },
+      "subtitle_help_label": "Hjælp til login og tilmelding",
+      "connect_section_subtitle": "Log ind og synkroniser dine data på tværs af enheder.",
+      "connect_device_only_section_subtitle": "Gem dine data kun på denne enhed.",
+      "create_section_subtitle": "Tilmeld dig og opret en ny familie/gruppe."
     }
   }
 }

@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Choose your setup",
-      "connect_device_only_section_title": "Connect to this device only",
-      "connect_section_title": "Connect to existing group/family",
-      "create_section_title": "Create new group/family",
+      "connect_device_only_section_title": "Use this device only",
+      "connect_section_title": "Join an existing family/group",
+      "create_section_title": "Create a new family/group",
       "device_only_connect_empty": "No family is saved on this device. Create a new group first.",
       "device_only_connect_hint": "Select your profile and enter your PIN to open the family saved on this device.",
-      "header": "Select mode",
+      "header": "LogIn / SignUp",
       "privacy_policy": "Privacy Policy",
       "replace_device_only_confirm": "Erase and continue",
       "replace_device_only_message": "A family is already saved on this device in \"This device only\" mode. Creating a new one will erase it. Only one family can exist in this mode.",
       "replace_device_only_title": "Replace existing family?",
-      "subtitle": "You can use Tareitas on this device only, or sync your family across phones and tablets.",
+      "subtitle": "You can sync data across phones and tablets in your family / group (recommended), or save data only on this device.",
       "device_only": {
         "title": "This device only",
         "description": "Everything stays on this phone or tablet. Family members can use the app only on this device. You can use the app offline."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Several devices (recommended)",
         "description": "Sync tasks, rewards, and family data across devices. Family members can use the app on different devices."
-      }
+      },
+      "subtitle_help_label": "Help with login and signup",
+      "connect_section_subtitle": "Log in and sync your data across devices.",
+      "connect_device_only_section_subtitle": "Keep your data stored only on this device.",
+      "create_section_subtitle": "Sign up and create a new family/group."
     }
   }
 }

@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Valige seadistus",
-      "connect_device_only_section_title": "Ühenda ainult selle seadmega",
-      "connect_section_title": "Ühenda olemasoleva grupi/perega",
-      "create_section_title": "Loo uus grupp/pere",
+      "connect_device_only_section_title": "Kasuta ainult seda seadet",
+      "connect_section_title": "Liitu olemasoleva pere/grupiga",
+      "create_section_title": "Loo uus pere/grupp",
       "device_only_connect_empty": "Selles seadmes pole salvestatud perekonda. Loo esmalt uus grupp.",
       "device_only_connect_hint": "Vali oma profiil ja sisesta PIN, et avada sellesse seadmesse salvestatud pere.",
-      "header": "Režiim",
+      "header": "Logi sisse / Registreeru",
       "privacy_policy": "Privaatsuspoliitika",
       "replace_device_only_confirm": "Kustuta ja jätka",
       "replace_device_only_message": "Sellel seadmel on juba salvestatud perekond režiimis „Ainult see seade”. Uue loomine kustutab selle. Selles režiimis saab olla ainult üks perekond.",
       "replace_device_only_title": "Asendada olemasolev pere?",
-      "subtitle": "Saate kasutada Tareitast ainult selles seadmes või sünkroniseerida pere telefonide ja tahvelarvutite vahel.",
+      "subtitle": "Saate sünkroniseerida andmeid perekonna / grupi telefonide ja tahvelarvutite vahel (soovitatav) või salvestada andmed ainult selles seadmes.",
       "device_only": {
         "title": "Ainult see seade",
         "description": "Kõik jääb sellesse telefoni või tahvelarvutisse. Pereliikmed saavad rakendust kasutada ainult selles seadmes. Saate rakendust kasutada võrguühenduseta."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Mitu seadet",
         "description": "Sünkroniseerige ülesandeid, preemiaid ja peredate seadmete vahel. Pereliikmed saavad rakendust kasutada erinevates seadmetes."
-      }
+      },
+      "subtitle_help_label": "Abi sisselogimise ja registreerumise kohta",
+      "connect_section_subtitle": "Logi sisse ja sünkroniseeri andmed seadmete vahel.",
+      "connect_device_only_section_subtitle": "Hoia andmed ainult selles seadmes.",
+      "create_section_subtitle": "Registreeru ja loo uus pere/grupp."
     }
   }
 }

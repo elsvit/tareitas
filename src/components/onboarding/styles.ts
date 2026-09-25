@@ -63,6 +63,23 @@ export const onboardingStyles = StyleSheet.create({
   stepDescription: {
     opacity: 0.85,
   },
+  stepDescriptionRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: spacing(1),
+  },
+  stepDescriptionText: {
+    flex: 1,
+  },
+  stepDescriptionHelpButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 32,
+    minHeight: 32,
+    marginTop: -spacing(0.5),
+    borderRadius: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.55)',
+  },
   introSlide: {
     alignItems: 'center',
     gap: spacing(3),
@@ -110,6 +127,10 @@ export const onboardingStyles = StyleSheet.create({
   },
   syncModeSectionHeaderText: {
     flex: 1,
+    gap: spacing(0.5),
+  },
+  syncModeSectionSubtitle: {
+    opacity: 0.85,
   },
   privacyPolicyLink: {
     alignSelf: 'center',

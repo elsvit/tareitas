@@ -17,13 +17,13 @@ import { DEFAULT_BASE_TASK_COLOR } from '~/constants/tasks';
 import { useDebouncedPress } from '~/hooks/useDebouncedPress';
 import { TaskRewardBadge } from '~/components/tasks/TaskRewardBadge';
 import { Text } from '~/components/ui';
+import { ListItemImageEditOverlay } from '~/components/ui/ListItemImageEditOverlay';
 import { ResolvedPicture } from '~/components/ui/ResolvedPicture/ResolvedPicture';
 import { t } from '~/services';
 import { selectTaskImageUrls } from '~/store/images';
 import { Colors } from '~/styles';
 import { ISubtask } from '~/types/ITask';
 import { lightenColor } from '~/utils/color';
-
 type Props = {
   name: string;
   description?: string;
@@ -32,9 +32,47 @@ type Props = {
   color?: string;
   subtasks?: ISubtask[];
   onPress?: () => void;
+  showEditIcon?: boolean;
 };
 
 const IMAGE_SIZE = 56;
+
+function RowPressable({
+  onPress,
+  style,
+  children,
+}: {
+  onPress?: () => void;
+  style?: object;
+  children: React.ReactNode;
+}) {
+  if (!onPress) {
+    return <View style={style}>{children}</View>;
+  }
+
+  if (Platform.OS === 'android') {
+    return (
+      <TouchableOpacity
+        onPress={onPress}
+        activeOpacity={0.9}
+        accessibilityRole="button"
+        style={style}
+      >
+        {children}
+      </TouchableOpacity>
+    );
+  }
+
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      style={({ pressed }) => [style, pressed && styles.pressed]}
+    >
+      {children}
+    </Pressable>
+  );
+}
 
 const RowContent: React.FC<{
   name: string;
@@ -43,41 +81,61 @@ const RowContent: React.FC<{
   reward?: number;
   subtasks?: ISubtask[];
   textColor: string;
+  showEditIcon?: boolean;
+  onImagePress?: () => void;
+  onRowPress?: () => void;
   customUrls: Record<string, string>;
-}> = ({ name, description, picture, reward, subtasks = [], textColor, customUrls }) => {
+}> = ({
+  name,
+  description,
+  picture,
+  reward,
+  subtasks = [],
+  textColor,
+  showEditIcon = false,
+  onImagePress,
+  onRowPress,
+  customUrls,
+}) => {
   const [areSubtasksExpanded, setAreSubtasksExpanded] = useState(false);
   const hasSubtasks = subtasks.length > 0;
 
   return (
     <View style={styles.row}>
       <View style={styles.leftColumn}>
-        <View style={styles.imageContainer}>
-          <ResolvedPicture
-            picture={picture}
-            customUrls={customUrls}
-            builtInImages={BASE_TASKS_IMAGES}
-            style={styles.image}
-            contentFit="contain"
-            placeholder={
-              <View style={styles.placeholder}>
-                <Text fontFamily="fredoka" weight="bold">
-                  🎯
-                </Text>
-              </View>
-            }
-          />
-        </View>
+        <ListItemImageEditOverlay
+          show={showEditIcon}
+          iconColor={textColor}
+          onPress={onImagePress}
+        >
+          <View style={styles.imageContainer}>
+            <ResolvedPicture
+              picture={picture}
+              customUrls={customUrls}
+              builtInImages={BASE_TASKS_IMAGES}
+              style={styles.image}
+              contentFit="contain"
+              placeholder={
+                <View style={styles.placeholder}>
+                  <Text fontFamily="fredoka" weight="bold">
+                    🎯
+                  </Text>
+                </View>
+              }
+            />
+          </View>
+        </ListItemImageEditOverlay>
 
         <TaskRewardBadge reward={reward} />
       </View>
 
-      <View style={styles.texts} collapsable={false}>
+      <RowPressable onPress={onRowPress} style={styles.texts}>
         <Text
           variant="titleLarge"
           fontFamily="fredoka"
           weight="bold"
           numberOfLines={2}
-          style={{ color: textColor, lineHeight: 24 }}
+          style={[styles.titleText, { color: textColor }]}
         >
           {name}
         </Text>
@@ -125,7 +183,7 @@ const RowContent: React.FC<{
             )}
           </View>
         )}
-      </View>
+      </RowPressable>
     </View>
   );
 };
@@ -138,7 +196,9 @@ export const TaskBaseListItem: React.FC<Props> = ({
   color = DEFAULT_BASE_TASK_COLOR,
   subtasks,
   onPress,
+  showEditIcon: showEditIconProp,
 }) => {
+  const showEditIcon = showEditIconProp ?? Boolean(onPress);
   const debouncedOnPress = useDebouncedPress(
     useCallback(() => {
       onPress?.();
@@ -159,6 +219,9 @@ export const TaskBaseListItem: React.FC<Props> = ({
       reward={reward}
       subtasks={subtasks}
       textColor={color}
+      showEditIcon={showEditIcon}
+      onImagePress={showEditIcon ? debouncedOnPress : undefined}
+      onRowPress={onPress ? debouncedOnPress : undefined}
       customUrls={customUrls}
     />
   );
@@ -172,35 +235,7 @@ export const TaskBaseListItem: React.FC<Props> = ({
         locations={[0.2, 0.8]}
         style={styles.gradient}
       >
-        {onPress ? (
-          Platform.OS === 'android' ? (
-            <TouchableOpacity
-              onPress={debouncedOnPress}
-              activeOpacity={0.9}
-              accessibilityRole="button"
-              style={styles.pressable}
-            >
-              {content}
-            </TouchableOpacity>
-          ) : (
-            <Pressable
-              onPress={debouncedOnPress}
-              accessibilityRole="button"
-              style={({ pressed }) => [
-                styles.pressable,
-                pressed && styles.pressed,
-              ]}
-              android_ripple={{
-                color: lightenColor(color, 0.08),
-                borderless: false,
-              }}
-            >
-              {content}
-            </Pressable>
-          )
-        ) : (
-          content
-        )}
+        {content}
       </LinearGradient>
     </View>
   );
@@ -214,10 +249,6 @@ const styles = StyleSheet.create({
   },
 
   gradient: {},
-
-  pressable: {
-    borderRadius: 16,
-  },
 
   pressed: {
     opacity: 0.9,
@@ -263,6 +294,11 @@ const styles = StyleSheet.create({
     flex: 1,
     minWidth: 0,
     marginLeft: 12,
+  },
+  titleText: {
+    flex: 1,
+    minWidth: 0,
+    lineHeight: 24,
   },
 
   description: {

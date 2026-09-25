@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Pasirinkite nustatymą",
-      "connect_device_only_section_title": "Prisijungti tik prie šio įrenginio",
-      "connect_section_title": "Prisijungti prie esamos grupės/šeimos",
-      "create_section_title": "Sukurti naują grupę/šeimą",
+      "connect_device_only_section_title": "Naudoti tik šį įrenginį",
+      "connect_section_title": "Prisijungti prie esamos šeimos/grupės",
+      "create_section_title": "Sukurti naują šeimą/grupę",
       "device_only_connect_empty": "Šiame įrenginyje nėra išsaugotos šeimos. Pirmiausia sukurkite naują grupę.",
       "device_only_connect_hint": "Pasirinkite savo profilį ir įveskite PIN, kad atidarytumėte šiame įrenginyje išsaugotą šeimą.",
-      "header": "Režimas",
+      "header": "Prisijungti / Registruotis",
       "privacy_policy": "Privatumo politika",
       "replace_device_only_confirm": "Ištrinti ir tęsti",
       "replace_device_only_message": "Šiame įrenginyje jau išsaugota šeima režimu „Tik šis įrenginys“. Sukūrus naują, ji bus ištrinta. Šiuo režimu gali būti tik viena šeima.",
       "replace_device_only_title": "Pakeisti esamą šeimą?",
-      "subtitle": "Galite naudoti Tareitas tik šiame įrenginyje arba sinchronizuoti šeimą tarp telefonų ir planšetinių kompiuterių.",
+      "subtitle": "Galite sinchronizuoti duomenis tarp šeimos / grupės telefonų ir planšetinių kompiuterių (rekomenduojama) arba saugoti duomenis tik šiame įrenginyje.",
       "device_only": {
         "title": "Tik šis įrenginys",
         "description": "Viskas lieka šiame telefone ar planšetėje. Šeimos nariai gali naudoti programėlę tik šiame įrenginyje. Programėle gali būti naudojama neprisijungus."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Keli įrenginiai",
         "description": "Sinchronizuokite užduotis, apdovanojimus ir šeimos duomenis tarp įrenginių. Šeimos nariai gali naudoti programėlę skirtinguose įrenginiuose."
-      }
+      },
+      "subtitle_help_label": "Pagalba dėl prisijungimo ir registracijos",
+      "connect_section_subtitle": "Prisijunkite ir sinchronizuokite duomenis tarp įrenginių.",
+      "connect_device_only_section_subtitle": "Saugokite duomenis tik šiame įrenginyje.",
+      "create_section_subtitle": "Užsiregistruokite ir sukurkite naują šeimą/grupę."
     }
   }
 }

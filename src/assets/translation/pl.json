@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Wybierz konfigurację",
-      "connect_device_only_section_title": "Połącz z tym urządzeniem",
-      "connect_section_title": "Połącz z istniejącą grupą/rodziną",
-      "create_section_title": "Utwórz nową grupę/rodzinę",
+      "connect_device_only_section_title": "Używaj tylko tego urządzenia",
+      "connect_section_title": "Dołącz do istniejącej rodziny/grupy",
+      "create_section_title": "Utwórz nową rodzinę/grupę",
       "device_only_connect_empty": "Na tym urządzeniu nie zapisano rodziny. Najpierw utwórz nową grupę.",
       "device_only_connect_hint": "Wybierz swój profil i wpisz PIN, aby otworzyć rodzinę zapisaną na tym urządzeniu.",
-      "header": "Tryb",
+      "header": "Logowanie / Rejestracja",
       "privacy_policy": "Polityka prywatności",
       "replace_device_only_confirm": "Usuń i kontynuuj",
       "replace_device_only_message": "Na tym urządzeniu jest już zapisana rodzina w trybie „Tylko to urządzenie”. Utworzenie nowej ją usunie. W tym trybie może istnieć tylko jedna rodzina.",
       "replace_device_only_title": "Zastąpić istniejącą rodzinę?",
-      "subtitle": "Możesz używać Tareitas tylko na tym urządzeniu lub synchronizować rodzinę między telefonami i tabletami.",
+      "subtitle": "Możesz synchronizować dane między telefonami i tabletami w rodzinie / grupie (zalecane) lub zapisywać dane tylko na tym urządzeniu.",
       "device_only": {
         "title": "Tylko to urządzenie",
         "description": "Wszystko pozostaje na tym telefonie lub tablecie. Członkowie rodziny mogą korzystać z aplikacji tylko na tym urządzeniu. Możesz używać aplikacji offline."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Wiele urządzeń",
         "description": "Synchronizuj zadania, nagrody i dane rodzinne między urządzeniami. Członkowie rodziny mogą korzystać z aplikacji na różnych urządzeniach."
-      }
+      },
+      "subtitle_help_label": "Pomoc dotycząca logowania i rejestracji",
+      "connect_section_subtitle": "Zaloguj się i synchronizuj dane między urządzeniami.",
+      "connect_device_only_section_subtitle": "Przechowuj dane tylko na tym urządzeniu.",
+      "create_section_subtitle": "Zarejestruj się i utwórz nową rodzinę/grupę."
     }
   }
 }

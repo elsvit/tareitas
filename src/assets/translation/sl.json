@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Izberite nastavitev",
-      "connect_device_only_section_title": "Poveži se samo s to napravo",
-      "connect_section_title": "Poveži se z obstoječo skupino/družino",
-      "create_section_title": "Ustvari novo skupino/družino",
+      "connect_device_only_section_title": "Uporabi samo to napravo",
+      "connect_section_title": "Pridruži se obstoječi družini/skupini",
+      "create_section_title": "Ustvari novo družino/skupino",
       "device_only_connect_empty": "V tej napravi ni shranjene družine. Najprej ustvarite novo skupino.",
       "device_only_connect_hint": "Izberite svoj profil in vnesite PIN, da odprete družino, shranjeno v tej napravi.",
-      "header": "Način",
+      "header": "Prijava / Registracija",
       "privacy_policy": "Pravilnik o zasebnosti",
       "replace_device_only_confirm": "Izbriši in nadaljuj",
       "replace_device_only_message": "V tej napravi je že shranjena družina v načinu „Samo ta naprava”. Ustvarjanje nove jo bo izbrisalo. V tem načinu lahko obstaja samo ena družina.",
       "replace_device_only_title": "Zamenjati obstoječo družino?",
-      "subtitle": "Tareitas lahko uporabljate samo na tej napravi ali sinhronizirate družino med telefoni in tablicami.",
+      "subtitle": "Podatke lahko sinhronizirate med telefoni in tablicami v družini / skupini (priporočeno) ali shranite podatke samo v tej napravi.",
       "device_only": {
         "title": "Samo ta naprava",
         "description": "Vse ostane na tem telefonu ali tablici. Družinski člani lahko aplikacijo uporabljajo samo na tej napravi. Aplikacijo lahko uporabljate brez povezave."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Več naprav",
         "description": "Sinhronizirajte naloge, nagrade in družinske podatke med napravami. Družinski člani lahko aplikacijo uporabljajo na različnih napravah."
-      }
+      },
+      "subtitle_help_label": "Pomoč pri prijavi in registraciji",
+      "connect_section_subtitle": "Prijavi se in sinhroniziraj podatke med napravami.",
+      "connect_device_only_section_subtitle": "Shrani podatke samo v tej napravi.",
+      "create_section_subtitle": "Registriraj se in ustvari novo družino/skupino."
     }
   }
 }

@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Vyberte nastavenie",
-      "connect_device_only_section_title": "Pripojiť k len tomuto zariadeniu",
-      "connect_section_title": "Pripojiť sa k existujúcej skupine/rodine",
-      "create_section_title": "Vytvoriť novú skupinu/rodinu",
+      "connect_device_only_section_title": "Použiť len toto zariadenie",
+      "connect_section_title": "Pripojiť sa k existujúcej rodine/skupine",
+      "create_section_title": "Vytvoriť novú rodinu/skupinu",
       "device_only_connect_empty": "V tomto zariadení nie je uložená žiadna rodina. Najprv vytvorte novú skupinu.",
       "device_only_connect_hint": "Vyberte svoj profil a zadajte PIN na otvorenie rodiny uloženej v tomto zariadení.",
-      "header": "Režim",
+      "header": "Prihlásenie / Registrácia",
       "privacy_policy": "Zásady ochrany osobných údajov",
       "replace_device_only_confirm": "Vymazať a pokračovať",
       "replace_device_only_message": "V tomto zariadení je už uložená rodina v režime „Len toto zariadenie“. Vytvorenie novej ju vymaže. V tomto režime môže existovať len jedna rodina.",
       "replace_device_only_title": "Nahradiť existujúcu rodinu?",
-      "subtitle": "Môžete používať Tareitas len na tomto zariadení alebo synchronizovať rodinu medzi telefónmi a tabletmi.",
+      "subtitle": "Môžete synchronizovať údaje medzi telefónmi a tabletmi vo vašej rodine / skupine (odporúčané) alebo ukladať údaje len v tomto zariadení.",
       "device_only": {
         "title": "Len toto zariadenie",
         "description": "Všetko zostane v tomto telefóne alebo tablete. Členovia rodiny môžu aplikáciu používať len na tomto zariadení. Aplikáciu môžete používať offline."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Viac zariadení",
         "description": "Synchronizujte úlohy, odmeny a rodinné dáta medzi zariadeniami. Členovia rodiny môžu aplikáciu používať na rôznych zariadeniach."
-      }
+      },
+      "subtitle_help_label": "Pomoc s prihlásením a registráciou",
+      "connect_section_subtitle": "Prihláste sa a synchronizujte údaje medzi zariadeniami.",
+      "connect_device_only_section_subtitle": "Ukladajte údaje len v tomto zariadení.",
+      "create_section_subtitle": "Zaregistrujte sa a vytvorte novú rodinu/skupinu."
     }
   }
 }

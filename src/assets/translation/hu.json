@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Válassza ki a beállítást",
-      "connect_device_only_section_title": "Csatlakozás csak ehhez az eszközhöz",
-      "connect_section_title": "Csatlakozás meglévő csoporthoz/családhoz",
-      "create_section_title": "Új csoport/család létrehozása",
+      "connect_device_only_section_title": "Csak ez az eszköz",
+      "connect_section_title": "Csatlakozás meglévő családhoz/csapathoz",
+      "create_section_title": "Új család/csapat létrehozása",
       "device_only_connect_empty": "Ezen az eszközön nincs mentett család. Először hozz létre egy új csoportot.",
       "device_only_connect_hint": "Válaszd ki a profilodat, és add meg a PIN-kódot a készüléken mentett család megnyitásához.",
-      "header": "Mód",
+      "header": "Bejelentkezés / Regisztráció",
       "privacy_policy": "Adatvédelmi irányelvek",
       "replace_device_only_confirm": "Törlés és folytatás",
       "replace_device_only_message": "Ezen az eszközön már van mentett család a „Csak ez az eszköz” módban. Új létrehozása törli azt. Ebben a módban csak egy család lehet.",
       "replace_device_only_title": "Lecseréli a meglévő családot?",
-      "subtitle": "Használhatja a Tareitast csak ezen az eszközön, vagy szinkronizálhatja családját telefonok és tabletek között.",
+      "subtitle": "Szinkronizálhatja az adatokat a család / csoport telefonjai és táblagépei között (ajánlott), vagy csak ezen az eszközön tárolhatja az adatokat.",
       "device_only": {
         "title": "Csak ez az eszköz",
         "description": "Minden ezen a telefonon vagy tableten marad. A családtagok csak ezen az eszközön használhatják az alkalmazást. Offline is használhatja az alkalmazást."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Több eszköz",
         "description": "Szinkronizálja a feladatokat, jutalmakat és családi adatokat az eszközök között. A családtagok különböző eszközökön használhatják az alkalmazást."
-      }
+      },
+      "subtitle_help_label": "Súgó a bejelentkezéshez és regisztrációhoz",
+      "connect_section_subtitle": "Jelentkezzen be, és szinkronizálja adatait az eszközök között.",
+      "connect_device_only_section_subtitle": "Tárolja az adatokat csak ezen az eszközön.",
+      "create_section_subtitle": "Regisztráljon és hozzon létre új családot/csapatot."
     }
   }
 }

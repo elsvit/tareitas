@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Alege configurarea",
-      "connect_device_only_section_title": "Conectează-te doar la acest dispozitiv",
-      "connect_section_title": "Conectează-te la un grup/familie existent",
-      "create_section_title": "Creează grup/familie nouă",
+      "connect_device_only_section_title": "Folosește doar acest dispozitiv",
+      "connect_section_title": "Alătură-te unei familii/grup existente",
+      "create_section_title": "Creează o familie/grup nou(ă)",
       "device_only_connect_empty": "Nu există o familie salvată pe acest dispozitiv. Creează mai întâi un grup nou.",
       "device_only_connect_hint": "Selectează profilul tău și introdu PIN-ul pentru a deschide familia salvată pe acest dispozitiv.",
-      "header": "Mod",
+      "header": "Autentificare / Înregistrare",
       "privacy_policy": "Politica de confidențialitate",
       "replace_device_only_confirm": "Șterge și continuă",
       "replace_device_only_message": "Pe acest dispozitiv există deja o familie salvată în modul „Doar acest dispozitiv”. Crearea uneia noi o va șterge. În acest mod poate exista o singură familie.",
       "replace_device_only_title": "Înlocuiți familia existentă?",
-      "subtitle": "Poți folosi Tareitas doar pe acest dispozitiv sau poți sincroniza familia între telefoane și tablete.",
+      "subtitle": "Poți sincroniza datele între telefoane și tablete din familia / grupul tău (recomandat) sau poți salva datele doar pe acest dispozitiv.",
       "device_only": {
         "title": "Doar acest dispozitiv",
         "description": "Totul rămâne pe acest telefon sau tabletă. Membrii familiei pot folosi aplicația doar pe acest dispozitiv. Poți folosi aplicația offline."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Mai multe dispozitive",
         "description": "Sincronizează sarcini, recompense și date de familie între dispozitive. Membrii familiei pot folosi aplicația pe dispozitive diferite."
-      }
+      },
+      "subtitle_help_label": "Ajutor pentru autentificare și înregistrare",
+      "connect_section_subtitle": "Autentifică-te și sincronizează datele pe dispozitive.",
+      "connect_device_only_section_subtitle": "Păstrează datele doar pe acest dispozitiv.",
+      "create_section_subtitle": "Înregistrează-te și creează o familie/grup nou(ă)."
     }
   }
 }

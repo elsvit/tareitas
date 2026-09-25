@@ -722,17 +722,17 @@
     },
     "sync_mode": {
       "title": "Izvēlieties iestatījumu",
-      "connect_device_only_section_title": "Savienoties tikai ar šo ierīci",
-      "connect_section_title": "Savienoties ar esošu grupu/ģimeni",
-      "create_section_title": "Izveidot jaunu grupu/ģimeni",
+      "connect_device_only_section_title": "Izmantot tikai šo ierīci",
+      "connect_section_title": "Pievienoties esošai ģimenei/grupai",
+      "create_section_title": "Izveidot jaunu ģimeni/grupu",
       "device_only_connect_empty": "Šajā ierīcē nav saglabāta ģimene. Vispirms izveidojiet jaunu grupu.",
       "device_only_connect_hint": "Izvēlieties savu profilu un ievadiet PIN, lai atvērtu šajā ierīcē saglabāto ģimeni.",
-      "header": "Režīms",
+      "header": "Pieteikties / Reģistrēties",
       "privacy_policy": "Privātuma politika",
       "replace_device_only_confirm": "Dzēst un turpināt",
       "replace_device_only_message": "Šajā ierīcē jau ir saglabāta ģimene režīmā „Tikai šī ierīce”. Jaunas izveide to dzēsīs. Šajā režīmā var pastāvēt tikai viena ģimene.",
       "replace_device_only_title": "Aizvietot esošo ģimeni?",
-      "subtitle": "Varat izmantot Tareitas tikai šajā ierīcē vai sinhronizēt ģimeni starp tālruņiem un planšetdatoriem.",
+      "subtitle": "Varat sinhronizēt datus starp tālruņiem un planšetdatoriem savā ģimenē / grupā (ieteicams) vai saglabāt datus tikai šajā ierīcē.",
       "device_only": {
         "title": "Tikai šī ierīce",
         "description": "Viss paliek šajā tālrunī vai planšetdatorā. Ģimenes locekļi var lietot lietotni tikai šajā ierīcē. Lietotni var izmantot bezsaistē."
@@ -740,7 +740,11 @@
       "multidevice": {
         "title": "Vairākas ierīces",
         "description": "Sinhronizējiet uzdevumus, balvas un ģimenes datus starp ierīcēm. Ģimenes locekļi var lietot lietotni dažādās ierīcēs."
-      }
+      },
+      "subtitle_help_label": "Palīdzība pieteikšanās un reģistrācijas jautājumos",
+      "connect_section_subtitle": "Piesakieties un sinhronizējiet datus starp ierīcēm.",
+      "connect_device_only_section_subtitle": "Glabājiet datus tikai šajā ierīcē.",
+      "create_section_subtitle": "Reģistrējieties un izveidojiet jaunu ģimeni/grupu."
     }
   }
 }

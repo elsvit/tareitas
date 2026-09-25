@@ -22,6 +22,9 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 8,
   },
+  headerTitle: {
+    color: Colors.grey900,
+  },
   option: {
     paddingHorizontal: 16,
     paddingVertical: 14,

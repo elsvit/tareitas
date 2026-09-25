@@ -22,6 +22,7 @@ import { TaskStatusBadge } from '~/components/tasks/TaskStatusBadge';
 import { TaskRewardBadge } from '~/components/tasks/TaskRewardBadge';
 import { TaskRewardStarsAnimation } from '~/components/tasks/TaskRewardStarsAnimation';
 import { Text } from '~/components/ui';
+import { ListItemImageEditOverlay } from '~/components/ui/ListItemImageEditOverlay';
 import { ResolvedPicture } from '~/components/ui/ResolvedPicture/ResolvedPicture';
 import {
   SUBTASKS_PHOTOS_MAXIMUM,
@@ -544,7 +545,9 @@ export const TaskListItem: React.FC<Props> = ({
     );
   };
 
-  const leftColumnContent = renderEditPressable(
+  const showEditIcon = !isChildView && Boolean(onPress);
+
+  const leftColumnContent = (
     <View style={styles.leftColumn}>
       {!!childName && !isChildView && (
         <Text
@@ -558,26 +561,31 @@ export const TaskListItem: React.FC<Props> = ({
         </Text>
       )}
 
-      <View style={styles.imageContainer}>
-        <ResolvedPicture
-          picture={picture}
-          customUrls={customUrls}
-          builtInImages={BASE_TASKS_IMAGES}
-          style={styles.image}
-          contentFit="contain"
-          placeholder={
-            <View style={styles.placeholder}>
-              <Text fontFamily="fredoka" weight="bold">
-                🎯
-              </Text>
-            </View>
-          }
-        />
-      </View>
+      <ListItemImageEditOverlay
+        show={showEditIcon}
+        iconColor={taskColor}
+        onPress={showEditIcon ? debouncedOnPress : undefined}
+      >
+        <View style={styles.imageContainer}>
+          <ResolvedPicture
+            picture={picture}
+            customUrls={customUrls}
+            builtInImages={BASE_TASKS_IMAGES}
+            style={styles.image}
+            contentFit="contain"
+            placeholder={
+              <View style={styles.placeholder}>
+                <Text fontFamily="fredoka" weight="bold">
+                  🎯
+                </Text>
+              </View>
+            }
+          />
+        </View>
+      </ListItemImageEditOverlay>
 
       <TaskRewardBadge reward={reward} rewardDisplayText={rewardDisplayText} />
-    </View>,
-    styles.leftColumnPressable,
+    </View>
   );
 
   const taskName = (
@@ -586,7 +594,7 @@ export const TaskListItem: React.FC<Props> = ({
       fontFamily="fredoka"
       weight="bold"
       numberOfLines={2}
-      style={{ color: taskColor, lineHeight: 24 }}
+      style={[styles.titleText, { color: taskColor }]}
     >
       {name}
     </Text>
@@ -947,6 +955,11 @@ const styles = StyleSheet.create({
     flex: 1,
     minWidth: 0,
     marginRight: 8,
+  },
+  titleText: {
+    flex: 1,
+    minWidth: 0,
+    lineHeight: 24,
   },
 
   topRow: {
