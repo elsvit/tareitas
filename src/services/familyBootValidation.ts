@@ -1,3 +1,4 @@
+import { isSessionIdleExpired } from '~/constants/session';
 import { refreshAuthToken } from '~/services/api/authApi';
 import { fetchFamilyDetails } from '~/services/api/familiesApi';
 import { ApiError } from '~/services/api/client';
@@ -14,6 +15,7 @@ import {
   selectAuthToken,
   selectFamilyId,
   selectHasAuthSession,
+  selectLastSessionActivityAt,
   selectRefreshToken,
   selectSyncMode,
 } from '~/store/settings/selectors';
@@ -205,35 +207,65 @@ async function lockProfileSessionOnBoot(
     return;
   }
 
-  applyProfileLogout(dispatch);
-
-  if (syncMode !== ESyncMode.multidevice) {
+  if (syncMode === ESyncMode.deviceOnly) {
+    applyProfileLogout(dispatch);
     await persistSharedSettingsState(getState);
     return;
   }
 
-  const refreshToken = selectRefreshToken(getState());
+  const idleExpired = isSessionIdleExpired(
+    selectLastSessionActivityAt(getState()),
+  );
 
-  if (refreshToken) {
+  const refreshTokensOnBoot = async (): Promise<boolean> => {
+    const refreshToken = selectRefreshToken(getState());
+
+    if (!refreshToken) {
+      return false;
+    }
+
     try {
       const tokens = await refreshAuthToken(refreshToken);
+
       dispatch(
         updateAuthTokens({
           authToken: tokens.accessToken,
           refreshToken: tokens.refreshToken,
         }),
       );
-      await persistSharedSettingsState(getState);
-      return;
+
+      return true;
     } catch {
-      dispatch(clearAuthTokens());
+      return false;
     }
-  } else {
+  };
+
+  const endCloudProfileSession = async () => {
     dispatch(clearAuthTokens());
+    applyProfileLogout(dispatch);
+    dispatch(setRequireLogin(false));
+    await persistSharedSettingsState(getState);
+  };
+
+  if (idleExpired) {
+    await endCloudProfileSession();
+    return;
   }
 
-  dispatch(setRequireLogin(false));
-  await persistSharedSettingsState(getState);
+  let sessionOk = selectHasAuthSession(getState());
+
+  if (!sessionOk) {
+    sessionOk = await refreshTokensOnBoot();
+  } else if (!selectAuthToken(getState())) {
+    sessionOk = await refreshTokensOnBoot();
+  }
+
+  if (sessionOk) {
+    await persistSharedSettingsState(getState);
+    return;
+  }
+
+  await endCloudProfileSession();
 }
 
 async function clearStalePendingOnboardingOnBoot(
