@@ -1,124 +1,74 @@
 import { useEffect, useRef } from 'react';
 import { AppState, type AppStateStatus } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  useGlobalSearchParams,
-  usePathname,
-  useRouter,
-  useSegments,
-} from 'expo-router';
 
 import { selectParentIds } from '~/store/parents/selectors';
+import { applyProfileLogout } from '~/services/sessionProfile';
 import {
+  selectFamilyId,
   selectHasAuthSession,
   selectIsMultidevice,
   selectIsSessionPaused,
-  selectRequireLogin,
+  selectSyncMode,
 } from '~/store/settings/selectors';
 import { store } from '~/store/store';
-import type { PendingReturnRoute } from '~/store/settings/types';
+import { ESyncMode } from '~/store/settings/enums';
 import {
   resumeMultideviceSession,
-  setPendingReturnRoute,
   touchSessionActivity,
 } from '~/store/settings/slice';
 
-const ONBOARDING_SETUP_PATH = '/(onboarding)?setup=1';
+function hasConfiguredFamily(state: ReturnType<typeof store.getState>): boolean {
+  const syncMode = selectSyncMode(state);
 
-function isOnboardingRoute(segments: string[]): boolean {
-  return segments.some(segment => segment === '(onboarding)');
-}
-
-function normalizeReturnParams(
-  params: Record<string, string | string[] | undefined>,
-): Record<string, string> | undefined {
-  const entries = Object.entries(params).flatMap(
-    ([key, value]) => {
-      if (value === undefined) {
-        return [];
-      }
-
-      return [[key, Array.isArray(value) ? value[0] : value]];
-    },
-  );
-
-  if (!entries.length) {
-    return undefined;
+  if (syncMode === ESyncMode.deviceOnly) {
+    return selectParentIds(state).length > 0;
   }
 
-  return Object.fromEntries(entries);
+  if (syncMode === ESyncMode.multidevice) {
+    return (
+      selectParentIds(state).length > 0 || Boolean(selectFamilyId(state))
+    );
+  }
+
+  return false;
 }
 
 export const useCatalogForegroundSync = () => {
   const dispatch = useDispatch();
-  const router = useRouter();
-  const pathname = usePathname();
-  const segments = useSegments();
-  const searchParams = useGlobalSearchParams();
+  const syncMode = useSelector(selectSyncMode);
   const isMultidevice = useSelector(selectIsMultidevice);
   const hasAuthSession = useSelector(selectHasAuthSession);
-  const requireLogin = useSelector(selectRequireLogin);
   const isSessionPaused = useSelector(selectIsSessionPaused);
-  const parentIds = useSelector(selectParentIds);
   const appState = useRef(AppState.currentState);
   const isSessionPausedRef = useRef(isSessionPaused);
-  const hasRedirectedToLoginRef = useRef(false);
 
   isSessionPausedRef.current = isSessionPaused;
 
-  const returnRouteParamsKey = JSON.stringify(
-    normalizeReturnParams(searchParams) ?? null,
-  );
-
   useEffect(() => {
-    if (!requireLogin) {
-      hasRedirectedToLoginRef.current = false;
-      return;
-    }
-
-    if (
-      isSessionPaused ||
-      parentIds.length > 0 ||
-      isOnboardingRoute(segments) ||
-      hasRedirectedToLoginRef.current
-    ) {
-      return;
-    }
-
-    hasRedirectedToLoginRef.current = true;
-
-    const returnRoute: PendingReturnRoute = {
-      pathname,
-      params: normalizeReturnParams(searchParams),
-    };
-
-    dispatch(setPendingReturnRoute(returnRoute));
-    router.replace(ONBOARDING_SETUP_PATH);
-  }, [
-    dispatch,
-    parentIds.length,
-    pathname,
-    requireLogin,
-    returnRouteParamsKey,
-    router,
-    searchParams,
-    segments,
-    isSessionPaused,
-  ]);
-
-  useEffect(() => {
-    if (!isMultidevice || !hasAuthSession) {
-      return;
-    }
-
     const handleAppStateChange = (nextState: AppStateStatus) => {
       const previousState = appState.current;
+      const state = store.getState();
 
       if (nextState === 'background') {
-        dispatch(touchSessionActivity());
+        if (isMultidevice && hasAuthSession) {
+          dispatch(touchSessionActivity());
+        }
+
+        if (
+          !selectIsSessionPaused(state) &&
+          hasConfiguredFamily(state)
+        ) {
+          applyProfileLogout(dispatch);
+        }
       }
 
-      if (previousState === 'background' && nextState === 'active') {
+      if (
+        previousState === 'background' &&
+        nextState === 'active' &&
+        isMultidevice &&
+        hasAuthSession
+      ) {
         const isPaused = selectIsSessionPaused(store.getState());
 
         if (!isPaused) {
@@ -137,5 +87,5 @@ export const useCatalogForegroundSync = () => {
     return () => {
       subscription.remove();
     };
-  }, [dispatch, hasAuthSession, isMultidevice]);
+  }, [dispatch, hasAuthSession, isMultidevice, syncMode]);
 };

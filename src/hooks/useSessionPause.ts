@@ -2,36 +2,10 @@ import { useCallback, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import type { AppDispatch } from '~/store';
-import { store } from '~/store/store';
-import { selectParentIds } from '~/store/parents/selectors';
-import {
-  selectHasAuthSession,
-  selectIsMultidevice,
-  selectSessionPauseCount,
-} from '~/store/settings/selectors';
 import {
   pauseSessionChecks,
   resumeSessionChecks,
-  setRequireLogin,
 } from '~/store/settings/slice';
-
-function syncRequireLoginAfterPause() {
-  const state = store.getState();
-  const pauseCount = selectSessionPauseCount(state);
-
-  if (pauseCount > 0) {
-    return;
-  }
-
-  const isMultidevice = selectIsMultidevice(state);
-  const hasAuthSession = selectHasAuthSession(state);
-
-  const hasLocalFamily = selectParentIds(state).length > 0;
-
-  if (isMultidevice && !hasAuthSession && !hasLocalFamily) {
-    store.dispatch(setRequireLogin(true));
-  }
-}
 
 export function useMediaSessionPause(active: boolean) {
   const dispatch = useDispatch<AppDispatch>();
@@ -45,7 +19,6 @@ export function useMediaSessionPause(active: boolean) {
 
     return () => {
       dispatch(resumeSessionChecks());
-      syncRequireLoginAfterPause();
     };
   }, [active, dispatch]);
 }
@@ -62,7 +35,6 @@ export function useSessionPause() {
         return await operation();
       } finally {
         dispatch(resumeSessionChecks());
-        syncRequireLoginAfterPause();
       }
     },
     [dispatch],

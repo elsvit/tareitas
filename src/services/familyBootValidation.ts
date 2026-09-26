@@ -23,10 +23,14 @@ import { addParentSuccess, clearParents } from '~/store/parents/slice';
 import {
   clearActiveSyncMode,
   clearAuthSession,
+  clearAuthTokens,
   setCurrentRole,
   setCurrentUser,
   setPendingOnboardingChildUserId,
+  setRequireLogin,
+  updateAuthTokens,
 } from '~/store/settings/slice';
+import { applyProfileLogout } from '~/services/sessionProfile';
 import { selectPendingOnboardingChildUserId } from '~/store/settings/selectors';
 import { shouldResumeOnboardingChildProfile } from '~/utils/onboarding/pendingOnboardingChild';
 import type { AppDispatch } from '~/store/store';
@@ -179,6 +183,59 @@ export async function signOutAndClearFamilyData(
   }
 }
 
+async function lockProfileSessionOnBoot(
+  dispatch: AppDispatch,
+  getState: () => IState,
+): Promise<void> {
+  const syncMode = selectSyncMode(getState());
+
+  if (
+    syncMode !== ESyncMode.deviceOnly &&
+    syncMode !== ESyncMode.multidevice
+  ) {
+    return;
+  }
+
+  const hasFamily =
+    selectParentIds(getState()).length > 0 ||
+    (syncMode === ESyncMode.multidevice &&
+      Boolean(selectFamilyId(getState())));
+
+  if (!hasFamily) {
+    return;
+  }
+
+  applyProfileLogout(dispatch);
+
+  if (syncMode !== ESyncMode.multidevice) {
+    await persistSharedSettingsState(getState);
+    return;
+  }
+
+  const refreshToken = selectRefreshToken(getState());
+
+  if (refreshToken) {
+    try {
+      const tokens = await refreshAuthToken(refreshToken);
+      dispatch(
+        updateAuthTokens({
+          authToken: tokens.accessToken,
+          refreshToken: tokens.refreshToken,
+        }),
+      );
+      await persistSharedSettingsState(getState);
+      return;
+    } catch {
+      dispatch(clearAuthTokens());
+    }
+  } else {
+    dispatch(clearAuthTokens());
+  }
+
+  dispatch(setRequireLogin(false));
+  await persistSharedSettingsState(getState);
+}
+
 async function clearStalePendingOnboardingOnBoot(
   dispatch: AppDispatch,
   getState: () => IState,
@@ -202,6 +259,7 @@ export async function validatePersistedFamilyOnBoot(
   getState: () => IState,
 ): Promise<void> {
   await clearStalePendingOnboardingOnBoot(dispatch, getState);
+  await lockProfileSessionOnBoot(dispatch, getState);
 
   const syncMode = selectSyncMode(getState());
 

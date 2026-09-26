@@ -15,6 +15,7 @@ import {
   selectRefreshToken,
 } from '~/store/settings/selectors';
 import {
+  endProfileSession,
   clearAuthTokens,
   setRequireLogin,
   touchSessionActivity,
@@ -47,7 +48,8 @@ export function* invalidateAuthSession(): Generator<
   yield put(clearAuthTokens());
 
   if (!isPaused) {
-    yield put(setRequireLogin(true));
+    yield put(endProfileSession());
+    yield put(setRequireLogin(false));
   }
 }
 

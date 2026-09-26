@@ -90,6 +90,11 @@ export const settingsSlice = createSlice({
     setCurrentRole: (state, action: PayloadAction<ERole | null>) => {
       state.currentRole = action.payload;
     },
+    /** Clears the active profile (PIN session) only; family data stays loaded. */
+    endProfileSession: state => {
+      state.currentUser = null;
+      state.currentRole = null;
+    },
     setTaskCalendarDate: (state, action: PayloadAction<string>) => {
       state.taskCalendarDate = resolveCalendarDateString(action.payload);
     },
@@ -288,6 +293,7 @@ export const {
   setIsChildHasChangeFamily,
   setShowLoginName,
   setShowParentLoginName,
+  endProfileSession,
   setCurrentRole,
   setCurrentUser,
   setTaskCalendarDate,
