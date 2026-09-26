@@ -16,7 +16,7 @@ import { t } from '~/services';
 import { ESyncMode } from '~/store/settings/enums';
 import { selectParentIds } from '~/store/parents/selectors';
 import { selectLang } from '~/store/settings/selectors';
-import { LOGIN_SIGNUP_HELP_URL } from '~/constants/helpCenter';
+import { getLoginSignupHelpUrl } from '~/constants/helpCenter';
 import { getPrivacyPolicyUrl } from '~/utils/privacyPolicyUrl';
 import type { AppDispatch } from '~/store/store';
 import { persistor } from '~/store/store';
@@ -193,6 +193,10 @@ export function OnboardingSyncModeStep({
     () => getPrivacyPolicyUrl(appLang),
     [appLang],
   );
+  const loginSignupHelpUrl = useMemo(
+    () => getLoginSignupHelpUrl(appLang),
+    [appLang],
+  );
   const [isLoadingDeviceOnlyFamily, setIsLoadingDeviceOnlyFamily] =
     useState(false);
   const [deviceOnlyLoadVersion, setDeviceOnlyLoadVersion] = useState(0);
@@ -243,13 +247,13 @@ export function OnboardingSyncModeStep({
 
   const handleSubtitleHelpPress = useCallback(async () => {
     try {
-      await openBrowserAsync(LOGIN_SIGNUP_HELP_URL, {
+      await openBrowserAsync(loginSignupHelpUrl, {
         presentationStyle: WebBrowserPresentationStyle.AUTOMATIC,
       });
     } catch (error) {
       console.error('[Tareitas] Failed to open login/signup help', error);
     }
-  }, []);
+  }, [loginSignupHelpUrl]);
 
   const handleSetupPathChange = useCallback(
     async (path: OnboardingSetupPath) => {
@@ -315,7 +319,7 @@ export function OnboardingSyncModeStep({
     <View testID="onboarding-setup-screen">
       <OnboardingStepHeader
         description={t('onboarding.sync_mode.subtitle')}
-        descriptionHelpUrl={LOGIN_SIGNUP_HELP_URL}
+        descriptionHelpUrl={loginSignupHelpUrl}
         onDescriptionHelpPress={handleSubtitleHelpPress}
         accentColor={Colors.blue600}
       />

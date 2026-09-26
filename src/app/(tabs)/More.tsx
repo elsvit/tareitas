@@ -2,9 +2,9 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { ScrollView } from 'react-native';
 
 import { useRouter } from 'expo-router';
-import { useSelector } from 'react-redux';
 import { Divider, List } from 'react-native-paper';
 import { SvgProps } from 'react-native-svg';
+import { useSelector } from 'react-redux';
 
 import CheckCircleIcon from '~/assets/svg/common/check-circle-outline.svg';
 import ChevronDownIcon from '~/assets/svg/common/chevron-down.svg';
@@ -20,10 +20,10 @@ import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeArea
 import { SCREEN_TEXT } from '~/constants/formField';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { useDebouncedPress } from '~/hooks/useDebouncedPress';
-import { selectLang } from '~/store/settings/selectors';
 import { useIsPro } from '~/hooks/useIsPro';
 import { useSubscription } from '~/hooks/useSubscription';
 import { t } from '~/services';
+import { selectLang } from '~/store/settings/selectors';
 import { spacing, styleSheetFactory } from '~/styles';
 import { Colors } from '~/styles/colors';
 import { useStyle } from '~/styles/hooks';
@@ -43,6 +43,14 @@ export interface IMoreItem {
 }
 
 export default function More() {
+  // TODO remove below test code
+  // const key = process.env.EXPO_PUBLIC_REVENUECAT_IOS_API_KEY;
+  // console.log(
+  //   'TEST49 [RevenueCat] iOS key:',
+  //   key ? `${key.substring(0, 8)}...` : 'MISSING'
+  // );
+  //
+
   const router = useRouter();
   const { user: currentUser, isParent } = useCurrentUser();
   const { isPro } = useIsPro();
