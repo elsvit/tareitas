@@ -10,6 +10,7 @@ import {
 } from '~/components/modals';
 import type { SelectedUser } from '~/components/modals';
 import { t } from '~/services';
+import { recordThisDeviceUserLogin } from '~/services/localNotifications/thisDeviceUsers';
 import { prepareFamilyChangeScreen } from '~/services/familyPersistMode';
 import {
   applyAuthTokensFromLogin,
@@ -94,6 +95,7 @@ export function useUserSwitch() {
       dispatch(setCurrentUser(user.id));
       dispatch(setCurrentRole(user.role));
       dispatch(setTaskCalendarDate(getTodayDateString()));
+      recordThisDeviceUserLogin(dispatch, user.id);
       setPendingUser(null);
       setIsPinModalVisible(false);
       setIsGestureModalVisible(false);

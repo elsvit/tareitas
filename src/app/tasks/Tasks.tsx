@@ -16,6 +16,7 @@ import { TaskCalendarHeader } from '~/components/tasks/TaskCalendarHeader';
 import { TaskListItem } from '~/components/tasks/TaskListItem';
 import { TaskScreenFabs } from '~/components/tasks/TaskScreenFabs';
 import { Text } from '~/components/ui';
+import { useChildTaskLocalNotifications } from '~/hooks/useChildTaskLocalNotifications';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { useHasCompletedTasksInPast } from '~/hooks/useHasCompletedTasksInPast';
 import { useMultideviceScreenSync } from '~/hooks/useMultideviceScreenSync';
@@ -72,6 +73,12 @@ export default function Tasks() {
 
   useSyncEarnedRewardPeriods();
   useMultideviceScreenSync('tasks');
+
+  useChildTaskLocalNotifications({
+    childId: isChild ? currentUserId : null,
+    selectedDate,
+    enabled: isChild && !!currentUserId,
+  });
 
   const assignments = useSelector(selectAllTaskAssignment);
   const usesCloudSync = useSelector(selectUsesCloudSync);

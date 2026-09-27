@@ -6,6 +6,8 @@ import { ELang } from '~/types/ELang';
 import { getTodayDateString, resolveCalendarDateString } from '~/utils/date';
 import type { IFamilySubscription } from '~/types/ISubscription';
 
+import type { IIdDate } from '~/types/IIdDate';
+
 import type { IStateSettings, PendingReturnRoute, SetLanguagePayload } from './types';
 
 function resetCloudSessionState(state: IStateSettings) {
@@ -53,6 +55,8 @@ const initialState: IStateSettings = {
   appInstalledAt: null,
   onboardingIntroCompleted: false,
   pendingOnboardingChildUserId: null,
+  thisDeviceUsers: [],
+  deliveredChildTaskLocalNotificationIds: [],
 };
 
 export const settingsSlice = createSlice({
@@ -281,6 +285,34 @@ export const settingsSlice = createSlice({
     ) => {
       state.pendingOnboardingChildUserId = action.payload;
     },
+    touchThisDeviceUser: (state, action: PayloadAction<IIdDate>) => {
+      const users = state.thisDeviceUsers ?? [];
+      const index = users.findIndex(user => user.id === action.payload.id);
+
+      if (index === -1) {
+        state.thisDeviceUsers = [...users, action.payload];
+        return;
+      }
+
+      state.thisDeviceUsers = users.map((user, userIndex) =>
+        userIndex === index ? action.payload : user,
+      );
+    },
+    markChildTaskLocalNotificationDelivered: (
+      state,
+      action: PayloadAction<string>,
+    ) => {
+      const delivered = state.deliveredChildTaskLocalNotificationIds ?? [];
+
+      if (delivered.includes(action.payload)) {
+        return;
+      }
+
+      state.deliveredChildTaskLocalNotificationIds = [
+        ...delivered,
+        action.payload,
+      ];
+    },
   },
 });
 
@@ -327,4 +359,6 @@ export const {
   ensureAppInstalledAt,
   setOnboardingIntroCompleted,
   setPendingOnboardingChildUserId,
+  touchThisDeviceUser,
+  markChildTaskLocalNotificationDelivered,
 } = settingsSlice.actions;
