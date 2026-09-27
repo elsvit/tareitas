@@ -42,6 +42,9 @@ export const styles = StyleSheet.create({
     textAlign: 'left',
     includeFontPadding: false,
   },
+  labelDisabled: {
+    color: Colors.grey500,
+  },
   iconActionButton: {
     width: 32,
     height: 32,

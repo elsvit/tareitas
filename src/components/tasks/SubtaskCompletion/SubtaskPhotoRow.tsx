@@ -170,7 +170,7 @@ export function SubtaskPhotoRow({
           style={[
             styles.checkbox,
             checked && styles.checkboxChecked,
-            styles.checkboxDisabled,
+            disabled && styles.checkboxDisabled,
           ]}
         >
           {checked ? <Text style={styles.checkmark}>✓</Text> : null}
@@ -256,7 +256,9 @@ export function SubtaskPhotoRow({
           />
         ) : null}
 
-        <Text style={styles.label}>{subtask.label}</Text>
+        <Text style={[styles.label, disabled && styles.labelDisabled]}>
+          {subtask.label}
+        </Text>
       </View>
 
       {error ? <Text style={styles.errorText}>{error}</Text> : null}

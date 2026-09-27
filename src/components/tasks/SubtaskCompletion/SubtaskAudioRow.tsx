@@ -225,7 +225,7 @@ export function SubtaskAudioRow({
           style={[
             styles.checkbox,
             checked && styles.checkboxChecked,
-            styles.checkboxDisabled,
+            disabled && styles.checkboxDisabled,
           ]}
         >
           {checked ? <Text style={styles.checkmark}>✓</Text> : null}
@@ -328,7 +328,9 @@ export function SubtaskAudioRow({
           </>
         )}
 
-        <Text style={styles.label}>{subtask.label}</Text>
+        <Text style={[styles.label, disabled && styles.labelDisabled]}>
+          {subtask.label}
+        </Text>
       </View>
 
       {isRecording ? (

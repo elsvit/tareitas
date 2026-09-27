@@ -477,6 +477,8 @@ export const TaskListItem: React.FC<Props> = ({
     evaluateSubtaskCompletion(nextCompleted, completedAudioRecords, nextPhotos);
   };
 
+  const canEditSubtasks = canChildModifyTask && !isStatusUpdating;
+
   const renderRegularSubtaskRow = (subtask: ISubtask) => {
     const checked = isSubtaskComplete(
       subtask,
@@ -489,25 +491,33 @@ export const TaskListItem: React.FC<Props> = ({
       <Pressable
         key={subtask.value}
         onPress={() =>
-          canChildModifyTask
+          canEditSubtasks
             ? handleToggleSubtask(subtask.value, !checked)
             : undefined
         }
-        disabled={!canChildModifyTask || isStatusUpdating}
+        disabled={!canEditSubtasks}
         accessibilityRole="checkbox"
-        accessibilityState={{ checked }}
-        style={styles.subtaskRow}
+        accessibilityState={{ checked, disabled: !canEditSubtasks }}
+        style={[styles.subtaskRow, !canEditSubtasks && styles.subtaskRowDisabled]}
       >
         <View
           style={[
             styles.subtaskCheckbox,
             checked && styles.subtaskCheckboxChecked,
+            !canEditSubtasks && styles.subtaskCheckboxDisabled,
           ]}
         >
           {checked ? <Text style={styles.subtaskCheckmark}>✓</Text> : null}
         </View>
         <View style={styles.subtaskLabelWrapper}>
-          <Text style={styles.subtaskLabel}>{subtask.label}</Text>
+          <Text
+            style={[
+              styles.subtaskLabel,
+              !canEditSubtasks && styles.subtaskLabelDisabled,
+            ]}
+          >
+            {subtask.label}
+          </Text>
         </View>
       </Pressable>
     );
@@ -789,7 +799,7 @@ export const TaskListItem: React.FC<Props> = ({
                           completedAudioRecords,
                           completedPhotos,
                         )}
-                        disabled={!canChildModifyTask || isStatusUpdating}
+                        disabled={!canEditSubtasks}
                         isCaptureDisabled={audioLimits.isCaptureDisabled}
                         showSubscriptionHelp={audioLimits.showSubscriptionHelp}
                         onSubscriptionHelpPress={() =>
@@ -836,7 +846,7 @@ export const TaskListItem: React.FC<Props> = ({
                           completedAudioRecords,
                           completedPhotos,
                         )}
-                        disabled={!canChildModifyTask || isStatusUpdating}
+                        disabled={!canEditSubtasks}
                         isCaptureDisabled={photoLimits.isCaptureDisabled}
                         showSubscriptionHelp={photoLimits.showSubscriptionHelp}
                         onSubscriptionHelpPress={() =>
@@ -1110,6 +1120,10 @@ const styles = StyleSheet.create({
     gap: 8,
   },
 
+  subtaskRowDisabled: {
+    opacity: 0.55,
+  },
+
   subtaskCheckbox: {
     width: 22,
     height: 22,
@@ -1127,6 +1141,10 @@ const styles = StyleSheet.create({
     borderColor: Colors.green500,
   },
 
+  subtaskCheckboxDisabled: {
+    borderColor: Colors.grey400,
+  },
+
   subtaskCheckmark: {
     color: '#FFFFFF',
     fontSize: 13,
@@ -1142,6 +1160,10 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     textAlign: 'left',
     includeFontPadding: false,
+  },
+
+  subtaskLabelDisabled: {
+    color: Colors.grey500,
   },
 
   subtaskLabelWrapper: {
