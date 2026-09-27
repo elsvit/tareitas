@@ -1,4 +1,5 @@
 import { ELang } from '~/types/ELang';
+import type { IIdDate } from '~/types/IIdDate';
 import type { IFamilySubscription } from '~/types/ISubscription';
 import { ERole, ESyncMode } from '~/store/settings/enums';
 
@@ -39,6 +40,10 @@ export interface IStateSettings {
   onboardingIntroCompleted?: boolean;
   /** Non-null while multidevice signup waits for the child profile step. */
   pendingOnboardingChildUserId?: string | null;
+  /** Device-local login dates; never synced to the server. */
+  thisDeviceUsers?: IIdDate[];
+  /** Local child-task notification IDs already delivered on this device. */
+  deliveredChildTaskLocalNotificationIds?: string[];
 }
 
 export type PendingReturnRoute = {

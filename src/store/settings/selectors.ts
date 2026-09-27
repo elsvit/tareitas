@@ -311,3 +311,13 @@ export const selectPendingRemovedRewardBaseIds = (
 export const selectIsRewardsDataSyncing = (state: RootStateT) =>
   state[EStateName.common][ECommonActions.LOADING][syncRewardsData.type] ??
   false;
+
+export const selectThisDeviceUsers = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>).thisDeviceUsers ??
+  [];
+
+export const selectDeliveredChildTaskLocalNotificationIds = (
+  state: RootStateT,
+) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .deliveredChildTaskLocalNotificationIds ?? [];

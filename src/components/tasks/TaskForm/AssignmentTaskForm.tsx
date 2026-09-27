@@ -30,6 +30,10 @@ import { SelectColor } from '~/components/ui/SelectColor';
 import { SelectImageWithCustom } from '~/components/ui/SelectImage/SelectImageWithCustom';
 import { SelectMulti } from '~/components/ui/SelectMulti';
 import {
+  DEFAULT_NOTIFY_BEFORE_MINUTES,
+  MIN_NOTIFY_BEFORE_MINUTES,
+} from '~/constants/localNotifications';
+import {
   DEFAULT_BASE_TASK_COLOR,
   DEFAULT_HABIT_ASSIGNMENT_COLOR,
   DEFAULT_TASK_ASSIGNMENT_COLOR,
@@ -121,6 +125,8 @@ type FormValues = {
   hasNewTaskBonus: boolean;
   newTaskBonus?: number | null;
   newTaskDuration?: number | null;
+  notificationEnabled: boolean;
+  notifyBeforeMinutes?: number | null;
 };
 
 const COLOR_OPTIONS = Object.entries(userColors).map(([key, value]) => ({
@@ -211,6 +217,22 @@ const buildSchema = (repeats: boolean, isHabitForm = false) => {
         },
         z.number().nullable().optional(),
       ),
+      notificationEnabled: z.boolean(),
+      notifyBeforeMinutes: z.preprocess(
+        value => {
+          if (
+            value === '' ||
+            value === undefined ||
+            value === null ||
+            (typeof value === 'number' && Number.isNaN(value))
+          ) {
+            return null;
+          }
+
+          return value;
+        },
+        z.number().nullable().optional(),
+      ),
     })
     .superRefine((values, ctx) => {
       refineSubtasksField(values, ctx);
@@ -280,6 +302,22 @@ const buildSchema = (repeats: boolean, isHabitForm = false) => {
               t('tasks.new_task_duration_after_end_date') ||
               'Bonus duration cannot extend past end date',
             path: ['newTaskDuration'],
+          });
+        }
+      }
+
+      if (values.notificationEnabled) {
+        if (
+          values.notifyBeforeMinutes == null ||
+          values.notifyBeforeMinutes < MIN_NOTIFY_BEFORE_MINUTES ||
+          !Number.isInteger(values.notifyBeforeMinutes)
+        ) {
+          ctx.addIssue({
+            code: 'custom',
+            message:
+              t('tasks.notify_before_min') ||
+              `Notify before must be at least ${MIN_NOTIFY_BEFORE_MINUTES} minute`,
+            path: ['notifyBeforeMinutes'],
           });
         }
       }
@@ -393,6 +431,14 @@ const areAssignmentFormValuesEqual = (
   }
 
   if (current.newTaskDuration !== initial.newTaskDuration) {
+    return false;
+  }
+
+  if (current.notificationEnabled !== initial.notificationEnabled) {
+    return false;
+  }
+
+  if (current.notifyBeforeMinutes !== initial.notifyBeforeMinutes) {
     return false;
   }
 
@@ -524,6 +570,10 @@ export const AssignmentTaskForm: FC<Props> = ({
         fieldsForEditDate?.newTaskBonus ?? assignment?.newTaskBonus ?? null,
       newTaskDuration:
         fieldsForEditDate?.newTaskDuration ?? assignment?.newTaskDuration ?? null,
+      notificationEnabled: assignment?.localNotificationBeforeMinutes != null,
+      notifyBeforeMinutes:
+        assignment?.localNotificationBeforeMinutes ??
+        DEFAULT_NOTIFY_BEFORE_MINUTES,
     }),
     [
       assignment,
@@ -562,6 +612,7 @@ export const AssignmentTaskForm: FC<Props> = ({
   const repeats = formValues.repeats;
   const withSubtasks = formValues.withSubtasks;
   const hasNewTaskBonus = formValues.hasNewTaskBonus;
+  const notificationEnabled = formValues.notificationEnabled;
   const selectedColor = formValues.color;
   const watchedChildIds = formValues.childIds;
   const watchedStartDate = formValues.startDate;
@@ -904,6 +955,9 @@ export const AssignmentTaskForm: FC<Props> = ({
           newTaskBonus: undefined,
           newTaskDuration: undefined,
         }),
+      localNotificationBeforeMinutes: parsed.data.notificationEnabled
+        ? parsed.data.notifyBeforeMinutes ?? DEFAULT_NOTIFY_BEFORE_MINUTES
+        : undefined,
     };
 
     const payloads: TaskAssignmentFormProps[] = parsed.data.childIds.map(childId => ({
@@ -1430,6 +1484,101 @@ export const AssignmentTaskForm: FC<Props> = ({
                 </>
               )}
             />
+
+            <Space size={3} />
+
+            <View style={styles.switchRow}>
+              <Text style={styles.switchLabel}>
+                {t('tasks.notification')}
+              </Text>
+              <Controller
+                control={control}
+                name="notificationEnabled"
+                render={({ field: { value, onChange } }) => (
+                  <Switch
+                    value={value}
+                    onValueChange={nextValue => {
+                      onChange(nextValue);
+
+                      if (nextValue) {
+                        const currentMinutes = getValues('notifyBeforeMinutes');
+
+                        if (
+                          currentMinutes == null ||
+                          currentMinutes < MIN_NOTIFY_BEFORE_MINUTES
+                        ) {
+                          setValue(
+                            'notifyBeforeMinutes',
+                            DEFAULT_NOTIFY_BEFORE_MINUTES,
+                            { shouldValidate: true },
+                          );
+                        }
+                      } else {
+                        setValue('notifyBeforeMinutes', null, {
+                          shouldValidate: true,
+                        });
+                      }
+                    }}
+                  />
+                )}
+              />
+            </View>
+
+            {notificationEnabled && (
+              <>
+                <Space size={3} />
+
+                <View style={styles.row}>
+                  <View style={styles.firstInRow}>
+                    <Controller
+                      control={control}
+                      name="notifyBeforeMinutes"
+                      render={({ field: { value, onChange } }) => (
+                        <>
+                          <TextInput
+                            label={t('tasks.notify_before')}
+                            value={
+                              value != null && !Number.isNaN(value)
+                                ? String(value)
+                                : ''
+                            }
+                            onChangeText={text => {
+                              if (text.trim() === '') {
+                                onChange(null);
+                                return;
+                              }
+
+                              if (!/^\d+$/.test(text)) {
+                                return;
+                              }
+
+                              const parsedValue = Number(text);
+
+                              if (
+                                !Number.isNaN(parsedValue) &&
+                                parsedValue >= MIN_NOTIFY_BEFORE_MINUTES
+                              ) {
+                                onChange(parsedValue);
+                              }
+                            }}
+                            keyboardType="numeric"
+                            mode="outlined"
+                          />
+                          {!!errors.notifyBeforeMinutes && (
+                            <Text style={styles.errorText}>
+                              {errors.notifyBeforeMinutes.message}
+                            </Text>
+                          )}
+                        </>
+                      )}
+                    />
+                  </View>
+                  <View style={styles.secondInRow}>
+                    <Text>{t('time.min')}</Text>
+                  </View>
+                </View>
+              </>
+            )}
 
             {effectiveRepeats && (
               <>

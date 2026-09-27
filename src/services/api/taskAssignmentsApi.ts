@@ -24,6 +24,7 @@ export type ServerTaskAssignment = {
   newTaskBonus?: number;
   newTaskDuration?: number;
   subtasks?: ISubtask[];
+  localNotificationBeforeMinutes?: number | null;
   changes?: Record<string, ITaskAssignmentChange>;
   createdByUserId: string;
   createdAt: string;
@@ -46,6 +47,7 @@ type CreateTaskAssignmentBody = {
   newTaskBonus?: number;
   newTaskDuration?: number;
   subtasks?: ISubtask[];
+  localNotificationBeforeMinutes?: number;
   changes?: Record<string, ITaskAssignmentChange>;
 };
 
@@ -133,6 +135,8 @@ export function mapServerTaskAssignmentToLocal(
     newTaskBonus: server.newTaskBonus,
     newTaskDuration: server.newTaskDuration,
     subtasks: server.subtasks,
+    localNotificationBeforeMinutes:
+      server.localNotificationBeforeMinutes ?? undefined,
     changes: server.changes,
     createdBy: server.createdByUserId,
     createdAt: server.createdAt,
@@ -160,6 +164,12 @@ export function toCreateTaskAssignmentBody(
     newTaskDuration: entity.newTaskDuration,
     subtasks: entity.subtasks,
     changes: entity.changes,
+    ...(entity.localNotificationBeforeMinutes != null
+      ? {
+          localNotificationBeforeMinutes:
+            entity.localNotificationBeforeMinutes,
+        }
+      : {}),
   };
 }
 
@@ -168,5 +178,9 @@ export function toUpdateTaskAssignmentBody(
 ): UpdateTaskAssignmentBody {
   const { id: _id, ...body } = toCreateTaskAssignmentBody(entity);
 
-  return body;
+  return {
+    ...body,
+    localNotificationBeforeMinutes:
+      entity.localNotificationBeforeMinutes ?? null,
+  };
 }

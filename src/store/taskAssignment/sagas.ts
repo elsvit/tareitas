@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import {
   createTaskAssignment as createTaskAssignmentApi,
@@ -15,10 +15,13 @@ import {
   callMultideviceApi,
 } from '~/store/helpers/multideviceSession';
 import { resolveAndCacheTaskPicture } from '~/store/helpers/imageRefSync';
+import { cancelLocalNotificationsForAssignmentId } from '~/services/localNotifications/childTaskLocalNotifications';
+
 import {
   takeLatestWithFetchable,
   withFetchable,
 } from '../helpers/fetchableHandler';
+import { selectTaskAssignmentById } from './selectors';
 import {
   addTaskAssignment,
   addTaskAssignmentSuccess,
@@ -178,10 +181,26 @@ function* updateTaskAssignmentSaga(
   }
 }
 
+function* cancelAssignmentLocalNotifications(
+  assignmentId: string,
+): Generator<any, void, any> {
+  const assignment: ReturnType<ReturnType<typeof selectTaskAssignmentById>> =
+    yield select(selectTaskAssignmentById(assignmentId));
+
+  yield call(
+    cancelLocalNotificationsForAssignmentId,
+    assignmentId,
+    assignment?.childId,
+  );
+}
+
 function* removeTaskAssignmentSaga(
   action: PayloadAction<RemoveTaskAssignmentPayload>,
 ): Generator<any, void, any> {
   const { entity: id, onSuccess } = action.payload;
+
+  yield* cancelAssignmentLocalNotifications(id);
+
   const session = yield* assertMultideviceSession();
 
   if (!session) {
