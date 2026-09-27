@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Modal,
   Pressable,
@@ -41,6 +41,7 @@ type Props = {
   onLogout: () => void;
   onChangeGroup?: () => void;
   showChangeGroup?: boolean;
+  onNoParents?: () => void;
 };
 
 const toParentUser = (parent: IParent): SelectedUser => ({
@@ -67,9 +68,16 @@ export const SelectUsersModal: React.FC<Props> = ({
   onLogout,
   onChangeGroup,
   showChangeGroup = false,
+  onNoParents,
 }) => {
   const parents = useSelector(selectAllParents);
   const children = useSelector(selectAllChildren);
+
+  useEffect(() => {
+    if (isVisible && parents.length === 0) {
+      onNoParents?.();
+    }
+  }, [isVisible, onNoParents, parents.length]);
   const showParentLoginName = useSelector(selectShowParentLoginName);
   const showChildLoginName = useSelector(selectShowLoginName);
 

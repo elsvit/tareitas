@@ -78,6 +78,7 @@ import { TaskRecordField } from '~/components/tasks/TaskRecordField';
 import { SelectDate } from '~/components/ui/SelectDate';
 import { SelectTime } from '~/components/ui/SelectTime';
 import { normalizeTimeString } from '~/components/ui/SelectTime/SelectTime.utils';
+import { TaskFormSaveErrors } from './taskFormSaveErrors';
 import { styles } from './styles';
 
 type Props = {
@@ -545,7 +546,7 @@ export const AssignmentTaskForm: FC<Props> = ({
     getValues,
     setValue,
     setError,
-    formState: { errors },
+    formState: { errors, submitCount },
   } = useForm<FormValues>({
     defaultValues: initialFormSnapshot,
     mode: 'onChange',
@@ -1593,6 +1594,12 @@ export const AssignmentTaskForm: FC<Props> = ({
             >
               {t('button.save')}
             </Button>
+
+            <TaskFormSaveErrors
+              errors={errors}
+              submitCount={submitCount}
+              variant="assignment"
+            />
 
             {submitError ? (
               <>
