@@ -1,7 +1,7 @@
 import {
-  AudioQuality,
-  IOSOutputFormat,
-  type RecordingOptions,
+    AudioQuality,
+    IOSOutputFormat,
+    type RecordingOptions,
 } from 'expo-audio';
 
 /** Mono voice capture at 24 kHz — good for short task instructions. */
@@ -12,7 +12,7 @@ export const TASK_RECORD_BITRATE = 32000;
 
 export const TASK_RECORD_CHANNELS = 1;
 
-export const SUBTASK_RECORD_MAX_DURATION = 120;
+export const SUBTASK_RECORD_MAX_DURATION = 120; // 2 minutes
 
 /**
  * Compact AAC recording preset for task voice notes.

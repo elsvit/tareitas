@@ -41,6 +41,7 @@ import {
 } from '~/utils/tasks/subtaskLimits';
 
 import { selectIsParent } from '~/store/settings/selectors';
+import { TaskFormSaveErrors } from './taskFormSaveErrors';
 import { styles } from './styles';
 
 type Props = {
@@ -123,7 +124,7 @@ export const BaseTaskForm: FC<Props> = ({
     watch,
     getValues,
     setError,
-    formState: { errors },
+    formState: { errors, submitCount },
   } = useForm<FormValues>({
     defaultValues: {
       name: task?.name ?? '',
@@ -451,6 +452,13 @@ export const BaseTaskForm: FC<Props> = ({
             >
               {t('button.save')}
             </Button>
+
+            <TaskFormSaveErrors
+              errors={errors}
+              submitCount={submitCount}
+              variant="base"
+            />
+
             {isEditMode && canManageBaseTasks && (
               <>
                 <Space size={3} />

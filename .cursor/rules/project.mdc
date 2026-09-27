@@ -1,3 +1,13 @@
 ---
+description: Tareitas project rules
 alwaysApply: true
 ---
+
+# Tareitas Rules
+
+- Use TypeScript.
+- Use existing project dependencies whenever possible.
+- Do not use `any` unless absolutely necessary.
+- Do not modify unrelated code.
+- Follow the existing project architecture.
+- Keep business logic out of UI components.

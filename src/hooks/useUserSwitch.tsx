@@ -15,6 +15,8 @@ import {
   applyAuthTokensFromLogin,
 } from '~/services/familySync';
 import type { AppDispatch } from '~/store';
+import { selectAllParents } from '~/store/parents/selectors';
+import { store } from '~/store/store';
 import {
   selectHasAuthSession,
   selectIsChild,
@@ -58,9 +60,19 @@ export function useUserSwitch() {
   const [pinAttempt, setPinAttempt] = useState(0);
   const [isVerifyingPassword, setIsVerifyingPassword] = useState(false);
 
+  const redirectToLoginSignup = useCallback(() => {
+    setIsSelectUsersVisible(false);
+    router.replace('/(onboarding)?setup=1');
+  }, [router]);
+
   const openSelectUsers = useCallback(() => {
+    if (selectAllParents(store.getState()).length === 0) {
+      redirectToLoginSignup();
+      return;
+    }
+
     setIsSelectUsersVisible(true);
-  }, []);
+  }, [redirectToLoginSignup]);
 
   const closeSelectUsers = useCallback(() => {
     setIsSelectUsersVisible(false);
@@ -239,6 +251,7 @@ export function useUserSwitch() {
         onLogout={handleLogout}
         onChangeGroup={handleChangeGroup}
         showChangeGroup={showChangeGroup}
+        onNoParents={redirectToLoginSignup}
       />
 
       <OTPInputModal
