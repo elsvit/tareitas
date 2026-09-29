@@ -32,7 +32,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "notification": {
-        "icon": "./assets/images/notification-star-96.png",
+        "icon": "./assets/images/notification-96.png",
         "color": "#016FE8"
       },
       "edgeToEdgeEnabled": true,
