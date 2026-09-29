@@ -243,19 +243,19 @@
     "has_new_task_bonus": "Has new task bonus",
     "invalid_date": "Use YYYY-MM-DD format",
     "invalid_time": "Use HH:mm format",
-    "new_task_bonus": "New task bonus",
     "local_notification_body": "{{title}} starts in {{minutes}} min",
     "local_notification_title": "Upcoming task",
+    "new_task_bonus": "New task bonus",
     "new_task_bonus_positive": "New task bonus must be greater than 0",
     "new_task_duration": "Bonus duration (days)",
     "new_task_duration_after_end_date": "Bonus duration cannot extend past end date",
     "new_task_duration_positive": "Duration must be at least 1 day",
-    "notification": "Notification",
-    "notify_before": "Notify Before",
-    "notify_before_min": "Notify before must be at least 1 minute",
     "no_base_tasks": "No base tasks yet",
     "no_filtered_tasks": "No tasks found",
     "no_tasks": "No tasks yet.",
+    "notification": "Notification",
+    "notify_before": "Notify Before",
+    "notify_before_min": "Notify before must be at least 1 minute",
     "push_to_add_task": "Push the button to add a task",
     "record": "Record",
     "record_again": "🔄 Record again",
@@ -727,8 +727,11 @@
     },
     "sync_mode": {
       "title": "Choose your setup",
+      "connect_device_only_section_subtitle": "Keep your data stored only on this device.",
       "connect_device_only_section_title": "Use this device only",
+      "connect_section_subtitle": "Log in and sync your data across devices.",
       "connect_section_title": "Join an existing family/group",
+      "create_section_subtitle": "Sign up and create a new family/group.",
       "create_section_title": "Create a new family/group",
       "device_only_connect_empty": "No family is saved on this device. Create a new group first.",
       "device_only_connect_hint": "Select your profile and enter your PIN to open the family saved on this device.",
@@ -738,6 +741,7 @@
       "replace_device_only_message": "A family is already saved on this device in \"This device only\" mode. Creating a new one will erase it. Only one family can exist in this mode.",
       "replace_device_only_title": "Replace existing family?",
       "subtitle": "You can sync data across phones and tablets in your family / group (recommended), or save data only on this device.",
+      "subtitle_help_label": "Help with login and signup",
       "device_only": {
         "title": "This device only",
         "description": "Everything stays on this phone or tablet. Family members can use the app only on this device. You can use the app offline."
@@ -745,11 +749,7 @@
       "multidevice": {
         "title": "Several devices (recommended)",
         "description": "Sync tasks, rewards, and family data across devices. Family members can use the app on different devices."
-      },
-      "subtitle_help_label": "Help with login and signup",
-      "connect_section_subtitle": "Log in and sync your data across devices.",
-      "connect_device_only_section_subtitle": "Keep your data stored only on this device.",
-      "create_section_subtitle": "Sign up and create a new family/group."
+      }
     }
   }
 }

@@ -171,7 +171,7 @@
     "add": "Añadir Usuario",
     "add_child": "Añadir Hijo",
     "add_parent": "Añadir Padre",
-    "admin": "Admin",
+    "admin": "Administrador",
     "avatar": "Avatar",
     "change_group": "Cambiar familia",
     "child": "Hijo o hija",
@@ -243,19 +243,19 @@
     "has_new_task_bonus": "Tiene bonus de tarea nueva",
     "invalid_date": "Usa el formato AAAA-MM-DD",
     "invalid_time": "Usa el formato HH:mm",
+    "local_notification_body": "{{title}} empieza en {{minutes}} min",
+    "local_notification_title": "Próxima tarea",
     "new_task_bonus": "Bonus de tarea nueva",
-    "local_notification_body": "[TODO: es] {{title}} starts in {{minutes}} min",
-    "local_notification_title": "[TODO: es] Upcoming task",
     "new_task_bonus_positive": "El bonus debe ser mayor que 0",
     "new_task_duration": "Duración del bonus (días)",
     "new_task_duration_after_end_date": "La duración del bonus no puede superar la fecha de fin",
     "new_task_duration_positive": "La duración debe ser de al menos 1 día",
-    "notification": "[TODO: es] Notification",
-    "notify_before": "[TODO: es] Notify Before",
-    "notify_before_min": "[TODO: es] Notify before must be at least 1 minute",
     "no_base_tasks": "No hay tareas básicas todavía",
     "no_filtered_tasks": "No se encontraron tareas",
     "no_tasks": "No hay tareas todavía.",
+    "notification": "Notificación",
+    "notify_before": "Notificar antes, min",
+    "notify_before_min": "La notificación debe ser al menos 1 minuto antes",
     "push_to_add_task": "Pulsa el botón para añadir una tarea",
     "record": "Grabar",
     "record_again": "🔄 Grabar de nuevo",
@@ -658,7 +658,7 @@
     },
     "login": {
       "title": "Bienvenido de nuevo",
-      "admin": "Admin",
+      "admin": "Administrador",
       "email": "Correo electrónico",
       "error_email_required": "El correo electrónico es obligatorio",
       "error_empty_family": "Sesión iniciada, pero no se encontraron miembros de la familia. Inténtalo de nuevo.",
@@ -679,7 +679,7 @@
       "forgot_success": "PIN actualizado. Ya puedes iniciar sesión.",
       "forgot_title": "Restablecer PIN",
       "header": "Iniciar sesión",
-      "not_admin": "No admin",
+      "not_admin": "Sin administrador",
       "pin": "PIN de 4 dígitos",
       "sign_up": "Registrarse",
       "submit": "Iniciar sesión",
@@ -727,8 +727,11 @@
     },
     "sync_mode": {
       "title": "Elige tu configuración",
+      "connect_device_only_section_subtitle": "Guarda tus datos únicamente en este dispositivo.",
       "connect_device_only_section_title": "Usar solo este dispositivo",
+      "connect_section_subtitle": "Inicia sesión y sincroniza tus datos entre dispositivos.",
       "connect_section_title": "Unirse a una familia/grupo existente",
+      "create_section_subtitle": "Regístrate y crea una familia/grupo nueva.",
       "create_section_title": "Crear una familia/grupo nueva",
       "device_only_connect_empty": "No hay familia guardada en este dispositivo. Crea un grupo nuevo primero.",
       "device_only_connect_hint": "Selecciona tu perfil e introduce tu PIN para abrir la familia guardada en este dispositivo.",
@@ -738,6 +741,7 @@
       "replace_device_only_message": "Ya hay una familia guardada en este dispositivo en modo \"Solo este dispositivo\". Crear una nueva la borrará. Solo puede existir una familia en este modo.",
       "replace_device_only_title": "¿Reemplazar la familia existente?",
       "subtitle": "Puedes sincronizar datos entre teléfonos y tabletas de tu familia / grupo (recomendado) o guardar los datos solo en este dispositivo.",
+      "subtitle_help_label": "Ayuda sobre inicio de sesión y registro",
       "device_only": {
         "title": "Solo este dispositivo",
         "description": "Todo permanece en este teléfono o tableta. Los miembros de la familia solo pueden usar la app en este dispositivo. Puedes usar la app sin conexión."
@@ -745,11 +749,7 @@
       "multidevice": {
         "title": "Varios dispositivos (recomendado)",
         "description": "Sincroniza tareas, recompensas y datos familiares entre dispositivos. Los miembros de la familia pueden usar la app en distintos dispositivos."
-      },
-      "subtitle_help_label": "Ayuda sobre inicio de sesión y registro",
-      "connect_section_subtitle": "Inicia sesión y sincroniza tus datos entre dispositivos.",
-      "connect_device_only_section_subtitle": "Guarda tus datos únicamente en este dispositivo.",
-      "create_section_subtitle": "Regístrate y crea una familia/grupo nueva."
+      }
     }
   }
 }

@@ -36,6 +36,7 @@
     "translations:audit": "node ./scripts/audit-translations.js",
     "translations:sort": "node ./scripts/sort-translation-keys.js",
     "translations:align": "node ./scripts/align-translations-with-en.js",
+    "translations:apply-matrix": "node ./scripts/apply-translation-matrix.js",
     "e2e": "node scripts/run-e2e.js e2e/flows/main.yaml",
     "e2e:onboarding": "node scripts/run-e2e.js e2e/flows/onboarding/mode-screen.yaml",
     "translations:repair": "node ./scripts/apply-translation-repairs.js && node ./scripts/fix-remaining-translations.js"

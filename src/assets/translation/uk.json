@@ -243,6 +243,8 @@
     "has_new_task_bonus": "Є нова нагорода за завдання",
     "invalid_date": "Використовуйте формат YYYY-MM-DD",
     "invalid_time": "Використовуйте формат HH:mm",
+    "local_notification_body": "{{title}} починається через {{minutes}} хв",
+    "local_notification_title": "Майбутнє завдання",
     "new_task_bonus": "Нова нагорода за завдання",
     "new_task_bonus_positive": "Нагорода за завдання повинна бути більше 0",
     "new_task_duration": "Тривалість бонуса (днів)",
@@ -251,6 +253,9 @@
     "no_base_tasks": "Немає базових завдань",
     "no_filtered_tasks": "Немає завдань",
     "no_tasks": "Немає завдань.",
+    "notification": "Сповіщення",
+    "notify_before": "Сповістити заздалегідь, хв",
+    "notify_before_min": "Сповіщення має бути щонайменше за 1 хвилину",
     "push_to_add_task": "Натисніть кнопку, щоб додати завдання",
     "record": "Записати",
     "record_again": "🔄 Записати знову",
@@ -284,14 +289,14 @@
     "search_by_title": "Пошук за заголовком",
     "start_date": "Дата початку",
     "status_locked_closed_period": "Статус не можна змінити — цей місяць закрито в історії нагород",
-    "subtask_add_audio": "Add audio subtask",
-    "subtask_add_photo": "Add photo subtask",
+    "subtask_add_audio": "Додати аудіо підзавдання",
+    "subtask_add_photo": "Додати фото підзавдання",
     "subtask_label": "Підзавдання",
     "subtask_photo_delete_confirm": "Ви впевнені, що хочете видалити це фото?",
     "subtask_photo_delete_title": "Видалити фото",
-    "subtask_photo_empty": "No photo",
-    "subtask_photo_failed": "Could not save the photo",
-    "subtask_photo_permission_denied": "Camera permission is required to take a photo",
+    "subtask_photo_empty": "Немає фото",
+    "subtask_photo_failed": "Не вдалося зберегти фото",
+    "subtask_photo_permission_denied": "Для фото потрібен дозвіл камери",
     "subtask_record_delete_confirm": "Ви впевнені, що хочете видалити цей запис?",
     "subtask_record_delete_title": "Видалити запис",
     "subtasks": "Підзавдання",
@@ -722,8 +727,11 @@
     },
     "sync_mode": {
       "title": "Оберіть налаштування",
+      "connect_device_only_section_subtitle": "Зберігайте дані лише на цьому пристрої.",
       "connect_device_only_section_title": "Лише цей пристрій",
+      "connect_section_subtitle": "Увійдіть і синхронізуйте дані між пристроями.",
       "connect_section_title": "Приєднатися до наявної родини/групи",
+      "create_section_subtitle": "Зареєструйтеся та створіть нову родину/групу.",
       "create_section_title": "Створити нову родину/групу",
       "device_only_connect_empty": "На цьому пристрої немає збереженої родини. Спочатку створіть нову групу.",
       "device_only_connect_hint": "Оберіть свій профіль і введіть PIN, щоб відкрити родину, збережену на цьому пристрої.",
@@ -733,6 +741,7 @@
       "replace_device_only_message": "На цьому пристрої вже збережено родину в режимі «Лише цей пристрій». Створення нової її видалить. У цьому режимі може існувати лише одна родина.",
       "replace_device_only_title": "Замінити наявну родину?",
       "subtitle": "Ви можете синхронізувати дані між телефонами та планшетами у вашій родині / групі (рекомендовано) або зберігати дані лише на цьому пристрої.",
+      "subtitle_help_label": "Довідка щодо входу та реєстрації",
       "device_only": {
         "title": "Лише цей пристрій",
         "description": "Усе залишається на цьому телефоні чи планшеті. Члени родини можуть користуватися застосунком лише на цьому пристрої. Ви можете користуватися застосунком офлайн."
@@ -740,11 +749,7 @@
       "multidevice": {
         "title": "Кілька пристроїв (рекомендовано)",
         "description": "Синхронізуйте завдання, нагороди та сімейні дані між пристроями. Члени родини можуть користуватися застосунком на різних пристроях."
-      },
-      "subtitle_help_label": "Довідка щодо входу та реєстрації",
-      "connect_section_subtitle": "Увійдіть і синхронізуйте дані між пристроями.",
-      "connect_device_only_section_subtitle": "Зберігайте дані лише на цьому пристрої.",
-      "create_section_subtitle": "Зареєструйтеся та створіть нову родину/групу."
+      }
     }
   }
 }
