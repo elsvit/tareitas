@@ -7,8 +7,13 @@ const projectRoot = path.resolve(__dirname, '..');
 const translationsDir = path.join(projectRoot, 'src', 'assets', 'translation');
 const sourceFile = path.join(translationsDir, 'en.json');
 const targetFile = path.join(translationsDir, 'es.json');
-const suggestionPrefix = '[TODO: es] ';
+const matrixPath = path.join(__dirname, 'translation-matrix.json');
+const legacyTodoPrefix = '[TODO: es] ';
 const ignoredSuggestionKeys = new Set(['jsonLanguage']);
+
+const translationMatrix = fs.existsSync(matrixPath)
+  ? JSON.parse(fs.readFileSync(matrixPath, 'utf8'))
+  : {};
 
 const readJson = (filePath, { fallbackValue } = {}) => {
   try {
@@ -26,14 +31,24 @@ const readJson = (filePath, { fallbackValue } = {}) => {
 const isObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 
 const createSuggestion = (keyPath, englishValue) => {
-  if (ignoredSuggestionKeys.has(keyPath.join('.'))) {
+  const flatKey = keyPath.join('.');
+
+  if (ignoredSuggestionKeys.has(flatKey)) {
     return 'Español';
   }
 
-  return `${suggestionPrefix}${englishValue}`;
+  const fromMatrix = translationMatrix[flatKey]?.es;
+
+  if (typeof fromMatrix === 'string') {
+    return fromMatrix;
+  }
+
+  return englishValue;
 };
 
-const isAutoSuggestion = (value) => typeof value === 'string' && value.startsWith(suggestionPrefix);
+const isAutoSuggestion = (value) =>
+  typeof value === 'string' &&
+  (value.startsWith(legacyTodoPrefix) || value.startsWith('[TODO:'));
 
 const syncNode = (englishNode, spanishNode, keyPath = []) => {
   if (typeof englishNode === 'string') {
