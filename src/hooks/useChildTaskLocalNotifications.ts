@@ -2,7 +2,10 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { AppState, type AppStateStatus } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { NOTIFICATION_PERMISSION_DEFER_MS } from '~/constants/localNotifications';
+import {
+  NOTIFICATION_PERMISSION_DEFER_MS,
+  NOTIFICATION_SYNC_DEBOUNCE_MS,
+} from '~/constants/localNotifications';
 import {
   buildChildLocalNotificationTasks,
   cancelLocalNotificationsForAssignmentId,
@@ -34,6 +37,11 @@ export function useChildTaskLocalNotifications({
     [deliveredNotificationIds],
   );
   const previousAssignmentIdsRef = useRef<Set<string>>(new Set());
+  const hasScheduledInitialSyncRef = useRef(false);
+
+  useEffect(() => {
+    hasScheduledInitialSyncRef.current = false;
+  }, [childId]);
 
   const notificationTasks = useMemo(() => {
     if (!childId) {
@@ -98,8 +106,15 @@ export function useChildTaskLocalNotifications({
 
   useEffect(() => {
     if (!enabled || !childId) {
+      hasScheduledInitialSyncRef.current = false;
       return;
     }
+
+    if (hasScheduledInitialSyncRef.current) {
+      return;
+    }
+
+    hasScheduledInitialSyncRef.current = true;
 
     const deferTimer = setTimeout(() => {
       void runSyncRef.current();
@@ -108,7 +123,27 @@ export function useChildTaskLocalNotifications({
     return () => {
       clearTimeout(deferTimer);
     };
-  }, [childId, enabled, notificationTasks, thisDeviceUsers]);
+  }, [childId, enabled]);
+
+  useEffect(() => {
+    if (!enabled || !childId) {
+      return;
+    }
+
+    const debounceTimer = setTimeout(() => {
+      void runSyncRef.current();
+    }, NOTIFICATION_SYNC_DEBOUNCE_MS);
+
+    return () => {
+      clearTimeout(debounceTimer);
+    };
+  }, [
+    childId,
+    deliveredNotificationIdSet,
+    enabled,
+    notificationTasks,
+    thisDeviceUsers,
+  ]);
 
   useEffect(() => {
     if (!enabled || !childId) {
