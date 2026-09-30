@@ -74,6 +74,10 @@ export const selectShowParentLoginName = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>).showParentLoginName ??
   false;
 
+export const selectLastAppBackgroundAt = (state: RootStateT) =>
+  (state[EStateName.settings] as Persisted<IStateSettings>)
+    .lastAppBackgroundAt ?? null;
+
 export const selectCurrentUser = (state: RootStateT) =>
   (state[EStateName.settings] as Persisted<IStateSettings>).currentUser;
 

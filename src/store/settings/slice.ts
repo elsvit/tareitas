@@ -50,6 +50,7 @@ const initialState: IStateSettings = {
   requireLogin: false,
   pendingFamilySetup: false,
   lastSessionActivityAt: null,
+  lastAppBackgroundAt: null,
   pendingReturnRoute: null,
   sessionPauseCount: 0,
   appInstalledAt: null,
@@ -252,6 +253,12 @@ export const settingsSlice = createSlice({
       state.lastSessionActivityAt =
         new Date().toISOString();
     },
+    setLastAppBackgroundAt: (
+      state,
+      action: PayloadAction<string | null>,
+    ) => {
+      state.lastAppBackgroundAt = action.payload;
+    },
     setPendingReturnRoute: (
       state,
       action: PayloadAction<PendingReturnRoute | null>,
@@ -352,6 +359,7 @@ export const {
   setRequireLogin,
   setPendingFamilySetup,
   touchSessionActivity,
+  setLastAppBackgroundAt,
   setPendingReturnRoute,
   resumeMultideviceSession,
   pauseSessionChecks,

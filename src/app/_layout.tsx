@@ -15,6 +15,7 @@ import {
   prepareFamilyPersistOnBoot,
 } from '~/services/familyPersistMode';
 import { initializeRevenueCat } from '~/services/subscriptions/revenueCatInit';
+import { setLastAppBackgroundAt } from '~/store/settings/slice';
 import { persistor, store } from '~/store';
 import { Colors } from '~/styles';
 import { hideAppSplash, scheduleAppSplashFallbackHide } from '~/utils/hideAppSplash';
@@ -31,6 +32,7 @@ export default function RootLayout() {
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextState => {
       if (nextState === 'background' || nextState === 'inactive') {
+        store.dispatch(setLastAppBackgroundAt(new Date().toISOString()));
         void flushScheduledFamilySnapshot(store.getState);
       }
     });

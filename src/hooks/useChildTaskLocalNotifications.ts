@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
+import { NOTIFICATION_PERMISSION_DEFER_MS } from '~/constants/localNotifications';
 import {
   cancelLocalNotificationsForAssignmentId,
   isLocalNotificationEnabled,
@@ -46,19 +47,19 @@ export function useChildTaskLocalNotifications({
       return;
     }
 
-    const currentAssignmentIds = new Set(
-      assignments
-        .filter(assignment => assignment.childId === childId)
-        .map(assignment => assignment.id),
-    );
+    async function runSync() {
+      const currentAssignmentIds = new Set(
+        assignments
+          .filter(assignment => assignment.childId === childId)
+          .map(assignment => assignment.id),
+      );
 
-    const removedAssignmentIds = [...previousAssignmentIdsRef.current].filter(
-      id => !currentAssignmentIds.has(id),
-    );
+      const removedAssignmentIds = [...previousAssignmentIdsRef.current].filter(
+        id => !currentAssignmentIds.has(id),
+      );
 
-    previousAssignmentIdsRef.current = currentAssignmentIds;
+      previousAssignmentIdsRef.current = currentAssignmentIds;
 
-    void (async () => {
       for (const assignmentId of removedAssignmentIds) {
         await cancelLocalNotificationsForAssignmentId(assignmentId, childId);
       }
@@ -108,7 +109,15 @@ export function useChildTaskLocalNotifications({
         deliveredNotificationIds: deliveredNotificationIdSet,
         tasks,
       });
-    })();
+    }
+
+    const deferTimer = setTimeout(() => {
+      void runSync();
+    }, NOTIFICATION_PERMISSION_DEFER_MS);
+
+    return () => {
+      clearTimeout(deferTimer);
+    };
   }, [
     assignments,
     childId,

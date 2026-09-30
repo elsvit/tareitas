@@ -33,6 +33,8 @@ export interface IStateSettings {
   /** True while the user is on the family setup (sync mode) screen without a family yet. */
   pendingFamilySetup: boolean;
   lastSessionActivityAt: string | null;
+  /** Set when app goes inactive/background (e.g. permission dialog). */
+  lastAppBackgroundAt: string | null;
   pendingReturnRoute: PendingReturnRoute | null;
   sessionPauseCount: number;
   appInstalledAt: string | null;
