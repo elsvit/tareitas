@@ -11,3 +11,6 @@ export const MIN_NOTIFY_BEFORE_MINUTES = 1;
 
 /** Defer the first permission prompt so the child PIN session is stable. */
 export const NOTIFICATION_PERMISSION_DEFER_MS = 2_000;
+
+/** Debounce re-scheduling when assignments or task list changes. */
+export const NOTIFICATION_SYNC_DEBOUNCE_MS = 500;

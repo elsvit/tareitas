@@ -20,7 +20,6 @@ import {
 } from '~/store/settings/slice';
 import type { IIdDate } from '~/types/IIdDate';
 import { getTodayDateString } from '~/utils/date';
-import { createTaskId } from '~/utils/tasks/taskGeneration';
 
 export function buildLocalNotificationId(
   childId: string,
@@ -64,7 +63,7 @@ export type ChildTaskNotificationInput = {
   date: string;
   time: string;
   title: string;
-  localNotificationBeforeMinutes?: number;
+  localNotificationBeforeMinutes: number;
 };
 
 function parseTaskDateTime(date: string, time: string): Date | null {
@@ -108,6 +107,12 @@ export function buildChildLocalNotificationTasks(
 
       const fields = getAssignmentFieldsForDate(assignment, date);
 
+      const notifyBeforeMinutes = assignment.localNotificationBeforeMinutes;
+
+      if (notifyBeforeMinutes == null) {
+        continue;
+      }
+
       tasks.push({
         childId: assignment.childId,
         taskId: createTaskId(assignment.id, date),
@@ -115,8 +120,7 @@ export function buildChildLocalNotificationTasks(
         date,
         time: fields.time ?? assignment.time,
         title: fields.title ?? assignment.title,
-        localNotificationBeforeMinutes:
-          assignment.localNotificationBeforeMinutes,
+        localNotificationBeforeMinutes: notifyBeforeMinutes,
       });
     }
   }
@@ -246,6 +250,7 @@ export async function syncChildTaskLocalNotification(
   input: ChildTaskNotificationInput,
   thisDeviceUsers: IIdDate[],
   deliveredNotificationIds: ReadonlySet<string>,
+  hasPermission: boolean,
 ): Promise<void> {
   const notificationId = buildLocalNotificationId(
     input.childId,
@@ -276,7 +281,11 @@ export async function syncChildTaskLocalNotification(
     return;
   }
 
-  const notifyBefore = input.localNotificationBeforeMinutes!;
+  if (!hasPermission) {
+    return;
+  }
+
+  const notifyBefore = input.localNotificationBeforeMinutes;
   const triggerDate = subMinutes(taskDateTime, notifyBefore);
   const now = new Date();
 
@@ -289,18 +298,12 @@ export async function syncChildTaskLocalNotification(
 
   if (
     existingTriggerDate &&
-    existingTriggerDate.getTime() === triggerDate.getTime()
+    Math.abs(existingTriggerDate.getTime() - triggerDate.getTime()) < 1000
   ) {
     return;
   }
 
   await Notifications.cancelScheduledNotificationAsync(notificationId);
-
-  const hasPermission = await ensureLocalNotificationPermissions();
-
-  if (!hasPermission) {
-    return;
-  }
 
   await Notifications.scheduleNotificationAsync({
     identifier: notificationId,
@@ -335,15 +338,19 @@ export async function syncChildTaskLocalNotifications(params: {
     ),
   );
 
-  await Promise.all(
-    params.tasks.map(task =>
-      syncChildTaskLocalNotification(
-        task,
-        params.thisDeviceUsers,
-        params.deliveredNotificationIds,
-      ),
-    ),
-  );
+  const hasPermission =
+    params.tasks.length === 0
+      ? false
+      : await ensureLocalNotificationPermissions();
+
+  for (const task of params.tasks) {
+    await syncChildTaskLocalNotification(
+      task,
+      params.thisDeviceUsers,
+      params.deliveredNotificationIds,
+      hasPermission,
+    );
+  }
 
   await cancelStaleChildLocalNotifications(
     params.childId,
