@@ -24,6 +24,9 @@ function run(command) {
   });
 }
 
+console.log('Syncing Android native project (notification icon, manifest, etc.)...');
+run('npx expo prebuild --platform android --no-install');
+
 console.log('Clearing JS bundler caches (Gradle clean does not remove these)...');
 rmrf('node_modules/.cache');
 rmrf('.expo');
