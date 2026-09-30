@@ -205,9 +205,12 @@ export default function TaskAssignmentEdit() {
     dispatch(
       updateTaskAssignment({
         entity: {
+          ...assignment,
           id,
           updatedAt: new Date().toISOString(),
           ...assignmentValues,
+          localNotificationBeforeMinutes:
+            values.localNotificationBeforeMinutes ?? null,
         } as ITaskAssignment,
         onSuccess: finishSave,
       }),
