@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Keyboard, TouchableOpacity, View } from 'react-native';
 
 import { Image } from 'expo-image';
 
@@ -38,6 +38,7 @@ export const SelectImage: React.FC<Props> = ({
             <TouchableOpacity
               key={`${opt.value}-${index}`}
               onPress={() => {
+                Keyboard.dismiss();
                 onChange?.(opt.value);
                 void trackDefaultUserImageUsed(opt.value);
               }}

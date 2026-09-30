@@ -28,6 +28,7 @@ import {
   getTaskImageOptions,
   SUBTASK_MAXIMUM,
 } from '~/constants/tasks';
+import { useFocusSubtaskInputAfterAdd } from '~/hooks/useFocusSubtaskInputAfterAdd';
 import { t } from '~/services';
 import { removeTaskBase } from '~/store/taskBase/slice';
 import { Colors, userColors } from '~/styles';
@@ -151,6 +152,8 @@ export const BaseTaskForm: FC<Props> = ({
     name: 'subtasks',
   });
   const isAtSubtaskMaximum = subtaskFields.length >= SUBTASK_MAXIMUM;
+  const { focusSubtaskInputAtIndex, registerSubtaskInputRef } =
+    useFocusSubtaskInputAfterAdd(subtaskFields.length);
 
   const handleAddSubtask = () => {
     if (!canAddSubtask(subtaskFields.length)) {
@@ -161,7 +164,9 @@ export const BaseTaskForm: FC<Props> = ({
       return;
     }
 
+    const newIndex = subtaskFields.length;
     append({ value: uuidv4(), label: '' });
+    focusSubtaskInputAtIndex(newIndex);
   };
 
   const taskImageOptions = getTaskImageOptions();
@@ -363,6 +368,7 @@ export const BaseTaskForm: FC<Props> = ({
                         name={`subtasks.${index}.label`}
                         render={({ field: { value, onChange } }) => (
                           <TextInput
+                            ref={registerSubtaskInputRef(index)}
                             label={`${t('tasks.subtask_label')} ${index + 1}`}
                             value={value}
                             onChangeText={onChange}
