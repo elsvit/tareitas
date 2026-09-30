@@ -1,4 +1,7 @@
-import { isSessionIdleExpired } from '~/constants/session';
+import {
+  isSessionIdleExpired,
+  PROFILE_WARM_RESUME_MS,
+} from '~/constants/session';
 import { refreshAuthToken } from '~/services/api/authApi';
 import { fetchFamilyDetails } from '~/services/api/familiesApi';
 import { ApiError } from '~/services/api/client';
@@ -15,6 +18,8 @@ import {
   selectAuthToken,
   selectFamilyId,
   selectHasAuthSession,
+  selectCurrentUser,
+  selectLastAppBackgroundAt,
   selectLastSessionActivityAt,
   selectRefreshToken,
   selectSyncMode,
@@ -29,6 +34,7 @@ import {
   setCurrentRole,
   setCurrentUser,
   setPendingOnboardingChildUserId,
+  setLastAppBackgroundAt,
   setRequireLogin,
   updateAuthTokens,
 } from '~/store/settings/slice';
@@ -185,6 +191,22 @@ export async function signOutAndClearFamilyData(
   }
 }
 
+function shouldPreserveProfileAfterWarmResume(
+  getState: () => IState,
+): boolean {
+  const currentUser = selectCurrentUser(getState());
+  const lastBackgroundAt = selectLastAppBackgroundAt(getState());
+
+  if (!currentUser || !lastBackgroundAt) {
+    return false;
+  }
+
+  const elapsed =
+    Date.now() - new Date(lastBackgroundAt).getTime();
+
+  return elapsed >= 0 && elapsed < PROFILE_WARM_RESUME_MS;
+}
+
 async function lockProfileSessionOnBoot(
   dispatch: AppDispatch,
   getState: () => IState,
@@ -208,7 +230,13 @@ async function lockProfileSessionOnBoot(
   }
 
   if (syncMode === ESyncMode.deviceOnly) {
-    applyProfileLogout(dispatch);
+    const warmResume = shouldPreserveProfileAfterWarmResume(getState);
+
+    if (!warmResume) {
+      applyProfileLogout(dispatch);
+    }
+
+    dispatch(setLastAppBackgroundAt(null));
     await persistSharedSettingsState(getState);
     return;
   }

@@ -6,6 +6,11 @@ import {
   SHOW_NOTIFICATION_IF_USER_WAS,
 } from '~/constants/localNotifications';
 import { t } from '~/services';
+import { store } from '~/store/store';
+import {
+  pauseSessionChecks,
+  resumeSessionChecks,
+} from '~/store/settings/slice';
 import type { IIdDate } from '~/types/IIdDate';
 import { getTodayDateString } from '~/utils/date';
 import { createTaskId } from '~/utils/tasks/taskGeneration';
@@ -67,15 +72,21 @@ function parseTaskDateTime(date: string, time: string): Date | null {
 }
 
 export async function ensureLocalNotificationPermissions(): Promise<boolean> {
-  const settings = await Notifications.getPermissionsAsync();
+  store.dispatch(pauseSessionChecks());
 
-  if (settings.granted) {
-    return true;
+  try {
+    const settings = await Notifications.getPermissionsAsync();
+
+    if (settings.granted) {
+      return true;
+    }
+
+    const requested = await Notifications.requestPermissionsAsync();
+
+    return requested.granted;
+  } finally {
+    store.dispatch(resumeSessionChecks());
   }
-
-  const requested = await Notifications.requestPermissionsAsync();
-
-  return requested.granted;
 }
 
 async function getScheduledTriggerDate(
