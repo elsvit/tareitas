@@ -1,10 +1,17 @@
-import { parseISO, subMinutes } from 'date-fns';
+import { addDays, format, parse, parseISO, subMinutes } from 'date-fns';
 import * as Notifications from 'expo-notifications';
 
 import {
+  LOCAL_NOTIFICATION_SCHEDULE_HORIZON_DAYS,
   MIN_NOTIFY_BEFORE_MINUTES,
   SHOW_NOTIFICATION_IF_USER_WAS,
 } from '~/constants/localNotifications';
+import type { ITaskAssignment } from '~/types/ITask';
+import { getAssignmentFieldsForDate } from '~/utils/tasks/recurringTaskEdit';
+import {
+  createTaskId,
+  shouldShowAssignmentOnDate,
+} from '~/utils/tasks/taskGeneration';
 import { t } from '~/services';
 import { store } from '~/store/store';
 import {
@@ -42,7 +49,7 @@ export function childWasOnDeviceRecently(
 }
 
 export function isLocalNotificationEnabled(
-  localNotificationBeforeMinutes?: number,
+  localNotificationBeforeMinutes?: number | null,
 ): boolean {
   return (
     localNotificationBeforeMinutes != null &&
@@ -68,7 +75,76 @@ function parseTaskDateTime(date: string, time: string): Date | null {
     return null;
   }
 
-  return parseISO(`${date}T${time}:00`);
+  return parse(
+    `${date} ${timeMatch[1]}:${timeMatch[2]}`,
+    'yyyy-MM-dd HH:mm',
+    new Date(),
+  );
+}
+
+export function buildChildLocalNotificationTasks(
+  assignments: ITaskAssignment[],
+  childId: string,
+  horizonDays = LOCAL_NOTIFICATION_SCHEDULE_HORIZON_DAYS,
+): ChildTaskNotificationInput[] {
+  const today = getTodayDateString();
+  const tasks: ChildTaskNotificationInput[] = [];
+
+  for (let offset = 0; offset < horizonDays; offset += 1) {
+    const date = format(addDays(parseISO(today), offset), 'yyyy-MM-dd');
+
+    for (const assignment of assignments) {
+      if (assignment.childId !== childId) {
+        continue;
+      }
+
+      if (!shouldShowAssignmentOnDate(assignment, date)) {
+        continue;
+      }
+
+      if (!isLocalNotificationEnabled(assignment.localNotificationBeforeMinutes)) {
+        continue;
+      }
+
+      const fields = getAssignmentFieldsForDate(assignment, date);
+
+      tasks.push({
+        childId: assignment.childId,
+        taskId: createTaskId(assignment.id, date),
+        assignmentId: assignment.id,
+        date,
+        time: fields.time ?? assignment.time,
+        title: fields.title ?? assignment.title,
+        localNotificationBeforeMinutes:
+          assignment.localNotificationBeforeMinutes,
+      });
+    }
+  }
+
+  return tasks;
+}
+
+async function cancelStaleChildLocalNotifications(
+  childId: string,
+  expectedNotificationIds: ReadonlySet<string>,
+): Promise<void> {
+  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+
+  await Promise.all(
+    scheduled
+      .filter(item => {
+        if (expectedNotificationIds.has(item.identifier)) {
+          return false;
+        }
+
+        const data = item.content.data as { childId?: string };
+
+        return data?.childId === childId;
+      })
+      .map(item =>
+        Notifications.cancelScheduledNotificationAsync(item.identifier),
+      ),
+  );
 }
 
 export async function ensureLocalNotificationPermissions(): Promise<boolean> {
@@ -253,6 +329,12 @@ export async function syncChildTaskLocalNotifications(params: {
   deliveredNotificationIds: ReadonlySet<string>;
   tasks: ChildTaskNotificationInput[];
 }): Promise<void> {
+  const expectedNotificationIds = new Set(
+    params.tasks.map(task =>
+      buildLocalNotificationId(task.childId, task.taskId),
+    ),
+  );
+
   await Promise.all(
     params.tasks.map(task =>
       syncChildTaskLocalNotification(
@@ -261,5 +343,10 @@ export async function syncChildTaskLocalNotifications(params: {
         params.deliveredNotificationIds,
       ),
     ),
+  );
+
+  await cancelStaleChildLocalNotifications(
+    params.childId,
+    expectedNotificationIds,
   );
 }

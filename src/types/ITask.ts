@@ -53,8 +53,8 @@ export interface ITaskAssignment extends CreatedProps {
   newTaskBonus?: number;
   newTaskDuration?: number; // in days or newTaskEndDate: string; // YYYY-MM-DD
   subtasks?: ISubtask[];
-  /** Minutes before task time to fire a local reminder; omitted = disabled. */
-  localNotificationBeforeMinutes?: number;
+  /** Minutes before task time when notifications are on; null/omitted = off. */
+  localNotificationBeforeMinutes?: number | null;
   changes?: {
     [date: string]: ITaskAssignmentChange;
   };

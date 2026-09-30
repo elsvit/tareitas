@@ -29,6 +29,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Loading } from '~/components/ui/Loading';
 import { useCatalogForegroundSync } from '~/hooks/useCatalogForegroundSync';
+import { useChildTaskLocalNotifications } from '~/hooks/useChildTaskLocalNotifications';
+import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { useLocalNotificationsBootstrap } from '~/hooks/useLocalNotificationsBootstrap';
 import { useRecordThisDeviceUser } from '~/hooks/useRecordThisDeviceUser';
 import { usePendingSubtaskPhotoRecovery } from '~/hooks/usePendingSubtaskPhotoRecovery';
@@ -47,6 +49,12 @@ export default function RootStack() {
   useCatalogForegroundSync();
   useLocalNotificationsBootstrap();
   useRecordThisDeviceUser();
+
+  const { currentUserId, isChild } = useCurrentUser();
+  useChildTaskLocalNotifications({
+    childId: isChild ? currentUserId : null,
+    enabled: isChild && !!currentUserId,
+  });
 
   const isLangInitiating = useSelector(selectIsLangInitiating);
   const lang = useSelector(selectLang);

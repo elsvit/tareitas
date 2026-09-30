@@ -99,6 +99,8 @@ export const buildAssignmentFromFormValues = (
     isHabit: values.isHabit,
     repeat: values.repeat,
     subtasks: values.subtasks,
+    localNotificationBeforeMinutes:
+      values.localNotificationBeforeMinutes ?? null,
     ...bonusFields,
     updatedAt: new Date().toISOString(),
     changes: existing?.changes,
@@ -180,6 +182,8 @@ export const applyOnlyThisTaskChange = (
 
   return {
     ...intermediate,
+    localNotificationBeforeMinutes:
+      values.localNotificationBeforeMinutes ?? null,
     changes:
       changesUpdate !== undefined
         ? changesUpdate

@@ -45,6 +45,7 @@ import {
   TASKS_RECORDS_WITHOUT_SUBSCRIPTION,
 } from '~/constants/ads';
 import { useIsPro, useProFeatureAccess } from '~/hooks/useIsPro';
+import { isLocalNotificationEnabled } from '~/services/localNotifications/childTaskLocalNotifications';
 import { t } from '~/services';
 import { trackDefaultBaseTaskUsed } from '~/services/analytics';
 import { selectAllChildren } from '~/store/children/selectors';
@@ -570,7 +571,9 @@ export const AssignmentTaskForm: FC<Props> = ({
         fieldsForEditDate?.newTaskBonus ?? assignment?.newTaskBonus ?? null,
       newTaskDuration:
         fieldsForEditDate?.newTaskDuration ?? assignment?.newTaskDuration ?? null,
-      notificationEnabled: assignment?.localNotificationBeforeMinutes != null,
+      notificationEnabled: isLocalNotificationEnabled(
+        assignment?.localNotificationBeforeMinutes,
+      ),
       notifyBeforeMinutes:
         assignment?.localNotificationBeforeMinutes ??
         DEFAULT_NOTIFY_BEFORE_MINUTES,
@@ -957,7 +960,7 @@ export const AssignmentTaskForm: FC<Props> = ({
         }),
       localNotificationBeforeMinutes: parsed.data.notificationEnabled
         ? parsed.data.notifyBeforeMinutes ?? DEFAULT_NOTIFY_BEFORE_MINUTES
-        : undefined,
+        : null,
     };
 
     const payloads: TaskAssignmentFormProps[] = parsed.data.childIds.map(childId => ({
