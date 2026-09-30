@@ -44,6 +44,7 @@ import {
   TASKS_RECORDS_MAXIMUN,
   TASKS_RECORDS_WITHOUT_SUBSCRIPTION,
 } from '~/constants/ads';
+import { useFocusSubtaskInputAfterAdd } from '~/hooks/useFocusSubtaskInputAfterAdd';
 import { useIsPro, useProFeatureAccess } from '~/hooks/useIsPro';
 import { isLocalNotificationEnabled } from '~/services/localNotifications/childTaskLocalNotifications';
 import { t } from '~/services';
@@ -665,6 +666,8 @@ export const AssignmentTaskForm: FC<Props> = ({
     name: 'subtasks',
   });
   const isAtSubtaskMaximum = subtaskFields.length >= SUBTASK_MAXIMUM;
+  const { focusSubtaskInputAtIndex, registerSubtaskInputRef } =
+    useFocusSubtaskInputAfterAdd(subtaskFields.length);
 
   const handleAddSubtask = () => {
     if (!canAddSubtask(subtaskFields.length)) {
@@ -675,7 +678,9 @@ export const AssignmentTaskForm: FC<Props> = ({
       return;
     }
 
+    const newIndex = subtaskFields.length;
     append({ value: uuidv4(), label: '' });
+    focusSubtaskInputAtIndex(newIndex);
   };
 
   const handleAddPhotoSubtask = () => {
@@ -687,7 +692,9 @@ export const AssignmentTaskForm: FC<Props> = ({
       return;
     }
 
+    const newIndex = subtaskFields.length;
     append({ value: uuidv4(), label: '', isPhoto: true });
+    focusSubtaskInputAtIndex(newIndex);
   };
 
   const handleAddAudioSubtask = () => {
@@ -699,7 +706,9 @@ export const AssignmentTaskForm: FC<Props> = ({
       return;
     }
 
+    const newIndex = subtaskFields.length;
     append({ value: uuidv4(), label: '', isAudio: true });
+    focusSubtaskInputAtIndex(newIndex);
   };
 
   const applySubtasksFromBaseTask = useCallback(
@@ -1264,6 +1273,7 @@ export const AssignmentTaskForm: FC<Props> = ({
                         name={`subtasks.${index}.label`}
                         render={({ field: { value, onChange } }) => (
                           <TextInput
+                            ref={registerSubtaskInputRef(index)}
                             label={`${t('tasks.subtask_label')} ${index + 1}`}
                             value={value}
                             onChangeText={onChange}

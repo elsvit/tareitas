@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   InteractionManager,
+  Keyboard,
   Modal,
   Platform,
   Pressable,
@@ -273,6 +274,7 @@ export function SelectImageWithCustom({
       return;
     }
 
+    Keyboard.dismiss();
     setIsPickModalOpen(true);
   };
 
@@ -396,7 +398,10 @@ export function SelectImageWithCustom({
     return (
       <TouchableOpacity
         key={id}
-        onPress={() => onChange?.(id)}
+        onPress={() => {
+          Keyboard.dismiss();
+          onChange?.(id);
+        }}
         style={[
           baseStyles.avatarOuter,
           {
@@ -452,7 +457,10 @@ export function SelectImageWithCustom({
       {showSubscriptionHelp ? (
         <IconButton
           Icon={<HelpCircleIcon width={22} height={22} />}
-          onPress={() => setIsSubscriptionModalVisible(true)}
+          onPress={() => {
+            Keyboard.dismiss();
+            setIsSubscriptionModalVisible(true);
+          }}
           size={32}
           accessibilityLabel={t('subscription.modal_title')}
         />
@@ -492,6 +500,7 @@ export function SelectImageWithCustom({
                     : undefined
                 }
                 onPress={() => {
+                  Keyboard.dismiss();
                   onChange?.(opt.value);
                   trackDefaultImageUsed(kind, opt.value);
                 }}

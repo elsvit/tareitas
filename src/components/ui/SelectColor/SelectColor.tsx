@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Keyboard, TouchableOpacity, View } from 'react-native';
 import { StyleProp, ViewStyle } from 'react-native';
 
 import { LinearGradient } from 'expo-linear-gradient';
@@ -64,7 +64,10 @@ export const SelectColor: React.FC<SelectColorProps> = ({
               }
               accessibilityRole="button"
               accessibilityLabel={`${opt.label} color`}
-              onPress={() => onChange(opt.value as string)}
+              onPress={() => {
+                Keyboard.dismiss();
+                onChange(opt.value as string);
+              }}
               hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
               style={[
                 styles.swatchOuter,
