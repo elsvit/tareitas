@@ -6,20 +6,20 @@ import {
   MIN_NOTIFY_BEFORE_MINUTES,
   SHOW_NOTIFICATION_IF_USER_WAS,
 } from '~/constants/localNotifications';
+import { t } from '~/services';
+import {
+  pauseSessionChecks,
+  resumeSessionChecks,
+} from '~/store/settings/slice';
+import { store } from '~/store/store';
+import type { IIdDate } from '~/types/IIdDate';
 import type { ITaskAssignment } from '~/types/ITask';
+import { getTodayDateString } from '~/utils/date';
 import { getAssignmentFieldsForDate } from '~/utils/tasks/recurringTaskEdit';
 import {
   createTaskId,
   shouldShowAssignmentOnDate,
 } from '~/utils/tasks/taskGeneration';
-import { t } from '~/services';
-import { store } from '~/store/store';
-import {
-  pauseSessionChecks,
-  resumeSessionChecks,
-} from '~/store/settings/slice';
-import type { IIdDate } from '~/types/IIdDate';
-import { getTodayDateString } from '~/utils/date';
 
 export function buildLocalNotificationId(
   childId: string,
@@ -313,6 +313,13 @@ export async function syncChildTaskLocalNotification(
         title: input.title,
         minutes: notifyBefore,
       }),
+      attachments: [
+        {
+          identifier: 'tareitas',
+          url: 'https://tareitas.net/images/icon1024-rounded.png',
+          type: 'public.png',
+        },
+      ],
       data: {
         childId: input.childId,
         taskId: input.taskId,
