@@ -106,15 +106,6 @@ export const TaskListItem: React.FC<Props> = ({
       false
     );
   });
-  const taskActionError = useSelector((state: RootStateT) => {
-    const common = state[EStateName.common];
-
-    return (
-      common[ECommonActions.ERROR][updateTask.type]?.message ??
-      common[ECommonActions.ERROR][addTask.type]?.message ??
-      null
-    );
-  });
   const [isSyncing, setIsSyncing] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [areSubtasksExpanded, setAreSubtasksExpanded] = useState(false);
@@ -168,10 +159,10 @@ export const TaskListItem: React.FC<Props> = ({
       return;
     }
 
-    if (!isTaskActionLoading || taskActionError) {
+    if (!isTaskActionLoading) {
       setIsSyncing(false);
     }
-  }, [isSyncing, isTaskActionLoading, taskActionError]);
+  }, [isSyncing, isTaskActionLoading]);
 
   const partitionedSubtasks = useMemo(
     () => partitionSubtasks(taskView?.subtasks ?? []),
@@ -897,12 +888,6 @@ export const TaskListItem: React.FC<Props> = ({
         </View>
       )}
 
-      {!!taskActionError && !isStatusUpdating && (
-        <Text style={styles.syncError} numberOfLines={2}>
-          {taskActionError}
-        </Text>
-      )}
-
       {isChildView && (
         <TaskRewardStarsAnimation
           trigger={rewardAnimationTrigger}
@@ -1096,13 +1081,6 @@ const styles = StyleSheet.create({
     left: 8,
     bottom: 8,
     zIndex: 2,
-  },
-
-  syncError: {
-    marginTop: 4,
-    marginHorizontal: 8,
-    color: Colors.red500,
-    fontSize: 12,
   },
 
   reviewHint: {

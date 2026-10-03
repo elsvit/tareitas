@@ -27,6 +27,7 @@ import { StyleSheet, View } from 'react-native';
 import 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { AppToast } from '~/components/ui/AppToast';
 import { Loading } from '~/components/ui/Loading';
 import { useCatalogForegroundSync } from '~/hooks/useCatalogForegroundSync';
 import { useChildTaskLocalNotifications } from '~/hooks/useChildTaskLocalNotifications';
@@ -142,6 +143,8 @@ export default function RootStack() {
               <Loading backgroundColor={Colors.blue400} />
             </View>
           ) : null}
+
+          <AppToast />
         </View>
       </ThemeProvider>
     </PaperProvider>

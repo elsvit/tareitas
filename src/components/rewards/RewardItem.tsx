@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import * as Haptics from 'expo-haptics';
 
@@ -14,10 +13,6 @@ import {
 } from '~/constants/rewards/rewardStatus';
 import { t } from '~/services';
 import { playAppSound } from '~/services/appSounds';
-import { RootStateT } from '~/store';
-import { ECommonActions } from '~/store/common/types';
-import { EStateName } from '~/store/enums';
-import { addReward, updateReward } from '~/store/rewards/slice';
 import { ERewardStatus } from '~/types/EReward';
 import { Colors } from '~/styles';
 
@@ -87,16 +82,6 @@ export const RewardItem: React.FC<Props> = ({
   completedDate,
 }) => {
   const [selectAnimationTrigger, setSelectAnimationTrigger] = useState(0);
-
-  const rewardActionError = useSelector((state: RootStateT) => {
-    const common = state[EStateName.common];
-
-    return (
-      common[ECommonActions.ERROR][updateReward.type]?.message ??
-      common[ECommonActions.ERROR][addReward.type]?.message ??
-      null
-    );
-  });
 
   const handleSelectPress = useCallback(() => {
     if (!onSelect) {
@@ -239,11 +224,6 @@ export const RewardItem: React.FC<Props> = ({
                   : undefined
         }
       />
-      {!!rewardActionError && mode !== 'child' && mode !== 'assignment' ? (
-        <Text style={styles.actionError} numberOfLines={2}>
-          {rewardActionError}
-        </Text>
-      ) : null}
     </View>
   );
 };
@@ -265,11 +245,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexWrap: 'wrap',
     gap: 6,
-  },
-  actionError: {
-    marginTop: 4,
-    color: Colors.red500,
-    fontSize: 12,
   },
 });
 
