@@ -10,11 +10,10 @@ import { Saga } from '~/store';
 import { setError, setLoaded, setLoading } from '~/store/common';
 import { ActionApiT } from '~/store/common';
 import { mapApiError } from '~/services/api/mapApiError';
+import { showErrorToast } from '~/services/toast/showAppToast';
 
-export function* captureError(error: any, context?: any) {
-  // ToDo: add notification handler
-  // yield put(addNotification(NotificationDict.ERROR, e.message));
-  // errorTracking.captureError({ error, context });
+export function* captureError(_error: unknown, _context?: unknown) {
+  // Toast is shown in withFetchable catch; keep hook for future error tracking.
 }
 
 /**
@@ -53,6 +52,8 @@ export const withFetchable = ({
           error: serializableError,
         }),
       );
+
+      showErrorToast(serializableError.message);
 
       if (onError != null) {
         yield onError;

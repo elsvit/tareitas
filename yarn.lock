@@ -7238,6 +7238,11 @@ react-native-tab-view@^4.3.2:
   dependencies:
     use-latest-callback "^0.2.4"
 
+react-native-toast-message@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.npmjs.org/react-native-toast-message/-/react-native-toast-message-2.5.2.tgz#8eac4b28f40d69e1c2db991798ec2435d9fe0bc4"
+  integrity sha512-jqCuWO3njXkdKn6Cs+3EI7Wdw1jvg9JCaSgeQ/hrRF83baeElZRicxv5suz3+igjnDPLFYnruUwpluCBYeWO8Q==
+
 react-native-web@~0.21.0:
   version "0.21.2"
   resolved "https://registry.npmjs.org/react-native-web/-/react-native-web-0.21.2.tgz#0f6983dfea600d9cc1c66fda87ff9ca585eaa647"

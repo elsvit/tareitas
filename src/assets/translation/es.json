@@ -36,6 +36,7 @@
   },
   "apiErrors": {
     "FORBIDDEN": "No tienes permiso para realizar esta acción.",
+    "NETWORK_ERROR": "Could not sync right now. Please try again in a moment.",
     "INTERNAL_ERROR": "Algo salió mal. Inténtalo de nuevo.",
     "NOT_FOUND": "Recurso no encontrado.",
     "REWARD_INACTIVE": "Esta recompensa ya no está disponible.",

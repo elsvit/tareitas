@@ -3,6 +3,20 @@ import { IError } from '~/types/IError';
 
 import { ApiError } from './client';
 
+function isLikelyNetworkFailure(error: Error): boolean {
+  const message = error.message.toLowerCase();
+
+  return (
+    message.includes('network request failed') ||
+    message.includes('failed to fetch') ||
+    message.includes('network error') ||
+    message.includes('load failed') ||
+    message.includes('timeout') ||
+    message.includes('timed out') ||
+    message.includes('aborted')
+  );
+}
+
 function readErrorCode(error: ApiError): string {
   if (
     typeof error.body === 'object' &&
@@ -29,6 +43,13 @@ export function translateApiErrorCode(errorCode: string): string {
 
 export function mapApiError(error: unknown): IError {
   if (error instanceof ApiError) {
+    if (error.status === 401) {
+      return {
+        code: 'UNAUTHORIZED',
+        message: translateApiErrorCode('UNAUTHORIZED'),
+      };
+    }
+
     const code = readErrorCode(error);
 
     if (error.fieldErrors?.length) {
@@ -53,6 +74,22 @@ export function mapApiError(error: unknown): IError {
   }
 
   if (error instanceof Error) {
+    if (isLikelyNetworkFailure(error)) {
+      return {
+        code: 'NETWORK_ERROR',
+        message: t('settings.account.sync_try_later'),
+      };
+    }
+
+    const syncTryLater = t('settings.account.sync_try_later');
+
+    if (error.message === syncTryLater) {
+      return {
+        code: 'NETWORK_ERROR',
+        message: syncTryLater,
+      };
+    }
+
     return {
       code: 'UNKNOWN_ERROR',
       message: error.message || t('apiErrors.UNKNOWN_ERROR'),
