@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Keyboard, Pressable, View } from 'react-native';
 
 import { OTPInput as OTPInputNative, type OTPInputRef } from 'input-otp-native';
@@ -9,11 +9,30 @@ import { t } from '~/services';
 
 import { styles } from './styles';
 
+function OtpFocusReporter({
+  isFocused,
+  onFocusChange,
+}: {
+  isFocused: boolean;
+  onFocusChange?: (focused: boolean) => void;
+}) {
+  const onFocusChangeRef = useRef(onFocusChange);
+  onFocusChangeRef.current = onFocusChange;
+
+  useEffect(() => {
+    onFocusChangeRef.current?.(isFocused);
+  }, [isFocused]);
+
+  return null;
+}
+
 interface OTPInputProps {
   maxLength: number;
   value: string;
   onChange: (newValue: string) => void;
   onComplete?: (value: string) => void;
+  onFocusChange?: (focused: boolean) => void;
+  loading?: boolean;
   testID?: string;
   textInputTestID?: string;
   saveButtonTestID?: string;
@@ -24,6 +43,8 @@ export const OTPInput = ({
   value,
   onChange,
   onComplete,
+  onFocusChange,
+  loading = false,
   testID,
   textInputTestID = 'otp-input',
   saveButtonTestID = 'otp-input-save',
@@ -52,7 +73,7 @@ export const OTPInput = ({
   };
 
   const handleSave = () => {
-    if (value.length < maxLength) {
+    if (loading || value.length < maxLength) {
       return;
     }
 
@@ -75,16 +96,21 @@ export const OTPInput = ({
         onChange={onChange}
         onComplete={handleDigitsComplete}
         testID={textInputTestID}
-        render={({ slots }) => (
-          <Pressable
-            style={styles.slotsRow}
-            testID={testID ? `${testID}-slots` : undefined}
-            accessible={Boolean(testID)}
-            accessibilityRole="button"
-            collapsable={false}
-            importantForAccessibility={testID ? 'yes' : 'auto'}
-            onPress={focusPinInput}
-          >
+        render={({ slots, isFocused }) => (
+          <>
+            <OtpFocusReporter
+              isFocused={isFocused}
+              onFocusChange={onFocusChange}
+            />
+            <Pressable
+              style={styles.slotsRow}
+              testID={testID ? `${testID}-slots` : undefined}
+              accessible={Boolean(testID)}
+              accessibilityRole="button"
+              collapsable={false}
+              importantForAccessibility={testID ? 'yes' : 'auto'}
+              onPress={focusPinInput}
+            >
             {slots.map((slot, index) => (
               <View
                 key={index}
@@ -102,11 +128,17 @@ export const OTPInput = ({
                 <Text style={styles.slotText}>{slot.char ?? ''}</Text>
               </View>
             ))}
-          </Pressable>
+            </Pressable>
+          </>
         )}
       />
       <View style={styles.footer}>
-        <Button mode="contained" bgColor={ButtonColors.Gray} onPress={handleReset}>
+        <Button
+          mode="contained"
+          bgColor={ButtonColors.Gray}
+          onPress={handleReset}
+          disabled={loading}
+        >
           {t('button.reset') || 'Reset'}
         </Button>
         <Button
@@ -114,7 +146,8 @@ export const OTPInput = ({
           mode="contained"
           onPress={handleSave}
           bgColor={ButtonColors.Green}
-          disabled={value.length < maxLength}
+          loading={loading}
+          disabled={loading || value.length < maxLength}
           testID={saveButtonTestID}
         >
           {t('button.save') || 'Save'}

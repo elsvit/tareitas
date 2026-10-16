@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Keyboard,
@@ -179,6 +179,10 @@ export function OnboardingFlow({
     useState(false);
   const [isSubmittingSignUp, setIsSubmittingSignUp] = useState(false);
   const [keyboardInset, setKeyboardInset] = useState(0);
+  const connectKeyboardFieldRef = useRef<'identifier' | 'pin'>(
+    'identifier',
+  );
+  const keyboardInsetRef = useRef(0);
   const [isSetupMemoryReady, setIsSetupMemoryReady] = useState(
     () => initialStep !== ONBOARDING_STEP.syncMode || opensOnSetup,
   );
@@ -325,6 +329,34 @@ export function OnboardingFlow({
     };
   }, [dispatch, isSyncModeStep, opensOnSetup]);
 
+  const shouldScrollConnectFormForKeyboard = useCallback(() => {
+    if (!isSyncModeStep) {
+      return false;
+    }
+
+    if (setupPath === 'connect_device_only') {
+      return true;
+    }
+
+    return (
+      setupPath === 'connect' &&
+      connectKeyboardFieldRef.current === 'pin'
+    );
+  }, [isSyncModeStep, setupPath]);
+
+  const handleConnectKeyboardFieldChange = useCallback(
+    (field: 'identifier' | 'pin') => {
+      connectKeyboardFieldRef.current = field;
+
+      if (field === 'pin' && keyboardInsetRef.current > 0) {
+        requestAnimationFrame(() => {
+          scrollRef.current?.scrollToEnd({ animated: true });
+        });
+      }
+    },
+    [],
+  );
+
   useEffect(() => {
     const showEvent =
       Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
@@ -332,12 +364,10 @@ export function OnboardingFlow({
       Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
 
     const showSubscription = Keyboard.addListener(showEvent, event => {
+      keyboardInsetRef.current = event.endCoordinates.height;
       setKeyboardInset(event.endCoordinates.height);
 
-      if (
-        isSyncModeStep &&
-        (setupPath === 'connect' || setupPath === 'connect_device_only')
-      ) {
+      if (shouldScrollConnectFormForKeyboard()) {
         requestAnimationFrame(() => {
           scrollRef.current?.scrollToEnd({ animated: true });
         });
@@ -345,12 +375,10 @@ export function OnboardingFlow({
     });
 
     const hideSubscription = Keyboard.addListener(hideEvent, () => {
+      keyboardInsetRef.current = 0;
       setKeyboardInset(0);
 
-      if (
-        isSyncModeStep &&
-        (setupPath === 'connect' || setupPath === 'connect_device_only')
-      ) {
+      if (shouldScrollConnectFormForKeyboard()) {
         requestAnimationFrame(() => {
           scrollRef.current?.scrollToEnd({ animated: false });
         });
@@ -361,7 +389,7 @@ export function OnboardingFlow({
       showSubscription.remove();
       hideSubscription.remove();
     };
-  }, [isSyncModeStep, setupPath]);
+  }, [shouldScrollConnectFormForKeyboard]);
 
   const onBack = () => {
     if (canExitFromSyncMode) {
@@ -784,6 +812,8 @@ export function OnboardingFlow({
           value={syncMode}
           onChange={setSyncModeSelection}
           onMemberLoginSuccess={enterApp}
+          onConnectKeyboardFieldChange={handleConnectKeyboardFieldChange}
+          showStepIndicators={!opensOnSetup}
         />
       );
     }
@@ -896,7 +926,9 @@ export function OnboardingFlow({
         }
         keyboardDismissMode="interactive"
       >
-        <ProgressBar progress={progress} style={styles.progressBar} />
+        {!(isSyncModeStep && opensOnSetup) ? (
+          <ProgressBar progress={progress} style={styles.progressBar} />
+        ) : null}
 
         {isIntroStep ? (
           renderStepContent()

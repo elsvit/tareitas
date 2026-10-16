@@ -94,6 +94,10 @@ type OnboardingSyncModeStepProps = {
   value: ESyncMode;
   onChange: (mode: ESyncMode) => void;
   onMemberLoginSuccess: () => void;
+  onConnectKeyboardFieldChange?: (
+    field: 'identifier' | 'pin',
+  ) => void;
+  showStepIndicators?: boolean;
 };
 
 type SyncModeOption = {
@@ -185,6 +189,8 @@ export function OnboardingSyncModeStep({
   value,
   onChange,
   onMemberLoginSuccess,
+  onConnectKeyboardFieldChange,
+  showStepIndicators = true,
 }: OnboardingSyncModeStepProps) {
   const dispatch = useDispatch<AppDispatch>();
   const parentIds = useSelector(selectParentIds);
@@ -342,7 +348,10 @@ export function OnboardingSyncModeStep({
         />
 
         {setupPath === 'connect' ? (
-          <FamilyConnectForm onSuccess={onMemberLoginSuccess} />
+          <FamilyConnectForm
+            onSuccess={onMemberLoginSuccess}
+            onKeyboardFieldChange={onConnectKeyboardFieldChange}
+          />
         ) : null}
       </View>
 
@@ -447,23 +456,25 @@ export function OnboardingSyncModeStep({
         confirmBgColor={ButtonColors.Orange}
       />
 
-      <View style={styles.dotsRow}>
-        {SETUP_PATHS.map(path => (
-          <Pressable
-            key={path}
-            onPress={() => handleSetupPathChange(path)}
-            accessibilityRole="button"
-            accessibilityState={{ selected: setupPath === path }}
-          >
-            <View
-              style={[
-                styles.dot,
-                setupPath === path && styles.dotActive,
-              ]}
-            />
-          </Pressable>
-        ))}
-      </View>
+      {showStepIndicators ? (
+        <View style={styles.dotsRow}>
+          {SETUP_PATHS.map(path => (
+            <Pressable
+              key={path}
+              onPress={() => handleSetupPathChange(path)}
+              accessibilityRole="button"
+              accessibilityState={{ selected: setupPath === path }}
+            >
+              <View
+                style={[
+                  styles.dot,
+                  setupPath === path && styles.dotActive,
+                ]}
+              />
+            </Pressable>
+          ))}
+        </View>
+      ) : null}
     </View>
   );
 }

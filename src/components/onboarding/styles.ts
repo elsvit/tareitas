@@ -277,6 +277,23 @@ export const onboardingStyles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: spacing(1),
   },
+  connectFormActionsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: spacing(1),
+    minHeight: 36,
+  },
+  connectFormLoading: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing(1),
+    flex: 1,
+  },
+  connectFormForgotLink: {
+    paddingVertical: spacing(1),
+    paddingLeft: spacing(2),
+  },
   visualStage: {
     width: '100%',
     minHeight: 260,

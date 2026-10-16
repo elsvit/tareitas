@@ -15,8 +15,8 @@ import {
   prepareFamilyPersistOnBoot,
 } from '~/services/familyPersistMode';
 import { initializeRevenueCat } from '~/services/subscriptions/revenueCatInit';
-import { setLastAppBackgroundAt } from '~/store/settings/slice';
 import { persistor, store } from '~/store';
+import { setLastAppBackgroundAt } from '~/store/settings/slice';
 import { Colors } from '~/styles';
 import { hideAppSplash, scheduleAppSplashFallbackHide } from '~/utils/hideAppSplash';
 import RootStack from './RootStack';
@@ -53,7 +53,9 @@ export default function RootLayout() {
         );
       }
     } catch (error) {
-      console.error('[Tareitas] Failed to prepare family persist storage', error);
+      if (__DEV__) {  
+        console.error('[Tareitas] Failed to prepare family persist storage', error);
+      }
     } finally {
       hideAppSplash();
     }
