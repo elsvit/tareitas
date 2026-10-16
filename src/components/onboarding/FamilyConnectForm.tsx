@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { ActivityIndicator, Platform, Pressable, View } from 'react-native';
 
 import { RadioButton } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 
 import { ForgotPasswordModal } from '~/components/modals';
-import {
-  Button,
-  ButtonColors,
-  Space,
-  Text,
-  TextInput,
-} from '~/components/ui';
+import { Space, Text, TextInput } from '~/components/ui';
 import { OTPInput } from '~/components/ui/OTPInput';
 import { t } from '~/services';
 import { ApiError } from '~/services/api/client';
@@ -36,12 +30,14 @@ type FamilyConnectFormProps = {
   onSuccess: () => void;
   showSignUpLink?: boolean;
   onSignUpPress?: () => void;
+  onKeyboardFieldChange?: (field: 'identifier' | 'pin') => void;
 };
 
 export function FamilyConnectForm({
   onSuccess,
   showSignUpLink = false,
   onSignUpPress,
+  onKeyboardFieldChange,
 }: FamilyConnectFormProps) {
   const dispatch = useDispatch<AppDispatch>();
   const [loginMode, setLoginMode] =
@@ -190,10 +186,22 @@ export function FamilyConnectForm({
         }
         value={identifier}
         onChangeText={setIdentifier}
+        onPressIn={() => onKeyboardFieldChange?.('identifier')}
+        onFocus={() => onKeyboardFieldChange?.('identifier')}
         autoCapitalize="none"
+        autoCorrect={false}
+        spellCheck={false}
+        autoComplete={loginMode === 'admin' ? 'email' : 'username'}
+        textContentType={
+          loginMode === 'admin' ? 'emailAddress' : 'username'
+        }
         selectTextOnFocus
         keyboardType={
-          loginMode === 'admin' ? 'email-address' : 'default'
+          loginMode === 'admin'
+            ? 'email-address'
+            : Platform.OS === 'ios'
+              ? 'ascii-capable'
+              : 'default'
         }
       />
       <Space size={2} />
@@ -212,6 +220,12 @@ export function FamilyConnectForm({
         value={pin}
         onChange={setPin}
         onComplete={handleLogin}
+        loading={isSubmitting}
+        onFocusChange={focused => {
+          if (focused) {
+            onKeyboardFieldChange?.('pin');
+          }
+        }}
       />
       {loginError ? (
         <>
@@ -221,35 +235,45 @@ export function FamilyConnectForm({
           </Text>
         </>
       ) : null}
-      <Space size={2} />
-      <Button
-        testID="onboarding-multidevice-connect-submit"
-        mode="contained"
-        bgColor={ButtonColors.Green}
-        loading={isSubmitting}
-        disabled={isSubmitting}
-        onPress={handleLogin}
-      >
-        {t('onboarding.login.submit')}
-      </Button>
-      {loginMode === 'admin' ? (
+      {isSubmitting || loginMode === 'admin' ? (
         <>
           <Space size={2} />
-          <Pressable
-            onPress={() => {
-              setForgotPasswordVisible(true);
-              setResetSuccessMessage(null);
-            }}
-            style={styles.signUpLink}
-          >
-            <Text
-              variant="bodyMedium"
-              color={Colors.blue600}
-              weight="bold"
+          <View style={styles.connectFormActionsRow}>
+            <View
+              style={styles.connectFormLoading}
+              testID="onboarding-multidevice-connect-loading"
             >
-              {t('onboarding.login.forgot_pin')}
-            </Text>
-          </Pressable>
+              {isSubmitting ? (
+                <>
+                  <ActivityIndicator
+                    size="small"
+                    color={Colors.blue600}
+                  />
+                  <Text variant="bodyMedium" color={Colors.grey700}>
+                    {t('common.loading')}
+                  </Text>
+                </>
+              ) : null}
+            </View>
+            {loginMode === 'admin' ? (
+              <Pressable
+                onPress={() => {
+                  setForgotPasswordVisible(true);
+                  setResetSuccessMessage(null);
+                }}
+                style={styles.connectFormForgotLink}
+                disabled={isSubmitting}
+              >
+                <Text
+                  variant="bodyMedium"
+                  color={Colors.blue600}
+                  weight="bold"
+                >
+                  {t('onboarding.login.forgot_pin')}
+                </Text>
+              </Pressable>
+            ) : null}
+          </View>
         </>
       ) : null}
       {resetSuccessMessage ? (

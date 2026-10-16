@@ -2,7 +2,7 @@
   "expo": {
     "name": "Tareitas",
     "slug": "tareitas",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon1024.png",
     "scheme": "tareitas",
@@ -13,7 +13,7 @@
       "android"
     ],
     "ios": {
-      "buildNumber": "54",
+      "buildNumber": "58",
       "supportsTablet": true,
       "bundleIdentifier": "net.tareitas",
       "googleServicesFile": "./GoogleService-Info.plist",
@@ -25,7 +25,7 @@
       }
     },
     "android": {
-      "versionCode": 56,
+      "versionCode": 58,
       "adaptiveIcon": {
         "backgroundColor": "#60A5FA",
         "foregroundImage": "./assets/images/icon1024-rounded.png",

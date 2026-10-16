@@ -86,7 +86,7 @@ export function OnboardingSignUpAdminStep({
               label={t('onboarding.account.family_name')}
               value={familyName}
               onChangeText={setFamilyName}
-              autoCapitalize="words"
+              // autoCapitalize="words"
             />
             <Space size={3} />
             <TextInput

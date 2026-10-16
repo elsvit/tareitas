@@ -9,11 +9,12 @@ import ChevronUpIcon from '~/assets/svg/common/chevron-up.svg';
 import { ScreenHeader } from '~/components/blocks';
 import { SafeAreaBgImage } from '~/components/blocks/SafeAreaBackground/SafeAreaBgImage';
 import { Text } from '~/components/ui';
+import { t } from '~/services';
+import { getAppVersionLabel } from '~/utils/appVersion';
 import {
   trackHelpCenterEmailStarted,
   trackHelpCenterOpened,
 } from '~/services/analytics';
-import { t } from '~/services';
 import { useStyle } from '~/styles';
 
 import { HelpCenterChangeUserVisual } from './HelpCenterChangeUserVisual';
@@ -148,6 +149,10 @@ export default function HelpCenter() {
           </List.Accordion>
         </List.Section>
       </ScrollView>
+
+      <View style={styles.versionContainer}>
+        <Text style={styles.versionText}>{getAppVersionLabel()}</Text>
+      </View>
     </SafeAreaBgImage>
   );
 }

@@ -4,6 +4,13 @@ export const TAREITAS_PRO_ENTITLEMENT = 'tareitas_pro';
 export const TAREITAS_YEARLY_OFFERING = 'tareitas_yearly';
 
 export async function getYearlyPackage() {
+  const key = process.env.EXPO_PUBLIC_REVENUECAT_IOS_API_KEY;
+  console.log('🔥🔥🔥 TEST_8');
+  console.log(
+    '🔥🔥🔥 TEST_8 [RevenueCat] iOS key:',
+    key ? `${key.substring(0, 8)}...` : 'MISSING'
+  ); 
+
   const Purchases = getPurchasesModule();
 
   if (!Purchases) {
@@ -11,6 +18,11 @@ export async function getYearlyPackage() {
   }
 
   const offerings = await Purchases.getOfferings();
+
+  console.log(
+    'TEST_16 RC OFFERINGS:',
+    JSON.stringify(offerings, null, 2),
+  );
 
   const offering =
     offerings.all[TAREITAS_YEARLY_OFFERING];
@@ -21,6 +33,8 @@ export async function getYearlyPackage() {
     );
   }
 
+  console.log('TEST_29 RC YEARLY OFFERING:', offering);
+
   const yearlyPackage = offering.annual;
 
   if (!yearlyPackage) {
@@ -28,6 +42,8 @@ export async function getYearlyPackage() {
       'Yearly package is not configured in RevenueCat',
     );
   }
+
+  console.log('TEST_39 RC ANNUAL PACKAGE:', yearlyPackage);
 
   return yearlyPackage;
 }

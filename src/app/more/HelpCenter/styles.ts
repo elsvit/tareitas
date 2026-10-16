@@ -85,6 +85,16 @@ export const themedStyles = styleSheetFactory(() => ({
     lineHeight: 20,
     color: SCREEN_TEXT.secondary,
   },
+  versionContainer: {
+    alignItems: 'center',
+    paddingTop: spacing(2),
+    paddingBottom: spacing(2),
+  },
+  versionText: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: SCREEN_TEXT.secondary,
+  },
 }));
 
 export default themedStyles;

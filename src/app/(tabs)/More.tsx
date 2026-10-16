@@ -43,13 +43,16 @@ export interface IMoreItem {
 }
 
 export default function More() {
+
+  console.error('🔥🔥🔥 JS_BUILD_MARKER_2026_10_08_A 🔥🔥🔥');
   // TODO remove below test code
-  // const key = process.env.EXPO_PUBLIC_REVENUECAT_IOS_API_KEY;
-  // console.log(
-  //   'TEST49 [RevenueCat] iOS key:',
-  //   key ? `${key.substring(0, 8)}...` : 'MISSING'
-  // );
-  //
+  const key = process.env.EXPO_PUBLIC_REVENUECAT_IOS_API_KEY;
+  console.error('🔥🔥🔥 TEST_49');
+  console.log(
+    '🔥🔥🔥 TEST_49 [RevenueCat] iOS key:',
+    key ? `${key.substring(0, 8)}...` : 'MISSING'
+  );
+  
 
   const router = useRouter();
   const { user: currentUser, isParent } = useCurrentUser();
