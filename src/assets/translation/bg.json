@@ -210,7 +210,7 @@
       "grandmother": "баба",
       "mother": "Майка",
       "nanny": "Бавачка",
-      "reviewee": "Рецензент",
+      "reviewee": "Оценявано лице",
       "reviewer": "Рецензент",
       "sister": "сестра",
       "uncle": "чичо"
@@ -578,8 +578,8 @@
       "approve": "Одобряване",
       "complete": "Завършено",
       "enjoy_it": "Насладете му се",
-      "redeem_again": "Изкупете отново",
-      "redeemed": "Изкупен",
+      "select_again": "Избери отново",
+      "cancel": "Отказ",
       "reject": "Отхвърляне",
       "select": "Изберете"
     },

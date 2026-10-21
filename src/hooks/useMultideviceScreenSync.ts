@@ -20,6 +20,9 @@ export type MultideviceScreenSyncScope =
   | 'rewards'
   | 'users';
 
+/** Let the tab transition paint before network / saga work runs. */
+const FOCUS_SYNC_DEFER_MS = 64;
+
 function dispatchScopeSync(
   dispatch: ReturnType<typeof useDispatch>,
   scope: MultideviceScreenSyncScope,
@@ -57,7 +60,11 @@ export function useMultideviceScreenSync(
         return;
       }
 
-      dispatchScopeSync(dispatch, scope);
+      const timeoutId = setTimeout(() => {
+        dispatchScopeSync(dispatch, scope);
+      }, FOCUS_SYNC_DEFER_MS);
+
+      return () => clearTimeout(timeoutId);
     }, [dispatch, hasAuthSession, isMultidevice, scope]),
   );
 

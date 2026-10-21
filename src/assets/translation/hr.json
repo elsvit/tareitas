@@ -210,8 +210,8 @@
       "grandmother": "Baka",
       "mother": "Majka",
       "nanny": "Dadilja",
-      "reviewee": "Recenzent",
-      "reviewer": "Recenzent",
+      "reviewee": "Ocjenjivana osoba",
+      "reviewer": "Revizor",
       "sister": "Sestra",
       "uncle": "Ujak"
     }
@@ -578,8 +578,8 @@
       "approve": "Odobriti",
       "complete": "Kompletan",
       "enjoy_it": "Uživaj u tome",
-      "redeem_again": "Ponovno otkupi",
-      "redeemed": "Otkupljena",
+      "select_again": "Odaberi ponovno",
+      "cancel": "Odustani",
       "reject": "Odbiti",
       "select": "Odaberite"
     },

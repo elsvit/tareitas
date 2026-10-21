@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
@@ -17,6 +17,7 @@ import { BottomTab } from '~/components/ui/BottomTab/BottomTab';
 import { IS_ANDROID } from '~/constants/settings';
 import { ThemeColors } from '~/constants/theme';
 import { useColorScheme } from '~/hooks/use-color-scheme';
+import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
 import { useTabBarBottomInset, TAB_BAR_MIN_PADDING_BOTTOM, TAB_BAR_PADDING_TOP, TAB_BAR_CONTENT_HEIGHT } from '~/hooks/useTabBarBottomInset';
 import { t } from '~/services';
 import { selectIsRecurringTabSeparated, selectLang } from '~/store/settings/selectors';
@@ -39,6 +40,8 @@ function TabBarBackground() {
 }
 
 export default function TabLayout() {
+  useSyncEarnedRewardPeriods();
+
   const colorScheme = useColorScheme();
   const tabBarPaddingBottom = useTabBarBottomInset(TAB_BAR_MIN_PADDING_BOTTOM);
   const tabBarHeight =
@@ -81,10 +84,26 @@ export default function TabLayout() {
     tab => isRoutinesTabSeparated || tab.name !== EMainTabs.Habits,
   ).some(tab => tab.title.length > 9);
 
+  useEffect(() => {
+    const preload = () => {
+      void import('../tasks/Tasks');
+      void import('../tasks/Habits');
+      void import('../rewards/Rewards');
+    };
+
+    const frameId = requestAnimationFrame(() => {
+      preload();
+    });
+
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
+        lazy: false,
+        freezeOnBlur: false,
 
         tabBarShowLabel: false,
 

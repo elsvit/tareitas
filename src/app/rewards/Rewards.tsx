@@ -7,13 +7,11 @@ import { ChildRewardsTabs } from '~/components/rewards/ChildRewardsTabs';
 import { ParentRewardsTabs } from '~/components/rewards/ParentRewardsTabs';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { useMultideviceScreenSync } from '~/hooks/useMultideviceScreenSync';
-import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
 import { spacing } from '~/styles';
 
 export default function Rewards() {
   const { user: currentUser, isChild } = useCurrentUser();
 
-  useSyncEarnedRewardPeriods();
   useMultideviceScreenSync('rewards');
 
   return (

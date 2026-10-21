@@ -210,7 +210,7 @@
       "grandmother": "Babica",
       "mother": "mati",
       "nanny": "Varuška",
-      "reviewee": "Recenzent",
+      "reviewee": "Hodnotená osoba",
       "reviewer": "Recenzent",
       "sister": "sestra",
       "uncle": "stric"
@@ -578,8 +578,8 @@
       "approve": "odobri",
       "complete": "Popolna",
       "enjoy_it": "uživajte",
-      "redeem_again": "Odkupi znova",
-      "redeemed": "Odkupljeno",
+      "select_again": "Izberi znova",
+      "cancel": "Prekliči",
       "reject": "Zavrni",
       "select": "Izberite"
     },

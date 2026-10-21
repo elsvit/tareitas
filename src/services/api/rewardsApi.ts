@@ -128,6 +128,21 @@ export async function listRewardRedemptions(
   return parseApiJson<ServerRewardRedemption[]>(response);
 }
 
+export async function fetchChildRewardBalance(
+  token: string,
+  familyId: string,
+  childUserId: string,
+) {
+  const response = await apiFetch(
+    `/families/${familyId}/rewards/balance/${childUserId}`,
+    { token },
+  );
+
+  return parseApiJson<{ childUserId: string; balance: number }>(
+    response,
+  );
+}
+
 export async function redeemFamilyReward(
   token: string,
   familyId: string,

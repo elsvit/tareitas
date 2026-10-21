@@ -578,8 +578,8 @@
       "approve": "Jóváhagyni",
       "complete": "Teljes",
       "enjoy_it": "Élvezze",
-      "redeem_again": "Váltsd be újra",
-      "redeemed": "Megváltva",
+      "select_again": "Válassza újra",
+      "cancel": "Mégsem",
       "reject": "Elutasít",
       "select": "Válassza ki"
     },

@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { useRouter } from 'expo-router';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   SectionListRenderItem,
   StyleSheet,
@@ -23,6 +23,8 @@ import { useDebouncedPress } from '~/hooks/useDebouncedPress';
 import { useTabScreenFabBottom } from '~/hooks/useTabBarBottomInset';
 import { t } from '~/services';
 import { RootStateT } from '~/store';
+import { ECommonActions } from '~/store/common/types';
+import { EStateName } from '~/store/enums';
 import {
   selectInitialRewardAssignmentsByChildSections,
 } from '~/store/rewards/selectors';
@@ -64,8 +66,91 @@ const getRewardStatusDate = (reward: IReward) =>
     ? reward.createdAt.slice(0, 10)
     : format(new Date(), 'yyyy-MM-dd'));
 
-function SelectedRewardsTab() {
+function useRewardReviewActions(
+  canReviewRewards: boolean,
+  isRewardStatusLocked: (reward: IReward) => boolean,
+) {
   const dispatch = useDispatch();
+  const [loadingRewardId, setLoadingRewardId] = useState<string | null>(null);
+  const sawUpdateRewardLoadingRef = useRef(false);
+  const isUpdateRewardLoading = useSelector((state: RootStateT) =>
+    Boolean(
+      state[EStateName.common][ECommonActions.LOADING][updateReward.type],
+    ),
+  );
+
+  useEffect(() => {
+    if (isUpdateRewardLoading) {
+      sawUpdateRewardLoadingRef.current = true;
+      return;
+    }
+
+    if (sawUpdateRewardLoadingRef.current && loadingRewardId) {
+      sawUpdateRewardLoadingRef.current = false;
+      setLoadingRewardId(null);
+    }
+  }, [isUpdateRewardLoading, loadingRewardId]);
+
+  const dispatchRewardUpdate = useCallback(
+    (reward: IReward, entity: IReward) => {
+      if (!canReviewRewards || isRewardStatusLocked(reward)) {
+        return;
+      }
+
+      setLoadingRewardId(reward.id);
+      dispatch(
+        updateReward({
+          entity,
+          onSuccess: () => setLoadingRewardId(null),
+        }),
+      );
+    },
+    [canReviewRewards, dispatch, isRewardStatusLocked],
+  );
+
+  const handleParentApprove = useCallback(
+    (reward: IReward) => {
+      dispatchRewardUpdate(reward, {
+        ...reward,
+        status: ERewardStatus.Approved,
+        updatedAt: new Date().toISOString(),
+      });
+    },
+    [dispatchRewardUpdate],
+  );
+
+  const handleParentReject = useCallback(
+    (reward: IReward) => {
+      dispatchRewardUpdate(reward, {
+        ...reward,
+        status: ERewardStatus.Rejected,
+        updatedAt: new Date().toISOString(),
+      });
+    },
+    [dispatchRewardUpdate],
+  );
+
+  const handleParentComplete = useCallback(
+    (reward: IReward) => {
+      dispatchRewardUpdate(reward, {
+        ...reward,
+        status: ERewardStatus.Approved,
+        completedDate: format(new Date(), 'yyyy-MM-dd'),
+        updatedAt: new Date().toISOString(),
+      });
+    },
+    [dispatchRewardUpdate],
+  );
+
+  return {
+    loadingRewardId,
+    handleParentApprove,
+    handleParentReject,
+    handleParentComplete,
+  };
+}
+
+function SelectedRewardsTab() {
   const canReviewRewards = useSelector(selectCanReviewTasks);
   const selectedSections = useSelector(selectSelectedRewardsByChildSections);
   const earnedRewardPeriods = useSelector(selectEarnedRewardPeriods);
@@ -80,43 +165,11 @@ function SelectedRewardsTab() {
     [earnedRewardPeriods],
   );
 
-  const handleParentApprove = useCallback(
-    (reward: IReward) => {
-      if (!canReviewRewards || isRewardStatusLocked(reward)) {
-        return;
-      }
-
-      dispatch(
-        updateReward({
-          entity: {
-            ...reward,
-            status: ERewardStatus.Approved,
-            updatedAt: new Date().toISOString(),
-          },
-        }),
-      );
-    },
-    [canReviewRewards, dispatch, isRewardStatusLocked],
-  );
-
-  const handleParentReject = useCallback(
-    (reward: IReward) => {
-      if (!canReviewRewards || isRewardStatusLocked(reward)) {
-        return;
-      }
-
-      dispatch(
-        updateReward({
-          entity: {
-            ...reward,
-            status: ERewardStatus.Rejected,
-            updatedAt: new Date().toISOString(),
-          },
-        }),
-      );
-    },
-    [canReviewRewards, dispatch, isRewardStatusLocked],
-  );
+  const {
+    loadingRewardId,
+    handleParentApprove,
+    handleParentReject,
+  } = useRewardReviewActions(canReviewRewards, isRewardStatusLocked);
 
   const renderSelectedItem = useCallback<
     SectionListRenderItem<
@@ -131,11 +184,12 @@ function SelectedRewardsTab() {
         reward={item.assignment.reward}
         mode="parentSelected"
         status={item.reward.status}
+        isActionLoading={loadingRewardId === item.reward.id}
         onApprove={() => handleParentApprove(item.reward)}
         onReject={() => handleParentReject(item.reward)}
       />
     ),
-    [handleParentApprove, handleParentReject],
+    [handleParentApprove, handleParentReject, loadingRewardId],
   );
 
   const sections = useMemo(
@@ -160,7 +214,6 @@ function SelectedRewardsTab() {
 }
 
 function ApprovedRewardsTab() {
-  const dispatch = useDispatch();
   const canReviewRewards = useSelector(selectCanReviewTasks);
   const approvedSections = useSelector(selectApprovedRewardsByChildSections);
   const earnedRewardPeriods = useSelector(selectEarnedRewardPeriods);
@@ -175,44 +228,11 @@ function ApprovedRewardsTab() {
     [earnedRewardPeriods],
   );
 
-  const handleParentReject = useCallback(
-    (reward: IReward) => {
-      if (!canReviewRewards || isRewardStatusLocked(reward)) {
-        return;
-      }
-
-      dispatch(
-        updateReward({
-          entity: {
-            ...reward,
-            status: ERewardStatus.Rejected,
-            updatedAt: new Date().toISOString(),
-          },
-        }),
-      );
-    },
-    [canReviewRewards, dispatch, isRewardStatusLocked],
-  );
-
-  const handleParentComplete = useCallback(
-    (reward: IReward) => {
-      if (!canReviewRewards || isRewardStatusLocked(reward)) {
-        return;
-      }
-
-      dispatch(
-        updateReward({
-          entity: {
-            ...reward,
-            status: ERewardStatus.Approved,
-            completedDate: format(new Date(), 'yyyy-MM-dd'),
-            updatedAt: new Date().toISOString(),
-          },
-        }),
-      );
-    },
-    [canReviewRewards, dispatch, isRewardStatusLocked],
-  );
+  const {
+    loadingRewardId,
+    handleParentReject,
+    handleParentComplete,
+  } = useRewardReviewActions(canReviewRewards, isRewardStatusLocked);
 
   const renderApprovedItem = useCallback<
     SectionListRenderItem<
@@ -227,11 +247,12 @@ function ApprovedRewardsTab() {
         reward={item.assignment.reward}
         mode="parentApproved"
         status={item.reward.status}
+        isActionLoading={loadingRewardId === item.reward.id}
         onReject={() => handleParentReject(item.reward)}
         onComplete={() => handleParentComplete(item.reward)}
       />
     ),
-    [handleParentComplete, handleParentReject],
+    [handleParentComplete, handleParentReject, loadingRewardId],
   );
 
   const sections = useMemo(

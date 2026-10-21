@@ -210,7 +210,7 @@
       "grandmother": "Močiutė",
       "mother": "Motina",
       "nanny": "Auklė",
-      "reviewee": "Recenzentas",
+      "reviewee": "Vertinamas asmuo",
       "reviewer": "Recenzentas",
       "sister": "Sesuo",
       "uncle": "Dėdė"
@@ -578,8 +578,8 @@
       "approve": "Patvirtinti",
       "complete": "Užbaigti",
       "enjoy_it": "Mėgaukitės",
-      "redeem_again": "Išpirkti dar kartą",
-      "redeemed": "Išpirkta",
+      "select_again": "Pasirinkti dar kartą",
+      "cancel": "Atšaukti",
       "reject": "Atmesti",
       "select": "Pasirinkite"
     },

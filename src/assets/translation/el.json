@@ -210,7 +210,7 @@
       "grandmother": "Γιαγιά",
       "mother": "Μητέρα",
       "nanny": "Νταντά",
-      "reviewee": "Κριτής",
+      "reviewee": "Αξιολογούμενη άτομο",
       "reviewer": "Κριτής",
       "sister": "Αδελφή",
       "uncle": "Θείος"
@@ -578,8 +578,8 @@
       "approve": "Εγκρίνω",
       "complete": "Πλήρης",
       "enjoy_it": "Απολαύστε το",
-      "redeem_again": "Εξαγοράστε ξανά",
-      "redeemed": "Εξαργυρώθηκε",
+      "select_again": "Επιλέξτε ξανά",
+      "cancel": "Ακύρωση",
       "reject": "Απορρίπτω",
       "select": "Επιλέγω"
     },

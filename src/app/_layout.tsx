@@ -4,6 +4,9 @@ import { useCallback, useEffect } from 'react';
 import { AppState } from 'react-native';
 import 'react-native-get-random-values';
 import 'react-native-reanimated';
+import { enableFreeze } from 'react-native-screens';
+
+enableFreeze(true);
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';

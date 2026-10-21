@@ -19,7 +19,6 @@ import { Text } from '~/components/ui';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
 import { useHasCompletedTasksInPast } from '~/hooks/useHasCompletedTasksInPast';
 import { useMultideviceScreenSync } from '~/hooks/useMultideviceScreenSync';
-import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
 import { useTabScreenListBottomPadding } from '~/hooks/useTabBarBottomInset';
 import { useTaskCalendarDate } from '~/hooks/useTaskCalendarDate';
 import { t } from '~/services';
@@ -70,7 +69,6 @@ export default function Tasks() {
     setFilter(current => mergeTaskCalendarFilterChildren(current, children));
   }, [children]);
 
-  useSyncEarnedRewardPeriods();
   useMultideviceScreenSync('tasks');
 
   const assignments = useSelector(selectAllTaskAssignment);
@@ -308,6 +306,9 @@ export default function Tasks() {
             ]}
             showsVerticalScrollIndicator={false}
             style={styles.list}
+            initialNumToRender={8}
+            maxToRenderPerBatch={6}
+            windowSize={7}
           />
 
           <TaskScreenFabs

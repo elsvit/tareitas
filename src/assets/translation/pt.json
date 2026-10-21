@@ -578,8 +578,8 @@
       "approve": "Aprovar",
       "complete": "Completar",
       "enjoy_it": "Aproveitar",
-      "redeem_again": "Riscatar Novamente",
-      "redeemed": "Riscatado",
+      "select_again": "Selecionar novamente",
+      "cancel": "Cancelar",
       "reject": "Rejeitar",
       "select": "Selecionar"
     },

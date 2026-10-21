@@ -307,6 +307,9 @@ export default function Habits() {
             ]}
             showsVerticalScrollIndicator={false}
             style={styles.list}
+            initialNumToRender={8}
+            maxToRenderPerBatch={6}
+            windowSize={7}
           />
 
           <TaskScreenFabs

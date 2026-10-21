@@ -210,7 +210,7 @@
       "grandmother": "Vanaema",
       "mother": "Ema",
       "nanny": "Lapsehoidja",
-      "reviewee": "Ülevaataja",
+      "reviewee": "Hinnatud isik",
       "reviewer": "Ülevaataja",
       "sister": "õde",
       "uncle": "Onu"
@@ -578,8 +578,8 @@
       "approve": "Kinnita",
       "complete": "Täielik",
       "enjoy_it": "Nautige seda",
-      "redeem_again": "Lunasta uuesti",
-      "redeemed": "Lunastatud",
+      "select_again": "Vali uuesti",
+      "cancel": "Tühista",
       "reject": "Keeldu",
       "select": "Valige"
     },

@@ -15,6 +15,7 @@ import {
   completeRewardRedemption,
   dedupePendingServerRedemptions,
   getDuplicatePendingServerRedemptions,
+  fetchChildRewardBalance,
   listFamilyRewards,
   listRewardRedemptions,
   mapServerFamilyRewardToAssignment,
@@ -203,6 +204,8 @@ export function* syncTaskAssignmentsFromServerSaga(): Generator<
       to,
     }),
   );
+
+  yield* syncChildRewardWalletBalancesFromServer(session);
 }
 
 export function* syncRewardsDataFromServerSaga(): Generator<
@@ -370,6 +373,35 @@ export function* syncRewardsDataFromServerSaga(): Generator<
     );
   } catch {
     // Keep local earned reward periods if fetch fails.
+  }
+
+  yield* syncChildRewardWalletBalancesFromServer(session);
+}
+
+function* syncChildRewardWalletBalancesFromServer(
+  session: { familyId: string },
+): Generator<any, void, any> {
+  const children = yield select(selectAllChildren);
+
+  for (const child of children) {
+    try {
+      const { balance } = yield* callMultideviceApi(token =>
+        fetchChildRewardBalance(
+          token,
+          session.familyId,
+          child.id,
+        ),
+      );
+
+      yield put(
+        updateChildSuccess({
+          ...child,
+          reward: balance,
+        }),
+      );
+    } catch {
+      // Keep existing child.reward when balance fetch fails.
+    }
   }
 }
 
