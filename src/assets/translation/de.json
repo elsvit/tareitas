@@ -210,7 +210,7 @@
       "grandmother": "Großmutter",
       "mother": "Mutter",
       "nanny": "Kindermädchen",
-      "reviewee": "Rezensent",
+      "reviewee": "Bewertete Person",
       "reviewer": "Rezensent",
       "sister": "Schwester",
       "uncle": "Onkel"
@@ -578,8 +578,8 @@
       "approve": "Genehmigen",
       "complete": "Vollständig",
       "enjoy_it": "Genießen Sie es",
-      "redeem_again": "Nochmals einlösen",
-      "redeemed": "Eingelöst",
+      "select_again": "Erneut auswählen",
+      "cancel": "Abbrechen",
       "reject": "Ablehnen",
       "select": "Wählen"
     },

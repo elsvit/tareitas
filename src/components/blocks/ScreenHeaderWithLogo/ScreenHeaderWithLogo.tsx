@@ -10,7 +10,6 @@ import { Text } from '~/components/ui';
 import { UserAvatar } from '~/components/users/UserAvatar';
 import { SCREEN_TEXT } from '~/constants/formField';
 import { useCurrentUser } from '~/hooks/useCurrentUser';
-import { useSyncEarnedRewardPeriods } from '~/hooks/useSyncEarnedRewardPeriods';
 import { useUserSwitch } from '~/hooks/useUserSwitch';
 import { t } from '~/services';
 import { selectUserImageUrls } from '~/store/images';
@@ -37,8 +36,6 @@ export const ScreenHeaderWithLogo: React.FC<IScreenHeaderWithLogo> = ({
   const { openSelectUsers, modals } = useUserSwitch();
   const childId = isChild ? currentUserId ?? '' : '';
   const childBalance = useSelector(selectChildRewardBalance(childId));
-
-  useSyncEarnedRewardPeriods();
 
   const userUrls = useSelector(selectUserImageUrls);
 

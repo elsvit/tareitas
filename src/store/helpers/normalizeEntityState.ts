@@ -44,8 +44,12 @@ function coerceParsedValue<T>(value: unknown): T | undefined {
 }
 
 export function isValidEntityState<T>(
-  state: EntityState<T, string>,
-): boolean {
+  state: EntityState<T, string> | undefined | null,
+): state is EntityState<T, string> {
+  if (!state) {
+    return false;
+  }
+
   return (
     Array.isArray(state.ids) &&
     !!state.entities &&
@@ -54,8 +58,13 @@ export function isValidEntityState<T>(
   );
 }
 
+const EMPTY_ENTITY_STATE = {
+  ids: [] as string[],
+  entities: {} as Record<string, never>,
+};
+
 export function ensureEntityState<T>(
-  state: EntityState<T, string>,
+  state: EntityState<T, string> | undefined | null,
 ): EntityState<T, string> {
   if (isValidEntityState(state)) {
     return state;
@@ -65,10 +74,17 @@ export function ensureEntityState<T>(
 }
 
 export function normalizeEntityState<T>(
-  state: EntityState<T, string>,
+  state: EntityState<T, string> | undefined | null,
 ): EntityState<T, string> {
   if (isValidEntityState(state)) {
     return state;
+  }
+
+  if (!state) {
+    return {
+      ids: [...EMPTY_ENTITY_STATE.ids],
+      entities: { ...EMPTY_ENTITY_STATE.entities },
+    };
   }
 
   let ids = coerceParsedValue<string[]>(state.ids);

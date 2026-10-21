@@ -578,8 +578,8 @@
       "approve": "Approvato",
       "complete": "Completato",
       "enjoy_it": "Godersi",
-      "redeem_again": "Rimborso di nuovo",
-      "redeemed": "Rimborso",
+      "select_again": "Selezionare di nuovo",
+      "cancel": "Annullare",
       "reject": "Respinto",
       "select": "Selezionare"
     },

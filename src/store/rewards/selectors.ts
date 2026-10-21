@@ -1,7 +1,10 @@
 import { createSelector } from '@reduxjs/toolkit';
 
+import type { RootStateT } from '~/store';
+
 import type { IState } from '../types';
 import { selectAllChildren, selectChildById, selectDedupedChildIds } from '~/store/children/selectors';
+import { selectIsMultidevice } from '~/store/settings/selectors';
 import { ERewardStatus } from '~/types/EReward';
 import { IReward, IRewardAssignment } from '~/types/IReward';
 
@@ -16,6 +19,7 @@ import {
   findEarnedPeriod,
   formatYearMonth,
   getChildCurrentRewardBalance,
+  sumReservedRewardCosts,
   getLastApprovedMonth,
   isPeriodClosed,
   isRewardAssignmentAvailableForChild,
@@ -102,8 +106,26 @@ const selectBalanceCalculationState = createSelector(
 );
 
 export const selectChildRewardBalance = (childId: string) =>
-  createSelector([selectBalanceCalculationState], state =>
-    getChildCurrentRewardBalance(state, childId),
+  createSelector(
+    [
+      selectBalanceCalculationState,
+      selectIsMultidevice,
+      (state: RootStateT) => selectChildById(state, childId),
+    ],
+    (state, isMultidevice, child) => {
+      const reserved = sumReservedRewardCosts(state, childId);
+
+      if (
+        isMultidevice &&
+        child &&
+        typeof child.reward === 'number' &&
+        Number.isFinite(child.reward)
+      ) {
+        return Math.max(0, child.reward - reserved);
+      }
+
+      return getChildCurrentRewardBalance(state, childId);
+    },
   );
 
 const getAssignmentTargetChildIds = (

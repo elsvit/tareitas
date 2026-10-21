@@ -210,7 +210,7 @@
       "grandmother": "Grootmoeder",
       "mother": "Moeder",
       "nanny": "Oppas",
-      "reviewee": "Recensent",
+      "reviewee": "Beoordeelde persoon",
       "reviewer": "Recensent",
       "sister": "Zus",
       "uncle": "Oom"
@@ -578,8 +578,8 @@
       "approve": "Goedkeuren",
       "complete": "Compleet",
       "enjoy_it": "Geniet ervan",
-      "redeem_again": "Opnieuw inwisselen",
-      "redeemed": "Ingewisseld",
+      "select_again": "Selecteren opnieuw",
+      "cancel": "Annuleren",
       "reject": "Afwijzen",
       "select": "Selecteer"
     },

@@ -46,6 +46,7 @@ export {
   updateFamilyReward,
   deleteFamilyReward,
   listRewardRedemptions,
+  fetchChildRewardBalance,
   redeemFamilyReward,
   approveRewardRedemption,
   rejectRewardRedemption,

@@ -1,12 +1,11 @@
 import React, { useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import * as Haptics from 'expo-haptics';
 
 import { RewardBaseListItem } from '~/components/rewards/RewardBaseListItem';
 import { RewardSelectSparkleAnimation } from '~/components/rewards/RewardSelectSparkleAnimation';
 import { RewardStatusBadge } from '~/components/rewards/RewardStatusBadge';
-import { Text } from '~/components/ui';
 import {
   getChildRewardStatusColor,
   REWARD_STATUS_COLORS,
@@ -14,7 +13,6 @@ import {
 import { t } from '~/services';
 import { playAppSound } from '~/services/appSounds';
 import { ERewardStatus } from '~/types/EReward';
-import { Colors } from '~/styles';
 
 export type RewardItemMode =
   | 'child'
@@ -40,6 +38,8 @@ type Props = {
   onApprove?: () => void;
   onReject?: () => void;
   onComplete?: () => void;
+  isActionLoading?: boolean;
+  actionLoadingColor?: string;
 };
 
 const getChildLeftLabel = (
@@ -80,8 +80,11 @@ export const RewardItem: React.FC<Props> = ({
   onReject,
   onComplete,
   completedDate,
+  isActionLoading = false,
+  actionLoadingColor = '#F59F00',
 }) => {
   const [selectAnimationTrigger, setSelectAnimationTrigger] = useState(0);
+  const parentActionsDisabled = isActionLoading;
 
   const handleSelectPress = useCallback(() => {
     if (!onSelect) {
@@ -101,14 +104,18 @@ export const RewardItem: React.FC<Props> = ({
     let actionHandler: (() => void) | undefined;
 
     if (status === ERewardStatus.Approved) {
+      // when status is approved, the child can enjoy the reward
       actionLabel = t('rewards.action.enjoy_it');
     } else if (status === ERewardStatus.Selected) {
-      actionLabel = t('rewards.action.redeemed');
+      // when status is selected, the child can cancel the reward
+      actionLabel = t('rewards.action.cancel');
       actionHandler = onRedeem;
     } else if (status === ERewardStatus.Rejected) {
-      actionLabel = t('rewards.action.redeem_again');
+      // when status is rejected, the child can select the reward again
+      actionLabel = t('rewards.action.select_again');
       actionHandler = handleSelectPress;
     } else if (canAfford) {
+      // when the reward is affordable, the child can select the reward
       actionLabel = t('rewards.action.select');
       actionHandler = handleSelectPress;
     }
@@ -146,13 +153,13 @@ export const RewardItem: React.FC<Props> = ({
         <RewardStatusBadge
           label={t('rewards.action.reject')}
           color={REWARD_STATUS_COLORS.rejected}
-          onPress={onReject}
+          onPress={parentActionsDisabled ? undefined : onReject}
           compact
         />
         <RewardStatusBadge
           label={t('rewards.action.approve')}
           color={REWARD_STATUS_COLORS.approved}
-          onPress={onApprove}
+          onPress={parentActionsDisabled ? undefined : onApprove}
           compact
         />
       </View>
@@ -170,13 +177,13 @@ export const RewardItem: React.FC<Props> = ({
         <RewardStatusBadge
           label={t('rewards.action.reject')}
           color={REWARD_STATUS_COLORS.rejected}
-          onPress={onReject}
+          onPress={parentActionsDisabled ? undefined : onReject}
           compact
         />
         <RewardStatusBadge
           label={t('rewards.action.complete')}
           color={REWARD_STATUS_COLORS.approved}
-          onPress={onComplete}
+          onPress={parentActionsDisabled ? undefined : onComplete}
           compact
         />
       </View>
@@ -224,6 +231,11 @@ export const RewardItem: React.FC<Props> = ({
                   : undefined
         }
       />
+      {isActionLoading ? (
+        <View pointerEvents="none" style={styles.actionSpinner}>
+          <ActivityIndicator size="small" color={actionLoadingColor} />
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -232,6 +244,13 @@ const styles = StyleSheet.create({
   wrapper: {
     width: '100%',
     position: 'relative',
+    overflow: 'visible',
+  },
+  actionSpinner: {
+    position: 'absolute',
+    left: 8,
+    bottom: 8,
+    zIndex: 2,
   },
   footer: {
     flexDirection: 'row',
