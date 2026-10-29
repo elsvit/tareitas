@@ -6,6 +6,13 @@ const path = require('path');
 
 const projectRoot = path.resolve(__dirname, '..');
 
+const args = new Set(process.argv.slice(2));
+const fullClean = args.has('--clean');
+const runPrebuild = args.has('--prebuild') || fullClean;
+
+/** Play AAB only needs phone ABIs; skipping x86 halves native (Reanimated) work. */
+const RELEASE_ARCH = '-PreactNativeArchitectures=armeabi-v7a,arm64-v8a';
+
 function rmrf(relativePath) {
   const targetPath = path.join(projectRoot, relativePath);
 
@@ -24,29 +31,38 @@ function run(command) {
   });
 }
 
-console.log('Syncing Android native project (notification icon, manifest, etc.)...');
-run('npx expo prebuild --platform android --no-install');
+if (runPrebuild) {
+  console.log('Syncing Android native project (notification icon, manifest, etc.)...');
+  run('npx expo prebuild --platform android --no-install');
+} else {
+  console.log(
+    'Skipping prebuild (use --prebuild after app.json/plugin changes, or --clean for full reset).',
+  );
+}
 
-console.log('Clearing JS bundler caches (Gradle clean does not remove these)...');
-rmrf('node_modules/.cache');
-rmrf('.expo');
-rmrf('dist');
+if (fullClean) {
+  console.log('Full clean: clearing caches and Android build outputs...');
+  rmrf('node_modules/.cache');
+  rmrf('.expo');
+  rmrf('dist');
+  rmrf('android/app/.cxx');
+  rmrf('android/app/build');
+  rmrf('android/build');
+  rmrf('android/.gradle');
+  run('cd android && ./gradlew clean');
+} else {
+  console.log(
+    'Incremental build (use --clean to wipe Gradle/CMake caches — much slower).',
+  );
+}
 
-console.log('Clearing Android build outputs...');
-rmrf('android/app/.cxx');
-rmrf('android/app/build');
-rmrf('android/build');
-rmrf('android/.gradle');
+const bundleFlags = fullClean ? '--rerun-tasks' : '';
 
-run('cd android && ./gradlew clean');
-
-console.log('Embedding a fresh production JS bundle...');
-run('npx expo export:embed --eager --platform android --dev false');
-
-console.log('Building release AAB (forcing bundle task to rerun)...');
+console.log('Building release JS bundle + AAB...');
 run(
-  'cd android && ./gradlew :app:createBundleReleaseJsAndAssets --rerun-tasks && ./gradlew bundleRelease',
+  `cd android && ./gradlew :app:createBundleReleaseJsAndAssets ${bundleFlags} ${RELEASE_ARCH}`.trim(),
 );
+run(`cd android && ./gradlew bundleRelease ${RELEASE_ARCH}`);
 
 const aabPath = path.join(
   projectRoot,
