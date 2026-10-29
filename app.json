@@ -49,6 +49,7 @@
       "./plugins/withHermesDsym.js",
       "./plugins/withRemoveAudioForegroundService.js",
       "./plugins/withAndroidReleaseSigning.js",
+      "./plugins/withAndroidGradleBuildPerf.js",
       [
         "expo-build-properties",
         {
