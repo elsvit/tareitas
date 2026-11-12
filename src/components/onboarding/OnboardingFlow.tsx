@@ -21,6 +21,7 @@ import {
   trackDeviceModeUsed,
   trackFamiliesCount,
   trackFamilySize,
+  trackSignUp,
 } from '~/services/analytics';
 import { t } from '~/services';
 import { mapServerChildToLocal } from '~/services/api/memberMappers';
@@ -451,6 +452,7 @@ export function OnboardingFlow({
 
     await flushFamilyPersistMode(persistor);
     resumeFamilyPersist(persistor);
+    void trackSignUp('multidevice');
     void trackDeviceModeUsed(ESyncMode.multidevice);
     void trackFamilySize(1, signUpChild?.name ? 1 : 0);
     void trackFamiliesCount(1);
@@ -496,6 +498,7 @@ export function OnboardingFlow({
     dispatch(setCurrentUser(parentId));
     dispatch(setCurrentRole(ERole.admin));
     await completeDeviceOnlyFamilyCreate(persistor);
+    void trackSignUp('device_only');
     void trackDeviceModeUsed(ESyncMode.deviceOnly);
     void trackFamilySize(1, 1);
     enterApp();

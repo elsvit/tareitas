@@ -1,5 +1,10 @@
 export {
   setAnalyticsLanguage,
+  trackFirstOpenIfNeeded,
+  trackRewardRedeemed,
+  trackSignUp,
+  trackTaskCompleted,
+  trackTaskCreated,
   trackDefaultBaseTaskUsed,
   trackDefaultImageUsed,
   trackDefaultRewardImageUsed,
@@ -16,4 +21,4 @@ export {
   trackSubtaskRecordUsed,
   trackTaskRecordUsed,
 } from './analytics';
-export type { HelpCenterEmailTopic } from './analytics';
+export type { HelpCenterEmailTopic, SignUpMethod } from './analytics';

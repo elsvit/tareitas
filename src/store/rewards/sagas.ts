@@ -48,6 +48,7 @@ import {
 import { syncEarnedRewardPeriodsFromState } from './rewardCalculations';
 import { syncRewardsData } from '~/store/settings/slice';
 import { IReward } from '~/types/IReward';
+import { trackRewardRedeemed } from '~/services/analytics';
 import {
   cleanupAssignmentChangesForCutoff,
   getApprovedPeriodMediaCutoffYearMonth,
@@ -198,6 +199,7 @@ function* updateRewardSaga(
   if (entity.completedDate) {
     if (!session) {
       yield* finish(entity);
+      yield call(trackRewardRedeemed);
       return;
     }
 
@@ -223,6 +225,7 @@ function* updateRewardSaga(
         completedDate: mapped.completedDate ?? entity.completedDate,
       });
       yield put(syncRewardsData());
+      yield call(trackRewardRedeemed);
     } catch (error) {
       throw error;
     }
