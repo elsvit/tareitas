@@ -31,6 +31,7 @@ import {
 } from './slice';
 import { selectTaskById } from './selectors';
 import { AddTasksPayload, RemoveTasksPayload, UpdateTasksPayload } from './types';
+import { trackTaskCompleted } from '~/services/analytics';
 import { ETaskStatus } from '~/types/ETask';
 import type { ITask } from '~/types/ITask';
 
@@ -326,6 +327,14 @@ function* updateTasksSaga(
   );
 
   yield* syncTaskToServer(entity, Boolean(existingTask), existingTask);
+
+  const justCompleted =
+    entity.status === ETaskStatus.Completed &&
+    existingTask?.status !== ETaskStatus.Completed;
+
+  if (justCompleted) {
+    yield call(trackTaskCompleted);
+  }
 
   if (onSuccess) {
     yield call(onSuccess);

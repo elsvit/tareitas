@@ -1,4 +1,9 @@
 export const ANALYTICS_EVENTS = {
+  first_open: 'first_open',
+  sign_up: 'sign_up',
+  task_created: 'task_created',
+  task_completed: 'task_completed',
+  reward_redeemed: 'reward_redeemed',
   device_mode_used: 'device_mode_used',
   family_size: 'family_size',
   families_count: 'families_count',

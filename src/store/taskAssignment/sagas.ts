@@ -16,6 +16,7 @@ import {
 } from '~/store/helpers/multideviceSession';
 import { resolveAndCacheTaskPicture } from '~/store/helpers/imageRefSync';
 import { cancelLocalNotificationsForAssignmentId } from '~/services/localNotifications/childTaskLocalNotifications';
+import { trackTaskCreated } from '~/services/analytics';
 
 import {
   takeLatestWithFetchable,
@@ -60,6 +61,7 @@ function* persistTaskAssignment(
 
   if (!session) {
     yield put(addTaskAssignmentSuccess(entity));
+    yield call(trackTaskCreated);
     return;
   }
 
@@ -85,6 +87,7 @@ function* persistTaskAssignment(
       mapServerTaskAssignmentToLocal(serverAssignment),
     ),
   );
+  yield call(trackTaskCreated);
 }
 
 function* addTaskAssignmentSaga(

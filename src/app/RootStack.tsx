@@ -41,6 +41,7 @@ import { ensureAppInstalledAt, initLanguage } from '~/store/settings';
 import { selectIsLangInitiating, selectLang } from '~/store/settings/selectors';
 import { Colors } from '~/styles';
 import { lightPaperTheme } from '~/styles/paperTheme';
+import { trackFirstOpenIfNeeded } from '~/services/analytics';
 import { hideAppSplash } from '~/utils/hideAppSplash';
 
 export default function RootStack() {
@@ -82,6 +83,7 @@ export default function RootStack() {
   useEffect(() => {
     dispatch(initLanguage());
     dispatch(ensureAppInstalledAt());
+    void trackFirstOpenIfNeeded();
   }, [dispatch]);
 
   useEffect(() => {

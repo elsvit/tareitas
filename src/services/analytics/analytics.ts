@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 
 import type { Analytics } from '@react-native-firebase/analytics';
@@ -6,7 +7,11 @@ import { ANALYTICS_EVENTS, ANALYTICS_STATE } from '~/constants/analytics';
 import type { ImageStoreKind } from '~/store/images/types';
 import { ESyncMode } from '~/store/settings/enums';
 
+const ANALYTICS_FIRST_OPEN_KEY = '@tareitas/analytics_first_open';
+
 type FirebaseAnalyticsModule = typeof import('@react-native-firebase/analytics');
+
+export type SignUpMethod = 'multidevice' | 'device_only';
 
 let cachedModule: FirebaseAnalyticsModule | null | undefined;
 let cachedInstance: Analytics | null | undefined;
@@ -82,6 +87,34 @@ async function setAnalyticsUserProperty(
 
 export async function setAnalyticsLanguage(language: string): Promise<void> {
   await setAnalyticsUserProperty(ANALYTICS_STATE.language, language);
+}
+
+/** Once per install (production release builds). */
+export async function trackFirstOpenIfNeeded(): Promise<void> {
+  const alreadyLogged = await AsyncStorage.getItem(ANALYTICS_FIRST_OPEN_KEY);
+
+  if (alreadyLogged) {
+    return;
+  }
+
+  await logAnalyticsEvent(ANALYTICS_EVENTS.first_open);
+  await AsyncStorage.setItem(ANALYTICS_FIRST_OPEN_KEY, '1');
+}
+
+export async function trackSignUp(method: SignUpMethod): Promise<void> {
+  await logAnalyticsEvent(ANALYTICS_EVENTS.sign_up, { method });
+}
+
+export async function trackTaskCreated(): Promise<void> {
+  await logAnalyticsEvent(ANALYTICS_EVENTS.task_created);
+}
+
+export async function trackTaskCompleted(): Promise<void> {
+  await logAnalyticsEvent(ANALYTICS_EVENTS.task_completed);
+}
+
+export async function trackRewardRedeemed(): Promise<void> {
+  await logAnalyticsEvent(ANALYTICS_EVENTS.reward_redeemed);
 }
 
 export async function trackDeviceModeUsed(
